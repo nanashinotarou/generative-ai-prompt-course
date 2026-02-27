@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DX Training Mar 2026 | Generative AI & Prompt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #e0f2f1;
+            --bg-card: #ffffff;
+            --text-main: #333;
+            --text-sub: #888;
+            --accent-purple: #00897b;
+            --shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: "Noto Sans JP", sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .modal-container {
+            width: 95%;
+            max-width: 1300px;
+            height: 90vh;
+            background: var(--bg-card);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .calendar-area {
+            height: 100%;
+            border-right: 1px solid #eee;
+            overflow-y: auto;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-auto-rows: minmax(80px, auto);
+            width: 100%;
+            background: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 5px;
+        }
+
+        .day-name {
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+        }
+
+        .cal-cell {
+            border-top: 1px solid #eee;
+            padding: 5px;
+            position: relative;
+            font-family: "Roboto", sans-serif;
+            font-size: 0.9rem;
+            color: #333;
+            transition: 0.2s;
+            border-radius: 8px;
+        }
+
+        .cal-cell.other-month {
+            color: #ccc;
+            background: #fafafa;
+        }
+
+        .cal-cell.has-event {
+            cursor: pointer;
+            background: #e0f2f1;
+            border-top-color: transparent;
+        }
+
+        .cal-cell.has-event:hover {
+            background: #00897b;
+            color: #fff;
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 10px 20px rgba(0, 137, 123, 0.3);
+        }
+
+        .date-num {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .ev-pill {
+            background: #00897b;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            opacity: 0.8;
+        }
+
+        .cal-cell.has-event:hover .ev-pill {
+            background: #fff;
+            color: #00897b;
+        }
+
+        .cal-popup {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: #2d3436;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            width: 200px;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
+        }
+
+        .cal-popup::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #2d3436 transparent transparent transparent;
+        }
+
+        .cal-cell.has-event:hover .cal-popup {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        .cal-cell.active-sync {
+            background: #00695c !important;
+            color: #fff !important;
+            transform: scale(1.05);
+            z-index: 15;
+            box-shadow: 0 10px 20px rgba(0, 105, 92, 0.4);
+        }
+
+        .cal-cell.active-sync .ev-pill {
+            background: #fff;
+            color: #00695c;
+        }
+
+        .c-item.active-sync {
+            border-color: #00695c;
+            background: #00695c !important;
+            color: #fff !important;
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 105, 92, 0.3);
+        }
+
+        .c-item.active-sync h4,
+        .c-item.active-sync p {
+            color: #fff !important;
+        }
+
+        .c-item.active-sync .date-box {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .c-item.active-sync .db-month {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .c-item.active-sync .day-tag {
+            background: #fff;
+            color: #00695c;
+            opacity: 1;
+        }
+
+        .cal-cell.is-today {
+            border: 2px solid #ff9800 !important;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.4);
+            z-index: 10;
+        }
+
+        .cal-cell.is-today::after {
+            content: "TODAY";
+            position: absolute;
+            top: -12px;
+            right: -10px;
+            background: #ff9800;
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 900;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-family: "Teko", sans-serif;
+            letter-spacing: 1px;
+            animation: bounce-badge 2s infinite;
+        }
+
+        @keyframes bounce-badge {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-5px);
+            }
+
+            60% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .list-area {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-sizing: border-box;
+            background: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-header {
+            margin-bottom: 30px;
+            border-bottom: 4px solid #4db6ac;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-family: "Teko", sans-serif;
+            font-size: 3.5rem;
+            margin: 0;
+            line-height: 0.8;
+            color: #00897b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h1 span {
+            color: #00695c;
+        }
+
+        .subtitle {
+            font-family: "Roboto", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #4db6ac;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        .shortcut-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            background: #00897b;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 137, 123, 0.2);
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+
+        .shortcut-btn:hover {
+            transform: translateY(-1px);
+            background: #00695c;
+            box-shadow: 0 6px 12px rgba(0, 105, 92, 0.3);
+        }
+
+        .curriculum-list {
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 10px;
+            padding-bottom: 80px;
+            min-height: 0;
+        }
+
+        .curriculum-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .curriculum-list::-webkit-scrollbar-thumb {
+            background: #e0e0e0;
+            border-radius: 3px;
+        }
+
+        .c-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #f0f0f0;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .c-item:hover {
+            border-color: #00897b;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transform: translateX(5px);
+        }
+
+        .date-box {
+            background: #e0f2f1;
+            color: #333;
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-family: "Teko", sans-serif;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .db-month {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #999;
+        }
+
+        .db-day {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .c-content {
+            flex: 1;
+        }
+
+        .day-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            background: #00897b;
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
+        }
+
+        h4 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        p {
+            margin: 2px 0 0;
+        }
+
+        .dev-link {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #00897b, #00695c);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 137, 123, 0.4);
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dev-link:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 105, 92, 0.5);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dev-link i {
+            color: #ffeb3b;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        @media (max-width: 900px) {
+            body {
+                height: auto;
+                padding: 20px;
+                overflow: auto;
+                display: block;
+            }
+
+            .modal-container {
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .calendar-area {
+                height: 500px;
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .calendar-grid {
+                padding: 10px;
+                grid-template-rows: 40px repeat(5, 1fr);
+            }
+
+            .list-area {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="modal-container">
+        <div class="calendar-area">
+            <div class="calendar-grid">
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+
+                <div class="cal-cell"><span class="date-num">1</span></div>
+                <div class="cal-cell"><span class="date-num">2</span></div>
+                <div class="cal-cell has-event" data-day="d01" onclick="window.location.href='vol01-1_ai_start.html'">
+                    <span class="date-num">3</span><span class="ev-pill">DAY 01</span>
+                    <div class="cal-popup">Vol.1 AI基本操作</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d02" onclick="window.location.href='vol01-2_canva.html'"><span
+                        class="date-num">4</span><span class="ev-pill">DAY 02</span>
+                    <div class="cal-popup">Vol.2 Canva基本</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d03" onclick="window.location.href='vol01-3_prompt.html'">
+                    <span class="date-num">5</span><span class="ev-pill">DAY 03</span>
+                    <div class="cal-popup">Vol.3 プロンプト指示</div>
+                </div>
+                <div class="cal-cell"><span class="date-num">6</span></div>
+                <div class="cal-cell"><span class="date-num">7</span></div>
+
+                <div class="cal-cell"><span class="date-num">8</span></div>
+                <div class="cal-cell"><span class="date-num">9</span></div>
+                <div class="cal-cell has-event" data-day="d04"
+                    onclick="window.location.href='vol01-4_image_basic.html'"><span class="date-num">10</span><span
+                        class="ev-pill">DAY 04</span>
+                    <div class="cal-popup">Vol.4 画像生成基礎</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d05"
+                    onclick="window.location.href='vol01-5_video_basic.html'"><span class="date-num">11</span><span
+                        class="ev-pill">DAY 05</span>
+                    <div class="cal-popup">Vol.5 動画生成基礎</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d06"
+                    onclick="window.location.href='vol01-6_music_basic.html'"><span class="date-num">12</span><span
+                        class="ev-pill">DAY 06</span>
+                    <div class="cal-popup">Vol.6 音楽生成基礎</div>
+                </div>
+                <div class="cal-cell"><span class="date-num">13</span></div>
+                <div class="cal-cell"><span class="date-num">14</span></div>
+
+                <div class="cal-cell"><span class="date-num">15</span></div>
+                <div class="cal-cell"><span class="date-num">16</span></div>
+                <div class="cal-cell has-event" data-day="d07"
+                    onclick="window.location.href='vol01-7_image_advanced.html'"><span class="date-num">17</span><span
+                        class="ev-pill">DAY 07</span>
+                    <div class="cal-popup">Vol.7 高度な画像生成</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d08"
+                    onclick="window.location.href='vol01-8_video_advanced.html'"><span class="date-num">18</span><span
+                        class="ev-pill">DAY 08</span>
+                    <div class="cal-popup">Vol.8 高度な動画生成</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d09"
+                    onclick="window.location.href='vol01-9_music_advanced.html'"><span class="date-num">19</span><span
+                        class="ev-pill">DAY 09</span>
+                    <div class="cal-popup">Vol.9 高度な音楽生成</div>
+                </div>
+                <div class="cal-cell"><span class="date-num">20</span></div>
+                <div class="cal-cell"><span class="date-num">21</span></div>
+
+                <div class="cal-cell"><span class="date-num">22</span></div>
+                <div class="cal-cell"><span class="date-num">23</span></div>
+                <div class="cal-cell has-event" data-day="d10" onclick="window.location.href='vol01-10_business.html'">
+                    <span class="date-num">24</span><span class="ev-pill">DAY 10</span>
+                    <div class="cal-popup">Vol.10 ビジネス利用</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d11"
+                    onclick="window.location.href='vol01-11_prompt_optimization.html'"><span
+                        class="date-num">25</span><span class="ev-pill">DAY 11</span>
+                    <div class="cal-popup">Vol.11 プロンプト設計</div>
+                </div>
+                <div class="cal-cell has-event" data-day="d12" onclick="window.location.href='vol01-12_future.html'">
+                    <span class="date-num">26</span><span class="ev-pill">DAY 12</span>
+                    <div class="cal-popup">Vol.12 最新動向</div>
+                </div>
+                <div class="cal-cell"><span class="date-num">27</span></div>
+                <div class="cal-cell"><span class="date-num">28</span></div>
+
+                <div class="cal-cell"><span class="date-num">29</span></div>
+                <div class="cal-cell"><span class="date-num">30</span></div>
+                <div class="cal-cell has-event" data-day="d13" onclick="window.location.href='vol01-13_feedback.html'">
+                    <span class="date-num">31</span><span class="ev-pill">DAY 13</span>
+                    <div class="cal-popup">Vol.13 作品発表</div>
+                </div>
+                <div class="cal-cell other-month">1</div>
+                <div class="cal-cell other-month">2</div>
+                <div class="cal-cell other-month">3</div>
+                <div class="cal-cell other-month">4</div>
+            </div>
+        </div>
+        <div class="list-area">
+            <div class="brand-header">
+                <h1>GENERATIVE AI <span>& PROMPT</span></h1>
+                <div class="subtitle">March 2026 Curriculum</div>
+            </div>
+            <a href="vol01-1_ai_start.html" class="shortcut-btn">
+                <i class="fa-solid fa-play"></i> LATEST: Vol.1 テキストを開く
+            </a>
+            <div class="curriculum-list">
+                <a href="vol01-1_ai_start.html" class="c-item" id="d01">
+                    <div class="date-box"><span class="db-month">Tue</span><span class="db-day">03</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 01</span>
+                        <h4>AI基本操作と画像生成</h4>
+                        <p>検索方AIの基本操作と画像生成機能の紹介</p>
+                    </div>
+                </a>
+                <a href="vol01-2_canva.html" class="c-item" id="d02">
+                    <div class="date-box"><span class="db-month">Wed</span><span class="db-day">04</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 02</span>
+                        <h4>Canva基本と動画編集</h4>
+                        <p>Canvaの基本操作、AI機能の活用法、および動画編集技術</p>
+                    </div>
+                </a>
+                <a href="vol01-3_prompt.html" class="c-item" id="d03">
+                    <div class="date-box"><span class="db-month">Thu</span><span class="db-day">05</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 03</span>
+                        <h4>プロンプト指示方法</h4>
+                        <p>生成AIのプロンプト指示方法とその応用</p>
+                    </div>
+                </a>
+                <a href="vol01-4_image_basic.html" class="c-item" id="d04">
+                    <div class="date-box"><span class="db-month">Tue</span><span class="db-day">10</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 04</span>
+                        <h4>画像生成の基礎</h4>
+                        <p>テキストから画像への変換技術の基礎</p>
+                    </div>
+                </a>
+                <a href="vol01-5_video_basic.html" class="c-item" id="d05">
+                    <div class="date-box"><span class="db-month">Wed</span><span class="db-day">11</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 05</span>
+                        <h4>動画生成の基礎</h4>
+                        <p>テキストから動画への変換技術の基礎</p>
+                    </div>
+                </a>
+                <a href="vol01-6_music_basic.html" class="c-item" id="d06">
+                    <div class="date-box"><span class="db-month">Thu</span><span class="db-day">12</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 06</span>
+                        <h4>音楽生成の基礎</h4>
+                        <p>テキストから音楽への変換技術の基礎</p>
+                    </div>
+                </a>
+                <a href="vol01-7_image_advanced.html" class="c-item" id="d07">
+                    <div class="date-box"><span class="db-month">Tue</span><span class="db-day">17</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 07</span>
+                        <h4>高度な画像生成</h4>
+                        <p>応用的なテクニックによる高度な画像生成</p>
+                    </div>
+                </a>
+                <a href="vol01-8_video_advanced.html" class="c-item" id="d08">
+                    <div class="date-box"><span class="db-month">Wed</span><span class="db-day">18</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 08</span>
+                        <h4>高度な動画生成</h4>
+                        <p>応用的なテクニックによる高度な動画生成</p>
+                    </div>
+                </a>
+                <a href="vol01-9_music_advanced.html" class="c-item" id="d09">
+                    <div class="date-box"><span class="db-month">Thu</span><span class="db-day">19</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 09</span>
+                        <h4>高度な音楽生成</h4>
+                        <p>応用的なテクニックによる高度な音楽生成</p>
+                    </div>
+                </a>
+                <a href="vol01-10_business.html" class="c-item" id="d10">
+                    <div class="date-box"><span class="db-month">Tue</span><span class="db-day">24</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 10</span>
+                        <h4>ビジネス応用事例</h4>
+                        <p>共同作業AIのビジネスへの応用方法と活用事例</p>
+                    </div>
+                </a>
+                <a href="vol01-11_prompt_optimization.html" class="c-item" id="d11">
+                    <div class="date-box"><span class="db-month">Wed</span><span class="db-day">25</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 11</span>
+                        <h4>プロンプト設計</h4>
+                        <p>プロンプト設計と最適化技術</p>
+                    </div>
+                </a>
+                <a href="vol01-12_future.html" class="c-item" id="d12">
+                    <div class="date-box"><span class="db-month">Thu</span><span class="db-day">26</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 12</span>
+                        <h4>最新動向と未来予測</h4>
+                        <p>生成AI分野の最新動向と未来予測</p>
+                    </div>
+                </a>
+                <a href="vol01-13_feedback.html" class="c-item" id="d13">
+                    <div class="date-box"><span class="db-month">Tue</span><span class="db-day">31</span></div>
+                    <div class="c-content"><span class="day-tag">DAY 13</span>
+                        <h4>作品発表とFB</h4>
+                        <p>作品の発表とフィードバックセッション</p>
+                    </div>
+                </a>
+            </div>
+            <a href="index_dev_notes.html" class="dev-link">
+                <i class="fa-solid fa-lightbulb" style="color:#ffeb3b;"></i> 制作の裏側・デザインの意図
+            </a>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
