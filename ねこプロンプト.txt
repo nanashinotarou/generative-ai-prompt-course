@@ -1,0 +1,15 @@
+### 1. 全体の構造指示
+A 2x3 grid layout (6 panels in total), displaying 6 completely different visual styles. Each panel is a separate, distinct artwork within its boundary. Fine details are rendered across all panels.
+
+### 2. 各パネルの指示
+Panel 1 (Top Left):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, katsushika hokusai ukiyo-e style with bold black linework, stylized waves and landscapes, asymmetrical compositions, and dramatic storytelling through motion
+
+Panel 2 (Top Middle):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, hyakki yagyō painting style with long horizontal composition, sparse eerie background, and varied yokai monsters in motion parading across the scene
+
+Panel 3 (Top Right):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, cubist illustration style with angular geometric abstraction, fragmented forms, multiple viewpoints, and muted primary tones
+
+Panel 4 (Bottom Left):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, vincent van gogh painting style with swirling brush textures, expressive motion, intense yellows and blues, and thick impasto layering
+
+Panel 5 (Bottom Middle):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, aubrey beardsley illustration style with intricate ink linework, delicate curves, sharp contrasts of black and white, and decorative art nouveau compositions
+
+Panel 6 (Bottom Right):1cat, intricate details, highly detailed, ultra detailed, fine details, elaborate details, shadow puppet style with silhouetted shapes and dramatic lighting behind cut-out forms
