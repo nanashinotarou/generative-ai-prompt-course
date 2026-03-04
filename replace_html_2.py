@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Day2 HTML全面書き換え: 清潔感 + 親しみやすさ + ほんのりテック感（Day1と同じテーマ）"""
+
+NEW_HTML = r'''<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -500,3 +503,9 @@
 </body>
 
 </html>
+'''
+
+with open(r'g:\マイドライブ\研修\【202603】生成AIとプロンプト\vol02-1_canva_basics.html', 'w', encoding='utf-8') as f:
+    f.write(NEW_HTML)
+
+print("Day 2 HTML rewritten (Light Modern + Canva theme)")

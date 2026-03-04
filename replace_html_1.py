@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+#!/usr/bin/env python3
+"""Day1 HTML全面書き換え: 清潔感 + 親しみやすさ + ほんのりテック感"""
+
+NEW_HTML = r'''<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -757,3 +760,9 @@
 </body>
 
 </html>
+'''
+
+with open(r'g:\マイドライブ\研修\【202603】生成AIとプロンプト\vol01-1_ai_start.html', 'w', encoding='utf-8') as f:
+    f.write(NEW_HTML)
+
+print("Day 1 HTML rewritten (Light Modern + Tech accent)")

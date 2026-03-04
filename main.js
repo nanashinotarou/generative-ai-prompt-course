@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.createElement('a');
         btn.href = 'index.html';
         btn.innerHTML = '<i class="fa-solid fa-house"></i>';
-        Object.assign(btn.style, { position: 'fixed', bottom: '20px', right: '20px', width: '50px', height: '50px', background: '#25f4ee', color: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', textDecoration: 'none', zIndex: '999' });
+        Object.assign(btn.style, { position: 'fixed', bottom: '20px', right: '20px', width: '50px', height: '50px', background: '#4f46e5', color: '#fff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', boxShadow: '0 4px 12px rgba(79,70,229,0.3)', textDecoration: 'none', zIndex: '999' });
         document.body.appendChild(btn);
     }
 
@@ -607,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 bottom: 0px;
                 width: 0%;
                 height: 30%;
-                background: rgba(0, 188, 212, 0.4); /* Cyan highlight */
+                background: rgba(79, 70, 229, 0.2); /* Indigo highlight */
                 z-index: -1;
                 transition: width 0.6s ease-out;
             }
@@ -627,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             .scroll-progress-bar {
                 height: 100%;
-                background: linear-gradient(90deg, #00bcd4, #e91e63);
+                background: linear-gradient(90deg, #818cf8, #4f46e5);
                 width: 0%;
                 transition: width 0.1s;
             }
