@@ -206,32 +206,71 @@ document.addEventListener('DOMContentLoaded', () => {
     highlightToday();
 
     // --- AUTO-UPDATE LATEST BUTTON ---
-    const updateLatestButton = () => {
-        // 現在公開されている最新のDAY IDを指定します（運用に合わせてここを更新）
-        const LATEST_PUBLISHED_DAY_ID = "d02";
-        const latestItem = document.getElementById(LATEST_PUBLISHED_DAY_ID);
+    const updateLatestButton = async () => {
+        const items = Array.from(document.querySelectorAll('.c-item'));
+        let latestItem = null;
+        let latestVolNum = 0;
+
+        const checks = items.map(async (item) => {
+            const url = item.getAttribute('href');
+            if (!url || url === '#' || url.startsWith('javascript')) return null;
+            try {
+                const res = await fetch(url, { method: 'HEAD' });
+                if (res.ok) {
+                    const volNum = parseInt(item.id.replace('d', ''));
+                    return { item, volNum };
+                }
+            } catch (e) {
+                // Ignore fetch errors
+            }
+            return null;
+        });
+
+        const results = await Promise.all(checks);
+
+        for (const res of results) {
+            if (res && res.volNum > latestVolNum) {
+                latestVolNum = res.volNum;
+                latestItem = res.item;
+            }
+        }
 
         if (latestItem) {
             const latestUrl = latestItem.getAttribute('href');
-
-            // Extract Vol Number from ID (e.g. "d02" -> 2)
-            const volNum = parseInt(LATEST_PUBLISHED_DAY_ID.replace('d', ''));
-
             const btn = document.querySelector('.shortcut-btn');
             if (btn) {
                 btn.href = latestUrl;
-                btn.innerHTML = `<i class="fa-solid fa-play"></i> LATEST: Vol.${volNum} テキストを開く`;
+                btn.innerHTML = `<i class="fa-solid fa-play"></i> LATEST: Vol.${latestVolNum} テキストを開く`;
+                btn.dataset.day = latestItem.id;
 
-                // Add data-day for sync
-                btn.dataset.day = LATEST_PUBLISHED_DAY_ID;
-
-                // Sync Hover
-                btn.onmouseenter = () => toggleHighlight(LATEST_PUBLISHED_DAY_ID, true);
-                btn.onmouseleave = () => toggleHighlight(LATEST_PUBLISHED_DAY_ID, false);
+                btn.onmouseenter = () => toggleHighlight(latestItem.id, true);
+                btn.onmouseleave = () => toggleHighlight(latestItem.id, false);
             }
         }
     };
     updateLatestButton();
+
+    // --- DAY 2 QUIZ ---
+    initQuiz('quiz-vol02-1', [
+        {
+            q: "Canvaの自動生成AI機能で、「デザイン内の不要なものをなぞるだけで消せる」機能の名前は？",
+            options: { A: "マジック生成", B: "マジック消しゴム", C: "背景リムーバ", D: "マジック拡張" },
+            correct: "B",
+            rationale: "「マジック消しゴム」を使えば、写真に写り込んだ不要な人やモノを簡単になぞって消去し、背景を自然に補完できます。"
+        },
+        {
+            q: "Canvaが買収した、AI機能以外は完全無料化されたプロフェッショナル向けデザインツールの名前は？",
+            options: { A: "Adobe Illustrator", B: "Nano Banana", C: "Affinity", D: "Midjourney" },
+            correct: "C",
+            rationale: "Canvaは「Affinity」を買収し、教育機関やNPO、無料ユーザー向けにもAI機能以外のプロ向けツール一式を完全無料で提供開始しました。"
+        },
+        {
+            q: "無料で使えるAI画像編集ツール「Nano Banana」の最大の特徴は？",
+            options: { A: "動画編集に特化している", B: "Illustratorのようなベクター描画ができる", C: "プロンプト（テキスト指示）だけで高度な画像編集が完結する", D: "音楽を自動生成できる" },
+            correct: "C",
+            rationale: "Nano Bananaはテキスト指示（プロンプト）だけで、不要物の消去・背景の差し替え・画像の高画質化など、プロ級の編集が可能です。"
+        }
+    ]);
 
     // --- DAY 3 QUIZ ---
     initQuiz('quiz-vol01-3', [
