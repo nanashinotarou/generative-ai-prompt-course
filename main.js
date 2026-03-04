@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- AUTO-UPDATE LATEST BUTTON ---
     const updateLatestButton = () => {
         // 現在公開されている最新のDAY IDを指定します（運用に合わせてここを更新）
-        const LATEST_PUBLISHED_DAY_ID = "d01";
+        const LATEST_PUBLISHED_DAY_ID = "d02";
         const latestItem = document.getElementById(LATEST_PUBLISHED_DAY_ID);
 
         if (latestItem) {
