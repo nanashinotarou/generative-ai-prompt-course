@@ -1,0 +1,52 @@
+===================================================
+影武者アシスタント（Shadow Assistant）を起動しています...
+※ 終了するには、この画面で Ctrl+C を押してください
+===================================================
+2026-03-04 09:43:36,166 [INFO] === Shadow Assistant (Full Integration) Starting ===
+2026-03-04 09:43:36,166 [INFO] Initializing EasyOCR Reader...
+2026-03-04 09:43:36,167 [WARNING] Neither CUDA nor MPS are available - defaulting to CPU. Note: This module is much faster with a GPU.
+2026-03-04 09:43:40,686 [INFO] Gemini API Client initialized successfully.
+2026-03-04 09:43:40,690 [INFO] Initializing Core Modules (This may take a moment)...
+2026-03-04 09:43:40,948 [INFO] Loading Whisper model (tiny)...
+2026-03-04 09:43:41,716 [INFO] HTTP Request: GET https://huggingface.co/api/models/Systran/faster-whisper-tiny/revision/main "HTTP/1.1 200 OK"
+2026-03-04 09:43:42,169 [INFO] Model loaded.
+2026-03-04 09:43:42,169 [INFO] 💪 Modules initialized successfully.
+2026-03-04 09:43:42,170 [INFO] 🚀 Monitoring started. Press Ctrl+C to stop.
+2026-03-04 09:43:42,170 [INFO] Starting sweep (5s)...
+C:\Users\Hi\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\utils\data\dataloader.py:775: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+2026-03-04 09:44:30,275 [INFO] 🔄 [MODE SWITCH] 会議モードから【💻動画要約モード】へ突入しました。
+2026-03-04 09:44:30,275 [INFO] Targeting loopback device: CABLE In 16ch (VB-Audio Virtual Cable) [Loopback]
+2026-03-04 09:44:30,284 [INFO] Recording started (5 seconds)...
+2026-03-04 09:44:35,287 [INFO] Recording finished.
+2026-03-04 09:44:35,289 [INFO] Audio RMS Level: 50.39
+2026-03-04 09:44:35,299 [INFO] Audio saved to current_snippet.wav
+2026-03-04 09:44:35,301 [INFO] Transcribing current_snippet.wav...
+2026-03-04 09:44:35,576 [INFO] Processing audio with duration 00:04.992
+2026-03-04 09:44:35,977 [INFO] Detected language 'ja' with probability 0.98
+2026-03-04 09:44:35,979 [INFO] Detected language 'ja' with probability 0.9812000393867493
+2026-03-04 09:44:36,601 [INFO] [0.00s -> 5.56s] できます スリーディーソザーがない場合は自分で成成しちゃいます
+2026-03-04 09:44:36,602 [INFO] Transcription finished in 1.30 seconds.
+2026-03-04 09:44:36,602 [INFO] Captured Dialogue: 'できます スリーディーソザーがない場合は自分で成成しちゃいます'
+2026-03-04 09:44:36,603 [INFO] Hacking YouTube with multi-modal query: 'ファイル() 【202603】生成Aとプロンプト Antigravity できますスリーディーソザーがない場合は自分で成成しちゃいます...'
+2026-03-04 09:44:37,829 [INFO] No video matched the dialogue.
+2026-03-04 09:44:42,831 [INFO] Starting sweep (5s)...
+C:\Users\Hi\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\utils\data\dataloader.py:775: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
+2026-03-04 09:45:36,517 [INFO] Targeting loopback device: CABLE In 16ch (VB-Audio Virtual Cable) [Loopback]
+2026-03-04 09:45:36,525 [INFO] Recording started (5 seconds)...
+2026-03-04 09:45:41,532 [INFO] Recording finished.
+2026-03-04 09:45:41,534 [INFO] Audio RMS Level: 42.05
+2026-03-04 09:45:41,545 [INFO] Audio saved to current_snippet.wav
+2026-03-04 09:45:41,546 [INFO] Transcribing current_snippet.wav...
+2026-03-04 09:45:41,789 [INFO] Processing audio with duration 00:04.992
+2026-03-04 09:45:42,195 [INFO] Detected language 'ja' with probability 0.97
+2026-03-04 09:45:42,196 [INFO] Detected language 'ja' with probability 0.9692263007164001
+2026-03-04 09:45:42,702 [INFO] [0.00s -> 6.00s] 以上の中から選ぶことができます。さらにグラディ。
+2026-03-04 09:45:42,703 [INFO] Transcription finished in 1.16 seconds.
+2026-03-04 09:45:42,703 [INFO] Captured Dialogue: '以上の中から選ぶことができます。さらにグラディ。'
+2026-03-04 09:45:42,703 [INFO] Hacking YouTube with multi-modal query: 'ファイル() 【202603】生成Aとプロンプト Antigravity 以上の中から選ぶことができますさらにグラディ...'
+2026-03-04 09:45:43,849 [INFO] No video matched the dialogue.
+2026-03-04 09:45:48,851 [INFO] Starting sweep (5s)...
+C:\Users\Hi\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\utils\data\dataloader.py:775: UserWarning: 'pin_memory' argument is set as true but no accelerator is found, then device pinned memory won't be used.
+  super().__init__(loader)
