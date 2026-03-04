@@ -207,17 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- AUTO-UPDATE LATEST BUTTON ---
     const updateLatestButton = () => {
-        // Find all "published" items (anchor tags in the curriculum list)
-        const publishedItems = document.querySelectorAll('.curriculum-list a.c-item');
-        if (publishedItems.length > 0) {
-            // The last one is the latest released day
-            const latestItem = publishedItems[publishedItems.length - 1];
+        // 現在公開されている最新のDAY IDを指定します（運用に合わせてここを更新）
+        const LATEST_PUBLISHED_DAY_ID = "d01";
+        const latestItem = document.getElementById(LATEST_PUBLISHED_DAY_ID);
 
+        if (latestItem) {
             const latestUrl = latestItem.getAttribute('href');
 
             // Extract Vol Number from ID (e.g. "d02" -> 2)
-            const dayId = latestItem.id; // "d01", "d02"
-            const volNum = parseInt(dayId.replace('d', ''));
+            const volNum = parseInt(LATEST_PUBLISHED_DAY_ID.replace('d', ''));
 
             const btn = document.querySelector('.shortcut-btn');
             if (btn) {
@@ -225,12 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 btn.innerHTML = `<i class="fa-solid fa-play"></i> LATEST: Vol.${volNum} テキストを開く`;
 
                 // Add data-day for sync
-                btn.dataset.day = dayId;
+                btn.dataset.day = LATEST_PUBLISHED_DAY_ID;
 
-                // Add Hover Sync Listeners
-                // Remove old listeners to avoid duplicates if run multiple times (though here it runs once)
-                btn.onmouseenter = () => toggleHighlight(dayId, true);
-                btn.onmouseleave = () => toggleHighlight(dayId, false);
+                // Sync Hover
+                btn.onmouseenter = () => toggleHighlight(LATEST_PUBLISHED_DAY_ID, true);
+                btn.onmouseleave = () => toggleHighlight(LATEST_PUBLISHED_DAY_ID, false);
             }
         }
     };
