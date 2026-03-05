@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Design Log - Magical Experience v2.0</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&family=Teko:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --sub-text: #94a3b8;
+            --accent: #818cf8;
+            --accent-glow: rgba(129, 140, 248, 0.4);
+            --pink: #f43f5e;
+            --yellow: #fbbf24;
+            --green: #10b981;
+            --border: #334155;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+
+            /* Level Colors */
+            --lv1: #38bdf8;
+            /* Blue */
+            --lv2: #a855f7;
+            /* Purple */
+            --lv3: #f43f5e;
+            /* Red/Pink */
+        }
+
+        body {
+            font-family: "Noto Sans JP", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            margin: 0;
+            padding: 40px 20px;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(244, 63, 94, 0.05) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: "Teko", sans-serif;
+            font-size: 4rem;
+            margin: 0;
+            line-height: 1;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #818cf8, #f43f5e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(129, 140, 248, 0.2);
+        }
+
+        .subtitle {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+        }
+
+        section {
+            background: var(--card);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        section::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--accent);
+        }
+
+        h2 {
+            font-family: "Teko", sans-serif;
+            font-size: 2.2rem;
+            margin: 0 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 15px;
+            color: var(--text);
+        }
+
+        h2 i {
+            color: var(--accent);
+            background: rgba(129, 140, 248, 0.1);
+            padding: 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+        }
+
+        .code-block {
+            background: #0b1120;
+            padding: 25px;
+            border-radius: 12px;
+            font-family: "Fira Code", monospace;
+            color: #d1d5db;
+            overflow-x: auto;
+            border-left: 6px solid var(--lv2);
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+            border: 1px solid #1e293b;
+        }
+
+        .token.function {
+            color: #60a5fa;
+        }
+
+        .token.keyword {
+            color: #f472b6;
+        }
+
+        .token.string {
+            color: #34d399;
+        }
+
+        .token.comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--sub-text);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--accent);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--accent);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .easter-egg {
+            text-align: center;
+            margin-top: 60px;
+            color: var(--border);
+            font-size: 0.8rem;
+            font-family: 'Fira Code', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="vol01-3_prompt.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> 研修ページに戻る</a>
+
+        <header>
+            <h1>Engineering Design Log</h1>
+            <div class="subtitle">Magical Experience v2.0 Behind the Scenes</div>
+            <p style="color: var(--sub-text); margin-top:20px;">
+                このページは、「生成AIとプロンプト Day3」のフロントエンド実装に込められた<br>
+                技術的工夫と魔法の裏側（Developer Notes）を記録したものです。
+            </p>
+        </header>
+
+        <!-- Section 1: Web Audio API -->
+        <section style="border-left-color: var(--lv1);">
+            <h2><i class="fa-solid fa-music"></i> 01. UI Sounds (Web Audio API)</h2>
+            <div class="tag-list">
+                <span class="tag">JavaScript</span>
+                <span class="tag">AudioContext</span>
+                <span class="tag">UX</span>
+            </div>
+            <p>
+                「学習を単調な作業にしない」という目的のため、今回は音声ファイルを一切使わず、ブラウザ標準の <strong>Web Audio API (AudioContext)</strong>
+                を用いて、プログラムから直接サウンド波形を生成しています。
+            </p>
+            <p>
+                MP3ファイルなどを読み込むオーバーヘッドがなく、アクションに対して完全に遅延ゼロで音が鳴るのが特徴です。「チッ」というサトルなクリック音、「ドスッ」というワックスシールのスタンプ音、完了時のチャイム音などをオシレーター（波形発生器）で合成しています。
+            </p>
+            <div class="code-block">
+                <span class="token comment">// サウンド合成のコアロジック（抜粋）</span>
+                <span class="token keyword">const</span> now <span class="token keyword">=</span> audioCtx<span
+                    class="token punctuation">.</span><span class="token property">currentTime</span><span
+                    class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span
+                    class="token keyword">===</span> <span class="token string">'stamp'</span><span
+                    class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// 低音の三角波で「ドスッ」という重みを表現</span>
+                osc<span class="token punctuation">.</span><span class="token property">type</span> <span
+                    class="token keyword">=</span> <span class="token string">'triangle'</span><span
+                    class="token punctuation">;</span>
+                osc<span class="token punctuation">.</span><span class="token property">frequency</span><span
+                    class="token punctuation">.</span><span class="token function">setValueAtTime</span><span
+                    class="token punctuation">(</span><span class="token number">150</span><span
+                    class="token punctuation">,</span> now<span class="token punctuation">)</span><span
+                    class="token punctuation">;</span>
+                osc<span class="token punctuation">.</span><span class="token property">frequency</span><span
+                    class="token punctuation">.</span><span
+                    class="token function">exponentialRampToValueAtTime</span><span
+                    class="token punctuation">(</span><span class="token number">40</span><span
+                    class="token punctuation">,</span> now <span class="token keyword">+</span> <span
+                    class="token number">0.15</span><span class="token punctuation">)</span><span
+                    class="token punctuation">;</span>
+                gainNode<span class="token punctuation">.</span><span class="token property">gain</span><span
+                    class="token punctuation">.</span><span class="token function">setValueAtTime</span><span
+                    class="token punctuation">(</span><span class="token number">0.2</span><span
+                    class="token punctuation">,</span> now<span class="token punctuation">)</span><span
+                    class="token punctuation">;</span>
+                gainNode<span class="token punctuation">.</span><span class="token property">gain</span><span
+                    class="token punctuation">.</span><span
+                    class="token function">exponentialRampToValueAtTime</span><span
+                    class="token punctuation">(</span><span class="token number">0.01</span><span
+                    class="token punctuation">,</span> now <span class="token keyword">+</span> <span
+                    class="token number">0.15</span><span class="token punctuation">)</span><span
+                    class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            </div>
+            <p style="font-size:0.9rem; color:var(--sub-text);">
+                ※ ユーザーが初めて画面をクリックしたタイミングで <code>AudioContext</code> を初期化することで、ブラウザの自動再生ポリシー（Autoplay Policy）を回避しています。
+            </p>
+        </section>
+
+        <!-- Section 2: Particles -->
+        <section style="border-left-color: var(--yellow);">
+            <h2><i class="fa-solid fa-wand-magic-sparkles"></i> 02. Sparkles (Canvas API)</h2>
+            <div class="tag-list">
+                <span class="tag">HTML5 Canvas</span>
+                <span class="tag">RequestAnimationFrame</span>
+                <span class="tag">Physics Simulation</span>
+            </div>
+            <p>
+                「魔法の体験」の視覚的コアとなるのが、コピーボタンをクリックした時や、調合釜にアイテムを入れた時に弾けるパーティクルエフェクトです。
+                画面全体を覆う透明な <code>&lt;canvas id="sparkles"&gt;</code> を <code>pointer-events: none;</code>
+                で配置し、その上でJSによる物理演算を行っています。
+            </p>
+            <div class="code-block">
+                <span class="token comment">// 重力と減衰のシミュレーション</span>
+                particles<span class="token punctuation">.</span><span class="token function">forEach</span><span
+                    class="token punctuation">(</span>p <span class="token keyword">=></span> <span
+                    class="token punctuation">{</span>
+                p<span class="token punctuation">.</span>x <span class="token keyword">+=</span> p<span
+                    class="token punctuation">.</span>vx<span class="token punctuation">;</span>
+                p<span class="token punctuation">.</span>y <span class="token keyword">+=</span> p<span
+                    class="token punctuation">.</span>vy<span class="token punctuation">;</span>
+                p<span class="token punctuation">.</span>vy <span class="token keyword">+=</span> <span
+                    class="token number">0.1</span><span class="token punctuation">;</span> <span
+                    class="token comment">// Gravity (重力低下)</span>
+                p<span class="token punctuation">.</span>alpha <span class="token keyword">-=</span> p<span
+                    class="token punctuation">.</span>decay<span class="token punctuation">;</span> <span
+                    class="token comment">// Fade out (透明化)</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span
+                    class="token punctuation">;</span>
+            </div>
+            <p>
+                この軽量なスクリプトにより、外部ライブラリ（Three.jsなど）に依存することなく、60FPSで滑らかに動作する美しいインタラクションを実現しました。
+            </p>
+        </section>
+
+        <!-- Section 3: Cauldron Simulator -->
+        <section style="border-left-color: var(--lv2);">
+            <h2><i class="fa-solid fa-flask"></i> 03. Prompt Cauldron (Drag & Drop UI)</h2>
+            <div class="tag-list">
+                <span class="tag">HTML5 Drag and Drop</span>
+                <span class="tag">Gamification</span>
+                <span class="tag">CSS Animations</span>
+            </div>
+            <p>
+                プロンプトの4要素（Role, Task, Context, Format）を学ぶ部分は、単なる箇条書きではなく「大釜（Cauldron）に材料を放り込む」というゲーミフィケーションUIを採用しました。
+            </p>
+            <p>
+                HTML5の標準Drag & Drop APIを使用し、<code>dragstart</code>, <code>dragover</code>, <code>drop</code>
+                イベントをフックしています。アイテムが大釜の上に来た時（dragover）は釜が赤く光り、ドロップした瞬間にはCSS
+                <code>transform: scale(1.1) translateY(5px);</code> で「ポチャッ」という沈み込みアニメーションと、前述のサウンド＆パーティクルが同時発動します。
+            </p>
+        </section>
+
+        <!-- Section 4: Gamification Strategy -->
+        <section style="border-left-color: var(--green);">
+            <h2><i class="fa-solid fa-chess-knight"></i> 04. Scenario Sandbox</h2>
+            <div class="tag-list">
+                <span class="tag">Instructional Design</span>
+                <span class="tag">Mockup UI</span>
+            </div>
+            <p>
+                ページ後半の「業務への応用」セクションは、当初シンプルな箇条書きリストでしたが、<strong>「動画を見なくても100%内容が理解できる」「むしろテキストの方が充実している」</strong>という要件を満たすため、完全な
+                Sandbox（砂場）UIへと大改修を行いました。
+            </p>
+            <p>
+                CSSだけで構築された <code>.browser-mockup</code>
+                の中に架空の出力結果を展開することで、受講者が「このプロンプトを使うとどうなるのか？」を直感的に擬似体験できるように設計されています。
+            </p>
+        </section>
+
+        <div class="easter-egg">
+            <i class="fa-solid fa-code"></i> Developed by Antigravity under the "Magical Experience v2.0" directive.<br>
+            EOF
+        </div>
+    </div>
+</body>
+
+</html>

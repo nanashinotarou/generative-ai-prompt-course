@@ -1508,7 +1508,7 @@
                     <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
                     <h2>📺 動画⑤ 高度なプロンプトテクニック</h2>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; margin-bottom: 2rem;">
                     <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" class="video-thumb"
                         style="flex: 1; min-width: 250px; max-width: 400px;">
                         <img src="https://img.youtube.com/vi/hf2-6gZmFlo/hqdefault.jpg" alt="高度なテクニック">
@@ -1517,18 +1517,106 @@
                     <div style="flex: 2; min-width: 300px;">
                         <h3 style="margin-top:0; color:#0f172a;">▶ この動画で学べること</h3>
                         <p style="line-height:1.8; margin-bottom: 1rem;">
-                            AIからより精緻・論理的な回答を引き出すためには、以下の2大応用的テクニックを組み合わせると非常に効果的です。
+                            AIからより精緻・論理的な回答を引き出すための<strong>「2大・魔法の呪文」</strong>を習得します。<br>
+                            動画を見なくても、以下の図解と実例を読むだけで、その圧倒的な威力と使い方を完全にマスターできます。
                         </p>
-                        <div class="box gemini" style="margin-top:1rem; padding-top: 2rem;">
-                            <h4>AIの知能を引き出す2つのワザ</h4>
-                            <ul style="padding-left:20px;">
-                                <li><strong>Few-Shot Prompting（少数例提示）：</strong><br>
-                                    「入力例」と「出力例」のセットをプロンプト内に含める手法です。「こういうトンマナで書いて」と言葉で説明するより、実例を見せたほうがAIは一発で学習し、希望通りの出力を返してくれます。
-                                </li>
-                                <li><strong>Chain of Thought（思考のプロセス化）：</strong><br>
-                                    「<strong>ステップバイステップで論理的に考えてください</strong>」という一文を添える手法です。途中の思考プロセスを出力させることで、最終的な回答の論理性や計算精度が劇的に向上します。
-                                </li>
-                            </ul>
+                    </div>
+                </div>
+
+                <!-- 1. Few-Shot Prompting 比較図解 -->
+                <div class="box concept" style="margin-bottom: 3rem;">
+                    <h3
+                        style="color:var(--accent); border-bottom: 2px dashed #cbd5e1; padding-bottom: 10px; margin-top:0;">
+                        <i class="fa-solid fa-arrows-to-eye"></i> 魔法①：Few-Shot Prompting（少数例提示）
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; line-height:1.8;">
+                        AIに「〇〇みたいな感じで書いて」と言葉で説明するより、<strong>「入力例」と「出力例」のセットをプロンプト内に直接1〜3個書いて見せる</strong>手法です。<br>
+                        AIは文脈やトーン＆マナーを一発で空気を読んで学習し、期待通りの出力を返してくれます。何も例を示さない「Zero-Shot（ゼロショット）」と結果を比較してみましょう。
+                    </p>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- Zero-Shot -->
+                        <div>
+                            <div
+                                style="background:#fef2f2; color:#ef4444; padding: 5px 15px; border-radius: 8px 8px 0 0; font-weight:bold; font-size:0.9rem; text-align:center;">
+                                ❌ Zero-Shot（例示なし）
+                            </div>
+                            <div class="browser-mockup" style="border-radius: 0 0 8px 8px; border-top:none;">
+                                <div style="padding: 15px; font-size:0.9rem;">
+                                    <strong>【あなた】</strong><br>
+                                    以下の文章を若者言葉に翻訳して。<br>
+                                    「本日は晴天なり。大変気分が良い。」
+                                    <hr style="border: 1px dashed #e2e8f0; margin: 10px 0;">
+                                    <strong>【Gemini】</strong><br>
+                                    マジで今日晴れてる。超テンション上がるんだけど。<br>
+                                    <span style="color:var(--text-sub); font-size:0.8rem;">（※求めている若者感が少しズレている…）</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Few-Shot -->
+                        <div>
+                            <div
+                                style="background:#ecfdf5; color:#10b981; padding: 5px 15px; border-radius: 8px 8px 0 0; font-weight:bold; font-size:0.9rem; text-align:center;">
+                                ✨ Few-Shot（例示あり）
+                            </div>
+                            <div class="browser-mockup" style="border-radius: 0 0 8px 8px; border-top:none;">
+                                <div style="padding: 15px; font-size:0.9rem;">
+                                    <strong>【あなた】</strong><br>
+                                    以下の文章を若者言葉に翻訳して。<br>
+                                    例1：<br>
+                                    入力:「とても美味しい」 出力:「エグい美味さ草」<br>
+                                    例2：<br>
+                                    入力:「少し疲れた」 出力:「キャパい、詰んだ」<br><br>
+                                    本番入力:「本日は晴天なり。大変気分が良い。」
+                                    <hr style="border: 1px dashed #e2e8f0; margin: 10px 0;">
+                                    <strong>【Gemini】</strong><br>
+                                    今日まじ快晴すぎてバカテンションあがるんやが草
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Chain of Thought 思考プロセスの図解 -->
+                <div class="box gemini">
+                    <h3
+                        style="color:var(--lv3); border-bottom: 2px dashed #e2e8f0; padding-bottom: 10px; margin-top:0;">
+                        <i class="fa-solid fa-brain"></i> 魔法②：Chain of Thought（思考のプロセス化）
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; line-height:1.8;">
+                        プロンプトの最後に<strong>「ステップバイステップで論理的に考えてください」</strong>または<strong>「〇〇の基準で分析し、その過程を出力してから結論を出して」</strong>という一文を添える手法です。<br>
+                        AIに「途中式の計算過程」を無理やり出力させることで、最終的な回答の論理性や精度（特に計算や複雑な推論）が劇的に向上します。
+                    </p>
+
+                    <div class="workflow">
+                        <div class="flow-step">
+                            <div class="step-circle"><i class="fa-solid fa-question"></i></div>
+                            <div class="step-text">
+                                <strong>1. 質問入力</strong>
+                                「日本の首都は？またその理由は？」
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-circle" style="background:var(--accent); color:#fff;"><i
+                                    class="fa-solid fa-spinner"></i></div>
+                            <div class="step-text">
+                                <strong>2. 思考プロセス（CoT）</strong>
+                                <span style="font-size:0.8rem; color:var(--text-sub);">
+                                    ①日本の歴史を検索<br>
+                                    ②現在の法律上の定義を確認<br>
+                                    ③東京が実質的な首都と判断
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="step-circle" style="background:#10b981; color:#fff;"><i
+                                    class="fa-solid fa-lightbulb"></i></div>
+                            <div class="step-text">
+                                <strong>3. 高速高精度な回答</strong>
+                                プロセスを経たことで、正確かつ論理的な結論が導かれる！
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1540,17 +1628,194 @@
                     <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
                     <h2>📺 動画⑥・⑦ 業務への応用・ノート作り</h2>
                 </div>
-                <div class="video-grid"
-                    style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 2rem;">
-                    <a href="https://youtu.be/J9YtakGpqZQ" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/J9YtakGpqZQ/hqdefault.jpg" alt="業務特化のプロンプト">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/bZkGoWuQ3vg" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/bZkGoWuQ3vg/hqdefault.jpg" alt="ノート作りまとめ">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
+
+                <h3 style="color:#0f172a; margin-top:0;">🧪 シナリオ別プロンプト研究所 (Scenario Sandbox)</h3>
+                <p style="margin-bottom: 2rem; line-height:1.8; color:var(--text-sub);">
+                    実務でスグに使える3つの強力なプロンプトの「型」を、研究所のシミュレーター形式で体験してみましょう。タブを切り替えて、AIからどんな出力が得られるか確認してください。
+                </p>
+
+                <!-- Scenario Sandbox Tabs -->
+                <div class="tab-container" style="margin-bottom: 3rem;">
+                    <div class="tab-header" style="justify-content: flex-start; gap: 10px;">
+                        <button class="tab-btn active" onclick="switchSandboxTab('scenario1', this)"
+                            style="border-radius: 8px; font-size: 0.9rem;"><i class="fa-solid fa-lightbulb"></i>
+                            アイディア壁打ち</button>
+                        <button class="tab-btn" onclick="switchSandboxTab('scenario2', this)"
+                            style="border-radius: 8px; font-size: 0.9rem;"><i class="fa-solid fa-compress"></i>
+                            議事録の要約と抽出</button>
+                        <button class="tab-btn" onclick="switchSandboxTab('scenario3', this)"
+                            style="border-radius: 8px; font-size: 0.9rem;"><i class="fa-solid fa-pen-nib"></i>
+                            トーン＆マナー変換</button>
+                    </div>
+
+                    <!-- Scenario 1 -->
+                    <div id="scenario1" class="sandbox-content active"
+                        style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 0 8px 8px 8px; background: #fff;">
+                        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:var(--accent); margin-top:0;">📝 入力プロンプト（完全版コピー）</h4>
+                                <div class="code-box" style="font-size:0.85rem;">
+                                    <strong># 指示</strong><br>
+                                    あなたは超一流のクリエイティブディレクターです。<br>
+                                    新商品のプロモーション施策を、誰も思いつかないような斬新な切り口で10個立案してください。<br><br>
+                                    <strong># 条件</strong><br>
+                                    - ターゲット：20代〜30代の働く女性<br>
+                                    - 商材：高級美容液（5万円）<br>
+                                    - アウトプット：【施策名】【概要】【なぜ刺さるか】をマークダウン表形式で。<br>
+                                    <button class="btn btn-copy" style="margin-top:1rem;"
+                                        onclick="copyCode(this, 'prompt-s1')"><i
+                                            class="fa-regular fa-copy"></i></button>
+                                    <div id="prompt-s1" style="display:none;"># 指示
+                                        あなたは超一流のクリエイティブディレクターです。
+                                        新商品のプロモーション施策を、誰も思いつかないような斬新な切り口で10個立案してください。
+
+                                        # 条件
+                                        - ターゲット：20代〜30代の働く女性
+                                        - 商材：高級美容液（5万円）
+                                        - アウトプット：【施策名】【概要】【なぜ刺さるか】をマークダウン表形式で。</div>
+                                </div>
+                            </div>
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:#0ea5e9; margin-top:0;">✨ AIの出力結果（モックアップ）</h4>
+                                <div class="browser-mockup">
+                                    <div
+                                        style="padding: 15px; font-size:0.8rem; height: 250px; overflow-y:auto; line-height: 1.6;">
+                                        承知いたしました。超一流のクリエイティブディレクターとして、心が躍る10の施策を提案します。<br><br>
+                                        <table
+                                            style="width:100%; border-collapse:collapse; text-align:left; font-size:0.75rem;">
+                                            <tr style="background:#f1f5f9;">
+                                                <th style="padding:5px; border:1px solid #cbd5e1;">施策名</th>
+                                                <th style="padding:5px; border:1px solid #cbd5e1;">概要</th>
+                                                <th style="padding:5px; border:1px solid #cbd5e1;">なぜ刺さるか</th>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">退社時タクシー配車付きエステ</td>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">残業後のオフィスに配車し、車内で美容液体験
+                                                </td>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">究極の「ご自愛」体験と時間効率の良さ
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">失恋特化型ポップアップストア</td>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">
+                                                    「涙を拭いたあとの肌に」をコンセプトに試供品提供</td>
+                                                <td style="padding:5px; border:1px solid #cbd5e1;">強いエモーショナルな共感</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3"
+                                                    style="text-align:center; padding:5px; border:1px solid #cbd5e1;">
+                                                    ...(他8個続く)</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scenario 2 -->
+                    <div id="scenario2" class="sandbox-content"
+                        style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 0 8px 8px 8px; background: #fff; display:none;">
+                        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:var(--accent); margin-top:0;">📝 入力プロンプト（完全版コピー）</h4>
+                                <div class="code-box" style="font-size:0.85rem;">
+                                    <strong># 指示</strong><br>
+                                    以下の乱雑な議事録メモを整理し、決定事項と未決定事項を明確にした上で、Next Actionをリストアップしてください。<br><br>
+                                    <strong># メモ内容</strong><br>
+                                    [ここにダラダラとした長文の議事録を貼り付ける]<br><br>
+                                    <strong># フォーマット指定</strong><br>
+                                    Next Actionは必ず「誰が」「いつまでに」「何をするか」を含めてください。
+                                    <button class="btn btn-copy" style="margin-top:1rem;"
+                                        onclick="copyCode(this, 'prompt-s2')"><i
+                                            class="fa-regular fa-copy"></i></button>
+                                    <div id="prompt-s2" style="display:none;"># 指示
+                                        以下の乱雑な議事録メモを整理し、決定事項と未決定事項を明確にした上で、Next Actionをリストアップしてください。
+
+                                        # メモ内容
+                                        [ここにダラダラとした長文の議事録を貼り付ける]
+
+                                        # フォーマット指定
+                                        Next Actionは必ず「誰が」「いつまでに」「何をするか」を含めてください。</div>
+                                </div>
+                            </div>
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:#0ea5e9; margin-top:0;">✨ AIの出力結果（モックアップ）</h4>
+                                <div class="browser-mockup">
+                                    <div
+                                        style="padding: 15px; font-size:0.8rem; height: 250px; overflow-y:auto; line-height: 1.6;">
+                                        議事録を整理しました。<br><br>
+                                        <strong>■ 決定事項</strong><br>
+                                        ・新機能のリリース日は10月1日に確定。<br>
+                                        ・販促予算は一律10%カットで合意。<br><br>
+                                        <strong>■ 未決定事項</strong><br>
+                                        ・Web広告のプラットフォーム選定（GoogleかMetaか）<br><br>
+                                        <strong>■ Next Action</strong><br>
+                                        - [ ] <strong>田中</strong>：Web広告2社の比較見積もり提出（8/15〆）<br>
+                                        - [ ] <strong>佐藤</strong>：リリース告知プレスリリースの初稿作成（8/18〆）
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scenario 3 -->
+                    <div id="scenario3" class="sandbox-content"
+                        style="padding: 20px; border: 1px solid #e2e8f0; border-radius: 0 8px 8px 8px; background: #fff; display:none;">
+                        <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:var(--accent); margin-top:0;">📝 入力プロンプト（完全版コピー）</h4>
+                                <div class="code-box" style="font-size:0.85rem;">
+                                    <strong># 役割と指示</strong><br>
+                                    あなたは丁寧で気が利く営業事務です。<br>
+                                    以下の箇条書きの用件を元に、取引先に送るビジネスメールを作成してください。<br><br>
+                                    <strong># 留意点</strong><br>
+                                    ・クッション言葉（「恐れ入りますが」「お手数をおかけしますが」など）を適切に用いること。<br>
+                                    ・相手の不備を指摘する内容なので、極めて角が立たないように配慮すること。
+                                    <button class="btn btn-copy" style="margin-top:1rem;"
+                                        onclick="copyCode(this, 'prompt-s3')"><i
+                                            class="fa-regular fa-copy"></i></button>
+                                    <div id="prompt-s3" style="display:none;"># 役割と指示
+                                        あなたは丁寧で気が利く営業事務です。
+                                        以下の箇条書きの用件を元に、取引先に送るビジネスメールを作成してください。
+
+                                        # 留意点
+                                        ・クッション言葉（「恐れ入りますが」「お手数をおかけしますが」など）を適切に用いること。
+                                        ・相手の不備を指摘する内容なので、極めて角が立たないように配慮すること。</div>
+                                </div>
+                            </div>
+                            <div style="flex:1; min-width:300px;">
+                                <h4 style="color:#0ea5e9; margin-top:0;">✨ AIの出力結果（モックアップ）</h4>
+                                <div class="browser-mockup">
+                                    <div
+                                        style="padding: 15px; font-size:0.8rem; height: 250px; overflow-y:auto; line-height: 1.6;">
+                                        件名：【ご確認のお願い】〇〇プロジェクト提出書類につきまして<br><br>
+                                        株式会社〇〇　ご担当者様<br><br>
+                                        平素は大変お世話になっております。<br>
+                                        〇〇株式会社の〇〇でございます。<br><br>
+                                        先日はお足元の悪い中、弊社までご足労いただき誠にありがとうございました。<br><br>
+                                        さて、事前にご送付いただいておりました〇〇プロジェクトの提出書類につきまして、拝見いたしました。<br>
+                                        大変恐れ入りますが、一部項目（3ページ目の〇〇欄）につきまして、記載漏れと思しき箇所が見受けられました。<br><br>
+                                        大変お手数をおかけしてしまい申し訳ございませんが、ご都合のよろしい際に再度ご確認いただけますと幸甚に存じます。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <script>
+                    function switchSandboxTab(tabId, btnElement) {
+                        // Switch content
+                        document.querySelectorAll('.sandbox-content').forEach(el => el.style.display = 'none');
+                        document.getElementById(tabId).style.display = 'block';
+                        // Switch active class on buttons
+                        const buttons = btnElement.parentElement.querySelectorAll('.tab-btn');
+                        buttons.forEach(btn => btn.classList.remove('active'));
+                        btnElement.classList.add('active');
+                        playUISound('click');
+                    }
+                </script>
 
                 <!-- Cauldron Simulator -->
                 <div class="cauldron-container">
@@ -1986,6 +2251,17 @@
             }
         }
     </script>
+
+    <!-- Dev Notes Link -->
+    <div style="text-align:center; margin:40px 0; padding-bottom: 20px;">
+        <a href="index_dev_notes.html"
+            style="color: var(--text-sub); text-decoration: none; font-size: 0.8rem; opacity: 0.5; transition: 0.3s; display: inline-flex; align-items: center; gap: 5px;"
+            onmouseover="this.style.opacity='1'; this.style.color='var(--accent)';"
+            onmouseout="this.style.opacity='0.5'; this.style.color='var(--text-sub)';">
+            <i class="fa-solid fa-code"></i> Engineering Design Log
+        </a>
+    </div>
+
     <script src="main.js"></script>
 </body>
 
