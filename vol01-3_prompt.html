@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 3 | Generative AI & Prompt</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-body: #f5f7fa;
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --accent: #4f46e5;
+            /* indigo */
+            --accent-light: #818cf8;
+            --accent-bg: #eef2ff;
+            --accent-glow: rgba(79, 70, 229, 0.15);
+            --teal: #0d9488;
+            --teal-bg: #f0fdfa;
+            --border: rgba(0, 0, 0, 0.08);
+            --glass-blur: blur(14px);
+            --radius: 18px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            background-image:
+                radial-gradient(ellipse at 20% 0%, rgba(79, 70, 229, 0.06), transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.06), transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+
+
+        /* ===== HEADER ===== */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #4338ca;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            max-width: 350px;
+            margin: 0 2rem;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .progress-bar-bg {
+            height: 8px;
+            background: var(--accent-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== HERO ===== */
+        .container {
+            max-width: 960px;
+            margin: 90px auto 60px;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.7s ease-out;
+        }
+
+        .day-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.35rem 1.4rem;
+            border-radius: 30px;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            margin: 0 0 1rem;
+            color: var(--text-main);
+            font-weight: 900;
+        }
+
+        .sub-goal {
+            color: var(--text-sub);
+            font-size: 1.05rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ===== TABS ===== */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .tab-btn {
+            background: #fff;
+            border: 2px solid var(--border);
+            color: var(--text-sub);
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: all 0.25s;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .tab-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* ===== PANELS ===== */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ===== GLASS CARDS ===== */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: var(--radius);
+            padding: 2rem 2.5rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 1rem;
+        }
+
+        .card-header i {
+            font-size: 1.3rem;
+            color: var(--accent);
+            background: var(--accent-bg);
+            padding: 0.85rem;
+            border-radius: 12px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        /* ===== TOOL BOXES ===== */
+        .box {
+            padding: 1.8rem;
+            border-radius: 14px;
+            margin: 1.8rem 0;
+            position: relative;
+            padding-top: 2.2rem;
+        }
+
+        .box h4 {
+            margin-top: 0;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .box p,
+        .box ul {
+            margin-bottom: 0;
+        }
+
+        .box.gemini {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #bfdbfe;
+        }
+
+        .box.gemini::before {
+            content: "\f544";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: -18px;
+            left: 24px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .box.gemini h4 {
+            color: #1e40af;
+        }
+
+        /* ===== CHECKLIST ===== */
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            border-radius: 14px;
+            background: #fff;
+            margin-bottom: 0.8rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 1px solid #f1f5f9;
+        }
+
+        .task-item:hover {
+            border-color: var(--accent-light);
+            background: var(--accent-bg);
+        }
+
+        .task-item.completed {
+            background: var(--teal-bg);
+            border-color: #99f6e4;
+        }
+
+        .custom-checkbox {
+            width: 26px;
+            height: 26px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s;
+            flex-shrink: 0;
+            margin-top: 2px;
+            background: #fff;
+        }
+
+        .task-item.completed .custom-checkbox {
+            background: var(--teal);
+            border-color: var(--teal);
+        }
+
+        .custom-checkbox i {
+            color: #fff;
+            font-size: 13px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.25s;
+        }
+
+        .task-item.completed .custom-checkbox i {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .task-content h3 {
+            margin: 0 0 0.4rem;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .task-item.completed .task-content h3 {
+            color: var(--teal);
+        }
+
+        .task-content p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0.55rem 1.3rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin-top: 0.8rem;
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+
+        .btn:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .btn-copy {
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid #e2e8f0;
+            box-shadow: none;
+        }
+
+        .btn-copy:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        /* ===== VIDEO GRID ===== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.2rem;
+        }
+
+        .video-thumb {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            display: block;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            background: #000;
+        }
+
+        .video-thumb:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            border-color: var(--accent-light);
+        }
+
+        .video-thumb img {
+            width: 100%;
+            display: block;
+            opacity: 0.92;
+            transition: opacity 0.3s, transform 0.5s;
+        }
+
+        .video-thumb:hover img {
+            opacity: 1;
+            transform: scale(1.04);
+        }
+
+        .video-thumb .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .video-thumb:hover .play-overlay {
+            background: rgba(79, 70, 229, 0.2);
+        }
+
+        .play-overlay i {
+            color: #fff;
+            font-size: 2.8rem;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+
+        .video-thumb:hover .play-overlay i {
+            transform: scale(1.15);
+        }
+
+        /* ===== INFO BOX ===== */
+        .info-box {
+            background: var(--accent-bg);
+            border-left: 4px solid var(--accent);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .info-box h4 {
+            margin: 0 0 0.5rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-area {
+            text-align: center;
+        }
+
+        /* ===== CONFETTI ===== */
+        #confetti {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .fixed-header {
+                padding: 0.8rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .progress-container {
+                margin: 0;
+                min-width: 100%;
+                order: 3;
+            }
+
+            .tab-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <canvas id="confetti"></canvas>
+
+    <!-- Header -->
+    <header class="fixed-header">
+        <a href="index.html" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Course Home
+        </a>
+        <div class="progress-container">
+            <div class="progress-text">
+                <span>Day 3 Progress</span>
+                <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar"></div>
+            </div>
+        </div>
+        <div style="width:80px;"></div>
+    </header>
+
+    <div class="container content">
+        <!-- Hero -->
+        <div class="hero">
+            <div class="day-badge">DAY 03</div>
+            <h1>生成AIのプロンプト指示方法とその応用</h1>
+            <p class="sub-goal">
+                本日の目標：効果的なプロンプト作成技術を習得し、生成AIから望むアウトプットを得る能力を養う。<br>
+                プロンプトを中心に作成した動画作品を3本以上作成し、任意のSNSで公開するための基礎固めです。
+            </p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="switchTab('half1')">前半：プロンプト基本とMarkdown</button>
+            <button class="tab-btn" onclick="switchTab('half2')">後半：プロンプト応用と実践ノート</button>
+        </div>
+
+        <!-- =================== 前半 =================== -->
+        <div id="half1" class="tab-content active">
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h2>🎯 前半の目的</h2>
+                </div>
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-lightbulb"></i> プロンプトのコツを掴む</h4>
+                    <p>
+                        ・生成のコツの理解。<br>
+                        ・プロンプトの特徴である構造的なMarkdown記法への理解。<br>
+                        ・後からすぐに使えるようにしておく。
+                    </p>
+                </div>
+                <p>プロンプトを体系的に「型」として理解することで、あらゆるAIツールで再現性の高い結果を引き出せるようになります。</p>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
+                    <h2>🎥 再生動画（前半）</h2>
+                </div>
+                <div class="video-grid">
+                    <a href="https://youtu.be/yKI4eBOopF4" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/yKI4eBOopF4/mqdefault.jpg" alt="Video 1">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/3tVEkHG3FyQ" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/3tVEkHG3FyQ/mqdefault.jpg" alt="Video 2">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/PmVtulQfOR0" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/PmVtulQfOR0/mqdefault.jpg" alt="Video 3">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/i2Z2TtUe9Kk" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/i2Z2TtUe9Kk/mqdefault.jpg" alt="Video 4">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-link"></i>
+                    <h2>🔗 参考ページ・プロンプト一覧</h2>
+                </div>
+                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
+                    動画で解説されている手法やMarkdown記法について、以下のリンクから詳細を確認できます。
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <a href="https://kino-code.com/prompt-engineering-04/" target="_blank" class="btn"
+                        style="width:fit-content; background: #2563eb;">
+                        <i class="fa-solid fa-envelope-open-text"></i> メール返信プロンプトの基本形 (Kino-Code)
+                    </a>
+                    <a href="https://help.docbase.io/posts/13697" target="_blank" class="btn"
+                        style="width:fit-content; background: #059669;">
+                        <i class="fa-brands fa-markdown"></i> Markdown記法と書き方 (DocBase)
+                    </a>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-copy"
+                            onclick="copyText('https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing', event)">
+                            <i class="fa-regular fa-copy"></i>
+                        </button>
+                        <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing"
+                            target="_blank" class="btn" style="background:#16a34a;">
+                            <i class="fa-solid fa-table"></i> 動画内のプロンプト一覧（Googleスプレッドシート）
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h2>🧰 前半のミッション</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask('t3_1', this)">
+                        <div class="custom-checkbox" id="check_t3_1"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>動画の視聴と理解</h3>
+                            <p>前半の4本の動画を視聴し、AIに明確に伝わる「プロンプトの型」を理解しましょう。</p>
+                        </div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask('t3_2', this)">
+                        <div class="custom-checkbox" id="check_t3_2"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>プロンプト学習用ノートの作成</h3>
+                            <p>動画の内容を見ながら、後から使えるようにGeminiやNotion、Googleドキュメントにノートをまとめましょう。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- =================== 後半 =================== -->
+        <div id="half2" class="tab-content">
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h2>🎯 後半の目的</h2>
+                </div>
+                <p>引きつづき、より高度なプロンプトの作成技術とMarkdownを使った構造的指示について、事例を通して学びます。</p>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
+                    <h2>🎥 再生動画（後半）</h2>
+                </div>
+                <div class="video-grid">
+                    <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/hf2-6gZmFlo/mqdefault.jpg" alt="Video 5">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/J9YtakGpqZQ" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/J9YtakGpqZQ/mqdefault.jpg" alt="Video 6">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/bZkGoWuQ3vg" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/bZkGoWuQ3vg/mqdefault.jpg" alt="Video 7">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h2>🧰 後半のミッション: 実習</h2>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask('t3_3', this)">
+                        <div class="custom-checkbox" id="check_t3_3"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>プロンプトのコピペ・実践</h3>
+                            <p>スプレッドシートにある「動画内のプロンプト一覧」を開き、実際にAIに投げてみて動きを確認します。</p>
+                            <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing"
+                                target="_blank" class="btn" style="background:#16a34a; margin-top:10px;"
+                                onclick="event.stopPropagation();">
+                                <i class="fa-solid fa-table"></i> スプレッドシートを開く
+                            </a>
+                        </div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask('t3_4', this)">
+                        <div class="custom-checkbox" id="check_t3_4"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>Markdown構造のノート完成</h3>
+                            <p>得られた知見をノートにまとめ、自分が次に作業するときにコピペですぐ使える状態を作っておきましょう。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;">
+                <p style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">
+                    Day 3の学習お疲れ様でした！次回は「画像生成の基礎」に進みます。
+                </p>
+                <a href="vol01-4_image_basic.html" class="btn"
+                    style="padding: 1rem 2rem; font-size: 1.1rem; border-radius: 30px;">
+                    次のカリキュラムへ進む <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // ======= タブ切り替え =======
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // ======= タスク完了処理 =======
+        // 全4タスク
+        const totalTasks = 4;
+        let completedIds = JSON.parse(localStorage.getItem('day3_completed')) || [];
+
+        // 初期描画
+        document.addEventListener('DOMContentLoaded', () => {
+            completedIds.forEach(id => {
+                const el = document.getElementById('check_' + id);
+                if (el) el.closest('.task-item').classList.add('completed');
+            });
+            updateProgress();
+        });
+
+        function toggleTask(id, element) {
+            if (completedIds.includes(id)) {
+                completedIds = completedIds.filter(item => item !== id);
+                element.classList.remove('completed');
+            } else {
+                completedIds.push(id);
+                element.classList.add('completed');
+
+                // すべて完了したら紙吹雪
+                if (completedIds.length === totalTasks) {
+                    fireConfetti();
+                } else {
+                    playPopSound();
+                }
+            }
+
+            localStorage.setItem('day3_completed', JSON.stringify(completedIds));
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let percent = Math.round((completedIds.length / totalTasks) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-percent').innerText = percent + '%';
+
+            if (percent === 100) {
+                document.getElementById('progress-bar').style.background = 'linear-gradient(90deg, #34d399, #0d9488)';
+            } else {
+                document.getElementById('progress-bar').style.background = 'linear-gradient(90deg, var(--accent-light), var(--accent))';
+            }
+        }
+
+        // ======= コピー機能 =======
+        function copyText(text, e) {
+            e.stopPropagation();
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = e.target.closest('button');
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> コピーしました';
+                btn.style.background = '#f0fdfa';
+                btn.style.color = '#0d9488';
+                btn.style.borderColor = '#0d9488';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style = '';
+                }, 2000);
+            });
+        }
+
+        // ======= 効果音 =======
+        function playPopSound() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.1);
+        }
+
+        // ======= 紙吹雪 =======
+        function fireConfetti() {
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#4f46e5', '#0d9488', '#f59e0b']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#4f46e5', '#0d9488', '#f59e0b']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+
+            // 少し派手な音
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(400, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2);
+            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.4);
+
+            gain.gain.setValueAtTime(0.4, ctx.currentTime);
+            gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.4);
+        }
+    </script>
+</body>
+
+</html>
