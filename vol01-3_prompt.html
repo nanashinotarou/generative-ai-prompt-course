@@ -12,20 +12,20 @@
 
     <style>
         :root {
-            --bg-body: #f5f7fa;
-            --bg-card: rgba(255, 255, 255, 0.92);
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --accent: #4f46e5;
-            /* indigo */
-            --accent-light: #818cf8;
-            --accent-bg: #eef2ff;
-            --accent-glow: rgba(79, 70, 229, 0.15);
-            --teal: #0d9488;
-            --teal-bg: #f0fdfa;
-            --border: rgba(0, 0, 0, 0.08);
-            --glass-blur: blur(14px);
-            --radius: 18px;
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent: #0ea5e9;
+            /* Light Blue / Sky */
+            --accent-light: #38bdf8;
+            --accent-bg: #f0f9ff;
+            --accent-glow: rgba(14, 165, 233, 0.2);
+            --teal: #10b981;
+            --teal-bg: #ecfdf5;
+            --border: rgba(0, 0, 0, 0.06);
+            --glass-blur: blur(12px);
+            --radius: 20px;
         }
 
         *,
@@ -41,13 +41,88 @@
             background: var(--bg-body);
             color: var(--text-main);
             background-image:
-                radial-gradient(ellipse at 20% 0%, rgba(79, 70, 229, 0.06), transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.06), transparent 50%);
+                radial-gradient(ellipse at 15% 10%, rgba(14, 165, 233, 0.05), transparent 50%),
+                radial-gradient(ellipse at 85% 90%, rgba(16, 185, 129, 0.05), transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
         }
 
+        body.locked {
+            overflow: hidden;
+        }
 
+        /* ===== UNLOCK SCREEN ===== */
+        #unlock-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s;
+        }
+
+        .unlock-card {
+            text-align: center;
+            background: #fff;
+            padding: 3.5rem 4rem;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .unlock-icon {
+            width: 86px;
+            height: 86px;
+            background: var(--accent-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.2rem;
+            color: var(--accent);
+        }
+
+        .unlock-card h2 {
+            font-size: 1.8rem;
+            margin: 0 0 0.5rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .unlock-card p {
+            color: var(--text-sub);
+            margin: 0 0 2rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        .unlock-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 1rem 2.8rem;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .unlock-btn:hover {
+            background: #0284c7;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
 
         /* ===== HEADER ===== */
         .fixed-header {
@@ -55,15 +130,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
             z-index: 1000;
             padding: 0.8rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
         }
 
         .back-link {
@@ -78,12 +153,12 @@
         }
 
         .back-link:hover {
-            color: #4338ca;
+            color: #0284c7;
         }
 
         .progress-container {
             flex-grow: 1;
-            max-width: 350px;
+            max-width: 380px;
             margin: 0 2rem;
         }
 
@@ -91,7 +166,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.8rem;
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             color: var(--accent);
             font-weight: 700;
         }
@@ -108,45 +183,47 @@
             background: linear-gradient(90deg, var(--accent-light), var(--accent));
             width: 0%;
             border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* ===== HERO ===== */
         .container {
-            max-width: 960px;
-            margin: 90px auto 60px;
+            max-width: 980px;
+            margin: 100px auto 60px;
             padding: 0 20px;
         }
 
         .hero {
             text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.7s ease-out;
+            margin-bottom: 3.5rem;
+            animation: fadeInDown 0.8s ease-out;
         }
 
         .day-badge {
             display: inline-block;
             background: var(--accent);
             color: #fff;
-            padding: 0.35rem 1.4rem;
+            padding: 0.4rem 1.6rem;
             border-radius: 30px;
             font-family: 'Teko', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             letter-spacing: 3px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px var(--accent-glow);
         }
 
         h1 {
-            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
             margin: 0 0 1rem;
             color: var(--text-main);
             font-weight: 900;
+            letter-spacing: -0.02em;
         }
 
         .sub-goal {
             color: var(--text-sub);
-            font-size: 1.05rem;
-            max-width: 700px;
+            font-size: 1.1rem;
+            max-width: 750px;
             margin: 0 auto;
             line-height: 1.8;
         }
@@ -155,19 +232,20 @@
         .tab-container {
             display: flex;
             justify-content: center;
-            gap: 0.8rem;
-            margin-bottom: 2.5rem;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
             background: #fff;
             border: 2px solid var(--border);
             color: var(--text-sub);
-            padding: 0.8rem 2rem;
+            padding: 0.9rem 2.2rem;
             border-radius: 30px;
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
             transition: all 0.25s;
         }
@@ -181,13 +259,13 @@
             background: var(--accent);
             color: #fff;
             border-color: var(--accent);
-            box-shadow: 0 4px 12px var(--accent-glow);
+            box-shadow: 0 4px 15px var(--accent-glow);
         }
 
         /* ===== PANELS ===== */
         .tab-content {
             display: none;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.6s ease;
         }
 
         .tab-content.active {
@@ -198,65 +276,72 @@
         .glass-card {
             background: var(--bg-card);
             backdrop-filter: var(--glass-blur);
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: var(--radius);
-            padding: 2rem 2.5rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
-            transition: transform 0.25s, box-shadow 0.25s;
+            padding: 2.2rem 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .glass-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.2rem;
             margin-bottom: 1.5rem;
             border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 1rem;
+            padding-bottom: 1.2rem;
         }
 
         .card-header i {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--accent);
             background: var(--accent-bg);
-            padding: 0.85rem;
-            border-radius: 12px;
+            padding: 0.9rem;
+            border-radius: 14px;
         }
 
         .card-header h2 {
             margin: 0;
-            font-size: 1.4rem;
+            font-size: 1.45rem;
             color: var(--text-main);
+            font-weight: 800;
         }
 
         /* ===== TOOL BOXES ===== */
         .box {
-            padding: 1.8rem;
-            border-radius: 14px;
-            margin: 1.8rem 0;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
             position: relative;
-            padding-top: 2.2rem;
+            padding-top: 2.4rem;
         }
 
         .box h4 {
             margin-top: 0;
             font-size: 1.15rem;
             font-weight: 700;
+            margin-bottom: 1rem;
         }
 
         .box p,
         .box ul {
             margin-bottom: 0;
+            line-height: 1.8;
+        }
+
+        .box li {
+            margin-bottom: 0.6rem;
         }
 
         .box.gemini {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border: 1px solid #bfdbfe;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 1px solid #bae6fd;
         }
 
         .box.gemini::before {
@@ -266,20 +351,88 @@
             position: absolute;
             top: -18px;
             left: 24px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
             color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
-            box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
 
         .box.gemini h4 {
-            color: #1e40af;
+            color: #0369a1;
+        }
+
+        .box.concept {
+            background: linear-gradient(135deg, #fefce8, #fef9c3);
+            border: 1px solid #fef08a;
+        }
+
+        .box.concept::before {
+            content: "\f0eb";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            top: -18px;
+            left: 24px;
+            background: linear-gradient(135deg, #eab308, #ca8a04);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+        }
+
+        .box.concept h4 {
+            color: #854d0e;
+        }
+
+        /* ===== CODE BOX ===== */
+        .code-box {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 2rem 2.2rem 1.8rem 2.2rem;
+            border-radius: 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            position: relative;
+            margin: 2rem 0;
+            border-left: 5px solid var(--accent);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .code-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: #fff;
+            padding: 3px 14px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 8px;
+            font-family: 'Noto Sans JP', sans-serif;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px var(--accent-glow);
+        }
+
+        .code-highlight {
+            color: #fde047;
+            font-weight: 700;
+        }
+
+        .code-comment {
+            color: #64748b;
+            font-style: italic;
         }
 
         /* ===== CHECKLIST ===== */
@@ -292,12 +445,12 @@
         .task-item {
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            padding: 1.2rem 1.5rem;
-            border-radius: 14px;
+            gap: 1.2rem;
+            padding: 1.4rem 1.6rem;
+            border-radius: 16px;
             background: #fff;
-            margin-bottom: 0.8rem;
-            transition: all 0.2s;
+            margin-bottom: 1rem;
+            transition: all 0.25s;
             cursor: pointer;
             border: 1px solid #f1f5f9;
         }
@@ -305,22 +458,23 @@
         .task-item:hover {
             border-color: var(--accent-light);
             background: var(--accent-bg);
+            transform: translateX(4px);
         }
 
         .task-item.completed {
             background: var(--teal-bg);
-            border-color: #99f6e4;
+            border-color: #a7f3d0;
         }
 
         .custom-checkbox {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border: 2px solid #cbd5e1;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.25s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             flex-shrink: 0;
             margin-top: 2px;
             background: #fff;
@@ -329,14 +483,15 @@
         .task-item.completed .custom-checkbox {
             background: var(--teal);
             border-color: var(--teal);
+            transform: scale(1.1);
         }
 
         .custom-checkbox i {
             color: #fff;
-            font-size: 13px;
+            font-size: 14px;
             opacity: 0;
             transform: scale(0.5);
-            transition: all 0.25s;
+            transition: all 0.3s;
         }
 
         .task-item.completed .custom-checkbox i {
@@ -345,81 +500,93 @@
         }
 
         .task-content h3 {
-            margin: 0 0 0.4rem;
-            font-size: 1.05rem;
+            margin: 0 0 0.5rem;
+            font-size: 1.1rem;
             color: var(--text-main);
+            font-weight: 700;
         }
 
         .task-item.completed .task-content h3 {
-            color: var(--teal);
+            color: #047857;
         }
 
         .task-content p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-sub);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* ===== BUTTONS ===== */
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
             background: var(--accent);
             color: #fff;
             border: none;
-            padding: 0.55rem 1.3rem;
-            border-radius: 10px;
+            padding: 0.65rem 1.4rem;
+            border-radius: 12px;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 700;
             transition: all 0.2s;
             cursor: pointer;
-            margin-top: 0.8rem;
-            box-shadow: 0 2px 8px var(--accent-glow);
+            margin-top: 1rem;
+            margin-right: 0.5rem;
+            box-shadow: 0 3px 10px var(--accent-glow);
         }
 
         .btn:hover {
-            background: #4338ca;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--accent-glow);
+            background: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px var(--accent-glow);
+        }
+
+        .btn-green {
+            background: #10b981;
+            box-shadow: 0 3px 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-green:hover {
+            background: #059669;
         }
 
         .btn-copy {
-            background: #fff;
+            background: #f8fafc;
             color: var(--text-main);
             border: 1px solid #e2e8f0;
             box-shadow: none;
         }
 
         .btn-copy:hover {
-            background: #f8fafc;
+            background: #f1f5f9;
             border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
 
         /* ===== VIDEO GRID ===== */
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .video-thumb {
             position: relative;
-            border-radius: 14px;
+            border-radius: 16px;
             overflow: hidden;
             display: block;
             border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
             transition: all 0.3s;
             background: #000;
         }
 
         .video-thumb:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
             border-color: var(--accent-light);
         }
 
@@ -427,12 +594,12 @@
             width: 100%;
             display: block;
             opacity: 0.92;
-            transition: opacity 0.3s, transform 0.5s;
+            transition: opacity 0.3s, transform 0.6s;
         }
 
         .video-thumb:hover img {
             opacity: 1;
-            transform: scale(1.04);
+            transform: scale(1.05);
         }
 
         .video-thumb .play-overlay {
@@ -446,42 +613,44 @@
         }
 
         .video-thumb:hover .play-overlay {
-            background: rgba(79, 70, 229, 0.2);
+            background: rgba(14, 165, 233, 0.25);
         }
 
         .play-overlay i {
             color: #fff;
-            font-size: 2.8rem;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+            font-size: 3rem;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s;
         }
 
         .video-thumb:hover .play-overlay i {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         /* ===== INFO BOX ===== */
         .info-box {
             background: var(--accent-bg);
-            border-left: 4px solid var(--accent);
-            padding: 1.2rem 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
+            border-left: 5px solid var(--accent);
+            padding: 1.4rem 1.6rem;
+            border-radius: 0 14px 14px 0;
+            margin: 1.8rem 0;
         }
 
         .info-box h4 {
-            margin: 0 0 0.5rem;
-            color: var(--accent);
+            margin: 0 0 0.6rem;
+            color: #0369a1;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.05rem;
+            gap: 0.6rem;
+            font-size: 1.1rem;
+            font-weight: 800;
         }
 
         .info-box p {
             margin: 0;
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 0.95rem;
         }
 
         /* ===== QUIZ ===== */
@@ -538,11 +707,20 @@
 
             .tab-container {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
+                padding: 0 1rem;
             }
 
             .glass-card {
-                padding: 1.5rem;
+                padding: 1.8rem 1.5rem;
+            }
+
+            .unlock-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -550,7 +728,17 @@
 
 <body>
 
-
+    <!-- Unlock Screen -->
+    <div id="unlock-overlay">
+        <div class="unlock-card">
+            <div class="unlock-icon"><i class="fa-solid fa-code"></i></div>
+            <h2>Module 03 を開始する</h2>
+            <p>生成AIのプロンプト指示方法とその応用<br>準備ができたらボタンを押してスタートしましょう。</p>
+            <button class="unlock-btn" id="unlock-btn">
+                <i class="fa-solid fa-play"></i> START MODULE
+            </button>
+        </div>
+    </div>
 
     <canvas id="confetti"></canvas>
 
@@ -575,10 +763,10 @@
         <!-- Hero -->
         <div class="hero">
             <div class="day-badge">DAY 03</div>
-            <h1>生成AIのプロンプト指示方法とその応用</h1>
+            <h1>プロンプト指示方法とその応用</h1>
             <p class="sub-goal">
-                本日の目標：効果的なプロンプト作成技術を習得し、生成AIから望むアウトプットを得る能力を養う。<br>
-                プロンプトを中心に作成した動画作品を3本以上作成し、任意のSNSで公開するための基礎固めです。
+                本日の目標：効果的なプロンプト作成技術を習得し、生成AIから望むアウトプットを正確に得る能力を養う。<br>
+                情報を構造化してAIに伝える「型」を身につけ、日常やビジネスでの活用レベルを引き上げます。
             </p>
         </div>
 
@@ -591,406 +779,435 @@
         <!-- =================== 前半 =================== -->
         <div id="half1" class="tab-content active">
 
+            <!-- 実習の目的 -->
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-solid fa-bullseye"></i>
-                    <h2>🎯 前半の目的</h2>
+                    <h2>🎯 実習の目的</h2>
                 </div>
+                <p style="font-size: 1.05rem; line-height: 1.8;">
+                    生成AIの精度を飛躍的に高める「プロンプトのコツ」を理解し、AIにとってわかりやすい「構造的なMarkdown記法」をマスターします。
+                </p>
                 <div class="info-box">
-                    <h4><i class="fa-solid fa-lightbulb"></i> プロンプトのコツを掴む</h4>
+                    <h4><i class="fa-solid fa-lightbulb"></i> プロンプトエンジニアリングとは？</h4>
                     <p>
-                        ・生成のコツの理解。<br>
-                        ・プロンプトの特徴である構造的なMarkdown記法への理解。<br>
-                        ・後からすぐに使えるようにしておく。
+                        AIへの「指示（プロンプト）」を最適化する技術のことです。「良いキャッチコピー考えて」のような人間同士の曖昧な指示ではなく、AIの力を100%引き出すための「前提条件」「役割」「出力形式」などの枠組み（型）を与えてあげることで、一発で高品質な結果を得られるようになります。
                     </p>
                 </div>
-                <p>プロンプトを体系的に「型」として理解することで、あらゆるAIツールで再現性の高い結果を引き出せるようになります。</p>
             </div>
 
-            <!-- ====== 追加コンテンツ：プロンプト基本解説 ====== -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-book-open" style="color:#0ea5e9; background:#e0f2fe;"></i>
-                    <h2>📖 プロンプトエンジニアリングの基本</h2>
-                </div>
-                <div class="box">
-                    <h4>そもそもプロンプトとは？</h4>
-                    <p style="margin-bottom:1rem; line-height:1.7;">
-                        生成AIに対する「指示出し・質問」のことです。<br>
-                        「良いキャッチコピー考えて」のような人間同士の曖昧なやり取りではなく、AIがもっとも力を発揮しやすいように<strong>「前提条件」「役割」「出力形式」</strong>などを明確に定義してあげる技術を<strong>プロンプトエンジニアリング</strong>と呼びます。
-                    </p>
-
-                    <h4 style="margin-top:2rem;">優れたプロンプトの「４つの構成要素（型）」</h4>
-                    <p style="margin-bottom:1rem; line-height:1.7;">
-                        プロンプトを作るときは、以下の4つのブロックを埋めるように作成すると、ブレのない精度の高い回答が得られます。</p>
-                    <ul style="line-height:1.8; color:var(--text-sub);">
-                        <li><strong>[Role]（役割）:</strong> AIにどんな専門家になってほしいか（例：「あなたは10年の経験を持つプロの編集者です」）</li>
-                        <li><strong>[Task]（タスク）:</strong> 何をしてほしいか（例：「以下の文章を離脱されない魅力的な文章にリライトしてください」）</li>
-                        <li><strong>[Context]（背景）:</strong> なぜそれをするのか、ターゲットは誰か（例：「この文章は20代の就活生向けWebメディアに掲載されます」）</li>
-                        <li><strong>[Format]（出力形式）:</strong> どのような形で出力してほしいか（例：「見出しを付けて、3つのポイントに分けて箇条書きで出力してください」）</li>
-                    </ul>
-                </div>
-
-                <div class="box gemini">
-                    <h4>Markdown（マークダウン）記法の活用</h4>
-                    <p style="margin-bottom:1rem; line-height:1.7;">
-                        AIに指示を与える際、文章をベタ打ちするのではなく、<strong>Markdown記法</strong>で見出しや箇条書きを作って「構造化（整理）」することで、AIの理解度が飛躍的にアップします。
-                    </p>
-                    <ul style="line-height:1.8;">
-                        <li><code># 見出し1</code>, <code>## 見出し2</code> :
-                            情報の階層を整理して伝えます。（例：<code># 前提条件</code>、<code># 指示内容</code>）</li>
-                        <li><code>- 箇条書き</code> : 条件が複数ある場合は、箇条書きで漏れなく伝えます。</li>
-                        <li><code>**強調**</code> : <strong>とくに重要なルール</strong>を絶対に守らせたい場合に使います。</li>
-                    </ul>
-                </div>
-            </div>
-            <!-- ====== 追加コンテンツここまで ====== -->
-
+            <!-- 動画①: プロンプトの基本形 -->
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>🎥 再生動画（前半）</h2>
+                    <h2>📺 動画① プロンプト基本形（メール返信）</h2>
                 </div>
-                <div class="video-grid">
-                    <a href="https://youtu.be/yKI4eBOopF4" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/yKI4eBOopF4/mqdefault.jpg" alt="Video 1">
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+                    <a href="https://youtu.be/yKI4eBOopF4" target="_blank" class="video-thumb"
+                        style="flex: 1; min-width: 250px; max-width: 400px;">
+                        <img src="https://img.youtube.com/vi/yKI4eBOopF4/hqdefault.jpg" alt="プロンプトの基本">
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
-                    <a href="https://youtu.be/3tVEkHG3FyQ" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/3tVEkHG3FyQ/mqdefault.jpg" alt="Video 2">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/PmVtulQfOR0" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/PmVtulQfOR0/mqdefault.jpg" alt="Video 3">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/i2Z2TtUe9Kk" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/i2Z2TtUe9Kk/mqdefault.jpg" alt="Video 4">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-link"></i>
-                    <h2>🔗 参考ページ・プロンプト一覧</h2>
-                </div>
-                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
-                    動画で解説されている手法やMarkdown記法について、以下のリンクから詳細を確認できます。
-                </p>
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <a href="https://kino-code.com/prompt-engineering-04/" target="_blank" class="btn"
-                        style="width:fit-content; background: #2563eb;">
-                        <i class="fa-solid fa-envelope-open-text"></i> メール返信プロンプトの基本形 (Kino-Code)
-                    </a>
-                    <a href="https://help.docbase.io/posts/13697" target="_blank" class="btn"
-                        style="width:fit-content; background: #059669;">
-                        <i class="fa-brands fa-markdown"></i> Markdown記法と書き方 (DocBase)
-                    </a>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-copy"
-                            onclick="copyText('https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing', event)">
-                            <i class="fa-regular fa-copy"></i>
-                        </button>
-                        <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing"
-                            target="_blank" class="btn" style="background:#16a34a;">
-                            <i class="fa-solid fa-table"></i> 動画内のプロンプト一覧（Googleスプレッドシート）
-                        </a>
+                    <div style="flex: 2; min-width: 300px;">
+                        <h3 style="margin-top:0; color:#0f172a;">▶ この動画で学べること</h3>
+                        <p style="line-height:1.8; margin-bottom: 1rem;">
+                            もっとも基本的な「メール返信プロンプト」を例に、優れたプロンプトの<strong>4つの構成要素</strong>を解説します。AIに丸投げするのではなく、制約条件を設けることの重要性が理解できます。
+                        </p>
+                        <div class="box concept" style="margin-top:1rem; padding-top: 2rem;">
+                            <h4>プロンプトの4大要素（型）</h4>
+                            <ul style="padding-left:20px;">
+                                <li><strong>[Role]（役割）:</strong> あなたは【一流のビジネスマン】です。</li>
+                                <li><strong>[Task]（タスク）:</strong> 以下のメールに対する【お詫びと日程調整の返信】を作成してください。</li>
+                                <li><strong>[Context]（背景）:</strong> 相手は【重要な取引先の社長】です。</li>
+                                <li><strong>[Format]（出力）:</strong> 【敬語を正しく使い、3段落構成】で出力してください。</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- 動画②: Markdown記法 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
+                    <h2>📺 動画② Markdown記法と書き方</h2>
+                </div>
+                <div
+                    style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; flex-direction: row-reverse;">
+                    <a href="https://youtu.be/3tVEkHG3FyQ" target="_blank" class="video-thumb"
+                        style="flex: 1; min-width: 250px; max-width: 400px;">
+                        <img src="https://img.youtube.com/vi/3tVEkHG3FyQ/hqdefault.jpg" alt="Markdown">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <div style="flex: 2; min-width: 300px;">
+                        <h3 style="margin-top:0; color:#0f172a;">▶ この動画で学べること</h3>
+                        <p style="line-height:1.8; margin-bottom: 1rem;">
+                            AIは文章をベタ打ちされるより、<strong>見出しや箇条書きで整理（構造化）されたテキスト</strong>を読むのが得意です。世界標準のマークアップ言語である「Markdown（マークダウン）」をプロンプトに取り入れる手法を学びます。
+                        </p>
+                        <div class="box gemini" style="margin-top:1rem; padding-top: 2rem;">
+                            <h4>よく使うMarkdown記法3選</h4>
+                            <ul style="padding-left:20px;">
+                                <li><code
+                                        style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;"># 見出し1</code>,
+                                    <code
+                                        style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;">## 見出し2</code>
+                                    : 情報の階層を整理して伝えます。（例：「# 前提条件」、「# 指示内容」）</li>
+                                <li><code
+                                        style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;">- 箇条書き</code>
+                                    : 複数の条件やルールがある場合は、箇条書きで漏れなく伝達します。</li>
+                                <li><code
+                                        style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;">**強調**</code>
+                                    : **とくに重要なルール**を絶対に守らせたい場合に使用。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-box">
+                    <span class="code-label">Markdown活用の完全版プロンプト例</span>
+                    <span class="code-highlight"># 命令</span><br>
+                    あなたは経験豊富なWebライターです。<br>
+                    以下の制約条件と入力文をもとに、魅力的なブログ記事を作成してください。<br><br>
+
+                    <span class="code-highlight"># 制約条件</span><br>
+                    - 文字数は800文字程度<br>
+                    - **初心者にもわかりやすい**ですます調<br>
+                    - 専門用語には簡単な解説を添えること<br><br>
+
+                    <span class="code-highlight"># 入力文</span><br>
+                    (ここに要約してほしい文章やメモを貼り付け)
+                </div>
+            </div>
+
+            <!-- 参考リンク集 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-link"></i>
+                    <h2>🔗 大事な参考資料一覧</h2>
+                </div>
+                <p style="margin-bottom: 1.5rem; color: var(--text-sub);">
+                    動画内で紹介された重要なウェブページや資料へのリンクです。必ず開いてブックマークしておきましょう。
+                </p>
+                <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                    <a href="https://kino-code.com/prompt-engineering-04/" target="_blank" class="btn">
+                        <i class="fa-solid fa-envelope"></i> メール返信プロンプト（Kino-Code）
+                    </a>
+                    <a href="https://help.docbase.io/posts/13697" target="_blank" class="btn">
+                        <i class="fa-brands fa-markdown"></i> Markdown記法と書き方（DocBase）
+                    </a>
+                    <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing"
+                        target="_blank" class="btn btn-green">
+                        <i class="fa-solid fa-table"></i> 今回のプロンプト一覧表（Spreadsheet）
+                    </a>
+                </div>
+            </div>
+
+            <!-- 動画③・④: まとめと一覧 -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
+                    <h2>📺 動画③・④ プロンプト一覧を使ってみよう</h2>
+                </div>
+                <div class="video-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <a href="https://youtu.be/PmVtulQfOR0" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/PmVtulQfOR0/hqdefault.jpg" alt="応用1">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/i2Z2TtUe9Kk" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/i2Z2TtUe9Kk/hqdefault.jpg" alt="応用2">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 前半ミッション -->
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-solid fa-list-check"></i>
                     <h2>🧰 前半のミッション</h2>
                 </div>
+                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
+                    以下のミッションをすべてクリアしてチェックを入れましょう！進行度がアップします。
+                </p>
+
                 <ul class="task-list">
                     <li class="task-item" onclick="toggleTask('t3_1', this)">
                         <div class="custom-checkbox" id="check_t3_1"><i class="fa-solid fa-check"></i></div>
                         <div class="task-content">
-                            <h3>動画の視聴と理解</h3>
-                            <p>前半の4本の動画を視聴し、AIに明確に伝わる「プロンプトの型」を理解しましょう。</p>
+                            <h3>動画視聴とプロンプト構成の理解</h3>
+                            <p>動画①②を視聴し、AIに与えるべきプロンプトの4要素（Role, Task, Context, Format）とMarkdown記法の重要性を理解する。</p>
                         </div>
                     </li>
+
                     <li class="task-item" onclick="toggleTask('t3_2', this)">
                         <div class="custom-checkbox" id="check_t3_2"><i class="fa-solid fa-check"></i></div>
                         <div class="task-content">
-                            <h3>プロンプト学習用ノートの作成</h3>
-                            <p>動画の内容を見ながら、後から使えるようにGeminiやNotion、Googleドキュメントにノートをまとめましょう。</p>
+                            <h3>プロンプトの実行テスト</h3>
+                            <p>このページにある「Markdown活用の完全版プロンプト例」をコピーし、Geminiに貼り付けて、指示通りに動くかテストしてみましょう。</p>
+                        </div>
+                    </li>
+
+                    <li class="task-item" onclick="toggleTask('t3_3', this)">
+                        <div class="custom-checkbox" id="check_t3_3"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>Markdownチートシートのブックマーク</h3>
+                            <p>「大事な参考資料」からDocBaseのMarkdownガイドを開き、いつでも見返せるようにブラウザにブックマークする。</p>
+                        </div>
+                    </li>
+
+                    <li class="task-item" onclick="toggleTask('t3_4', this)">
+                        <div class="custom-checkbox" id="check_t3_4"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>プロンプト一覧シートを開く</h3>
+                            <p>提供されたスプレッドシート（プロンプト一覧）を開き、どのようなプロンプトの型が用意されているか眺めてみましょう。</p>
                         </div>
                     </li>
                 </ul>
             </div>
-
         </div>
 
         <!-- =================== 後半 =================== -->
         <div id="half2" class="tab-content">
+
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-solid fa-bullseye"></i>
-                    <h2>🎯 後半の目的</h2>
+                    <h2>🎯 実習の目的</h2>
                 </div>
-                <p>引きつづき、より高度なプロンプトの作成技術とMarkdownを使った構造的指示について、事例を通して学びます。</p>
-            </div>
-
-            <!-- ====== 追加コンテンツ：プロンプト応用解説 ====== -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-rocket" style="color:#f59e0b; background:#fef3c7;"></i>
-                    <h2>🚀 プロンプトの応用テクニック</h2>
-                </div>
-
-                <div class="box">
-                    <h4>高度なプロンプト手法</h4>
-                    <p style="margin-bottom:1rem; line-height:1.7;">
-                        AIからより精緻・論理的な回答を引き出すためには、以下のテクニックを組み合わせると効果的です。
-                    </p>
-                    <ul style="line-height:1.8; margin-bottom:1.5rem; color:var(--text-sub);">
-                        <li><strong>Few-Shot Prompting（少数例提示）：</strong><br>
-                            AIに完全にゼロから作らせるのではなく、「入力例」と「出力例」のセットを1〜3個ほどプロンプト内に含める手法です。これにより、AIが「このトーンで、こういうフォーマットで出力すればいいのか」と学習し、希望通りの出力が一発で出やすくなります。
-                        </li>
-                        <li><strong>Chain of Thought（思考のプロセス化）：</strong><br>
-                            プロンプトの末尾に「<strong>ステップバイステップで論理的に考えてください</strong>」という一言を添える手法です。回答の際、AIに途中の思考プロセスを出力させることで、最終的な回答の精度（特に論理的思考や文章構成）が劇的に向上します。
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="box gemini">
-                    <h4>業務シナリオ別 実践プロンプト例</h4>
-                    <p style="line-height:1.7; margin-bottom:1rem;">
-                        <strong>1. アイディア出し（ブレインストーミング）</strong><br>
-                        「あなたはクリエイティブディレクターです。〇〇という新商品のターゲット層を拡張するための、斬新なプロモーション施策を10個挙げてください。突飛なアイディアも歓迎します。」のように、AIならではの「壁打ち相手」として活用します。
-                    </p>
-                    <p style="line-height:1.7; margin-bottom:1rem;">
-                        <strong>2. 長文の要約・アクション抽出</strong><br>
-                        「以下の議事録から、決定事項と未決定事項を整理し、誰が・いつまでに・何をするべきか（Next
-                        Action）をMarkdownテーブル（表形式）で出力してください。」のように、構造化して出力させるとそのまま共有資料として使えます。
-                    </p>
-                    <p style="line-height:1.7;">
-                        <strong>3. トーン＆マナーの変換（文章リライト）</strong><br>
-                        「以下の箇条書きのメモをベースに、取引先に送る丁寧なビジネスメールを作成してください。クッション言葉を適切に使い、角が立たないようにしてください。」など、AIに「敬語のプロ」を演じさせます。
-                    </p>
+                <p style="font-size: 1.05rem; line-height: 1.8;">
+                    より高度なプロンプトテクニック（数例提示や思考プロセスの指定）を学び、実務ですぐに活用できる**「自分だけのプロンプトノート」**を完成させます。
+                </p>
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-fire"></i> 後半戦のハイライト</h4>
+                    <p>AIの頭を良くする「魔法の呪文」とも言えるテクニックが登場します。ブレインストーミングや長文要約など、業務効率化のコアとなる技術です。</p>
                 </div>
             </div>
-            <!-- ====== 追加コンテンツここまで ====== -->
 
+            <!-- 動画⑤: 高度なテクニック -->
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>🎥 再生動画（後半）</h2>
+                    <h2>📺 動画⑤ 高度なプロンプトテクニック</h2>
                 </div>
-                <div class="video-grid">
-                    <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/hf2-6gZmFlo/mqdefault.jpg" alt="Video 5">
+                <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+                    <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" class="video-thumb"
+                        style="flex: 1; min-width: 250px; max-width: 400px;">
+                        <img src="https://img.youtube.com/vi/hf2-6gZmFlo/hqdefault.jpg" alt="高度なテクニック">
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
-                    <a href="https://youtu.be/J9YtakGpqZQ" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/J9YtakGpqZQ/mqdefault.jpg" alt="Video 6">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/bZkGoWuQ3vg" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/bZkGoWuQ3vg/mqdefault.jpg" alt="Video 7">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
+                    <div style="flex: 2; min-width: 300px;">
+                        <h3 style="margin-top:0; color:#0f172a;">▶ この動画で学べること</h3>
+                        <p style="line-height:1.8; margin-bottom: 1rem;">
+                            AIからより精緻・論理的な回答を引き出すためには、以下の2大応用的テクニックを組み合わせると非常に効果的です。
+                        </p>
+                        <div class="box gemini" style="margin-top:1rem; padding-top: 2rem;">
+                            <h4>AIの知能を引き出す2つのワザ</h4>
+                            <ul style="padding-left:20px;">
+                                <li><strong>Few-Shot Prompting（少数例提示）：</strong><br>
+                                    「入力例」と「出力例」のセットをプロンプト内に含める手法です。「こういうトンマナで書いて」と言葉で説明するより、実例を見せたほうがAIは一発で学習し、希望通りの出力を返してくれます。
+                                </li>
+                                <li><strong>Chain of Thought（思考のプロセス化）：</strong><br>
+                                    「<strong>ステップバイステップで論理的に考えてください</strong>」という一文を添える手法です。途中の思考プロセスを出力させることで、最終的な回答の論理性や計算精度が劇的に向上します。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- 動画⑥・⑦: 業務特化とまとめ -->
             <div class="glass-card">
                 <div class="card-header">
-                    <i class="fa-solid fa-list-check"></i>
-                    <h2>🧰 後半のミッション: 実習</h2>
+                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
+                    <h2>📺 動画⑥・⑦ 業務への応用・ノート作り</h2>
+                </div>
+                <div class="video-grid"
+                    style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom: 2rem;">
+                    <a href="https://youtu.be/J9YtakGpqZQ" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/J9YtakGpqZQ/hqdefault.jpg" alt="業務特化のプロンプト">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/bZkGoWuQ3vg" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/bZkGoWuQ3vg/hqdefault.jpg" alt="ノート作りまとめ">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+
+                <div class="box concept">
+                    <h4>業務シナリオ別 実践プロンプトのアイデア</h4>
+                    <p style="line-height:1.7; margin-bottom:1rem;">
+                        <strong>1. アイディア出し（壁打ち相手）</strong><br>
+                        「あなたはクリエイティブディレクターです。新商品のプロモーション施策を10個、誰も思いつかないような斬新な切り口で挙げてください。」
+                    </p>
+                    <p style="line-height:1.7; margin-bottom:1rem;">
+                        <strong>2. 長文の要約・アクション抽出</strong><br>
+                        「以下の議事録から、決定事項と未決定事項を整理し、誰が・いつまでに・何をするべきか（Next Action）をMarkdownの表形式で出力してください。」
+                    </p>
+                    <p style="line-height:1.7;">
+                        <strong>3. トーン＆マナーの変換</strong><br>
+                        「以下の箇条書きのメモをベースに、取引先に送る丁寧なビジネスメールを作成してください。クッション言葉を適切に使い、角が立たないように配慮すること。」
+                    </p>
+                </div>
+            </div>
+
+            <!-- 後半ミッション -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-tasks"></i>
+                    <h2>🧰 後半のミッション</h2>
                 </div>
                 <ul class="task-list">
-                    <li class="task-item" onclick="toggleTask('t3_3', this)">
-                        <div class="custom-checkbox" id="check_t3_3"><i class="fa-solid fa-check"></i></div>
+                    <li class="task-item" onclick="toggleTask('t3_5', this)">
+                        <div class="custom-checkbox" id="check_t3_5"><i class="fa-solid fa-check"></i></div>
                         <div class="task-content">
-                            <h3>プロンプトのコピペ・実践</h3>
-                            <p>スプレッドシートにある「動画内のプロンプト一覧」を開き、実際にAIに投げてみて動きを確認します。</p>
-                            <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing"
-                                target="_blank" class="btn" style="background:#16a34a; margin-top:10px;"
-                                onclick="event.stopPropagation();">
-                                <i class="fa-solid fa-table"></i> スプレッドシートを開く
-                            </a>
+                            <h3>高度なプロンプトテクニックの理解</h3>
+                            <p>後半の動画⑤⑥⑦を視聴し、「Few-Shot」や「Chain of Thought」といったプロンプト応用術の実力を学ぶ。</p>
                         </div>
                     </li>
-                    <li class="task-item" onclick="toggleTask('t3_4', this)">
-                        <div class="custom-checkbox" id="check_t3_4"><i class="fa-solid fa-check"></i></div>
+
+                    <li class="task-item" onclick="toggleTask('t3_6', this)">
+                        <div class="custom-checkbox" id="check_t3_6"><i class="fa-solid fa-check"></i></div>
                         <div class="task-content">
-                            <h3>Markdown構造のノート完成</h3>
-                            <p>得られた知見をノートにまとめ、自分が次に作業するときにコピペですぐ使える状態を作っておきましょう。</p>
+                            <h3>自分だけのプロンプトノート作成</h3>
+                            <p>前半で使用したスプレッドシート（プロンプト一覧）の中から、<strong>自分が実務で使えそうなプロンプトを3つ選び</strong>、CanvaやNotion、メモ帳などにコピーして「自分専用のテンプレート学習ノート」を作成する。
+                            </p>
+                        </div>
+                    </li>
+
+                    <li class="task-item" onclick="toggleTask('t3_7', this)">
+                        <div class="custom-checkbox" id="check_t3_7"><i class="fa-solid fa-check"></i></div>
+                        <div class="task-content">
+                            <h3>理解度チェックへの挑戦</h3>
+                            <p>ページ下の「📝 理解度チェック（クイズ）」に挑戦し、本日の学習内容が定着しているか確認する。全問正解でフィニッシュ！</p>
                         </div>
                     </li>
                 </ul>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem; margin-bottom: 2rem;">
-                <p style="font-size: 1.2rem; font-weight: bold; color: var(--accent);">
-                    Day 3の学習お疲れ様でした！次回は「画像生成の基礎」に進みます。
-                </p>
-                <a href="vol01-4_image_basic.html" class="btn"
-                    style="padding: 1rem 2rem; font-size: 1.1rem; border-radius: 30px;">
-                    次のカリキュラムへ進む <i class="fa-solid fa-arrow-right"></i>
-                </a>
+            <!-- Quiz Area -->
+            <div class="quiz-area glass-card" style="margin-top:3rem;">
+                <h2 style="font-size:1.6rem; margin:0 0 0.5rem; color:var(--accent);">📝 理解度チェック</h2>
+                <p style="color:var(--text-sub); margin-bottom:1.5rem;">Day 3 で学んだプロンプトの知識を確認しましょう</p>
+                <div id="quiz-vol01-3" style="text-align:left;">
+                    <div style="text-align:center; color:var(--text-sub);">クイズを読み込み中...</div>
+                </div>
             </div>
-
         </div>
 
+        <!-- Dev Notes Link -->
+        <div style="text-align:center; margin:40px 0;">
+            <a href="index_dev_notes.html" class="btn"
+                style="border-radius:30px; padding:12px 28px; background:#f8fafc; color:var(--text-sub); box-shadow:none; border:1px solid #e2e8f0;">
+                <i class="fa-solid fa-code"></i> 開発者ノート
+            </a>
+        </div>
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // ======= タブ切り替え =======
+        // --- Unlock Screen ---
+        document.body.classList.add('locked');
+        const overlay = document.getElementById('unlock-overlay');
+        const unlockBtn = document.getElementById('unlock-btn');
+
+        const unlock = () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => { overlay.style.visibility = 'hidden'; document.body.classList.remove('locked'); }, 600);
+        };
+        unlockBtn.addEventListener('click', unlock);
+        document.addEventListener('keydown', e => { if (e.key === 'Enter' && overlay.style.visibility !== 'hidden') unlock(); });
+
+        // --- Tab Switching ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
 
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        // --- Copy Utility ---
+        function copyText(text, event) {
+            event.stopPropagation();
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.currentTarget;
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                btn.style.background = '#10b981'; btn.style.color = '#fff'; btn.style.borderColor = '#10b981';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
             });
         }
 
-        // ======= タスク完了処理 =======
-        // 全4タスク
-        const totalTasks = 4;
-        let completedIds = JSON.parse(localStorage.getItem('day3_completed')) || [];
+        // --- Progress ---
+        const totalTasks = 7;
+        let completedTasks = {};
 
-        // 初期描画
-        document.addEventListener('DOMContentLoaded', () => {
-            completedIds.forEach(id => {
-                const el = document.getElementById('check_' + id);
-                if (el) el.closest('.task-item').classList.add('completed');
-            });
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('day3_progress');
+            if (saved) {
+                completedTasks = JSON.parse(saved);
+                for (const [tid, done] of Object.entries(completedTasks)) {
+                    if (done) {
+                        const el = document.getElementById('check_' + tid);
+                        if (el) el.parentElement.classList.add('completed');
+                    }
+                }
+            }
             updateProgress();
         });
 
-        function toggleTask(id, element) {
-            if (completedIds.includes(id)) {
-                completedIds = completedIds.filter(item => item !== id);
-                element.classList.remove('completed');
-            } else {
-                completedIds.push(id);
-                element.classList.add('completed');
-
-                // すべて完了したら紙吹雪
-                if (completedIds.length === totalTasks) {
-                    fireConfetti();
-                } else {
-                    playPopSound();
-                }
-            }
-
-            localStorage.setItem('day3_completed', JSON.stringify(completedIds));
+        function toggleTask(taskId, element) {
+            const done = element.classList.toggle('completed');
+            completedTasks[taskId] = done;
+            localStorage.setItem('day3_progress', JSON.stringify(completedTasks));
             updateProgress();
         }
 
         function updateProgress() {
-            let percent = Math.round((completedIds.length / totalTasks) * 100);
-            document.getElementById('progress-bar').style.width = percent + '%';
-            document.getElementById('progress-percent').innerText = percent + '%';
-
-            if (percent === 100) {
-                document.getElementById('progress-bar').style.background = 'linear-gradient(90deg, #34d399, #0d9488)';
-            } else {
-                document.getElementById('progress-bar').style.background = 'linear-gradient(90deg, var(--accent-light), var(--accent))';
-            }
+            const count = Object.values(completedTasks).filter(v => v).length;
+            const pct = Math.round((count / totalTasks) * 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-percent').innerText = pct + '%';
+            if (pct === 100 && count > 0 && !sessionStorage.getItem('day3_celebrated')) {
+                fireConfetti(); sessionStorage.setItem('day3_celebrated', 'true');
+            } else if (pct < 100) { sessionStorage.removeItem('day3_celebrated'); }
         }
 
-        // ======= コピー機能 =======
-        function copyText(text, e) {
-            e.stopPropagation();
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = e.target.closest('button');
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> コピーしました';
-                btn.style.background = '#f0fdfa';
-                btn.style.color = '#0d9488';
-                btn.style.borderColor = '#0d9488';
-
-                setTimeout(() => {
-                    btn.innerHTML = originalHtml;
-                    btn.style = '';
-                }, 2000);
-            });
-        }
-
-        // ======= 効果音 =======
-        function playPopSound() {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
-
-            gain.gain.setValueAtTime(0.3, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start();
-            osc.stop(ctx.currentTime + 0.1);
-        }
-
-        // ======= 紙吹雪 =======
+        // --- Confetti ---
         function fireConfetti() {
-            var duration = 3000;
-            var end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#4f46e5', '#0d9488', '#f59e0b']
+            const c = document.getElementById('confetti');
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
+            for (let i = 0; i < 130; i++) {
+                pieces.push({
+                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
+                    w: Math.random() * 8 + 4, h: Math.random() * 8 + 4,
+                    vx: Math.random() * 5 - 2.5, vy: Math.random() * 4 + 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360, rs: Math.random() * 8 - 4
                 });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#4f46e5', '#0d9488', '#f59e0b']
+            }
+            let aid;
+            function upd() {
+                ctx.clearRect(0, 0, c.width, c.height);
+                let active = false;
+                pieces.forEach(p => {
+                    p.y += p.vy; p.x += p.vx; p.rot += p.rs;
+                    if (p.y < c.height) active = true;
+                    ctx.save(); ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
                 });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-
-            // 少し派手な音
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(400, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.2);
-            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.4);
-
-            gain.gain.setValueAtTime(0.4, ctx.currentTime);
-            gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start();
-            osc.stop(ctx.currentTime + 0.4);
+                if (active) aid = requestAnimationFrame(upd);
+                else ctx.clearRect(0, 0, c.width, c.height);
+            }
+            upd();
+            setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 5000);
         }
     </script>
+    <script src="main.js"></script>
 </body>
 
 </html>
