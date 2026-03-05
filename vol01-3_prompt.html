@@ -51,79 +51,6 @@
             overflow: hidden;
         }
 
-        /* ===== UNLOCK SCREEN ===== */
-        #unlock-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #f0f9ff 0%, #ecfdf5 100%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.6s ease, visibility 0.6s;
-        }
-
-        .unlock-card {
-            text-align: center;
-            background: #fff;
-            padding: 3.5rem 4rem;
-            border-radius: 28px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-            max-width: 500px;
-            width: 90%;
-        }
-
-        .unlock-icon {
-            width: 86px;
-            height: 86px;
-            background: var(--accent-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            font-size: 2.2rem;
-            color: var(--accent);
-        }
-
-        .unlock-card h2 {
-            font-size: 1.8rem;
-            margin: 0 0 0.5rem;
-            color: var(--text-main);
-            font-weight: 800;
-        }
-
-        .unlock-card p {
-            color: var(--text-sub);
-            margin: 0 0 2rem;
-            line-height: 1.6;
-            font-size: 1.05rem;
-        }
-
-        .unlock-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.8rem;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 1rem 2.8rem;
-            border-radius: 14px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .unlock-btn:hover {
-            background: #0284c7;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
         /* ===== HEADER ===== */
         .fixed-header {
             position: fixed;
@@ -728,18 +655,6 @@
 
 <body>
 
-    <!-- Unlock Screen -->
-    <div id="unlock-overlay">
-        <div class="unlock-card">
-            <div class="unlock-icon"><i class="fa-solid fa-code"></i></div>
-            <h2>Module 03 を開始する</h2>
-            <p>生成AIのプロンプト指示方法とその応用<br>準備ができたらボタンを押してスタートしましょう。</p>
-            <button class="unlock-btn" id="unlock-btn">
-                <i class="fa-solid fa-play"></i> START MODULE
-            </button>
-        </div>
-    </div>
-
     <canvas id="confetti"></canvas>
 
     <!-- Header -->
@@ -851,7 +766,8 @@
                                         style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;"># 見出し1</code>,
                                     <code
                                         style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;">## 見出し2</code>
-                                    : 情報の階層を整理して伝えます。（例：「# 前提条件」、「# 指示内容」）</li>
+                                    : 情報の階層を整理して伝えます。（例：「# 前提条件」、「# 指示内容」）
+                                </li>
                                 <li><code
                                         style="background:#fff; padding:2px 6px; border-radius:4px; font-weight:bold;">- 箇条書き</code>
                                     : 複数の条件やルールがある場合は、箇条書きで漏れなく伝達します。</li>
@@ -1105,18 +1021,6 @@
 
     <!-- Scripts -->
     <script>
-        // --- Unlock Screen ---
-        document.body.classList.add('locked');
-        const overlay = document.getElementById('unlock-overlay');
-        const unlockBtn = document.getElementById('unlock-btn');
-
-        const unlock = () => {
-            overlay.style.opacity = '0';
-            setTimeout(() => { overlay.style.visibility = 'hidden'; document.body.classList.remove('locked'); }, 600);
-        };
-        unlockBtn.addEventListener('click', unlock);
-        document.addEventListener('keydown', e => { if (e.key === 'Enter' && overlay.style.visibility !== 'hidden') unlock(); });
-
         // --- Tab Switching ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
