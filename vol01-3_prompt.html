@@ -585,12 +585,466 @@
             text-align: center;
         }
 
-        /* ===== CONFETTI ===== */
-        #confetti {
+        /* ===== CONFETTI & SPARKLES ===== */
+        #confetti,
+        #sparkles {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 9998;
+        }
+
+        /* ===== MAGICAL EXPERIENCE UI COMPONENTS ===== */
+
+        /* 1. Bento Grid */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(180px, auto));
+            gap: 1.2rem;
+            margin: 2.5rem 0;
+        }
+
+        .bento-item {
+            background: #fff;
+            border-radius: 16px;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #f1f5f9;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent-light);
+        }
+
+        .bento-span-2 {
+            grid-column: span 2;
+        }
+
+        .bento-row-2 {
+            grid-row: span 2;
+        }
+
+        .bento-item.card-magic {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            border: none;
+        }
+
+        .bento-item.card-magic::before {
+            content: "✨";
+            font-size: 8rem;
+            position: absolute;
+            right: -10px;
+            bottom: -30px;
+            opacity: 0.08;
+        }
+
+        .bento-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .bento-title {
+            font-weight: 800;
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .bento-desc {
+            font-size: 0.9rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .bento-item.card-magic .bento-desc {
+            color: #cbd5e1;
+        }
+
+        /* 2. Browser Mockup */
+        .mockup-container {
+            margin: 2.5rem 0;
+            display: flex;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .browser-mockup {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transform: rotateX(2deg);
+            /* Subtle tilt */
+            transition: transform 0.4s;
+        }
+
+        .browser-mockup:hover {
+            transform: rotateX(0deg) translateY(-5px);
+        }
+
+        .browser-header {
+            background: #f1f5f9;
+            padding: 10px 15px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .browser-dot.red {
+            background: #ff5f57;
+        }
+
+        .browser-dot.yellow {
+            background: #febc2e;
+        }
+
+        .browser-dot.green {
+            background: #28c840;
+        }
+
+        .browser-content {
+            padding: 0;
+            min-height: 200px;
+            background: #fff;
+        }
+
+        /* 3. Workflow Timeline */
+        .workflow {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 3.5rem 0;
+        }
+
+        .workflow::before {
+            content: "";
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e2e8f0;
+            z-index: 0;
+            border-radius: 2px;
+        }
+
+        .flow-step {
+            position: relative;
+            z-index: 1;
+            width: 22%;
+            text-align: center;
+        }
+
+        .step-icon {
+            width: 54px;
+            height: 54px;
+            background: #fff;
+            border: 4px solid var(--accent);
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .flow-step:hover .step-icon {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        .step-label {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 1.05rem;
+        }
+
+        .step-detail {
+            font-size: 0.85rem;
+            color: #64748b;
+            line-height: 1.5;
+            display: block;
+        }
+
+        /* 4. Mission Ticket */
+        .mission-ticket {
+            background: #fff;
+            border-radius: 16px;
+            display: flex;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            margin: 3rem 0;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .ticket-stub {
+            background: linear-gradient(135deg, var(--text-main), #1e293b);
+            color: #fff;
+            padding: 2rem;
+            width: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-right: 2px dashed rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        /* Punch holes */
+        .ticket-stub::after {
+            content: "";
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--bg-body);
+            border-radius: 50%;
+            border-bottom: 1px solid #e2e8f0;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .ticket-stub::before {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            right: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--bg-body);
+            border-radius: 50%;
+            border-top: 1px solid #e2e8f0;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .ticket-body {
+            padding: 2rem 2.5rem;
+            flex: 1;
+            background: #fff;
+        }
+
+        .ticket-title {
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        /* 5. UI Sound Toggle */
+        .sound-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .sound-toggle-btn:hover {
+            transform: scale(1.1);
+            color: var(--accent);
+        }
+
+        .sound-toggle-btn.muted i::before {
+            content: "\f6a9";
+            /* fa-volume-xmark */
+        }
+
+        /* 6. Cauldron Drag & Drop Simulator */
+        .cauldron-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2.5rem 0;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cauldron-ingredients {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .ingredient {
+            background: #fff;
+            padding: 1rem 1.2rem;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+            cursor: grab;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+
+        .ingredient:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .ingredient.used {
+            opacity: 0.5;
+            pointer-events: none;
+            border-style: solid;
+            background: #f1f5f9;
+        }
+
+        .cauldron-pot-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cauldron {
+            width: 150px;
+            height: 120px;
+            background: #1e293b;
+            border-radius: 10px 10px 60px 60px;
+            position: relative;
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 3rem;
+            transition: all 0.3s;
+        }
+
+        .cauldron::before {
+            /* Pot rim */
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            height: 20px;
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        .cauldron.drag-over {
+            transform: scale(1.05);
+            box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.5), 0 0 30px var(--accent-glow);
+        }
+
+        .cauldron.drag-over::before {
+            background: var(--accent);
+        }
+
+        .cauldron-result {
+            margin-top: 1.5rem;
+            width: 100%;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        /* 7. Wax Seal */
+        .wax-seal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #f43f5e, #be123c);
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2), inset 1px 2px 5px rgba(255, 255, 255, 0.3);
+            transform: rotate(15deg) scale(0);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Irregular edge for wax */
+        .wax-seal::after {
+            content: "";
+            position: absolute;
+            inset: -3px;
+            border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%;
+            border: 2px solid #9f1239;
+            z-index: -1;
+        }
+
+        @keyframes stampIn {
+            0% {
+                transform: rotate(15deg) scale(3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: rotate(15deg) scale(0.9);
+                opacity: 1;
+            }
+
+            70% {
+                transform: rotate(15deg) scale(1.1);
+            }
+
+            100% {
+                transform: rotate(15deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .task-item.completed {
+            position: relative;
+        }
+
+        /* Needed for absolute seal */
+        .task-item.completed .wax-seal {
+            animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         /* ===== ANIMATIONS ===== */
@@ -642,12 +1096,62 @@
                 padding: 1.8rem 1.5rem;
             }
 
-            .unlock-card {
-                padding: 2.5rem 1.5rem;
-            }
-
             h1 {
                 font-size: 2rem;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            .bento-span-2,
+            .bento-row-2 {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .workflow {
+                flex-direction: column;
+                padding-left: 20px;
+            }
+
+            .workflow::before {
+                width: 4px;
+                height: 100%;
+                left: 20px;
+                top: 0;
+            }
+
+            .flow-step {
+                width: 100%;
+                text-align: left;
+                padding-left: 30px;
+                margin-bottom: 30px;
+            }
+
+            .step-icon {
+                margin-left: 0;
+            }
+
+            .mission-ticket {
+                flex-direction: column;
+            }
+
+            .ticket-stub {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px dashed rgba(255, 255, 255, 0.3);
+                padding: 1.5rem;
+            }
+
+            .ticket-stub::after,
+            .ticket-stub::before {
+                display: none;
+            }
+
+            .cauldron-container {
+                flex-direction: column;
             }
         }
     </style>
@@ -655,7 +1159,12 @@
 
 <body>
 
+    <button class="sound-toggle-btn" id="sound-toggle" title="Toggle UI Sounds" onclick="toggleSound()">
+        <i class="fa-solid fa-volume-high"></i>
+    </button>
+
     <canvas id="confetti"></canvas>
+    <canvas id="sparkles"></canvas>
 
     <!-- Header -->
     <header class="fixed-header">
@@ -728,15 +1237,42 @@
                         <p style="line-height:1.8; margin-bottom: 1rem;">
                             もっとも基本的な「メール返信プロンプト」を例に、優れたプロンプトの<strong>4つの構成要素</strong>を解説します。AIに丸投げするのではなく、制約条件を設けることの重要性が理解できます。
                         </p>
-                        <div class="box concept" style="margin-top:1rem; padding-top: 2rem;">
-                            <h4>プロンプトの4大要素（型）</h4>
-                            <ul style="padding-left:20px;">
-                                <li><strong>[Role]（役割）:</strong> あなたは【一流のビジネスマン】です。</li>
-                                <li><strong>[Task]（タスク）:</strong> 以下のメールに対する【お詫びと日程調整の返信】を作成してください。</li>
-                                <li><strong>[Context]（背景）:</strong> 相手は【重要な取引先の社長】です。</li>
-                                <li><strong>[Format]（出力）:</strong> 【敬語を正しく使い、3段落構成】で出力してください。</li>
-                            </ul>
-                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Grid for Prompt Elements -->
+                <div class="bento-grid">
+                    <div class="bento-item card-magic bento-row-2 bento-span-2">
+                        <span class="bento-icon">🪄</span>
+                        <span class="bento-title">プロンプトの4大要素（型）</span>
+                        <p class="bento-desc">
+                            AIへの指示は、この4つのブロックを組み合わせることで魔法のように精度が上がります。<br><br>
+                            「あなたは誰で」「何を」「どんな状況で」「どう出力してほしいか」を明確に定義することが、AI使いの第一歩です。
+                        </p>
+                    </div>
+
+                    <div class="bento-item">
+                        <span class="bento-icon" style="color:#0ea5e9;">🎭</span>
+                        <span class="bento-title">[Role] 役割</span>
+                        <p class="bento-desc">あなたは【一流のビジネスマン】です。</p>
+                    </div>
+
+                    <div class="bento-item">
+                        <span class="bento-icon" style="color:#10b981;">🎯</span>
+                        <span class="bento-title">[Task] タスク</span>
+                        <p class="bento-desc">以下のメールに対する【お詫びと日程調整の返信】を作成してください。</p>
+                    </div>
+
+                    <div class="bento-item">
+                        <span class="bento-icon" style="color:#f59e0b;">🌍</span>
+                        <span class="bento-title">[Context] 背景</span>
+                        <p class="bento-desc">相手は【重要な取引先の社長】です。</p>
+                    </div>
+
+                    <div class="bento-item">
+                        <span class="bento-icon" style="color:#8b5cf6;">📝</span>
+                        <span class="bento-title">[Format] 出力形式</span>
+                        <p class="bento-desc">【敬語を正しく使い、3段落構成】で出力してください。</p>
                     </div>
                 </div>
             </div>
@@ -779,19 +1315,74 @@
                     </div>
                 </div>
 
-                <div class="code-box">
-                    <span class="code-label">Markdown活用の完全版プロンプト例</span>
-                    <span class="code-highlight"># 命令</span><br>
-                    あなたは経験豊富なWebライターです。<br>
-                    以下の制約条件と入力文をもとに、魅力的なブログ記事を作成してください。<br><br>
+                <!-- Workflow Timeline -->
+                <div class="workflow">
+                    <div class="flow-step">
+                        <div class="step-icon"><i class="fa-solid fa-list-ul"></i></div>
+                        <span class="step-label">1. 情報の整理</span>
+                        <span class="step-detail">伝えたい条件を箇条書きで洗い出す</span>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-icon"><i class="fa-brands fa-markdown"></i></div>
+                        <span class="step-label">2. マークダウン化</span>
+                        <span class="step-detail">見出し（#）や太字（**）で見やすく構造化</span>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <span class="step-label">3. AIへ入力</span>
+                        <span class="step-detail">整理されたプロンプトをGeminiに送信</span>
+                    </div>
+                    <div class="flow-step">
+                        <div class="step-icon"><i class="fa-solid fa-check-double"></i></div>
+                        <span class="step-label">4. 結果の確認</span>
+                        <span class="step-detail">出力形式がルール通りかチェック</span>
+                    </div>
+                </div>
 
-                    <span class="code-highlight"># 制約条件</span><br>
-                    - 文字数は800文字程度<br>
-                    - **初心者にもわかりやすい**ですます調<br>
-                    - 専門用語には簡単な解説を添えること<br><br>
+                <!-- Browser Mockup Code Box -->
+                <div class="mockup-container">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-dot red"></div>
+                            <div class="browser-dot yellow"></div>
+                            <div class="browser-dot green"></div>
+                            <div
+                                style="flex:1; text-align:center; font-size:0.8rem; color:#64748b; font-weight:bold; letter-spacing:1px;">
+                                Markdown活用の完全版プロンプト例</div>
+                        </div>
+                        <div class="browser-content">
+                            <div class="code-box" style="margin:0; border-radius:0; border-left:none; box-shadow:none;">
+                                <span class="code-highlight"># 命令</span><br>
+                                あなたは経験豊富なWebライターです。<br>
+                                以下の制約条件と入力文をもとに、魅力的なブログ記事を作成してください。<br><br>
 
-                    <span class="code-highlight"># 入力文</span><br>
-                    (ここに要約してほしい文章やメモを貼り付け)
+                                <span class="code-highlight"># 制約条件</span><br>
+                                - 文字数は800文字程度<br>
+                                - **初心者にもわかりやすい**ですます調<br>
+                                - 専門用語には簡単な解説を添えること<br><br>
+
+                                <span class="code-highlight"># 入力文</span><br>
+                                (ここに要約してほしい文章やメモを貼り付け)
+
+                                <button class="btn btn-copy"
+                                    style="position:absolute; top:15px; right:15px; margin:0; padding:0.4rem 0.8rem;"
+                                    onclick="copyCode(this, 'prompt-ex1')">
+                                    <i class="fa-regular fa-copy"></i>
+                                </button>
+                                <div id="prompt-ex1" style="display:none;"># 命令
+                                    あなたは経験豊富なWebライターです。
+                                    以下の制約条件と入力文をもとに、魅力的なブログ記事を作成してください。
+
+                                    # 制約条件
+                                    - 文字数は800文字程度
+                                    - **初心者にもわかりやすい**ですます調
+                                    - 専門用語には簡単な解説を添えること
+
+                                    # 入力文
+                                    (ここに要約してほしい文章やメモを貼り付け)</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -836,49 +1427,61 @@
                 </div>
             </div>
 
-            <!-- 前半ミッション -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-list-check"></i>
-                    <h2>🧰 前半のミッション</h2>
+            <!-- 前半ミッション (Mission Ticket) -->
+            <div class="mission-ticket">
+                <div class="ticket-stub">
+                    <i class="fa-solid fa-ticket"
+                        style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--accent-light);"></i>
+                    <h3 style="margin:0; font-family: 'Teko', sans-serif; font-size: 1.8rem; letter-spacing: 2px;">
+                        MISSION</h3>
+                    <span style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">HALF 1 CLEARANCE</span>
                 </div>
-                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
-                    以下のミッションをすべてクリアしてチェックを入れましょう！進行度がアップします。
-                </p>
+                <div class="ticket-body">
+                    <h2 class="ticket-title">🧰 前半のミッション</h2>
+                    <p style="margin-bottom:1.5rem; color:var(--text-sub);">
+                        以下のミッションをすべてクリアしてチェックを入れましょう！<br>
+                        クリアすると修了スタンプが押されます。
+                    </p>
 
-                <ul class="task-list">
-                    <li class="task-item" onclick="toggleTask('t3_1', this)">
-                        <div class="custom-checkbox" id="check_t3_1"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>動画視聴とプロンプト構成の理解</h3>
-                            <p>動画①②を視聴し、AIに与えるべきプロンプトの4要素（Role, Task, Context, Format）とMarkdown記法の重要性を理解する。</p>
-                        </div>
-                    </li>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t3_1', this)">
+                            <div class="custom-checkbox" id="check_t3_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>動画視聴とプロンプト構成の理解</h3>
+                                <p>動画①②を視聴し、AIに与えるべきプロンプトの4要素とMarkdown記法の重要性を理解する。</p>
+                            </div>
+                            <!-- Wax Seal Container -->
+                            <div class="wax-seal">済</div>
+                        </li>
 
-                    <li class="task-item" onclick="toggleTask('t3_2', this)">
-                        <div class="custom-checkbox" id="check_t3_2"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>プロンプトの実行テスト</h3>
-                            <p>このページにある「Markdown活用の完全版プロンプト例」をコピーし、Geminiに貼り付けて、指示通りに動くかテストしてみましょう。</p>
-                        </div>
-                    </li>
+                        <li class="task-item" onclick="toggleTask('t3_2', this)">
+                            <div class="custom-checkbox" id="check_t3_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>プロンプトの実行テスト</h3>
+                                <p>このページにある「Markdown活用の完全版プロンプト例」をコピーし、Geminiに貼り付けてテストする。</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
 
-                    <li class="task-item" onclick="toggleTask('t3_3', this)">
-                        <div class="custom-checkbox" id="check_t3_3"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>Markdownチートシートのブックマーク</h3>
-                            <p>「大事な参考資料」からDocBaseのMarkdownガイドを開き、いつでも見返せるようにブラウザにブックマークする。</p>
-                        </div>
-                    </li>
+                        <li class="task-item" onclick="toggleTask('t3_3', this)">
+                            <div class="custom-checkbox" id="check_t3_3"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>Markdownチートシートの保存</h3>
+                                <p>DocBaseのMarkdownガイドを開き、いつでも見返せるようにブラウザにブックマークする。</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
 
-                    <li class="task-item" onclick="toggleTask('t3_4', this)">
-                        <div class="custom-checkbox" id="check_t3_4"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>プロンプト一覧シートを開く</h3>
-                            <p>提供されたスプレッドシート（プロンプト一覧）を開き、どのようなプロンプトの型が用意されているか眺めてみましょう。</p>
-                        </div>
-                    </li>
-                </ul>
+                        <li class="task-item" onclick="toggleTask('t3_4', this)">
+                            <div class="custom-checkbox" id="check_t3_4"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>プロンプト一覧シートを開く</h3>
+                                <p>提供されたスプレッドシート（プロンプト一覧）を開き、どのようなプロンプトがあるか眺める。</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -949,55 +1552,88 @@
                     </a>
                 </div>
 
-                <div class="box concept">
-                    <h4>業務シナリオ別 実践プロンプトのアイデア</h4>
-                    <p style="line-height:1.7; margin-bottom:1rem;">
-                        <strong>1. アイディア出し（壁打ち相手）</strong><br>
-                        「あなたはクリエイティブディレクターです。新商品のプロモーション施策を10個、誰も思いつかないような斬新な切り口で挙げてください。」
-                    </p>
-                    <p style="line-height:1.7; margin-bottom:1rem;">
-                        <strong>2. 長文の要約・アクション抽出</strong><br>
-                        「以下の議事録から、決定事項と未決定事項を整理し、誰が・いつまでに・何をするべきか（Next Action）をMarkdownの表形式で出力してください。」
-                    </p>
-                    <p style="line-height:1.7;">
-                        <strong>3. トーン＆マナーの変換</strong><br>
-                        「以下の箇条書きのメモをベースに、取引先に送る丁寧なビジネスメールを作成してください。クッション言葉を適切に使い、角が立たないように配慮すること。」
-                    </p>
+                <!-- Cauldron Simulator -->
+                <div class="cauldron-container">
+                    <div class="cauldron-ingredients" id="ingredients-list">
+                        <div style="font-size:0.9rem; color:var(--text-sub); margin-bottom:0.5rem; font-weight:bold;">
+                            <i class="fa-solid fa-flask"></i> ドラッグ＆ドロップで調合してみよう！
+                        </div>
+                        <div class="ingredient" draggable="true" id="ing1" ondragstart="drag(event)">
+                            <span style="font-size:1.5rem;">🎭</span> Role: ベテラン編集者
+                        </div>
+                        <div class="ingredient" draggable="true" id="ing2" ondragstart="drag(event)">
+                            <span style="font-size:1.5rem;">🎯</span> Task: ブログのタイトル案出し
+                        </div>
+                        <div class="ingredient" draggable="true" id="ing3" ondragstart="drag(event)">
+                            <span style="font-size:1.5rem;">🌍</span> Context: 読者はAI初心者
+                        </div>
+                        <div class="ingredient" draggable="true" id="ing4" ondragstart="drag(event)">
+                            <span style="font-size:1.5rem;">📝</span> Format: 10個、番号付きリスト
+                        </div>
+                    </div>
+
+                    <div class="cauldron-pot-area">
+                        <div class="cauldron" id="magical-cauldron" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            <i class="fa-fire fa-solid"></i>
+                        </div>
+                        <div
+                            style="margin-top:1rem; font-weight:bold; color:var(--text-main); font-family:'Teko', sans-serif; letter-spacing:1px; font-size:1.2rem;">
+                            PROMPT CAULDRON (<span id="ing-count">0</span>/4)</div>
+                    </div>
                 </div>
+
+                <div class="cauldron-result code-box" id="cauldron-result">
+                    <span class="code-label" style="background:#10b981;">完成したプロンプト</span>
+                    あなたはベテラン編集者です。<br>
+                    AI初心者向けのブログ記事のタイトル案を10個、番号付きリスト形式で出力してください。<br>
+                    <button class="btn btn-copy" style="margin-top:1.5rem;" onclick="copyCode(this, 'cauldron-prompt')">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                    <div id="cauldron-prompt" style="display:none;">
+                        あなたはベテラン編集者です。AI初心者向けのブログ記事のタイトル案を10個、番号付きリスト形式で出力してください。</div>
+                </div>
+
             </div>
 
-            <!-- 後半ミッション -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-tasks"></i>
-                    <h2>🧰 後半のミッション</h2>
+            <!-- 後半ミッション (Mission Ticket) -->
+            <div class="mission-ticket">
+                <div class="ticket-stub" style="background: linear-gradient(135deg, #0f172a, #4338ca);">
+                    <i class="fa-solid fa-ticket" style="font-size: 2.5rem; margin-bottom: 1rem; color: #818cf8;"></i>
+                    <h3 style="margin:0; font-family: 'Teko', sans-serif; font-size: 1.8rem; letter-spacing: 2px;">
+                        MISSION</h3>
+                    <span style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">FINAL CLEARANCE</span>
                 </div>
-                <ul class="task-list">
-                    <li class="task-item" onclick="toggleTask('t3_5', this)">
-                        <div class="custom-checkbox" id="check_t3_5"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>高度なプロンプトテクニックの理解</h3>
-                            <p>後半の動画⑤⑥⑦を視聴し、「Few-Shot」や「Chain of Thought」といったプロンプト応用術の実力を学ぶ。</p>
-                        </div>
-                    </li>
+                <div class="ticket-body">
+                    <h2 class="ticket-title">🧰 後半のミッション</h2>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t3_5', this)">
+                            <div class="custom-checkbox" id="check_t3_5"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>高度なプロンプトテクニックの理解</h3>
+                                <p>後半の動画⑤⑥⑦を視聴し、「Few-Shot」や「Chain of Thought」の実力を学ぶ。</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
 
-                    <li class="task-item" onclick="toggleTask('t3_6', this)">
-                        <div class="custom-checkbox" id="check_t3_6"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>自分だけのプロンプトノート作成</h3>
-                            <p>前半で使用したスプレッドシート（プロンプト一覧）の中から、<strong>自分が実務で使えそうなプロンプトを3つ選び</strong>、CanvaやNotion、メモ帳などにコピーして「自分専用のテンプレート学習ノート」を作成する。
-                            </p>
-                        </div>
-                    </li>
+                        <li class="task-item" onclick="toggleTask('t3_6', this)">
+                            <div class="custom-checkbox" id="check_t3_6"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>自分だけのプロンプトノート作成</h3>
+                                <p>スプレッドシートから自分が実務で使えそうなプロンプトを3つ選び、自分専用のノートを作成する。</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
 
-                    <li class="task-item" onclick="toggleTask('t3_7', this)">
-                        <div class="custom-checkbox" id="check_t3_7"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>理解度チェックへの挑戦</h3>
-                            <p>ページ下の「📝 理解度チェック（クイズ）」に挑戦し、本日の学習内容が定着しているか確認する。全問正解でフィニッシュ！</p>
-                        </div>
-                    </li>
-                </ul>
+                        <li class="task-item" onclick="toggleTask('t3_7', this)">
+                            <div class="custom-checkbox" id="check_t3_7"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h3>理解度チェックへの挑戦</h3>
+                                <p>ページ下の「📝 理解度チェック（クイズ）」に挑戦し、全問正解でフィニッシュ！</p>
+                            </div>
+                            <div class="wax-seal">済</div>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Quiz Area -->
@@ -1027,9 +1663,10 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
+            playUISound('click');
         }
 
-        // --- Copy Utility ---
+        // --- Copy Utility & Sparkles ---
         function copyText(text, event) {
             event.stopPropagation();
             navigator.clipboard.writeText(text).then(() => {
@@ -1037,7 +1674,26 @@
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
                 btn.style.background = '#10b981'; btn.style.color = '#fff'; btn.style.borderColor = '#10b981';
+
+                playUISound('magic');
+                createSparkles(event.clientX, event.clientY);
+
                 setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+            });
+        }
+
+        function copyCode(btn, elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                btn.style.color = '#10b981';
+                playUISound('magic');
+
+                const rect = btn.getBoundingClientRect();
+                createSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
             });
         }
 
@@ -1063,6 +1719,16 @@
             const done = element.classList.toggle('completed');
             completedTasks[taskId] = done;
             localStorage.setItem('day3_progress', JSON.stringify(completedTasks));
+
+            if (done) {
+                playUISound('stamp');
+                // Create mini sparkles near the checkbox
+                const rect = element.querySelector('.custom-checkbox').getBoundingClientRect();
+                createSparkles(rect.left + 15, rect.top + 15, 10, '#f43f5e');
+            } else {
+                playUISound('click');
+            }
+
             updateProgress();
         }
 
@@ -1109,6 +1775,215 @@
             }
             upd();
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 5000);
+        }
+
+        /* =========================================
+           MAGICAL EXPERIENCE V2.0 SCRIPTS
+           ========================================= */
+
+        // --- UI Sounds (Web Audio API) ---
+        let audioCtx;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function toggleSound() {
+            initAudio();
+            isMuted = !isMuted;
+            const btn = document.getElementById('sound-toggle');
+            if (isMuted) {
+                btn.classList.add('muted');
+            } else {
+                btn.classList.remove('muted');
+                playUISound('chime');
+            }
+        }
+
+        function playUISound(type) {
+            if (isMuted) return;
+            initAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                // Subtle high-pitch click
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(1200, now + 0.05);
+                gainNode.gain.setValueAtTime(0.05, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'stamp') {
+                // Thud sound for wax seal
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+                gainNode.gain.setValueAtTime(0.2, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                osc.start(now);
+                osc.stop(now + 0.15);
+            } else if (type === 'magic') {
+                // Shimmer/Sparkle sound for copy
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1200, now);
+                osc.frequency.linearRampToValueAtTime(2000, now + 0.1);
+                osc.frequency.linearRampToValueAtTime(1500, now + 0.3);
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.08, now + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'chime') {
+                // Success chime
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.1, now + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+                osc.start(now);
+                osc.stop(now + 1.0);
+            } else if (type === 'plop') {
+                // Cauldron drop sound
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(300, now);
+                osc.frequency.exponentialRampToValueAtTime(100, now + 0.2);
+                gainNode.gain.setValueAtTime(0.2, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                osc.start(now);
+                osc.stop(now + 0.2);
+            }
+        }
+
+        // --- Particle Sparkles ---
+        function createSparkles(x, y, count = 20, color = '#facc15') {
+            const canvas = document.getElementById('sparkles');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            for (let i = 0; i < count; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 4 + 2;
+                particles.push({
+                    x: x, y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    radius: Math.random() * 3 + 1,
+                    alpha: 1,
+                    decay: Math.random() * 0.02 + 0.02,
+                    color: color
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.1; // gravity
+                    p.alpha -= p.decay;
+
+                    if (p.alpha > 0) {
+                        active = true;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${p.alpha})`;
+                        ctx.fill();
+                    }
+                });
+
+                if (active) requestAnimationFrame(animate);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            animate();
+        }
+
+        function hexToRgb(hex) {
+            // Very simple hex to rgb string converter (assumes complete hex format)
+            if (hex.startsWith('#')) hex = hex.slice(1);
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
+            return `${r}, ${g}, ${b}`;
+        }
+
+        // Initialize audio context on first click anywhere
+        document.body.addEventListener('click', initAudio, { once: true });
+
+        // --- Cauldron Drag & Drop Logic ---
+        let itemsInCauldron = 0;
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.dataTransfer.effectAllowed = "move";
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('drag-over');
+        }
+
+        // Reset drag over styling when leaving
+        document.getElementById('magical-cauldron').addEventListener('dragleave', function (ev) {
+            this.classList.remove('drag-over');
+        });
+
+        function drop(ev) {
+            ev.preventDefault();
+            const cauldron = document.getElementById('magical-cauldron');
+            cauldron.classList.remove('drag-over');
+
+            var data = ev.dataTransfer.getData("text");
+            var draggedItem = document.getElementById(data);
+
+            if (draggedItem && !draggedItem.classList.contains('used')) {
+                // Plop sound & effect
+                playUISound('plop');
+                const rect = cauldron.getBoundingClientRect();
+                createSparkles(rect.left + rect.width / 2, rect.top + 20, 15, '#38bdf8');
+
+                // Mark as used
+                draggedItem.classList.add('used');
+                itemsInCauldron++;
+
+                // Update counter
+                document.getElementById('ing-count').innerText = itemsInCauldron;
+
+                // "Boil" effect on pot
+                cauldron.style.transform = 'scale(1.1) translateY(5px)';
+                cauldron.style.color = 'rgba(255,255,255,0.8)';
+                setTimeout(() => {
+                    cauldron.style.transform = '';
+                    cauldron.style.color = '';
+                }, 300);
+
+                // If all 4 items dropped, show result
+                if (itemsInCauldron >= 4) {
+                    setTimeout(() => {
+                        playUISound('chime');
+                        createSparkles(rect.left + rect.width / 2, rect.top + 20, 50, '#10b981');
+                        document.getElementById('cauldron-result').style.display = 'block';
+                        cauldron.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-light); text-shadow:0 0 20px var(--accent-light); opacity:1;"></i>';
+                    }, 500);
+                }
+            }
         }
     </script>
     <script src="main.js"></script>
