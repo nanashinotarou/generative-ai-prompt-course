@@ -578,32 +578,34 @@
             }
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .fixed-header {
-                padding: 0.8rem 1rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
+        .dev-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
 
-            .progress-container {
-                margin: 0;
-                min-width: 100%;
-                order: 3;
-            }
-
-            .tab-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .glass-card {
-                padding: 1.5rem;
-            }
-
-            .unlock-card {
-                padding: 2rem;
-            }
+        .dev-link:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            border-color: var(--accent-light);
         }
     </style>
 </head>
@@ -878,7 +880,8 @@
                         <div class="task-content">
                             <h3>6つのプロンプトノートの作成</h3>
                             <p>指定のドキュメントからテキストをコピーし、1つのプロンプトごとに4つのAIの特徴をまとめる（Canva, スライド等を使用）。</p>
-                            <button class="btn btn-copy" onclick="copyText('https://docs.google.com/document/d/16k1obzkjpxKIn6bo5fPYVEEQeJXJvUDkBnPTEJMbnC8/edit?usp=sharing', event)">
+                            <button class="btn btn-copy"
+                                onclick="copyText('https://docs.google.com/document/d/16k1obzkjpxKIn6bo5fPYVEEQeJXJvUDkBnPTEJMbnC8/edit?usp=sharing', event)">
                                 <i class="fa-regular fa-copy"></i> テキストURLコピー
                             </button>
                         </div>
@@ -910,7 +913,7 @@
             </div>
         </div>
 
-                <!-- Dev Notes Link -->
+        <!-- Dev Notes Link -->
         <div style="text-align:center; margin:40px 0;">
             <a href="index_dev_notes.html" class="btn"
                 style="border-radius:30px; padding:12px 28px; background:#f1f5f9; color:var(--text-sub); box-shadow:none; border:1px solid #e2e8f0;">
@@ -1013,6 +1016,11 @@
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 5000);
         }
     </script>
+    <a href="index_dev_notes.html#day1" class="dev-link">
+        <i class="fa-solid fa-code"></i>
+        <span>制作の裏側・デザインの意図</span>
+    </a>
+
     <script src="main.js"></script>
 </body>
 

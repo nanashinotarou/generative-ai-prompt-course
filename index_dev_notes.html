@@ -4,61 +4,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Design Log - Magical Experience v2.0</title>
+    <title>Engineering Design Log | DX Training Mar 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&family=Teko:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Noto+Sans+JP:wght@400;700;900&family=Teko:wght@500;700&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
+            --bg: #0b0f19;
+            --card: #161e2d;
+            --card-hover: #1e293b;
+            --text: #f1f5f9;
             --sub-text: #94a3b8;
             --accent: #818cf8;
             --accent-glow: rgba(129, 140, 248, 0.4);
-            --pink: #f43f5e;
-            --yellow: #fbbf24;
-            --green: #10b981;
-            --border: #334155;
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --border: #1e293b;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 
-            /* Level Colors */
-            --lv1: #38bdf8;
-            /* Blue */
-            --lv2: #a855f7;
-            /* Purple */
-            --lv3: #f43f5e;
-            /* Red/Pink */
+            /* Theme Colors */
+            --day1: #38bdf8;
+            /* Azure */
+            --day2: #ec4899;
+            /* Pink */
+            --day3: #818cf8;
+            /* Indigo */
+
+            --lv1: #10b981;
+            --lv2: #3b82f6;
+            --lv3: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: "Noto Sans JP", sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.8;
+            line-height: 1.7;
             margin: 0;
-            padding: 40px 20px;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(244, 63, 94, 0.05) 0%, transparent 20%);
+            display: flex;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid var(--border);
+            padding: 40px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .sidebar h3 {
+            font-family: "Teko", sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-links li {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--sub-text);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .nav-link.active {
+            background: rgba(129, 140, 248, 0.1);
+            color: var(--accent);
+            border-color: rgba(129, 140, 248, 0.3);
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 60px;
+            max-width: 1200px;
         }
 
         header {
-            text-align: center;
             margin-bottom: 60px;
-            animation: fadeInDown 0.8s ease-out forwards;
         }
 
-        @keyframes fadeInDown {
+        .badge {
+            font-family: "Share Tech Mono", monospace;
+            background: var(--accent);
+            color: #fff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-family: "Teko", sans-serif;
+            font-size: 4.5rem;
+            margin: 0;
+            line-height: 0.9;
+            background: linear-gradient(135deg, var(--day1), var(--day2), var(--day3));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .dev-section {
+            display: none;
+            /* JSで制御 */
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(10px);
             }
 
             to {
@@ -67,32 +159,7 @@
             }
         }
 
-        h1 {
-            font-family: "Teko", sans-serif;
-            font-size: 4rem;
-            margin: 0;
-            line-height: 1;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #818cf8, #f43f5e);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(129, 140, 248, 0.2);
-        }
-
-        .subtitle {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text);
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-            border: 1px solid var(--border);
-        }
-
-        section {
+        .card {
             background: var(--card);
             border-radius: 24px;
             padding: 40px;
@@ -100,270 +167,478 @@
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-            border-color: var(--accent);
-        }
-
-        section::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--accent);
         }
 
         h2 {
             font-family: "Teko", sans-serif;
-            font-size: 2.2rem;
-            margin: 0 0 20px;
+            font-size: 2.5rem;
+            margin: 0 0 25px;
             display: flex;
             align-items: center;
             gap: 15px;
-            border-bottom: 1px dashed var(--border);
-            padding-bottom: 15px;
             color: var(--text);
         }
 
-        h2 i {
-            color: var(--accent);
-            background: rgba(129, 140, 248, 0.1);
-            padding: 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(129, 140, 248, 0.3);
+        h2.day-title {
+            font-size: 3.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 50px;
         }
 
-        .code-block {
-            background: #0b1120;
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .recipe-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
             padding: 25px;
-            border-radius: 12px;
-            font-family: "Fira Code", monospace;
-            color: #d1d5db;
-            overflow-x: auto;
-            border-left: 6px solid var(--lv2);
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-            border: 1px solid #1e293b;
-        }
-
-        .token.function {
-            color: #60a5fa;
-        }
-
-        .token.keyword {
-            color: #f472b6;
-        }
-
-        .token.string {
-            color: #34d399;
-        }
-
-        .token.comment {
-            color: #6b7280;
-            font-style: italic;
-        }
-
-        .tag-list {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--sub-text);
         }
 
-        .back-btn {
-            display: inline-flex;
+        .recipe-card h4 {
+            margin: 0 0 15px;
+            color: var(--accent);
+            display: flex;
             align-items: center;
             gap: 10px;
-            background: transparent;
-            color: var(--accent);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: 1px solid var(--accent);
-            transition: all 0.3s ease;
-            margin-bottom: 30px;
-            font-weight: bold;
         }
 
-        .back-btn:hover {
+        .code-box {
+            background: #010409;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: "Fira Code", monospace;
+            font-size: 0.85rem;
+            color: #d1d5db;
+            overflow-x: auto;
+            border: 1px solid #30363d;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 0;
+            right: 15px;
+            font-size: 0.7rem;
+            color: var(--sub-text);
+            text-transform: uppercase;
+        }
+
+        .lang-html {
+            border-top: 2px solid #e34c26;
+        }
+
+        .lang-css {
+            border-top: 2px solid #563d7c;
+        }
+
+        .lang-js {
+            border-top: 2px solid #f1e05a;
+        }
+
+        .tag-pill {
+            font-size: 0.75rem;
+            padding: 2px 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .back-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             background: var(--accent);
             color: #fff;
-            box-shadow: 0 0 20px var(--accent-glow);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 5px 20px var(--accent-glow);
+            z-index: 200;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .easter-egg {
-            text-align: center;
-            margin-top: 60px;
-            color: var(--border);
-            font-size: 0.8rem;
-            font-family: 'Fira Code', monospace;
+        .back-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                padding: 20px 10px;
+            }
+
+            .sidebar h3,
+            .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 80px;
+                padding: 40px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <a href="vol01-3_prompt.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> 研修ページに戻る</a>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <h3><i class="fa-solid fa-terminal"></i> <span>ENGINEERING</span></h3>
+        <ul class="nav-links">
+            <li><a href="#all" class="nav-link" id="link-all"><i class="fa-solid fa-layer-group"></i> <span>Show All
+                        Sections</span></a></li>
+            <li><a href="#day1" class="nav-link" id="link-day1"><i class="fa-solid fa-sun"></i> <span>Day 1: AI
+                        Start</span></a></li>
+            <li><a href="#day2" class="nav-link" id="link-day2"><i class="fa-solid fa-palette"></i> <span>Day 2: Canva
+                        Basics</span></a></li>
+            <li><a href="#day3" class="nav-link" id="link-day3"><i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Day 3: Prompt Magic</span></a></li>
+        </ul>
+        <div style="margin-top: 50px; padding: 0 15px;">
+            <p style="font-size: 0.75rem; color: var(--sub-text);">
+                Mar 2026 Course<br>
+                Build ID: <span style="font-family: monospace;">CF-88219</span>
+            </p>
+        </div>
+    </nav>
 
+    <!-- Main Content -->
+    <div class="main-content">
         <header>
+            <span class="badge">DESIGN RECIPES</span>
             <h1>Engineering Design Log</h1>
-            <div class="subtitle">Magical Experience v2.0 Behind the Scenes</div>
-            <p style="color: var(--sub-text); margin-top:20px;">
-                このページは、「生成AIとプロンプト Day3」のフロントエンド実装に込められた<br>
-                技術的工夫と魔法の裏側（Developer Notes）を記録したものです。
+            <p style="color: var(--sub-text); font-size: 1.1rem; max-width: 600px;">
+                研修サイトの実装に込められた技術的工夫と、デザイン・エンジニアリングの「裏側」を詳細に記録した開発者ノート。
             </p>
         </header>
 
-        <!-- Section 1: Web Audio API -->
-        <section style="border-left-color: var(--lv1);">
-            <h2><i class="fa-solid fa-music"></i> 01. UI Sounds (Web Audio API)</h2>
-            <div class="tag-list">
-                <span class="tag">JavaScript</span>
-                <span class="tag">AudioContext</span>
-                <span class="tag">UX</span>
-            </div>
-            <p>
-                「学習を単調な作業にしない」という目的のため、今回は音声ファイルを一切使わず、ブラウザ標準の <strong>Web Audio API (AudioContext)</strong>
-                を用いて、プログラムから直接サウンド波形を生成しています。
-            </p>
-            <p>
-                MP3ファイルなどを読み込むオーバーヘッドがなく、アクションに対して完全に遅延ゼロで音が鳴るのが特徴です。「チッ」というサトルなクリック音、「ドスッ」というワックスシールのスタンプ音、完了時のチャイム音などをオシレーター（波形発生器）で合成しています。
-            </p>
-            <div class="code-block">
-                <span class="token comment">// サウンド合成のコアロジック（抜粋）</span>
-                <span class="token keyword">const</span> now <span class="token keyword">=</span> audioCtx<span
-                    class="token punctuation">.</span><span class="token property">currentTime</span><span
-                    class="token punctuation">;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span
-                    class="token keyword">===</span> <span class="token string">'stamp'</span><span
-                    class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token comment">// 低音の三角波で「ドスッ」という重みを表現</span>
-                osc<span class="token punctuation">.</span><span class="token property">type</span> <span
-                    class="token keyword">=</span> <span class="token string">'triangle'</span><span
-                    class="token punctuation">;</span>
-                osc<span class="token punctuation">.</span><span class="token property">frequency</span><span
-                    class="token punctuation">.</span><span class="token function">setValueAtTime</span><span
-                    class="token punctuation">(</span><span class="token number">150</span><span
-                    class="token punctuation">,</span> now<span class="token punctuation">)</span><span
-                    class="token punctuation">;</span>
-                osc<span class="token punctuation">.</span><span class="token property">frequency</span><span
-                    class="token punctuation">.</span><span
-                    class="token function">exponentialRampToValueAtTime</span><span
-                    class="token punctuation">(</span><span class="token number">40</span><span
-                    class="token punctuation">,</span> now <span class="token keyword">+</span> <span
-                    class="token number">0.15</span><span class="token punctuation">)</span><span
-                    class="token punctuation">;</span>
-                gainNode<span class="token punctuation">.</span><span class="token property">gain</span><span
-                    class="token punctuation">.</span><span class="token function">setValueAtTime</span><span
-                    class="token punctuation">(</span><span class="token number">0.2</span><span
-                    class="token punctuation">,</span> now<span class="token punctuation">)</span><span
-                    class="token punctuation">;</span>
-                gainNode<span class="token punctuation">.</span><span class="token property">gain</span><span
-                    class="token punctuation">.</span><span
-                    class="token function">exponentialRampToValueAtTime</span><span
-                    class="token punctuation">(</span><span class="token number">0.01</span><span
-                    class="token punctuation">,</span> now <span class="token keyword">+</span> <span
-                    class="token number">0.15</span><span class="token punctuation">)</span><span
-                    class="token punctuation">;</span>
-                <span class="token punctuation">}</span>
-            </div>
-            <p style="font-size:0.9rem; color:var(--sub-text);">
-                ※ ユーザーが初めて画面をクリックしたタイミングで <code>AudioContext</code> を初期化することで、ブラウザの自動再生ポリシー（Autoplay Policy）を回避しています。
-            </p>
-        </section>
+        <!-- --- DAY 1 SECTION --- -->
+        <div id="day1" class="dev-section">
+            <h2 class="day-title" style="color: var(--day1);"><i class="fa-solid fa-sun"></i> Day 1. AI Start</h2>
 
-        <!-- Section 2: Particles -->
-        <section style="border-left-color: var(--yellow);">
-            <h2><i class="fa-solid fa-wand-magic-sparkles"></i> 02. Sparkles (Canvas API)</h2>
-            <div class="tag-list">
-                <span class="tag">HTML5 Canvas</span>
-                <span class="tag">RequestAnimationFrame</span>
-                <span class="tag">Physics Simulation</span>
-            </div>
-            <p>
-                「魔法の体験」の視覚的コアとなるのが、コピーボタンをクリックした時や、調合釜にアイテムを入れた時に弾けるパーティクルエフェクトです。
-                画面全体を覆う透明な <code>&lt;canvas id="sparkles"&gt;</code> を <code>pointer-events: none;</code>
-                で配置し、その上でJSによる物理演算を行っています。
-            </p>
-            <div class="code-block">
-                <span class="token comment">// 重力と減衰のシミュレーション</span>
-                particles<span class="token punctuation">.</span><span class="token function">forEach</span><span
-                    class="token punctuation">(</span>p <span class="token keyword">=></span> <span
-                    class="token punctuation">{</span>
-                p<span class="token punctuation">.</span>x <span class="token keyword">+=</span> p<span
-                    class="token punctuation">.</span>vx<span class="token punctuation">;</span>
-                p<span class="token punctuation">.</span>y <span class="token keyword">+=</span> p<span
-                    class="token punctuation">.</span>vy<span class="token punctuation">;</span>
-                p<span class="token punctuation">.</span>vy <span class="token keyword">+=</span> <span
-                    class="token number">0.1</span><span class="token punctuation">;</span> <span
-                    class="token comment">// Gravity (重力低下)</span>
-                p<span class="token punctuation">.</span>alpha <span class="token keyword">-=</span> p<span
-                    class="token punctuation">.</span>decay<span class="token punctuation">;</span> <span
-                    class="token comment">// Fade out (透明化)</span>
-                <span class="token punctuation">}</span><span class="token punctuation">)</span><span
-                    class="token punctuation">;</span>
-            </div>
-            <p>
-                この軽量なスクリプトにより、外部ライブラリ（Three.jsなど）に依存することなく、60FPSで滑らかに動作する美しいインタラクションを実現しました。
-            </p>
-        </section>
+            <div class="card" style="border-left: 6px solid var(--day1);">
+                <h2><i class="fa-solid fa-mountain-sun"></i> 01. Concept: Accessibility & Trust</h2>
+                <div class="tag-list">
+                    <span class="tag-pill">Azure Theme</span>
+                    <span class="tag-pill">Clean UI</span>
+                </div>
+                <p>
+                    Day 1は「AIへの第一歩」というテーマのため、信頼感（Trust）と清潔感（Clarity）を最優先。
+                    極端な装飾を避け、情報の読みやすさに特化したAzure Blueのカラーパレットを採用しました。
+                </p>
 
-        <!-- Section 3: Cauldron Simulator -->
-        <section style="border-left-color: var(--lv2);">
-            <h2><i class="fa-solid fa-flask"></i> 03. Prompt Cauldron (Drag & Drop UI)</h2>
-            <div class="tag-list">
-                <span class="tag">HTML5 Drag and Drop</span>
-                <span class="tag">Gamification</span>
-                <span class="tag">CSS Animations</span>
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-video"></i> Video Card Layout</h4>
+                        <p>動画セクションは、クリックしやすさを追求したカード形式。ホバー時の <code>box-shadow</code> 変化で奥行きを演出。</p>
+                        <div class="code-box lang-css">
+                            <span class="code-label">css</span>
+                            .video-card {
+                            transition: transform 0.3s ease;
+                            border: 1px solid #e2e8f0;
+                            }
+                            .video-card:hover {
+                            transform: translateY(-5px);
+                            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+                            }
+                        </div>
+                    </div>
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-check-double"></i> Persistence Checklist</h4>
+                        <p><code>localStorage</code> を使用して、ユーザーの達成状況をブラウザに保存。再読込しても進捗が維持される設計。</p>
+                        <div class="code-box lang-js">
+                            <span class="code-label">javascript</span>
+                            function toggleTask(id) {
+                            const state = !JSON.parse(localStorage.getItem(id));
+                            localStorage.setItem(id, state);
+                            updateProgressUI();
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p>
-                プロンプトの4要素（Role, Task, Context, Format）を学ぶ部分は、単なる箇条書きではなく「大釜（Cauldron）に材料を放り込む」というゲーミフィケーションUIを採用しました。
-            </p>
-            <p>
-                HTML5の標準Drag & Drop APIを使用し、<code>dragstart</code>, <code>dragover</code>, <code>drop</code>
-                イベントをフックしています。アイテムが大釜の上に来た時（dragover）は釜が赤く光り、ドロップした瞬間にはCSS
-                <code>transform: scale(1.1) translateY(5px);</code> で「ポチャッ」という沈み込みアニメーションと、前述のサウンド＆パーティクルが同時発動します。
-            </p>
-        </section>
+        </div>
 
-        <!-- Section 4: Gamification Strategy -->
-        <section style="border-left-color: var(--green);">
-            <h2><i class="fa-solid fa-chess-knight"></i> 04. Scenario Sandbox</h2>
-            <div class="tag-list">
-                <span class="tag">Instructional Design</span>
-                <span class="tag">Mockup UI</span>
+        <!-- --- DAY 2 SECTION --- -->
+        <div id="day2" class="dev-section">
+            <h2 class="day-title" style="color: var(--day2);"><i class="fa-solid fa-palette"></i> Day 2. Canva Basics
+            </h2>
+
+            <div class="card" style="border-left: 6px solid var(--day2);">
+                <h2><i class="fa-solid fa-shapes"></i> 01. Bento Grid Architecture</h2>
+                <div class="tag-list">
+                    <span class="tag-pill">CSS Grid</span>
+                    <span class="tag-pill">Modern Layout</span>
+                </div>
+                <p>
+                    Canvaの「多機能性」と「直感性」を表現するため、Appleのランディングページなどで使われる **Bento Grid** レイアウトを採用。
+                </p>
+                <div class="code-box lang-css">
+                    <span class="code-label">css</span>
+                    .bento-grid {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-auto-rows: 200px;
+                    gap: 20px;
+                    }
+                    .bento-item.large {
+                    grid-column: span 2;
+                    grid-row: span 2;
+                    }
+                </div>
             </div>
-            <p>
-                ページ後半の「業務への応用」セクションは、当初シンプルな箇条書きリストでしたが、<strong>「動画を見なくても100%内容が理解できる」「むしろテキストの方が充実している」</strong>という要件を満たすため、完全な
-                Sandbox（砂場）UIへと大改修を行いました。
-            </p>
-            <p>
-                CSSだけで構築された <code>.browser-mockup</code>
-                の中に架空の出力結果を展開することで、受講者が「このプロンプトを使うとどうなるのか？」を直感的に擬似体験できるように設計されています。
-            </p>
-        </section>
 
-        <div class="easter-egg">
-            <i class="fa-solid fa-code"></i> Developed by Antigravity under the "Magical Experience v2.0" directive.<br>
-            EOF
+            <div class="card" style="border-left: 6px solid var(--day2);">
+                <h2><i class="fa-solid fa-bolt"></i> 02. Interactive Mockups (Magic UI)</h2>
+                <p>
+                    実際にCanvaを操作している感覚を持たせるため、CSSだけでCanvaのサイドバーやツールバーを再現した「擬似モックアップ」を配置。
+                </p>
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-eraser"></i> Magic Eraser Animation</h4>
+                        <p>「マジック消しゴム」機能を視覚化するため、<code>mask-image</code> と <code>clip-path</code> を組み合わせたワイプアニメーションを実装。
+                        </p>
+                        <div class="code-box lang-css">
+                            <span class="code-label">css</span>
+                            .magic-swipe {
+                            animation: swipe 3s infinite;
+                            clip-path: circle(50% at 0% 50%);
+                            }
+                            @keyframes swipe {
+                            to { clip-path: circle(50% at 100% 50%); }
+                            }
+                        </div>
+                    </div>
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-layer-group"></i> Stacked Layer UI</h4>
+                        <p>重なり順（Z-index）の概念を直感的に理解できるよう、3Dトランスフォーム（<code>rotateY</code>）を用いたレイヤーの視覚化。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- DAY 3 SECTION --- -->
+        <div id="day3" class="dev-section">
+            <h2 class="day-title" style="color: var(--day3);"><i class="fa-solid fa-wand-magic-sparkles"></i> Day 3.
+                Prompt Magic</h2>
+
+            <!-- (Previous sections merged and updated) -->
+            <div class="card" style="border-left: 6px solid var(--day3);">
+                <h2><i class="fa-solid fa-music"></i> 01. UI Sounds (Web Audio API)</h2>
+                <p>
+                    プログラムから直接波形を生成する **AudioContext** 実装。
+                    MP3なしで「ポチャッ」「シュッ」という音を0.1秒単位で合成。
+                </p>
+                <div class="code-box lang-js">
+                    <span class="code-label">javascript</span>
+                    const osc = audioCtx.createOscillator();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 6px solid var(--day3);">
+                <h2><i class="fa-solid fa-flask"></i> 02. Particle Physics (Canvas)</h2>
+                <p>
+                    <code>requestAnimationFrame</code> を使用した高精度なパーティクルシミュレーション。
+                    重力加速度、摩擦抵抗、不透明度の減衰を毎フレーム計算。
+                </p>
+            </div>
+
+            <div class="card" style="border-left: 6px solid var(--day3);">
+                <h2><i class="fa-solid fa-gears"></i> 03. Scenario Sandbox (エミュレーション)</h2>
+                <p>
+                    「動画を見なくても内容が把握できる」ためのブラウザ・エミュレーションUI。
+                    疑似的なプロンプト入力と実行結果の出力をアニメーションで表現。
+                </p>
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-terminal"></i> Typed.js Integration</h4>
+                        <p>AIが回答を生成している時の「一文字ずつ表示される」演出を、JSの再帰関数と <code>setTimeout</code> で軽量に再現。</p>
+                        <div class="code-box lang-js">
+                            <span class="code-label">javascript</span>
+                            function typeWriter(text, i, target) {
+                            if (i < text.length) { target.innerHTML +=text.charAt(i); setTimeout(()=> typeWriter(text,
+                                i+1, target), 30);
+                                }
+                                }
+                        </div>
+                    </div>
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-wind"></i> Feather Particle Physics</h4>
+                        <p><code>requestAnimationFrame</code> を使用した高精度なパーティクルシミュレーション。重力加速度、不透明度の減衰を毎フレーム計算。</p>
+                        <div class="code-box lang-js">
+                            <span class="code-label">javascript</span>
+                            update() {
+                            this.vy += gravity;
+                            this.y += this.vy;
+                            this.alpha -= 0.01;
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- GLOBAL ARCHITECTURE --- -->
+        <div id="global" class="dev-section">
+            <h2 class="day-title" style="color: var(--accent);"><i class="fa-solid fa-network-wired"></i> Global System
+                Architecture</h2>
+
+            <div class="card" style="border-left: 6px solid var(--accent);">
+                <h2><i class="fa-solid fa-server"></i> 01. Deployment Pipeline (Cloudflare Pages)</h2>
+                <div class="tag-list">
+                    <span class="tag-pill">GitHub Integration</span>
+                    <span class="tag-pill">Main Branch Sync</span>
+                </div>
+                <p>
+                    本プロジェクトは **GitHub** と **Cloudflare Pages** を連携させたCI/CD環境で運用。
+                    <code>main</code> ブランチへのプッシュをトリガーに自動ビルド・デプロイが走る構成です。
+                </p>
+                <div class="code-box lang-terminal">
+                    <span class="code-label">bash</span>
+                    git checkout main
+                    git add .
+                    git commit -m "feat: 開発者ノートの大幅拡充とUI修正"
+                    git push origin main
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 6px solid var(--lv1);">
+                <h2><i class="fa-solid fa-microchip"></i> 02. Shared State Management (Progress Sync)</h2>
+                <p>
+                    各Dayの進捗状況（チェックリスト）は、<code>localStorage</code> を介して <code>index.html</code> (ポータル) と同期。
+                    ブラウザを閉じても「どこまで進んだか」が保持される **Persistent Progress** システムを独自実装。
+                </p>
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-sync"></i> Sync Logic</h4>
+                        <p>ポータル画面読み込み時に、各Dayのキーを走査し、合計進捗率を計算して環状プログレスバーを更新。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- --- PHASE 4 PREVIEW --- -->
+        <div id="phase4" class="dev-section">
+            <h2 class="day-title" style="color: var(--lv2);"><i class="fa-solid fa-flask-vial"></i> Phase 4: Quiz System
+                Design</h2>
+
+            <div class="card" style="border-left: 6px solid var(--lv2);">
+                <h2><i class="fa-solid fa-brain"></i> 01. Tiered Difficulty Logic</h2>
+                <p>
+                    初心者・中級者・上級者の3つのティアに分けたクイズシステム。
+                    エンジニアリング的には、1つのJSONデータから難易度タグに基づいて動的に問題をフィルタリング・シャッフルします。
+                </p>
+                <div class="code-box lang-js">
+                    <span class="code-label">javascript</span>
+                    function getShuffledQuiz(tier) {
+                    return allQuizzes
+                    .filter(q => q.tier === tier)
+                    .sort(() => Math.random() - 0.5);
+                    }
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 6px solid var(--lv3);">
+                <h2><i class="fa-solid fa-vial-circle-check"></i> 02. Validation & Feedback UI</h2>
+                <p>
+                    正解・不正解時に Lottie アニメーションや Canvas 演出を使い分け、学習者のモチベーションを高めます。
+                </p>
+            </div>
+        </div>
+        <!-- --- UI TOKENS --- -->
+        <div id="tokens" class="dev-section">
+            <h2 class="day-title" style="color: var(--lv3);"><i class="fa-solid fa-swatchbook"></i> Magazine UI Tokens
+            </h2>
+
+            <div class="card" style="border-left: 6px solid var(--lv3);">
+                <h2><i class="fa-solid fa-droplet"></i> 01. Dynamic Palette Syncing</h2>
+                <p>
+                    各Dayのコンテンツは、ルートのCSS変数で管理。
+                    これにより、HTML構造を変えずにDayごとのカラーテーマを瞬時に切り替えることが可能です。
+                </p>
+                <div class="code-box lang-css">
+                    <span class="code-label">css</span>
+                    :root {
+                    --day1-brand: #38bdf8;
+                    --day2-brand: #ec4899;
+                    --day3-brand: #818cf8;
+                    }
+                    .fixed-header { border-bottom: 2px solid var(--brand-color); }
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 6px solid #fff;">
+                <h2><i class="fa-solid fa-expand"></i> 02. Glassmorphism Standard</h2>
+                <p>
+                    情報のオーバーレイには <code>backdrop-filter: blur(12px)</code> を多用。
+                    背景の抽象的なグラデーションを活かしつつ、視認性とプレミアム感を両立させるための標準コンポーネント設計。
+                </p>
+                <div class="recipe-grid">
+                    <div class="recipe-card">
+                        <h4><i class="fa-solid fa-wand-magic"></i> Glass Layout</h4>
+                        <p>マガジンスタイルの表現として、写真を背景に敷き込みつつ、その上に <code>rgba(255, 255, 255, 0.4)</code>
+                            の半透明レイヤーを重ねることで、洗練された「雑誌の紙面」のような質感を演出。</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <a href="#" class="back-link" id="backToTop"><i class="fa-solid fa-arrow-up"></i></a>
+
+    <!-- Filtering Logic Scripts -->
+    <script>
+        function updateVisibility() {
+            const hash = window.location.hash || '#all';
+            const sections = document.querySelectorAll('.dev-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            sections.forEach(s => {
+                if (hash === '#all') {
+                    s.style.display = 'block';
+                } else {
+                    s.style.display = s.id === hash.replace('#', '') ? 'block' : 'none';
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === hash);
+            });
+
+            // Scroll to top when changing filters
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('hashchange', updateVisibility);
+        window.addEventListener('DOMContentLoaded', updateVisibility);
+
+        // Header dynamic color based on day section (Optional Polish)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const color = getComputedStyle(entry.target).getPropertyValue('--day' + entry.target.id.replace('day', ''));
+                    // document.querySelector('h1').style.backgroundImage = `linear-gradient(135deg, ${color}, #fff)`;
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.dev-section').forEach(s => observer.observe(s));
+    </script>
 </body>
 
 </html>

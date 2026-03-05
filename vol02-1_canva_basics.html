@@ -514,31 +514,34 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .fixed-header {
-                padding: 0.8rem 1rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
+        .dev-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.9);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
 
-            .progress-container {
-                margin: 0;
-                min-width: 100%;
-                order: 3;
-            }
-
-            .tab-container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .glass-card {
-                padding: 1.5rem;
-            }
-
-            .unlock-card {
-                padding: 2rem;
-            }
+        .dev-link:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+            border-color: var(--accent-light);
         }
     </style>
 </head>
@@ -596,13 +599,15 @@
                 <div class="info-box">
                     <h4><i class="fa-solid fa-lightbulb"></i> 今日のゴール</h4>
                     <p>① Canvaの画面構成と基本操作を理解する<br>
-                    ② テンプレートを活用してデザインを作成できるようになる<br>
-                    ③ CanvaのAI機能を使ったコンテンツ制作を体験する</p>
+                        ② テンプレートを活用してデザインを作成できるようになる<br>
+                        ③ CanvaのAI機能を使ったコンテンツ制作を体験する</p>
                 </div>
                 <div class="info-box" style="margin-top:1rem;">
                     <h4><i class="fa-solid fa-right-to-bracket"></i> Canvaログイン方法</h4>
                     <p>Googleアカウントでログインするのが最も簡単です。Day1で使ったGeminiと同じGoogleアカウントを使いましょう。<br>
-                    <a href="https://www.canva.com/" target="_blank" style="color:#4f46e5; font-weight:700;">→ canva.com にアクセス</a></p>
+                        <a href="https://www.canva.com/" target="_blank" style="color:#4f46e5; font-weight:700;">→
+                            canva.com にアクセス</a>
+                    </p>
                 </div>
             </div>
 
@@ -666,8 +671,9 @@
                 </div>
                 <div class="info-box">
                     <h4><i class="fa-solid fa-star"></i> おすすめの使い方</h4>
-                    <p>まずは<strong>テンプレートを選ぶ</strong> → <strong>テキストを変える</strong> → <strong>AI機能で画像を追加</strong>の3ステップが最速です。<br>
-                    慣れてきたら「マジック消しゴム」「背景リムーバ」で写真編集も挑戦してみましょう！</p>
+                    <p>まずは<strong>テンプレートを選ぶ</strong> → <strong>テキストを変える</strong> →
+                        <strong>AI機能で画像を追加</strong>の3ステップが最速です。<br>
+                        慣れてきたら「マジック消しゴム」「背景リムーバ」で写真編集も挑戦してみましょう！</p>
                 </div>
             </div>
 
@@ -756,7 +762,7 @@
 
         <!-- =================== 後半 =================== -->
         <div id="half2" class="tab-content">
-            
+
             <!-- 目的 -->
             <div class="glass-card">
                 <div class="card-header">
@@ -826,10 +832,13 @@
                             <h3>プロンプトのまとめノートを作成</h3>
                             <p>Nano Bananaで使える画像生成プロンプトをノートにまとめよう。以下のリストから気に入ったプロンプトをピックアップし、Canvaやドキュメントに保存します。</p>
                             <div style="margin-top:10px;">
-                                <button class="btn btn-copy" onclick="copyText('https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing', event)">
+                                <button class="btn btn-copy"
+                                    onclick="copyText('https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing', event)">
                                     <i class="fa-regular fa-copy"></i> URLコピー
                                 </button>
-                                <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing" target="_blank" class="btn" style="background:#10b981; border-color:#10b981;" onclick="event.stopPropagation();">
+                                <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing"
+                                    target="_blank" class="btn" style="background:#10b981; border-color:#10b981;"
+                                    onclick="event.stopPropagation();">
                                     <i class="fa-solid fa-table"></i> プロンプト一覧表を開く
                                 </a>
                             </div>
@@ -843,7 +852,8 @@
                             <h3>画像素材をダウンロードして加工</h3>
                             <p>加工用の画像素材をドライブからダウンロードし、Nano Bananaなどで実際に背景変更や不要物消去などのプロンプト編集を試してみましょう。</p>
                             <div style="margin-top:10px;">
-                                <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing" target="_blank" class="btn" onclick="event.stopPropagation();">
+                                <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing"
+                                    target="_blank" class="btn" onclick="event.stopPropagation();">
                                     <i class="fa-brands fa-google-drive"></i> 加工用画像素材を開く
                                 </a>
                             </div>
@@ -859,10 +869,12 @@
                             <div class="info-box" style="margin-top:10px;">
                                 <strong>Affinity by Canva</strong>（ダウンロード版 Mac/Winのみ）<br>
                                 AI機能以外全部無料<br>
-                                <a href="https://www.affinity.studio/ja_jp" target="_blank" style="color:#2563eb;" onclick="event.stopPropagation();">→ 公式サイトへ</a><br><br>
-                                
+                                <a href="https://www.affinity.studio/ja_jp" target="_blank" style="color:#2563eb;"
+                                    onclick="event.stopPropagation();">→ 公式サイトへ</a><br><br>
+
                                 <strong>AIEASE</strong>（毎日無料クレジット +5）<br>
-                                <a href="https://www.aiease.ai/" target="_blank" style="color:#2563eb;" onclick="event.stopPropagation();">→ 公式サイトへ</a>
+                                <a href="https://www.aiease.ai/" target="_blank" style="color:#2563eb;"
+                                    onclick="event.stopPropagation();">→ 公式サイトへ</a>
                             </div>
                         </div>
                     </li>
@@ -870,7 +882,7 @@
             </div>
         </div>
 
-                <!-- Quiz Area -->
+        <!-- Quiz Area -->
         <div class="quiz-area glass-card" style="margin-top:3rem; text-align:center;">
             <h2 style="font-size:1.6rem; margin:0 0 0.5rem; color:var(--accent);">📝 理解度チェック</h2>
             <p style="color:var(--text-sub); margin-bottom:1.5rem;">Day 2 で学んだことを確認しましょう</p>
@@ -977,6 +989,11 @@
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 5000);
         }
     </script>
+    <a href="index_dev_notes.html#day2" class="dev-link">
+        <i class="fa-solid fa-code"></i>
+        <span>制作の裏側・デザインの意図</span>
+    </a>
+
     <script src="main.js"></script>
 </body>
 
