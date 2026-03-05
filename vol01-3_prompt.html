@@ -607,6 +607,45 @@
                 <p>プロンプトを体系的に「型」として理解することで、あらゆるAIツールで再現性の高い結果を引き出せるようになります。</p>
             </div>
 
+            <!-- ====== 追加コンテンツ：プロンプト基本解説 ====== -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-book-open" style="color:#0ea5e9; background:#e0f2fe;"></i>
+                    <h2>📖 プロンプトエンジニアリングの基本</h2>
+                </div>
+                <div class="box">
+                    <h4>そもそもプロンプトとは？</h4>
+                    <p style="margin-bottom:1rem; line-height:1.7;">
+                        生成AIに対する「指示出し・質問」のことです。<br>
+                        「良いキャッチコピー考えて」のような人間同士の曖昧なやり取りではなく、AIがもっとも力を発揮しやすいように<strong>「前提条件」「役割」「出力形式」</strong>などを明確に定義してあげる技術を<strong>プロンプトエンジニアリング</strong>と呼びます。
+                    </p>
+
+                    <h4 style="margin-top:2rem;">優れたプロンプトの「４つの構成要素（型）」</h4>
+                    <p style="margin-bottom:1rem; line-height:1.7;">
+                        プロンプトを作るときは、以下の4つのブロックを埋めるように作成すると、ブレのない精度の高い回答が得られます。</p>
+                    <ul style="line-height:1.8; color:var(--text-sub);">
+                        <li><strong>[Role]（役割）:</strong> AIにどんな専門家になってほしいか（例：「あなたは10年の経験を持つプロの編集者です」）</li>
+                        <li><strong>[Task]（タスク）:</strong> 何をしてほしいか（例：「以下の文章を離脱されない魅力的な文章にリライトしてください」）</li>
+                        <li><strong>[Context]（背景）:</strong> なぜそれをするのか、ターゲットは誰か（例：「この文章は20代の就活生向けWebメディアに掲載されます」）</li>
+                        <li><strong>[Format]（出力形式）:</strong> どのような形で出力してほしいか（例：「見出しを付けて、3つのポイントに分けて箇条書きで出力してください」）</li>
+                    </ul>
+                </div>
+
+                <div class="box gemini">
+                    <h4>Markdown（マークダウン）記法の活用</h4>
+                    <p style="margin-bottom:1rem; line-height:1.7;">
+                        AIに指示を与える際、文章をベタ打ちするのではなく、<strong>Markdown記法</strong>で見出しや箇条書きを作って「構造化（整理）」することで、AIの理解度が飛躍的にアップします。
+                    </p>
+                    <ul style="line-height:1.8;">
+                        <li><code># 見出し1</code>, <code>## 見出し2</code> :
+                            情報の階層を整理して伝えます。（例：<code># 前提条件</code>、<code># 指示内容</code>）</li>
+                        <li><code>- 箇条書き</code> : 条件が複数ある場合は、箇条書きで漏れなく伝えます。</li>
+                        <li><code>**強調**</code> : <strong>とくに重要なルール</strong>を絶対に守らせたい場合に使います。</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ====== 追加コンテンツここまで ====== -->
+
             <div class="glass-card">
                 <div class="card-header">
                     <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
@@ -696,6 +735,47 @@
                 </div>
                 <p>引きつづき、より高度なプロンプトの作成技術とMarkdownを使った構造的指示について、事例を通して学びます。</p>
             </div>
+
+            <!-- ====== 追加コンテンツ：プロンプト応用解説 ====== -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <i class="fa-solid fa-rocket" style="color:#f59e0b; background:#fef3c7;"></i>
+                    <h2>🚀 プロンプトの応用テクニック</h2>
+                </div>
+
+                <div class="box">
+                    <h4>高度なプロンプト手法</h4>
+                    <p style="margin-bottom:1rem; line-height:1.7;">
+                        AIからより精緻・論理的な回答を引き出すためには、以下のテクニックを組み合わせると効果的です。
+                    </p>
+                    <ul style="line-height:1.8; margin-bottom:1.5rem; color:var(--text-sub);">
+                        <li><strong>Few-Shot Prompting（少数例提示）：</strong><br>
+                            AIに完全にゼロから作らせるのではなく、「入力例」と「出力例」のセットを1〜3個ほどプロンプト内に含める手法です。これにより、AIが「このトーンで、こういうフォーマットで出力すればいいのか」と学習し、希望通りの出力が一発で出やすくなります。
+                        </li>
+                        <li><strong>Chain of Thought（思考のプロセス化）：</strong><br>
+                            プロンプトの末尾に「<strong>ステップバイステップで論理的に考えてください</strong>」という一言を添える手法です。回答の際、AIに途中の思考プロセスを出力させることで、最終的な回答の精度（特に論理的思考や文章構成）が劇的に向上します。
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="box gemini">
+                    <h4>業務シナリオ別 実践プロンプト例</h4>
+                    <p style="line-height:1.7; margin-bottom:1rem;">
+                        <strong>1. アイディア出し（ブレインストーミング）</strong><br>
+                        「あなたはクリエイティブディレクターです。〇〇という新商品のターゲット層を拡張するための、斬新なプロモーション施策を10個挙げてください。突飛なアイディアも歓迎します。」のように、AIならではの「壁打ち相手」として活用します。
+                    </p>
+                    <p style="line-height:1.7; margin-bottom:1rem;">
+                        <strong>2. 長文の要約・アクション抽出</strong><br>
+                        「以下の議事録から、決定事項と未決定事項を整理し、誰が・いつまでに・何をするべきか（Next
+                        Action）をMarkdownテーブル（表形式）で出力してください。」のように、構造化して出力させるとそのまま共有資料として使えます。
+                    </p>
+                    <p style="line-height:1.7;">
+                        <strong>3. トーン＆マナーの変換（文章リライト）</strong><br>
+                        「以下の箇条書きのメモをベースに、取引先に送る丁寧なビジネスメールを作成してください。クッション言葉を適切に使い、角が立たないようにしてください。」など、AIに「敬語のプロ」を演じさせます。
+                    </p>
+                </div>
+            </div>
+            <!-- ====== 追加コンテンツここまで ====== -->
 
             <div class="glass-card">
                 <div class="card-header">
