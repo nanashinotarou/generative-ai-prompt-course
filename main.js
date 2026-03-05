@@ -13,20 +13,85 @@ document.addEventListener('DOMContentLoaded', () => {
     function initQuiz(id, data) {
         const el = document.getElementById(id);
         if (!el) return;
-        let idx = 0, score = 0;
+
+        // Ensure data is tiered
+        data.forEach(q => { if (!q.tier) q.tier = 1; });
+        const hasMultipleTiers = data.some(q => q.tier > 1);
+
+        // Initial DOM Setup
+        if (!el.querySelector('.quiz-container')) {
+            el.innerHTML = `
+                ${hasMultipleTiers ? `
+                <div class="tier-selector" style="display:flex; justify-content:center; gap:10px; margin-bottom: 20px;">
+                    <button class="tier-btn active" data-t="1">🌱 初級</button>
+                    <button class="tier-btn" data-t="2">🚀 中級</button>
+                    <button class="tier-btn" data-t="3">🔥 上級</button>
+                </div>
+                ` : ''}
+                <div class="quiz-container"></div>
+            `;
+
+            // Add global tier styles if not present
+            if (!document.getElementById('quiz-tier-styles')) {
+                const style = document.createElement('style');
+                style.id = 'quiz-tier-styles';
+                style.innerHTML = `
+                    .tier-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 0.95rem; }
+                    .tier-btn.active { background: #818cf8; color: #fff; border-color: #818cf8; box-shadow: 0 4px 15px rgba(129, 140, 248, 0.4); }
+                    .tier-btn:hover:not(.active) { background: #f8fafc; border-color: #cbd5e1; }
+                    @keyframes quizFadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        const container = el.querySelector('.quiz-container');
+        let idx = 0, score = 0, activeData = [];
+
+        const startQuiz = (tier) => {
+            idx = 0; score = 0;
+            let filtered = data.filter(q => q.tier === tier);
+            if (filtered.length === 0) filtered = data.filter(q => q.tier === 1);
+            if (filtered.length === 0) filtered = data;
+
+            // Fisher-Yates Shuffle
+            let shuffled = [...filtered];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            activeData = shuffled;
+            render();
+        };
+
+        if (hasMultipleTiers) {
+            el.querySelectorAll('.tier-btn').forEach(b => {
+                b.addEventListener('click', (e) => {
+                    el.querySelectorAll('.tier-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    startQuiz(parseInt(e.target.dataset.t));
+                });
+            });
+        }
 
         const render = () => {
-            // --- RESULT SCREEN (Unchanged) ---
-            if (idx >= data.length) {
-                el.innerHTML = `
-                    <div style="text-align:center; padding:30px; background:#fff !important; border-radius:12px; border:1px solid #ddd; color:#333 !important;">
-                        <h3 style="color:#333 !important; margin:0 0 20px 0;">Result: ${score}/${data.length * 10}</h3>
-                        <button onclick="location.reload()" style="padding:12px 30px; background:#2d3436 !important; color:#fff !important; border:none; border-radius:30px; cursor:pointer; font-weight:bold; font-size:1rem;">Retry Quiz</button>
+            // --- RESULT SCREEN ---
+            if (idx >= activeData.length) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:40px 20px; background:#fff !important; border-radius:12px; border:1px solid #ddd; color:#333 !important; animation: quizFadeIn 0.5s ease-out;">
+                        <h3 style="color:#333 !important; margin:0 0 15px 0;">🎯 Result: <span style="color:#818cf8; font-size:2rem;">${score}</span> / ${activeData.length * 10}</h3>
+                        <p style="color:#64748b; margin-bottom: 30px;">${score === activeData.length * 10 ? '全問正解！素晴らしいです！✨' : 'もう一度チャレンジして満点を目指しましょう！💪'}</p>
+                        <button class="retry-btn" style="padding:12px 30px; background:#2d3436 !important; color:#fff !important; border:none; border-radius:30px; cursor:pointer; font-weight:bold; font-size:1rem; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">もう一度挑戦する</button>
                     </div>`;
+
+                container.querySelector('.retry-btn').addEventListener('click', () => {
+                    const currentTierBtn = el.querySelector('.tier-btn.active');
+                    startQuiz(currentTierBtn ? parseInt(currentTierBtn.dataset.t) : 1);
+                });
                 return;
             }
 
-            const q = data[idx];
+            const q = activeData[idx];
 
             // --- QUESTION SCREEN ---
             const optionsHtml = Object.entries(q.options).map(([k, v]) => `
@@ -46,15 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             `).join('');
 
-            el.innerHTML = `
-                <div style="background:#fff; padding:20px; border-radius:10px;">
-                    <p style="font-weight:bold; margin-bottom:20px; font-size:1.2rem; color:#333 !important;">
-                        Q${idx + 1}. ${q.q}
+            container.innerHTML = `
+                <div style="background:#fff; padding:20px; border-radius:10px; animation: quizFadeIn 0.3s ease-out;">
+                    <p style="font-weight:bold; margin-bottom:20px; font-size:1.15rem; color:#333 !important; line-height: 1.6;">
+                        <span style="display:inline-block; background:#f1f5f9; padding:3px 12px; border-radius:12px; font-size:0.8rem; color:#64748b; margin-bottom:12px; font-family:'Teko', sans-serif; letter-spacing:1px;">Q${idx + 1} OF ${activeData.length}</span><br>
+                        ${q.q}
                     </p>
                     <div style="display:grid; gap:0;">
                         ${optionsHtml}
                     </div>
-                    <div id="fb-${idx}" style="
+                    <div class="feedback-box" style="
                         display:none; 
                         margin-top:20px; 
                         padding:25px; 
@@ -64,37 +130,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         line-height: 1.6;
                         border: 2px solid #2d3436;
                         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                        animation: quizFadeIn 0.3s ease-out;
                     "></div>
                 </div>
             `;
 
-            // Event Listeners
-            el.querySelectorAll('.opt-btn').forEach(b => {
-                b.onmouseover = () => { if (!b.disabled) { b.style.borderColor = '#00bcd4'; b.style.background = '#f0fbff'; } };
-                b.onmouseout = () => { if (!b.disabled) { b.style.borderColor = '#e0e0e0'; b.style.background = '#ffffff'; } };
-                b.onclick = (e) => { const target = e.target.closest('.opt-btn'); check(target.dataset.k); };
+            // Event Listeners for Options
+            container.querySelectorAll('.opt-btn').forEach(b => {
+                b.addEventListener('mouseover', () => { if (!b.disabled) { b.style.borderColor = '#00bcd4'; b.style.background = '#f0fbff'; } });
+                b.addEventListener('mouseout', () => { if (!b.disabled) { b.style.borderColor = '#e0e0e0'; b.style.background = '#ffffff'; } });
+                b.addEventListener('click', (e) => { const target = e.target.closest('.opt-btn'); check(target.dataset.k); });
             });
         };
 
         const check = (ans) => {
-            const q = data[idx];
-            const fb = document.getElementById(`fb-${idx}`);
+            const q = activeData[idx];
+            const fb = container.querySelector('.feedback-box');
             const isCorrect = ans === q.correct;
             if (isCorrect) score += 10;
 
-            // --- FIX: BADGE STYLE FOR VISIBILITY ---
             const statusBadge = isCorrect
-                ? `<span style="display:inline-block; background:#00bcd4 !important; color:#fff !important; padding:5px 15px; border-radius:20px; font-size:0.9rem; font-weight:bold; letter-spacing:1px;">CORRECT! 🎯</span>`
-                : `<span style="display:inline-block; background:#ff7675 !important; color:#fff !important; padding:5px 15px; border-radius:20px; font-size:0.9rem; font-weight:bold; letter-spacing:1px;">INCORRECT... 😢</span>`;
+                ? `<span style="display:inline-block; background:#00bcd4 !important; color:#fff !important; padding:5px 15px; border-radius:20px; font-size:0.9rem; font-weight:bold; letter-spacing:1px;"><i class="fa-solid fa-circle-check"></i> CORRECT!</span>`
+                : `<span style="display:inline-block; background:#ff7675 !important; color:#fff !important; padding:5px 15px; border-radius:20px; font-size:0.9rem; font-weight:bold; letter-spacing:1px;"><i class="fa-solid fa-circle-xmark"></i> INCORRECT...</span>`;
 
             fb.innerHTML = `
-                <div style="margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:15px;">
+                <div style="margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
                     ${statusBadge}
                 </div>
                 <p style="color: #ffffff !important; margin:0; font-weight:normal; font-size:1.05rem;">
                     ${q.rationale}
                 </p>
-                <button onclick="next()" style="
+                <button class="next-btn" style="
                     margin-top:20px; 
                     padding:12px 35px; 
                     background: #ffffff !important; 
@@ -104,12 +170,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     cursor: pointer; 
                     font-weight: bold;
                     transition: 0.2s;
-                ">Next Question <i class="fa-solid fa-arrow-right"></i></button>
+                ">次へ進む <i class="fa-solid fa-arrow-right"></i></button>
             `;
             fb.style.display = 'block';
 
+            fb.querySelector('.next-btn').addEventListener('click', () => {
+                idx++;
+                render();
+            });
+
             // Lock Buttons
-            el.querySelectorAll('.opt-btn').forEach(b => {
+            container.querySelectorAll('.opt-btn').forEach(b => {
                 b.disabled = true;
                 b.style.cursor = 'default';
                 if (b.dataset.k === q.correct) {
@@ -121,17 +192,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         };
-        window.next = () => { idx++; render(); };
-        render();
+
+        startQuiz(1);
     }
 
     // --- QUIZ DATA (Vol.1: Gemini & TikTok Start) ---
     initQuiz('quiz-vol01-1', [
-        { q: "Geminiを使用するために必須のアカウントは？", options: { A: "TikTok", B: "Microsoft", C: "Google", D: "OpenAI" }, correct: "C", rationale: "GeminiはGoogleが提供するサービスであるため、Googleアカウントが必要です。" },
-        { q: "TikTokの「ユーザー名（@マーク以降）」を変更する際の制限として正しいものはどれですか？", options: { A: "何度でも自由に変更できる", B: "30日に1回のみ変更可能", C: "一度設定したら二度と変更できない", D: "有料プランでのみ変更可能" }, correct: "B", rationale: "ユーザー名はURLの一部にもなるため、頻繁な変更は制限されています（30日に1回）。" },
-        { q: "今回の研修コース目標として設定されている「動画投稿数」は？", options: { A: "毎日投稿（30本）", B: "期間中に1本", C: "期間中に10本", D: "期間中に3本以上" }, correct: "D", rationale: "まずは質より量、そして慣れが必要です。「3本以上」が目標です。" },
-        { q: "Geminiが得意とする「マルチモーダル」とはどういう意味ですか？", options: { A: "複数の言語を翻訳できること", B: "テキストだけでなく、画像や音声など複数の種類の情報を扱えること", C: "複数のユーザーで同時に作業できること", D: "複数のアプリを同時に起動できること" }, correct: "B", rationale: "テキスト、コード、画像、音声、動画など、異なる形式のデータを理解・生成できる能力を指します。" },
-        { q: "TikTokのリサーチ（探索）を行う主な目的として、初期段階で最も重要なのは？", options: { A: "競合の動画に低評価を押すため", B: "流行っている曲や動画のスタイルを知り、自分の企画の参考にするため", C: "コメント欄で自分のチャンネルを宣伝するため", D: "単に時間を潰すため" }, correct: "B", rationale: "「今何がウケているか」というトレンド感覚を養うことが、伸びる動画を作る第一歩です。" }
+        // 初級 (Tier 1)
+        { tier: 1, q: "Geminiを使用するために必須のアカウントは？", options: { A: "TikTok", B: "Microsoft", C: "Google", D: "OpenAI" }, correct: "C", rationale: "GeminiはGoogleが提供するサービスであるため、Googleアカウントが必要です。" },
+        { tier: 1, q: "今回の研修コース目標として設定されている「動画投稿数」は？", options: { A: "毎日投稿（30本）", B: "期間中に1本", C: "期間中に10本", D: "期間中に3本以上" }, correct: "D", rationale: "まずは質より量、そして慣れが必要です。「3本以上」が目標です。" },
+        // 中級 (Tier 2)
+        { tier: 2, q: "TikTokの「ユーザー名（@マーク以降）」を変更する際の制限として正しいものはどれですか？", options: { A: "何度でも自由に変更できる", B: "30日に1回のみ変更可能", C: "一度設定したら二度と変更できない", D: "有料プランでのみ変更可能" }, correct: "B", rationale: "ユーザー名はURLの一部にもなるため、頻繁な変更は制限されています（30日に1回）。" },
+        { tier: 2, q: "TikTokのリサーチ（探索）を行う主な目的として、初期段階で最も重要なのは？", options: { A: "競合の動画に低評価を押すため", B: "流行っている曲や動画のスタイルを知り、自分の企画の参考にするため", C: "コメント欄で自分のチャンネルを宣伝するため", D: "単に時間を潰すため" }, correct: "B", rationale: "「今何がウケているか」というトレンド感覚を養うことが、伸びる動画を作る第一歩です。" },
+        // 上級 (Tier 3)
+        { tier: 3, q: "Geminiが得意とする「マルチモーダル」とはどういう意味ですか？", options: { A: "複数の言語を翻訳できること", B: "テキストだけでなく、画像や音声など複数の種類の情報を扱えること", C: "複数のユーザーで同時に作業できること", D: "複数のアプリを同時に起動できること" }, correct: "B", rationale: "テキスト、コード、画像、音声、動画など、異なる形式のデータを理解・生成できる能力を指します。" },
+        { tier: 3, q: "生成AIに対する効果的な「プロンプト」の原則として最も適切なのは？", options: { A: "できるだけ単語のみで短く伝える", B: "役割、目的、条件などを明確に構造化して伝える", C: "敬語をたくさん使って丁寧に頼む", D: "結果が出るまで何度も同じ指示を繰り返す" }, correct: "B", rationale: "生成AIへは、前提条件や出力形式を明確に指定することで、より精度の高い回答を得ることができます。" }
     ]);
 
     // --- QUIZ DATA (Vol.1 Day 2: Algorithm & Canva) ---
@@ -270,18 +345,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DAY 2 QUIZ ---
     initQuiz('quiz-vol02-1', [
         {
+            tier: 1,
             q: "Canvaの自動生成AI機能で、「デザイン内の不要なものをなぞるだけで消せる」機能の名前は？",
             options: { A: "マジック生成", B: "マジック消しゴム", C: "背景リムーバ", D: "マジック拡張" },
             correct: "B",
             rationale: "「マジック消しゴム」を使えば、写真に写り込んだ不要な人やモノを簡単になぞって消去し、背景を自然に補完できます。"
         },
         {
+            tier: 2,
             q: "Canvaが買収した、AI機能以外は完全無料化されたプロフェッショナル向けデザインツールの名前は？",
             options: { A: "Adobe Illustrator", B: "Nano Banana", C: "Affinity", D: "Midjourney" },
             correct: "C",
             rationale: "Canvaは「Affinity」を買収し、教育機関やNPO、無料ユーザー向けにもAI機能以外のプロ向けツール一式を完全無料で提供開始しました。"
         },
         {
+            tier: 3,
             q: "無料で使えるAI画像編集ツール「Nano Banana」の最大の特徴は？",
             options: { A: "動画編集に特化している", B: "Illustratorのようなベクター描画ができる", C: "プロンプト（テキスト指示）だけで高度な画像編集が完結する", D: "音楽を自動生成できる" },
             correct: "C",
@@ -292,36 +370,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- DAY 3 QUIZ ---
     initQuiz('quiz-vol01-3', [
         {
+            tier: 1,
             q: "企画リサーチをする際、TikTokアプリ内で最初に使うべき機能は？",
             options: { A: "設定画面", B: "探索（トレンド）タブでの検索", C: "プロフィールの編集", D: "課金アイテムの購入" },
             correct: "B",
             rationale: "まずは「今、何が流行っているのか」を肌で感じることが重要です。探索タブでトレンドを把握しましょう。"
         },
         {
-            q: "Canvaを使って、同じデザインの動画を大量に作る機能の名前は？",
-            options: { A: "マジック作文", B: "一括作成 (Bulk Create)", C: "背景除去", D: "ブランドキット" },
+            tier: 1,
+            q: "今回の研修（3日目）で設定された、最低限の動画アップロード本数は？",
+            options: { A: "1本", B: "3本以上", C: "10本", D: "30本" },
             correct: "B",
-            rationale: "「一括作成」機能を使えば、CSVなどを取り込んでデザインを量産できます。まさに「工場」のような機能です。"
+            rationale: "質にこだわりすぎず、まずは「数を出す」経験を積むために、最低3本のアウトプットを目標としています。"
         },
         {
+            tier: 2,
             q: "動画の冒頭で視聴者の興味を引き、指を止めさせる要素を何と呼ぶ？",
             options: { A: "フック", B: "クロージング", C: "CTA", D: "ハッシュタグ" },
             correct: "A",
             rationale: "釣り針（Hook）のように、視聴者の心を「引っかける」ための冒頭の工夫です。ここが弱いとすぐにスクロールされてしまいます。"
         },
         {
+            tier: 3,
+            q: "Canvaを使って、同じデザインの動画を大量に作る機能の名前は？",
+            options: { A: "マジック作文", B: "一括作成 (Bulk Create)", C: "背景除去", D: "ブランドキット" },
+            correct: "B",
+            rationale: "「一括作成」機能を使えば、CSVなどを取り込んでデザインを量産できます。まさに「工場」のような機能です。"
+        },
+        {
+            tier: 3,
             q: "Canvaの一括作成で、用意したデータを流し込むために必要な操作は？",
             options: { A: "画像を削除する", B: "右クリックして「データを接続」", C: "フォントを太字にする", D: "アニメーションを削除する" },
             correct: "B",
             rationale: "テンプレート上の要素を右クリックし、流し込みたいデータの項目と「接続」することで、一気に流し込みが可能になります。"
-        },
-        {
-            q: "今回の研修（3日目）で設定された、最低限の動画アップロード本数は？",
-            options: { A: "1本", B: "3本以上", C: "10本", D: "30本" },
-            correct: "B",
-            rationale: "質にこだわりすぎず、まずは「数を出す」経験を積むために、最低3本のアウトプットを目標としています。"
         }
     ]);
+
+    // --- PORTAL COMPREHENSIVE QUIZ ---
+    initQuiz('quiz-portal-main', [
+        // 初級 (Tier 1)
+        { tier: 1, q: "Geminiを使用するために必須のアカウントは？", options: { A: "TikTok", B: "Microsoft", C: "Google", D: "OpenAI" }, correct: "C", rationale: "GeminiはGoogleが提供するサービスであるため、Googleアカウントが必要です。" },
+        { tier: 1, q: "TikTokのアルゴリズムは何方式で評価される？", options: { A: "減点方式", B: "加算方式", C: "ランダム", D: "年功序列" }, correct: "B", rationale: "TikTokは「減点」ではなく、ユーザーの好意的なアクションを「加算」していく方式です。誰にでもチャンスがあります。" },
+        { tier: 1, q: "企画リサーチをする際、TikTokアプリ内で最初に使うべき機能は？", options: { A: "設定画面", B: "探索（トレンド）タブでの検索", C: "プロフィールの編集", D: "課金アイテムの購入" }, correct: "B", rationale: "まずは「今、何が流行っているのか」を肌で感じることが重要です。探索タブでトレンドを把握しましょう。" },
+        // 中級 (Tier 2)
+        { tier: 2, q: "TikTokの「ユーザー名（@マーク以降）」を変更する際の制限として正しいものはどれですか？", options: { A: "何度でも自由に変更できる", B: "30日に1回のみ変更可能", C: "一度設定したら二度と変更できない", D: "有料プランでのみ変更可能" }, correct: "B", rationale: "ユーザー名はURLの一部にもなるため、頻繁な変更は制限されています（30日に1回）。" },
+        { tier: 2, q: "Canvaの自動生成AI機能で、「デザイン内の不要なものをなぞるだけで消せる」機能の名前は？", options: { A: "マジック生成", B: "マジック消しゴム", C: "背景リムーバ", D: "マジック拡張" }, correct: "B", rationale: "「マジック消しゴム」を使えば、写真に写り込んだ不要な人やモノを簡単になぞって消去し、背景を自然に補完できます。" },
+        { tier: 2, q: "動画の冒頭で視聴者の興味を引き、指を止めさせる要素を何と呼ぶ？", options: { A: "フック", B: "クロージング", C: "CTA", D: "ハッシュタグ" }, correct: "A", rationale: "釣り針（Hook）のように、視聴者の心を「引っかける」ための冒頭の工夫です。ここが弱いとすぐにスクロールされてしまいます。" },
+        // 上級 (Tier 3)
+        { tier: 3, q: "Geminiが得意とする「マルチモーダル」とはどういう意味ですか？", options: { A: "複数の言語を翻訳できること", B: "テキストだけでなく、画像や音声など複数の種類の情報を扱えること", C: "複数のユーザーで同時に作業できること", D: "複数のアプリを同時に起動できること" }, correct: "B", rationale: "テキスト、コード、画像、音声、動画など、異なる形式のデータを理解・生成できる能力を指します。" },
+        { tier: 3, q: "無料で使えるAI画像編集ツール「Nano Banana」の最大の特徴は？", options: { A: "動画編集に特化している", B: "Illustratorのようなベクター描画ができる", C: "プロンプト（テキスト指示）だけで高度な画像編集が完結する", D: "音楽を自動生成できる" }, correct: "C", rationale: "Nano Bananaはテキスト指示（プロンプト）だけで、不要物の消去・背景の差し替え・画像の高画質化など、プロ級の編集が可能です。" },
+        { tier: 3, q: "Canvaを使って、同じデザインの動画を大量に作る機能の名前は？", options: { A: "マジック作文", B: "一括作成 (Bulk Create)", C: "背景除去", D: "ブランドキット" }, correct: "B", rationale: "「一括作成」機能を使えば、CSVなどを取り込んでデザインを量産できます。まさに「工場」のような機能です。" }
+    ]);
+
 
     // --- DAY 5 QUIZ ---
     initQuiz('quiz-vol01-5', [
