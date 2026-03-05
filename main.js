@@ -216,9 +216,26 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!url || url === '#' || url.startsWith('javascript')) return null;
             try {
                 const res = await fetch(url, { method: 'HEAD' });
+                // Note: Cloudflare Pages might return 200 for 404 pages if custom 404 are set up,
+                // or just standard 404 depending on the setup. Adding a check for actual text size or existance.
+                // However, the simpler fix: only accept URLs that actually exist in the latest commit map,
+                // or just rely on a stricter check (e.g. check if response URL wasn't redirected to a 404 page).
                 if (res.ok) {
-                    const volNum = parseInt(item.id.replace('d', ''));
-                    return { item, volNum };
+                    // Stricter parsing: Ensure it's not a placeholder link by checking if it contains 'vol'
+                    if (url.includes('vol')) {
+                        const volNum = parseInt(item.id.replace('d', ''));
+                        // Very strict: Check if the file's content actually has the structure of our created pages
+                        // We will just do a quick GET to check if it's the real file if we want to be 100% sure.
+                        // But since we just want to avoid treating non-existent files as "Latest", and this environment serves them as real files maybe?
+                        // Let's actually do a GET and check the title.
+                        const getRes = await fetch(url);
+                        if (getRes.ok) {
+                            const text = await getRes.text();
+                            if (text.includes('class="fixed-header"')) {
+                                return { item, volNum };
+                            }
+                        }
+                    }
                 }
             } catch (e) {
                 // Ignore fetch errors
