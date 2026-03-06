@@ -10,7 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- QUIZ ENGINE ---
+    window.ALL_COURSE_QUIZ_DATA = [];
+
     function initQuiz(id, data) {
+        if (id !== 'quiz-portal-main' && data) {
+            window.ALL_COURSE_QUIZ_DATA.push(...data);
+        }
+
         const el = document.getElementById(id);
         if (!el) return;
 
@@ -407,20 +413,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ]);
 
     // --- PORTAL COMPREHENSIVE QUIZ ---
-    initQuiz('quiz-portal-main', [
-        // 初級 (Tier 1)
-        { tier: 1, q: "Geminiを使用するために必須のアカウントは？", options: { A: "TikTok", B: "Microsoft", C: "Google", D: "OpenAI" }, correct: "C", rationale: "GeminiはGoogleが提供するサービスであるため、Googleアカウントが必要です。" },
-        { tier: 1, q: "TikTokのアルゴリズムは何方式で評価される？", options: { A: "減点方式", B: "加算方式", C: "ランダム", D: "年功序列" }, correct: "B", rationale: "TikTokは「減点」ではなく、ユーザーの好意的なアクションを「加算」していく方式です。誰にでもチャンスがあります。" },
-        { tier: 1, q: "企画リサーチをする際、TikTokアプリ内で最初に使うべき機能は？", options: { A: "設定画面", B: "探索（トレンド）タブでの検索", C: "プロフィールの編集", D: "課金アイテムの購入" }, correct: "B", rationale: "まずは「今、何が流行っているのか」を肌で感じることが重要です。探索タブでトレンドを把握しましょう。" },
-        // 中級 (Tier 2)
-        { tier: 2, q: "TikTokの「ユーザー名（@マーク以降）」を変更する際の制限として正しいものはどれですか？", options: { A: "何度でも自由に変更できる", B: "30日に1回のみ変更可能", C: "一度設定したら二度と変更できない", D: "有料プランでのみ変更可能" }, correct: "B", rationale: "ユーザー名はURLの一部にもなるため、頻繁な変更は制限されています（30日に1回）。" },
-        { tier: 2, q: "Canvaの自動生成AI機能で、「デザイン内の不要なものをなぞるだけで消せる」機能の名前は？", options: { A: "マジック生成", B: "マジック消しゴム", C: "背景リムーバ", D: "マジック拡張" }, correct: "B", rationale: "「マジック消しゴム」を使えば、写真に写り込んだ不要な人やモノを簡単になぞって消去し、背景を自然に補完できます。" },
-        { tier: 2, q: "動画の冒頭で視聴者の興味を引き、指を止めさせる要素を何と呼ぶ？", options: { A: "フック", B: "クロージング", C: "CTA", D: "ハッシュタグ" }, correct: "A", rationale: "釣り針（Hook）のように、視聴者の心を「引っかける」ための冒頭の工夫です。ここが弱いとすぐにスクロールされてしまいます。" },
-        // 上級 (Tier 3)
-        { tier: 3, q: "Geminiが得意とする「マルチモーダル」とはどういう意味ですか？", options: { A: "複数の言語を翻訳できること", B: "テキストだけでなく、画像や音声など複数の種類の情報を扱えること", C: "複数のユーザーで同時に作業できること", D: "複数のアプリを同時に起動できること" }, correct: "B", rationale: "テキスト、コード、画像、音声、動画など、異なる形式のデータを理解・生成できる能力を指します。" },
-        { tier: 3, q: "無料で使えるAI画像編集ツール「Nano Banana」の最大の特徴は？", options: { A: "動画編集に特化している", B: "Illustratorのようなベクター描画ができる", C: "プロンプト（テキスト指示）だけで高度な画像編集が完結する", D: "音楽を自動生成できる" }, correct: "C", rationale: "Nano Bananaはテキスト指示（プロンプト）だけで、不要物の消去・背景の差し替え・画像の高画質化など、プロ級の編集が可能です。" },
-        { tier: 3, q: "Canvaを使って、同じデザインの動画を大量に作る機能の名前は？", options: { A: "マジック作文", B: "一括作成 (Bulk Create)", C: "背景除去", D: "ブランドキット" }, correct: "B", rationale: "「一括作成」機能を使えば、CSVなどを取り込んでデザインを量産できます。まさに「工場」のような機能です。" }
-    ]);
+    // (自動収集されたALL_COURSE_QUIZ_DATAを使用するため、ここではハードコードしません)
+
 
 
     // --- DAY 5 QUIZ ---
@@ -732,7 +726,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateLatestButton();
 
-
+    // --- INIT PORTAL COMPREHENSIVE QUIZ ---
+    // すべてのクイズデータが ALL_COURSE_QUIZ_DATA に入った後に総合チェックを初期化
+    initQuiz('quiz-portal-main', window.ALL_COURSE_QUIZ_DATA);
 
     // --- IMMERSIVE ENGINE (New Feature) ---
     const initImmersiveExperience = () => {
