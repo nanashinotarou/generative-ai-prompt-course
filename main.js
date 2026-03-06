@@ -835,4 +835,23 @@ document.addEventListener('DOMContentLoaded', () => {
         initImmersiveExperience();
     }
 
+    // --- PORTAL COMPREHENSIVE QUIZ MODAL LOGIC ---
+    const quizModal = document.getElementById('quiz-modal');
+    const openQuizBtn = document.getElementById('open-quiz-btn');
+    const closeQuizBtn = document.getElementById('close-quiz-modal');
+
+    if (openQuizBtn && quizModal && closeQuizBtn) {
+        openQuizBtn.addEventListener('click', () => {
+            quizModal.style.display = 'flex';
+        });
+        closeQuizBtn.addEventListener('click', () => {
+            quizModal.style.display = 'none';
+        });
+        quizModal.addEventListener('click', (e) => {
+            if (e.target === quizModal) {
+                quizModal.style.display = 'none';
+            }
+        });
+    }
+
 });
