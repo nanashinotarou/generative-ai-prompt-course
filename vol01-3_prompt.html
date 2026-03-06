@@ -1425,6 +1425,37 @@
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                 </div>
+
+                <div class="box concept" style="margin-top:2.5rem; padding-top:2.5rem;">
+                    <h3 style="color:#854d0e; border-bottom: 2px dashed #fef08a; padding-bottom: 10px; margin-top:0;">
+                        <i class="fa-solid fa-table"></i> プロンプト一覧シートの活用法
+                    </h3>
+                    <p style="margin-bottom: 1.5rem; line-height:1.8;">
+                        動画③・④では、実務ですぐに使える<strong>「プロンプト一覧表（スプレッドシート）」</strong>の使い方を解説しています。一からプロンプトを考えるのではなく、先人たちが作った型（テンプレート）を自分の業務に合わせてカスタマイズするのが最大の時短術です。
+                    </p>
+                    <div class="workflow" style="margin:2.5rem 0 1rem; flex-wrap: wrap;">
+                        <div class="flow-step" style="width:23%; margin-bottom: 1rem;">
+                            <div class="step-icon"><i class="fa-solid fa-copy"></i></div>
+                            <span class="step-label" style="font-size:0.95rem;">1. シートをコピー</span>
+                            <span class="step-detail">ご自身のGoogleドライブに追加</span>
+                        </div>
+                        <div class="flow-step" style="width:23%; margin-bottom: 1rem;">
+                            <div class="step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <span class="step-label" style="font-size:0.95rem;">2. 目的から探す</span>
+                            <span class="step-detail">要約、アイディア出し等を選択</span>
+                        </div>
+                        <div class="flow-step" style="width:23%; margin-bottom: 1rem;">
+                            <div class="step-icon"><i class="fa-solid fa-pen"></i></div>
+                            <span class="step-label" style="font-size:0.95rem;">3. 変数を書き換え</span>
+                            <span class="step-detail">ターゲット層などを自社用に調整</span>
+                        </div>
+                        <div class="flow-step" style="width:23%; margin-bottom: 1rem;">
+                            <div class="step-icon"><i class="fa-solid fa-rocket"></i></div>
+                            <span class="step-label" style="font-size:0.95rem;">4. AIに投下</span>
+                            <span class="step-detail">完成したプロンプトをGeminiで実行！</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- 前半ミッション (Mission Ticket) -->
@@ -1482,6 +1513,13 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div style="text-align:center; margin-top: 3.5rem;">
+                <button onclick="switchTab('half2'); window.scrollTo({top: 0, behavior: 'smooth'});" class="btn"
+                    style="padding:16px 45px; font-size:1.15rem; border-radius:30px; box-shadow: 0 10px 25px var(--accent-glow);">
+                    後半（応用テクニック）へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
         </div>
 
@@ -1912,10 +1950,11 @@
         </div>
 
         <!-- Dev Notes Link -->
-        <div style="text-align:center; margin:40px 0;">
-            <a href="index_dev_notes.html" class="btn"
-                style="border-radius:30px; padding:12px 28px; background:#f8fafc; color:var(--text-sub); box-shadow:none; border:1px solid #e2e8f0;">
-                <i class="fa-solid fa-code"></i> 開発者ノート
+        <div style="text-align:center; margin:60px 0 20px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
+            <a href="index_dev_notes.html"
+                style="color:#94a3b8; text-decoration:none; font-size:0.85rem; transition: color 0.2s;"
+                onmouseover="this.style.color='#64748b'" onmouseout="this.style.color='#94a3b8'">
+                <i class="fa-solid fa-code"></i> 制作の裏側・開発者ノートはこちら
             </a>
         </div>
     </div>
