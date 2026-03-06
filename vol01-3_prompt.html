@@ -580,6 +580,62 @@
             font-size: 0.95rem;
         }
 
+        /* ===== ACCORDION ===== */
+        .prompt-accordion {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s;
+        }
+
+        .prompt-accordion[open] {
+            border-color: var(--accent-light);
+            box-shadow: 0 8px 15px rgba(14, 165, 233, 0.1);
+        }
+
+        .prompt-accordion summary {
+            padding: 1.2rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            background: #f8fafc;
+            cursor: pointer;
+            list-style: none;
+            /* Hide default triangle */
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .prompt-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .prompt-accordion summary:hover {
+            background: #f1f5f9;
+        }
+
+        .prompt-accordion summary::after {
+            content: "\f078";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            margin-left: auto;
+            color: var(--text-sub);
+            transition: transform 0.3s;
+        }
+
+        .prompt-accordion[open] summary::after {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            padding: 1.5rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
         /* ===== QUIZ ===== */
         .quiz-area {
             text-align: center;
@@ -862,7 +918,7 @@
         .sound-toggle-btn {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -1455,6 +1511,54 @@
                             <span class="step-detail">完成したプロンプトをGeminiで実行！</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- プロンプト実例集（アコーディオン） -->
+                <div style="margin-top: 2.5rem;">
+                    <details class="prompt-accordion">
+                        <summary><i class="fa-solid fa-list-check"></i> 動画内で紹介された「実際のプロンプト例」を確認する</summary>
+                        <div class="accordion-content">
+                            <p style="margin-bottom:1.5rem; color:var(--text-sub); font-size:0.95rem; line-height:1.6;">
+                                動画③・④で実際に解説されているプロンプトの一例です。それぞれの用途と「なぜこのプロンプトが有効なのか」の工夫ポイントをまとめました。
+                            </p>
+
+                            <!-- 例1 -->
+                            <div class="code-box" style="margin-top:0; border-left-color: #3b82f6;">
+                                <span class="code-label" style="background:#3b82f6;">例1：議事録の要約と整理</span>
+                                <strong># 指示</strong><br>
+                                以下の会議メモを整理し、決定事項・未決事項・Next Action（担当者と期限）に分けてマークダウンで出力してください。<br><br>
+                                <strong># 会議メモ</strong><br>
+                                (ここにメモを入力)<br>
+                                <hr style="border:1px dashed #475569; margin:15px 0;">
+                                <span class="code-comment">💡
+                                    <strong>工夫ポイント</strong>：散らかったメモから必要な要素（決定・未決・行動）を強制的に抽出させる「フォーマット（型）」の力を活用しています。</span>
+                            </div>
+
+                            <!-- 例2 -->
+                            <div class="code-box" style="border-left-color: #f59e0b;">
+                                <span class="code-label" style="background:#f59e0b;">例2：クリエイティブなアイディア出し</span>
+                                <strong># 役割と指示</strong><br>
+                                あなたは優秀なプロのマーケターです。<br>
+                                新しいダイエットアプリのTwitter用キャッチコピーを、ターゲット（20代女性）に刺さる切り口で10個提案してください。<br><br>
+                                <strong># 条件</strong><br>
+                                - ネガティブな表現（太る、努力が必要等）は避ける<br>
+                                - 20文字以内<br>
+                                <hr style="border:1px dashed #475569; margin:15px 0;">
+                                <span class="code-comment">💡
+                                    <strong>工夫ポイント</strong>：役割（マーケター）とターゲット・制約条件を明記することで、単なる無機質な回答ではなく「刺さる」表現になります。</span>
+                            </div>
+
+                            <!-- 例3 -->
+                            <div class="code-box" style="border-left-color: #8b5cf6;">
+                                <span class="code-label" style="background:#8b5cf6;">例3：文書のトーン＆マナー変換</span>
+                                <strong># 指示</strong><br>
+                                以下の社内向けに書いた荒い文章を、重要な取引先の社長宛てに送る「丁寧かつ角が立たないビジネスメール」に書き換えてください。<br>
+                                <hr style="border:1px dashed #475569; margin:15px 0;">
+                                <span class="code-comment">💡
+                                    <strong>工夫ポイント</strong>：自分でゼロから書くと悩んでしまう「クッション言葉」や「配慮」などを、要件だけ投げてAIに整えさせる究極の時短術です。</span>
+                            </div>
+                        </div>
+                    </details>
                 </div>
             </div>
 
