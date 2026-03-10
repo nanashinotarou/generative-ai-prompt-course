@@ -571,9 +571,10 @@ def build_html():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 4 | Nano Banana Pro & Image Generation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>画像生成の基礎 | 生成AI研修</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600&display=swap" rel="stylesheet">
     <style>{css}</style>
 </head>
 <body>
@@ -593,7 +594,7 @@ def build_html():
     <div class="container">
         <div class="hero">
             <div class="day-badge">DAY 04</div>
-            <h1>Nano Banana Pro 教科書</h1>
+            <h1>画像生成の基礎</h1>
             <p>本日の目標：テキストから画像への変換技術の基礎をマスターする。</p>
         </div>
 
