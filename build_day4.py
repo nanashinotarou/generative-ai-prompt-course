@@ -208,12 +208,22 @@ def build_html():
         .quiz-feedback { margin-top: 15px; font-weight: 700; height: 24px; }
         .quiz-next { margin-top: 20px; padding: 10px 20px; background: var(--clickable); color: #fff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; display: none; margin-left: auto; margin-right: auto;}
         
-        /* YouTube Buttons */
+        /* YouTube Buttons & Video Grid */
         .main-video-btn { display: inline-flex; align-items: center; gap: 8px; background: #ef4444; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: transform 0.3s, box-shadow 0.3s; margin-top: 1rem; border: 2px solid #b91c1c;}
         .main-video-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3); }
         .main-video-btn i { font-size: 1.3rem; }
         .yt-time-btn { display: inline-flex; align-items: center; gap: 6px; background: #fee2e2; color: #b91c1c; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; border: 1px solid #fca5a5; white-space: nowrap; margin-bottom: 10px;}
         .yt-time-btn:hover { background: #fca5a5; color: #7f1d1d; }
+
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 1.2rem; margin-bottom: 2rem;}
+        .video-thumb { position: relative; border-radius: 14px; overflow: hidden; display: block; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transition: all 0.3s; background: #000;}
+        .video-thumb:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); border-color: var(--accent-light);}
+        .video-thumb img { width: 100%; display: block; opacity: 0.92; transition: opacity 0.3s, transform 0.5s;}
+        .video-thumb:hover img { opacity: 1; transform: scale(1.04);}
+        .video-thumb .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; transition: all 0.3s;}
+        .video-thumb:hover .play-overlay { background: rgba(79,70,229,0.2);}
+        .play-overlay i { color: #fff; font-size: 2.8rem; text-shadow: 0 3px 12px rgba(0,0,0,0.4); transition: transform 0.3s;}
+        .video-thumb:hover .play-overlay i { transform: scale(1.15);}
     """
 
     js = """
@@ -487,6 +497,20 @@ def build_html():
     part1 = """
         <div id="half1" class="tab-content active">
             <div class="glass-card">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><h2>📺 前半：AI画像生成の基礎・応用</h2></div>
+                <div class="video-grid">
+                    <a href="https://youtu.be/3ATfzId9wrM" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/3ATfzId9wrM/mqdefault.jpg" alt="動画1">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                    <a href="https://youtu.be/jyZ1D9dP4fI" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/jyZ1D9dP4fI/mqdefault.jpg" alt="動画2">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="glass-card">
                 <div class="card-header"><i class="fa-solid fa-graduation-cap"></i><h2>画像生成のキホンとプロンプトの構造</h2></div>
                 <p>動画で解説されているテキストから画像への変換技術の基礎です。AIが画像を生成する際、「プロンプト」という命令文を与えます。プロンプトは明確で構造的であるほど、AIが意図通りに解釈しやすくなります。</p>
                 <div class="bento-grid">
@@ -571,7 +595,6 @@ def build_html():
             <div class="day-badge">DAY 04</div>
             <h1>Nano Banana Pro 教科書</h1>
             <p>本日の目標：テキストから画像への変換技術の基礎をマスターする。</p>
-            <a href="https://www.youtube.com/watch?v=SP4FceXU1e4" target="_blank" class="main-video-btn"><i class="fa-brands fa-youtube"></i> 講義動画を見る</a>
         </div>
 
         <div class="tab-container">
@@ -583,6 +606,16 @@ def build_html():
         {part1}
 
         <div id="half2" class="tab-content">
+            <div class="glass-card">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><h2>📺 後半：Nano Banana Pro活用術20選</h2></div>
+                <div class="video-grid" style="grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));">
+                    <a href="https://youtu.be/SP4FceXU1e4" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/SP4FceXU1e4/mqdefault.jpg" alt="活用術20選">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+            
             <div class="glass-card">
                 <div class="card-header"><i class="fa-solid fa-list"></i><h2>応用：動画編集者向け 活用術20選</h2></div>
                 <p>動画で紹介されたプロンプトです。No Video Relianceの法則に基づき、すべて再現しました。</p>
@@ -608,6 +641,16 @@ def build_html():
         </div>
 
         <div id="half3" class="tab-content">
+            <div class="glass-card">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444;"></i><h2>📺 後半：今日から使える画像編集テク</h2></div>
+                <div class="video-grid" style="grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));">
+                    <a href="https://youtu.be/EcQNRpZE7Ns" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/EcQNRpZE7Ns/mqdefault.jpg" alt="編集テク19選">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                    </a>
+                </div>
+            </div>
+
             <div class="glass-card">
                 <div class="card-header"><i class="fa-solid fa-layer-group"></i><h2>実践：今すぐ使える活用事例19選</h2></div>
                 <p>インペイント（部分修正）やアスペクト比の変更など、生成後の「加工」に特化したテクニック集です。</p>
@@ -637,6 +680,7 @@ def build_html():
         </div>
     </div>
     <script>{js}</script>
+    <script src="main.js"></script>
 </body>
 </html>
 """
