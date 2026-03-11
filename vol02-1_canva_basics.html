@@ -191,6 +191,82 @@
         /* Floating Action */
         .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #3b82f6); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
         .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.6); color: white; }
+
+        /* ======= DIAGRAM BOX ======= */
+        .diagram-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 2rem; margin: 2.5rem 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .diagram-box h4 { margin: 0 0 1rem; font-size: 1.2rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+
+        /* ======= ACCORDION ======= */
+        .accordion { margin: 1.5rem 0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .accordion details { border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .accordion details:last-child { border-bottom: none; }
+        .accordion summary { padding: 1.4rem 2rem; cursor: pointer; display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); transition: background 0.2s; list-style: none; user-select: none; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion summary::before { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 0.8rem; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; width: 20px; text-align: center; }
+        .accordion details[open] summary::before { transform: rotate(180deg); }
+        .accordion summary .lead { font-weight: 400; font-size: 0.95rem; color: var(--text-sub); margin-left: auto; flex-shrink: 0; }
+        .accordion .acc-body { padding: 0 2rem 1.8rem 3.5rem; color: var(--text-sub); line-height: 1.8; font-size: 1.05rem; animation: fadeIn 0.3s ease; }
+        .accordion .acc-body p { margin: 0 0 1rem 0; }
+        .accordion .acc-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        /* ======= COLUMN BOX ======= */
+        .column-box { background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 1px solid #c4b5fd; border-radius: 16px; padding: 2rem; margin: 2rem 0; position: relative; }
+        .column-label { position: absolute; top: -12px; left: 24px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 14px; border-radius: 20px; letter-spacing: 1px; }
+        .column-box h4 { margin: 0.5rem 0 1rem; font-size: 1.2rem; font-weight: 800; color: #4c1d95; }
+        .column-box p { color: #5b21b6; line-height: 1.8; font-size: 1.05rem; margin: 0 0 0.8rem; }
+
+        /* ======= FLIP CARDS ======= */
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 800px; height: 300px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.4,0,.2,1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.06); overflow: hidden; }
+        .flip-front { background: linear-gradient(135deg, #eef2ff, #e0e7ff); border: 2px solid #c7d2fe; }
+        .flip-front .flip-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .flip-front h5 { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+        .flip-front .flip-hint { margin-top: 1rem; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+        .flip-back { background: linear-gradient(135deg, var(--accent), #3b82f6); color: #fff; transform: rotateY(180deg); }
+        .flip-back p { margin: 0; font-size: 0.85rem; line-height: 1.6; text-align: left; }
+        .flip-back .flip-label { position: absolute; top: 12px; right: 16px; font-size: 0.75rem; opacity: 0.7; }
+
+        /* ======= BEFORE / AFTER TOGGLE ======= */
+        .ba-toggle { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .ba-toggle h4 { margin: 0 0 1.2rem; font-weight: 800; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ba-switch { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 2px solid #e2e8f0; }
+        .ba-switch button { flex: 1; padding: 0.8rem; border: none; background: #f8fafc; cursor: pointer; font-weight: 800; font-size: 1rem; transition: all 0.3s; color: var(--text-sub); }
+        .ba-switch .active-ng { background: #fef2f2; color: #991b1b; border-bottom: 3px solid #ef4444; }
+        .ba-switch .active-ok { background: #f0fdf4; color: #166534; border-bottom: 3px solid #22c55e; }
+        .ba-panel { display: none; animation: fadeIn 0.3s ease; }
+        .ba-panel.active { display: block; }
+        .ba-ng { background: #fef2f2; border-radius: 12px; padding: 1.5rem; border: 1px solid #fecaca; }
+        .ba-ok { background: #f0fdf4; border-radius: 12px; padding: 1.5rem; border: 1px solid #bbf7d0; }
+        .prompt-example { background: #1e1b4b; color: #e0e7ff; padding: 1rem 1.5rem; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; margin: 1rem 0; white-space: pre-wrap; }
+
+        /* ======= INLINE QUIZ ======= */
+        .quiz-box { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #fcd34d; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .quiz-box h4 { margin: 0 0 1.2rem; color: #92400e; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+        .quiz-opt { display: block; width: 100%; text-align: left; padding: 1rem 1.5rem; margin: 0.5rem 0; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s; }
+        .quiz-opt:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-bg); transform: translateX(5px); }
+        .quiz-opt.correct { border-color: #22c55e; background: #dcfce7; color: #166534; }
+        .quiz-opt.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.7; }
+        .quiz-explain { display: none; margin-top: 1rem; padding: 1rem 1.5rem; background: #fff; border-radius: 12px; border: 1px solid #d1fae5; }
+        .quiz-explain.show { display: block; animation: fadeIn 0.3s ease; }
+
+        /* ======= STEP CARDS ======= */
+        .step-carousel { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .step-carousel h4 { margin: 0 0 1.5rem; font-weight: 800; }
+        .step-slide { display: none; animation: fadeIn 0.4s ease; }
+        .step-slide.active { display: block; }
+        .step-dots { display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.5rem; }
+        .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; }
+        .step-dot.active { background: var(--accent); }
+        .step-dot.done { background: #22c55e; }
+
+        /* ======= TYPING ANIMATION ======= */
+        .typing-area { font-size: 1.6rem; font-weight: 900; color: var(--accent); padding: 1.5rem; background: var(--accent-bg); border-radius: 16px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .typing-cursor { display: inline-block; width: 3px; height: 1.2em; background: var(--accent); margin-left: 2px; animation: blink 0.7s infinite; vertical-align: text-bottom; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -265,14 +341,145 @@
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
                     <p style="margin-bottom:0; line-height:1.7;">デザインツール「Canva」の基本とAI機能をマスターし、誰でもプロ級のデザインを作れるようになるためのエッセンスです。</p>
                 </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-wand-magic-sparkles" style="color:#a855f7;"></i> 1. CanvaのAI活用</h4>
-                        <p>Magic Studio機能を活用すれば、テキストから画像生成、デザインの自動リサイズ、被写体の切り抜きなどがワンクリックで行えます。</p>
+
+                <!-- タイピングアニメーション -->
+                <div style="text-align:center; margin: 2rem 0;">
+                    <div class="typing-area" id="typing2"></div>
+                </div>
+
+                <!-- Canvaワークフロー図解（純HTML/CSS） -->
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i> Canva × AI のワークフロー</h4>
+                    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:0.5rem;">
+                        <div style="background:#fdf4ff; border:2px solid #a855f7; border-radius:12px; padding:0.8rem 1.3rem; font-weight:800; color:#6b21a8; text-align:center;">💡 アイデア</div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                            <div style="background:#fff; border:1px solid #c4b5fd; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#7c3aed; font-size:0.9rem;">🪄 マジック生成</div>
+                            <div style="background:#fff; border:1px solid #c4b5fd; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#7c3aed; font-size:0.9rem;">🎨 テンプレート選択</div>
+                            <div style="background:#fff; border:1px solid #c4b5fd; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#7c3aed; font-size:0.9rem;">✂️ 背景リムーバー</div>
+                        </div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="background:linear-gradient(135deg,#a855f7,#7c3aed); border-radius:14px; padding:0.8rem 1.5rem; color:#fff; font-weight:800; text-align:center; box-shadow:0 4px 12px rgba(124,58,237,0.3);">🖥️ Canvaで編集</div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="background:#f0fdfa; border:2px solid #0d9488; border-radius:12px; padding:0.8rem 1.5rem; font-weight:800; color:#134e4a; text-align:center;">✨ 完成作品</div>
                     </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-layer-group" style="color:#0ea5e9;"></i> 2. テンプレートの効率的利用</h4>
-                        <p>ゼロから作るのではなく、数百万点のテンプレートから目的に合ったものを検索しカスタマイズすることで、制作時間を大幅に短縮できます。</p>
+                </div>
+
+                <!-- フリップカード4枚 -->
+                <h3 style="display:flex; align-items:center; gap:10px; margin-top:2.5rem;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> カードをクリックして用語を覚えよう</h3>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #fdf4ff, #fae8ff); border-color: #e9d5ff;">
+                                <div class="flip-icon">🪄</div>
+                                <h5>Magic Studio とは？</h5>
+                                <div class="flip-hint" style="color:#7c3aed;">Click to reveal</div>
+                            </div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">
+                                <div class="flip-label">Answer</div>
+                                <p>CanvaのAI機能の総称。<strong>テキストから画像生成</strong>、<strong>背景リムーバー</strong>、<strong>マジック拡張</strong>（画像の範囲拡大）など多数。<br><br>プロンプトを入力するだけで、デザイン素材がその場で作れる。外部ツールなしで完結するのが最大の強み。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #93c5fd;">
+                                <div class="flip-icon">📐</div>
+                                <h5>テンプレート活用 とは？</h5>
+                                <div class="flip-hint" style="color:#2563eb;">Click to reveal</div>
+                            </div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #2563eb, #1d4ed8);">
+                                <div class="flip-label">Answer</div>
+                                <p>数百万点のプロ品質テンプレートから<strong>目的に合ったものを検索→カスタマイズ</strong>する方法。<br><br>ゼロから作るより10倍速い。Instagram投稿、YouTubeサムネイル、名刺、プレゼンなど用途別に最適化済み。文字と写真を差し替えるだけで完成。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;">
+                                <div class="flip-icon">🔄</div>
+                                <h5>マジックリサイズ とは？</h5>
+                                <div class="flip-hint" style="color:#059669;">Click to reveal</div>
+                            </div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #059669, #047857);">
+                                <div class="flip-label">Answer</div>
+                                <p>1つのデザインを<strong>複数サイズに自動変換</strong>する機能。<br><br>例：Instagram正方形→YouTubeサムネ横長→Storyタテ長をワンクリック。レイアウトもAIが調整。<strong>1つ作れば全SNS対応</strong>できる時短の極意。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fde047;">
+                                <div class="flip-icon">🤝</div>
+                                <h5>ブランドキット とは？</h5>
+                                <div class="flip-hint" style="color:#ca8a04;">Click to reveal</div>
+                            </div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #ca8a04, #a16207);">
+                                <div class="flip-label">Answer</div>
+                                <p>ロゴ・使用カラー・フォントを<strong>1セットとして登録</strong>する機能。<br><br>チーム全員が同じブランドガイドに沿ってデザイン可能。「色が微妙に違う」「フォントがバラバラ」を防ぎ、SNS投稿に<strong>統一感</strong>を持たせられる。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Before/After: デザインアプローチ -->
+                <div class="ba-toggle">
+                    <h4><i class="fa-solid fa-arrows-left-right" style="color:#f59e0b;"></i> デザイン初心者のNG行動 vs プロの時短術</h4>
+                    <div class="ba-switch">
+                        <button class="active-ng" onclick="switchBA(this,'ba2-ng','ba2-ok','ng')">❌ ありがちなNG</button>
+                        <button onclick="switchBA(this,'ba2-ok','ba2-ng','ok')">✅ Canva活用術</button>
+                    </div>
+                    <div id="ba2-ng" class="ba-panel ba-ng active">
+                        <h4><i class="fa-solid fa-xmark"></i> やりがちな遠回り</h4>
+                        <p style="color:#7f1d1d; line-height:1.8;">❌ <strong>白紙からデザインを始める</strong> → 配色・レイアウト・フォント選びに何時間もかかる</p>
+                        <p style="color:#7f1d1d; line-height:1.8;">❌ <strong>画像素材を外部サイトで探し回る</strong> → Canva内の素材ライブラリにプロ写真が何億枚もある</p>
+                        <p style="color:#7f1d1d; line-height:1.8;">❌ <strong>SNSごとにサイズ違いで1から作り直す</strong> → マジックリサイズで自動変換できる</p>
+                    </div>
+                    <div id="ba2-ok" class="ba-panel ba-ok">
+                        <h4><i class="fa-solid fa-check"></i> プロの時短ワークフロー</h4>
+                        <p style="color:#065f46; line-height:1.8;">✅ <strong>テンプレートを検索→カスタマイズ</strong> → デザインの「型」を利用して文字と写真を差し替えるだけ</p>
+                        <p style="color:#065f46; line-height:1.8;">✅ <strong>マジック生成で素材をその場で作る</strong> → 「カフェでノートPCを開く女性、パステルカラー」とプロンプト入力</p>
+                        <p style="color:#065f46; line-height:1.8;">✅ <strong>1デザイン→マジックリサイズで全SNS対応</strong> → Instagram / YouTube / Storyを一括生成</p>
+                    </div>
+                </div>
+
+                <!-- インラインクイズ -->
+                <div class="quiz-box" id="quiz2-1">
+                    <h4><i class="fa-solid fa-brain"></i> 理解度チェック</h4>
+                    <p style="font-weight:700; color:#78350f; margin-bottom:1rem;">Q. Canvaで効率よくデザインする最大のコツは？</p>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz2-1', this, false)">A. Photoshopのスキルを先に身につける</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz2-1', this, true)">B. テンプレートを選んでカスタマイズする</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz2-1', this, false)">C. 必ず白紙キャンバスから始める</button>
+                    <div class="quiz-explain" id="quiz2-1-explain">
+                        <p style="margin:0; line-height:1.7;"><strong>正解はB！</strong> Canvaの最大の強みは<strong>数百万点のプロ品質テンプレート</strong>。ゼロから作るのではなく、テンプレートの文字・写真を差し替えるだけで高品質なデザインが完成します。</p>
+                    </div>
+                </div>
+
+                <!-- ステップカード -->
+                <div class="step-carousel" id="steps2">
+                    <h4><i class="fa-solid fa-shoe-prints" style="color:var(--accent);"></i> Canva実習ステップガイド</h4>
+                    <div class="step-slide active">
+                        <h5 style="color:var(--accent);">Step 1 / 3：テンプレート選び</h5>
+                        <p><a href="https://www.canva.com/" target="_blank" style="color:var(--accent); font-weight:700;">Canva</a>を開き、「SNS投稿」など目的で検索。気に入ったテンプレートをクリックして「このテンプレートをカスタマイズ」。</p>
+                        <button class="btn btn-sm" onclick="stepNext('steps2', 1)">次へ →</button>
+                    </div>
+                    <div class="step-slide">
+                        <h5 style="color:var(--accent);">Step 2 / 3：テキスト＆画像の差し替え</h5>
+                        <p>テンプレート内のテキストをクリックして自分の文に書き換え。写真は「アップロード」or「マジック生成」で差し替え。</p>
+                        <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+                            <button class="btn btn-sm btn-outline" onclick="stepPrev('steps2', 1)">← 戻る</button>
+                            <button class="btn btn-sm" onclick="stepNext('steps2', 2)">次へ →</button>
+                        </div>
+                    </div>
+                    <div class="step-slide">
+                        <h5 style="color:var(--accent);">Step 3 / 3：ダウンロード＆共有</h5>
+                        <p>右上の「共有」→「ダウンロード」でPNG/JPEGで保存。SNSに直接投稿もCanva内から可能！</p>
+                        <button class="btn btn-sm btn-outline" onclick="stepPrev('steps2', 2)">← 戻る</button>
+                    </div>
+                    <div class="step-dots">
+                        <span class="step-dot active"></span>
+                        <span class="step-dot"></span>
+                        <span class="step-dot"></span>
                     </div>
                 </div>
 
@@ -336,17 +543,89 @@
 
                 <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
                     <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">プロンプトの4要素（被写体、背景、照明、カメラアングル）と言語化の重要性についてまとめました。</p>
+                    <p style="margin-bottom:0; line-height:1.7;">プロ向けツール「Affinity」の概要と、無料AI「Nano Banana」を使ったプロンプト編集テクニックのエッセンスです。</p>
                 </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 1. プロンプト生成術</h4>
-                        <p>具体的なキーワードを指定することで、AIが生成する画像の精度が格段に上がります。</p>
+
+                <!-- プロンプト4要素の図解 -->
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-puzzle-piece" style="color:#f59e0b;"></i> 画像生成プロンプトの4要素</h4>
+                    <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:1rem;">
+                        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#92400e; font-size:0.95rem; min-width:160px; text-align:center;">🎯 被写体<br><span style="font-weight:400; font-size:0.75rem;">例：カフェの窓辺の猫</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#e0f2fe; border:2px solid #38bdf8; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#0c4a6e; font-size:0.95rem; min-width:160px; text-align:center;">🌄 背景<br><span style="font-weight:400; font-size:0.75rem;">例：夕暮れの街並み</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#fce7f3; border:2px solid #ec4899; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#831843; font-size:0.95rem; min-width:160px; text-align:center;">💡 照明<br><span style="font-weight:400; font-size:0.75rem;">例：ゴールデンアワー</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#064e3b; font-size:0.95rem; min-width:160px; text-align:center;">📷 カメラ<br><span style="font-weight:400; font-size:0.75rem;">例：35mm広角レンズ</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                        </div>
+                        <div style="background:linear-gradient(135deg,#8b5cf6,#6d28d9); border-radius:16px; padding:1.5rem 2rem; text-align:center; color:#fff; font-weight:800; font-size:1.1rem; box-shadow:0 4px 15px rgba(109,40,217,0.3);">🖼️ 高品質な<br>AI画像</div>
                     </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-crop-simple" style="color:#10b981;"></i> 2. AIツール間の連携</h4>
-                        <p>Nano Bananaで生成し、Canvaで仕上げる。これが最短で高品質な作品を作るコツです。</p>
+                </div>
+
+                <!-- アコーディオン -->
+                <div class="accordion" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 2px solid #c4b5fd;">
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-paintbrush" style="color:#8b5cf6;"></i>
+                            1. Affinityシリーズとは
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>Canva傘下のプロ向けクリエイティブスイート。<span style="font-weight:700; color:var(--text-main);">Photo（写真編集）・Designer（グラフィック）・Publisher（出版）</span>の3本柱。Adobe製品の代替として注目されており、<strong>買い切り＆サブスク不要</strong>なのが大きなメリット。Canvaユーザーは無料で使える場合も。</p>
+                        </div>
+                    </details>
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-wand-magic-sparkles" style="color:#ec4899;"></i>
+                            2. Nano Bananaの強み
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p><strong>無料で使えるAI画像生成ツール</strong>。アニメ・イラスト調に特化し、プロンプトへの忠実度が非常に高い。Nano Bananaで生成した画像をCanvaに取り込んで仕上げる<strong>「AI生成→Canva編集」</strong>のワークフローが最短ルート。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- BA: プロンプト比較 -->
+                <div class="ba-toggle">
+                    <h4><i class="fa-solid fa-arrows-left-right" style="color:#f59e0b;"></i> 画像生成プロンプト：NG vs 良い例</h4>
+                    <div class="ba-switch">
+                        <button class="active-ng" onclick="switchBA(this,'ba3-ng','ba3-ok','ng')">❌ 雑なプロンプト</button>
+                        <button onclick="switchBA(this,'ba3-ok','ba3-ng','ok')">✅ 4要素入り</button>
                     </div>
+                    <div id="ba3-ng" class="ba-panel ba-ng active">
+                        <h4><i class="fa-solid fa-xmark"></i> ありがちなNG</h4>
+                        <div class="prompt-example">猫の画像を作って</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ 被写体だけで他の要素がゼロ。AIは適当な猫を出すしかない</p>
+                        <div class="prompt-example" style="margin-top:1rem;">かっこいい風景</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ 「かっこいい」は主観的すぎてAIには伝わらない</p>
+                    </div>
+                    <div id="ba3-ok" class="ba-panel ba-ok">
+                        <h4><i class="fa-solid fa-check"></i> 4要素を指定した例</h4>
+                        <div class="prompt-example">カフェの窓辺で眠る三毛猫、[被写体]
+夕暮れ時の東京の街並みが背景、[背景]
+ゴールデンアワーの暖かい自然光、[照明]
+35mm広角レンズ、浅い被写界深度 [カメラ]</div>
+                        <p style="color:#065f46; line-height:1.7;">→ 4要素すべて具体的に指定。AIはイメージ通りの画像を生成できる！</p>
+                    </div>
+                </div>
+
+                <!-- コラム: プロンプトシート -->
+                <div class="column-box">
+                    <div class="column-label">Column / 実習素材</div>
+                    <h4>プロンプトシートを活用しよう</h4>
+                    <p>専用のスプレッドシートに、様々なジャンル・スタイルの<strong>画像生成プロンプトサンプル</strong>がまとめてあります。コピペして改変するだけで、すぐにオリジナル画像が作れます。</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing" target="_blank" class="btn btn-sm" style="background: linear-gradient(135deg, #a855f7, #7c3aed); margin-top: 0.5rem;"><i class="fa-solid fa-table"></i> プロンプトシートを開く</a>
                 </div>
 
                 <div class="mission-area" id="mission-group-2" style="border-color: #8b5cf6;">
@@ -388,15 +667,43 @@
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #10b981; background: #f0fdf4;">
                 <h3 style="color:#10b981; font-size:1.8rem; margin-top:0; border-bottom:2px solid #a7f3d0; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
-                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 2 全行程コンプリート！
+                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 2 学習のまとめ
                 </h3>
-                <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は<strong>「Canva」と「AIの連携」</strong>をテーマに学びました。<br>
-                    Canvaの強力なテンプレートとAIの魔法をかき混ぜて、<br>
-                    誰もが驚くような美しいデジタル作品を作り上げていきましょう！
-                </p>
-                
-                <div style="margin-top:3rem; text-align:center;">
+
+                <div style="max-width:700px; margin: 2rem auto; text-align:left;">
+                    <h4 style="font-size:1.3rem; font-weight:800; color:#064e3b; margin-bottom:1.5rem; text-align:center;">📌 今日学んだキーポイント</h4>
+
+                    <div style="background:#fff; border:1px solid #d1fae5; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#059669; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">🎨 前半：Canva実習</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li>Canvaは<strong>テンプレート×カスタマイズ</strong>が最強の時短術</li>
+                            <li><strong>Magic Studio</strong>で画像生成・背景除去・リサイズがワンクリック</li>
+                            <li><strong>マジックリサイズ</strong>で1デザイン→全SNS対応</li>
+                            <li><strong>ブランドキット</strong>でチームのデザイン統一感を確保</li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fff; border:1px solid #e9d5ff; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#7c3aed; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">🔮 後半：Affinity ＆ Nano Banana</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li>画像生成プロンプトの4要素：<strong>被写体・背景・照明・カメラ</strong></li>
+                            <li>AffinityはAdobeの代替、<strong>買い切り型</strong>のプロツール</li>
+                            <li>Nano Banana→Canvaの<strong>「AI生成→編集」ワークフロー</strong></li>
+                            <li>プロンプトシートを活用して<strong>コピペ→改変</strong>が最短</li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:16px; padding:1.5rem; margin-bottom:2rem;">
+                        <h5 style="color:#92400e; font-weight:800; margin:0 0 0.8rem; font-size:1.05rem;">💡 明日から実践できること</h5>
+                        <ul style="line-height:2; margin:0; padding-left:1.5rem; color:#78350f;">
+                            <li>SNS投稿画像をCanvaテンプレートで作ってみる</li>
+                            <li>Nano Bananaでアイキャッチ画像を生成→Canvaで文字入れ</li>
+                            <li>マジックリサイズでInstagram→YouTubeサムネ変換</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top:1rem; text-align:center;">
                     <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #10b981, #059669); border-radius:50px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);" onclick="window.location.href='index.html'">
                         <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
                     </button>
@@ -409,6 +716,67 @@
 
     <!-- Scripts -->
     <script>
+        // --- Before/After Toggle ---
+        function switchBA(btn, showId, hideId, type) {
+            document.getElementById(showId).classList.add('active');
+            document.getElementById(hideId).classList.remove('active');
+            const btns = btn.parentElement.querySelectorAll('button');
+            btns.forEach(b => { b.className = ''; });
+            btn.className = type === 'ng' ? 'active-ng' : 'active-ok';
+        }
+
+        // --- Inline Quiz ---
+        function checkQuiz(quizId, el, isCorrect) {
+            const box = document.getElementById(quizId);
+            const opts = box.querySelectorAll('.quiz-opt');
+            opts.forEach(o => {
+                o.classList.add('disabled');
+                if (o === el) o.classList.add(isCorrect ? 'correct' : 'wrong');
+            });
+            if (!isCorrect) {
+                opts.forEach(o => {
+                    if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1)
+                        o.classList.add('correct');
+                });
+            }
+            document.getElementById(quizId + '-explain').classList.add('show');
+        }
+
+        // --- Step Carousel ---
+        function stepNext(carouselId, currentIdx) {
+            const car = document.getElementById(carouselId);
+            const slides = car.querySelectorAll('.step-slide');
+            if (currentIdx < slides.length) {
+                slides[currentIdx - 1].classList.remove('active');
+                slides[currentIdx].classList.add('active');
+            }
+        }
+        function stepPrev(carouselId, targetIdx) {
+            const car = document.getElementById(carouselId);
+            const slides = car.querySelectorAll('.step-slide');
+            slides.forEach(s => s.classList.remove('active'));
+            slides[targetIdx - 1].classList.add('active');
+        }
+
+        // --- Typing Animation ---
+        function typeWriter(elementId, text, speed = 50) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.innerHTML = '<span class="typing-cursor"></span>';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML = text.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    el.innerHTML = text;
+                }
+            }
+            type();
+        }
+        let typed2 = false;
+
         // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -418,6 +786,21 @@
             for(let i=0; i<buttons.length; i++){
                 if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
+                }
+            }
+            if (tabId === 'tab-first' && !typed2) {
+                typed2 = true;
+                const typingEl = document.getElementById('typing2');
+                if (typingEl) {
+                    const obs = new IntersectionObserver((entries) => {
+                        entries.forEach(e => {
+                            if (e.isIntersecting) {
+                                obs.disconnect();
+                                typeWriter('typing2', 'Canva×AIで、デザインの壁は完全に消える。', 60);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    obs.observe(typingEl);
                 }
             }
         }

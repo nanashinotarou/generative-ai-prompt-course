@@ -195,6 +195,54 @@
         .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #059669); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
         .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6); color: white; }
 
+        /* --- Custom Interactive Components --- */
+        .highlight-box { background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-left: 5px solid #3b82f6; padding: 1.8rem 2.2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .highlight-box h3 { margin: 0 0 0.8rem; color: #1e3a8a; display: flex; align-items: center; gap: 0.8rem; font-size: 1.25rem; border-bottom: 2px solid #bfdbfe; padding-bottom: 0.5rem;}
+        
+        .typing-area { min-height: 3rem; font-family: 'Teko', sans-serif; font-size: 2.2rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; display: inline-block; border-right: 3px solid var(--accent); padding-right: 8px; animation: blink 0.8s infinite; white-space: nowrap; overflow: hidden; }
+        @keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: var(--accent); } }
+
+        .diagram-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 20px; padding: 2.5rem; margin: 2.5rem 0; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+        .diagram-box h4 { margin: 0 0 1.5rem; color: var(--text-main); font-size: 1.3rem; }
+        .diagram-node { background: #f8fafc; border: 2px solid; padding: 1.2rem; border-radius: 12px; font-weight: 700; min-width: 140px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); position: relative; }
+        .diagram-arrow { color: #94a3b8; font-size: 1.5rem; font-weight: 900; }
+
+        /* Flip Cards */
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2.5rem 0; perspective: 1000px; }
+        .flip-card { background: transparent; height: 320px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .flip-card-front { background: #fff; border: 2px solid #e2e8f0; }
+        .flip-card-front i { font-size: 3rem; margin-bottom: 1rem; }
+        .flip-card-front h4 { margin: 0; font-size: 1.2rem; color: var(--text-main); }
+        .flip-card-back { background: var(--accent); color: #fff; transform: rotateY(180deg); text-align: left; align-items: flex-start; }
+        .flip-card-back h4 { margin: 0 0 1rem; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 0.5rem; width: 100%; font-size: 1.1rem; color: #fff; }
+        .flip-card-back p { margin: 0; font-size: 0.85rem; line-height: 1.6; opacity: 0.95; }
+        .flip-card-back ul { margin: 0.5rem 0 0; padding-left: 1.2rem; font-size: 0.85rem; }
+
+        /* Inline Quiz */
+        .quiz-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 20px; padding: 2.5rem; margin: 3rem 0; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .quiz-header .q-badge { background: #fbbf24; color: #92400e; padding: 0.3rem 1rem; border-radius: 20px; font-weight: 900; letter-spacing: 1px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { background: #f8fafc; border: 2px solid #e2e8f0; padding: 1.2rem; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-weight: 700; display: flex; align-items: center; justify-content: space-between; }
+        .quiz-opt:hover:not(.disabled) { border-color: var(--accent-light); background: #fff; transform: translateX(5px); }
+        .quiz-opt.correct { background: #d1fae5; border-color: #10b981; color: #065f46; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.7; }
+        .quiz-explain { margin-top: 1.5rem; padding: 1.5rem; background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0; display: none; animation: fadeIn 0.5s; }
+        .quiz-explain.show { display: block; }
+
+        /* Accordion */
+        .accordion { margin-bottom: 2rem; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .accordion details { background: #fff; border-bottom: 1px solid #e2e8f0; }
+        .accordion details:last-child { border-bottom: none; }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 800; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; list-style: none; transition: background 0.3s; color: var(--text-main); }
+        .accordion summary:hover { background: #f8fafc; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion .content { padding: 1.5rem; background: #fff; font-size: 1rem; line-height: 1.7; color: var(--text-sub); animation: slideDown 0.3s ease; }
+
         /* Cauldron Feature */
         .cauldron-container { display: flex; gap: 2rem; margin: 3rem 0; background: #fff; padding: 2.5rem; border-radius: 20px; border: 2px dashed #cbd5e1; transition:all 0.3s;}
         .cauldron-container.drag-over { border-color: var(--accent); background: var(--accent-bg); }
@@ -273,59 +321,204 @@
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：AI画像生成の基礎・応用</h2></div>
                 <p style="font-size:1.1rem; margin-bottom:1.5rem;">画像生成の基本構造（被写体・構図・パラメーター）を理解しましょう。</p>
                 
-                <div class="video-grid">
-                    <a href="https://youtu.be/3ATfzId9wrM" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/3ATfzId9wrM/hqdefault.jpg" alt="動画1">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/jyZ1D9dP4fI" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/jyZ1D9dP4fI/hqdefault.jpg" alt="動画2">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-
                 <div class="highlight-box">
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">画像生成の更なる深掘りとして、MidjourneyやNanoBananaなどの最新ツールの実践比較です。</p>
+                    <p style="margin-bottom:0; line-height:1.7;">下の動画サムネイルごとに、その動画の内容を完全網羅したダイジェストが続きます。</p>
                 </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-camera-retro" style="color:#0ea5e9;"></i> 1. Midjourneyの実力</h4>
-                        <p>写真と見紛うレベルの写実性や、絵画のような表現力において他を圧倒しています。英語プロンプトのコツを学ぶ必要があります。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-people-group" style="color:#f59e0b;"></i> 2. 国産AIの強み</h4>
-                        <p>海外製AIでは再現が難しい「日本らしい風景」や「自然な日本人の顔」を生成する際は、NanoBanana等が最適です。</p>
+
+                <!-- タイピングアニメーション -->
+                <div style="text-align:center; margin: 2rem 0;">
+                    <div class="typing-area" id="typing4-1"></div>
+                </div>
+
+                <!-- ===== 動画① 2大AI比較 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#fef2f2,#fee2e2); border-radius:16px; border:2px solid #fca5a5;">
+                    <a href="https://youtu.be/3ATfzId9wrM" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/3ATfzId9wrM/hqdefault.jpg" alt="動画①" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#991b1b; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画① の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#7f1d1d; line-height:1.4;">「GPT Image 1.5」徹底検証！Nano Bananaと比較</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#991b1b;">最新AIの強みと弱みを5つの基準で徹底比較します</p>
                     </div>
                 </div>
 
-                <div class="bento-grid">
-                    <div class="bento-item" style="border-top:4px solid #f59e0b;">
-                        <h4><i class="fa-solid fa-image" style="color:#f59e0b;"></i> 被写体 (Subject)</h4>
-                        <p>誰が・何が主役かを明確にします。年齢、性別、服装など。（例：ゴールデンレトリバー）</p>
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-code-compare" style="color: var(--accent);"></i> 2大画像生成AI 徹底比較</h4>
+                    <div style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-top:1.5rem;">
+                        <!-- GPT Image -->
+                        <div style="flex:1; min-width:280px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:16px; overflow:hidden; text-align:left;">
+                            <div style="background:#cbd5e1; color:#334155; padding:12px 20px; font-weight:900; font-size:1.2rem; display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-robot"></i> GPT Image 1.5 (OpenAI)</div>
+                            <div style="padding:1.5rem;">
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-check" style="color:#10b981;"></i> テキスト描画力</strong> (看板などの文字)</p>
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-check" style="color:#10b981;"></i> 精密な領域編集</strong> (指定箇所のみ変更)</p>
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-check" style="color:#10b981;"></i> プロンプトの追従性</strong></p>
+                                <p style="margin:15px 0 0; font-size:0.85rem; color:#64748b; border-top:1px dashed #cbd5e1; padding-top:10px;">▶︎ マーケティング素材や文字入りバナーに最適</p>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; color:#94a3b8; font-weight:900; font-size:2rem;">VS</div>
+                        <!-- Nano Banana -->
+                        <div style="flex:1; min-width:280px; background:#fffbeb; border:2px solid #fcd34d; border-radius:16px; overflow:hidden; text-align:left;">
+                            <div style="background:#fcd34d; color:#92400e; padding:12px 20px; font-weight:900; font-size:1.2rem; display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-image"></i> Nano Banana Pro (Google)</div>
+                            <div style="padding:1.5rem;">
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-star" style="color:#f59e0b;"></i> 超フォトリアリズム</strong> (写真のような質感)</p>
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-star" style="color:#f59e0b;"></i> 既存画像の高度な編集</strong></p>
+                                <p style="margin:0 0 10px; font-size:0.95rem;"><strong><i class="fa-solid fa-star" style="color:#f59e0b;"></i> 最大4Kの高解像度出力</strong></p>
+                                <p style="margin:15px 0 0; font-size:0.85rem; color:#92400e; border-top:1px dashed #fcd34d; padding-top:10px;">▶︎ 超リアルな写真素材や高度な画像レタッチに最適</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bento-item" style="border-top:4px solid #ec4899;">
-                        <h4><i class="fa-solid fa-camera" style="color:#ec4899;"></i> 構図・光・スタイル</h4>
-                        <p>どんな雰囲気で撮られた写真かを追加します。（例：シネマティック、水彩画）</p>
+                </div>
+
+                <!-- Quiz 1 -->
+                <div class="quiz-box">
+                    <div class="quiz-header"><span class="q-badge">Q1</span><h4 style="margin:0; font-size:1.2rem;">ポスターや看板など「正確な文字」を描画する能力が高いのはどちらのAI？</h4></div>
+                    <div class="quiz-options" id="quiz4-1">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-1', this, true)"><span>A. GPT Image 1.5</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-1', this, false)"><span>B. Nano Banana Pro</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-1', this, false)"><span>C. どちらも同じ</span><i class="fa-solid fa-chevron-right"></i></div>
                     </div>
-                    <div class="bento-item" style="border-top:4px solid #8b5cf6;">
-                        <h4><i class="fa-solid fa-sliders" style="color:#8b5cf6;"></i> パラメーター</h4>
-                        <p>アスペクト比などのシステム設定です。（例：--ar 16:9）</p>
+                    <div class="quiz-explain" id="quiz4-1-explain">
+                        <strong>正解: A</strong><br>
+                        GPT Image 1.5はテキスト描画力が特に優れており、看板やポスターの文字を正確に描画できます。Nano Banana Proは「フォトリアリズム（写実性）」と「既存画像の編集」に強みがあります。
                     </div>
+                </div>
+
+                <!-- ===== 動画② Midjourney ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:3.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#e0f2fe,#bae6fd); border-radius:16px; border:2px solid #38bdf8;">
+                    <a href="https://youtu.be/jyZ1D9dP4fI" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/jyZ1D9dP4fI/hqdefault.jpg" alt="動画②" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#0c4a6e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画② の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#0c4a6e; line-height:1.4;">Midjourney 基礎講座｜画像生成プロンプトの構成</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#0369a1;">画像生成の王道ツールでプロンプトの「型」と「パラメータ」を学ぶ</p>
+                    </div>
+                </div>
+
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i> 画像生成プロンプトの「王道の型」</h4>
+                    <p style="color:var(--text-sub); font-size:0.95rem; margin-bottom:1.5rem;">Midjourneyなどの画像生成AIでは、以下の順に英語で書き、カンマ（,）で区切るのが基本です。</p>
+                    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center;">
+                        <div class="diagram-node" style="border-color:#f59e0b; background:#fffbeb; color:#b45309;"><i class="fa-solid fa-user"></i> 主題<br><span style="font-size:0.8rem; font-weight:normal;">(例: Woman)</span></div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-node" style="border-color:#10b981; background:#ecfdf5; color:#047857;"><i class="fa-solid fa-mountain-sun"></i> 背景・状況<br><span style="font-size:0.8rem; font-weight:normal;">(例: in a cafe)</span></div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-node" style="border-color:#3b82f6; background:#eff6ff; color:#1d4ed8;"><i class="fa-solid fa-palette"></i> 画風・スタイル<br><span style="font-size:0.8rem; font-weight:normal;">(例: watercolor)</span></div>
+                        <div class="diagram-arrow">→</div>
+                        <div class="diagram-node" style="border-color:#8b5cf6; background:#f5f3ff; color:#6d28d9;"><i class="fa-solid fa-camera"></i> 光・カメラ<br><span style="font-size:0.8rem; font-weight:normal;">(例: cinematic lighting)</span></div>
+                        <div class="diagram-arrow">+</div>
+                        <div class="diagram-node" style="border-color:#64748b; background:#f8fafc; color:#334155;"><i class="fa-solid fa-sliders"></i> パラメータ<br><span style="font-size:0.8rem; font-weight:normal;">(例: --ar 16:9)</span></div>
+                    </div>
+                </div>
+
+                <h3 style="color:#0ea5e9; margin-top:3rem;"><i class="fa-solid fa-sliders"></i> 魔法の呪文「パラメータ」をマスターする</h3>
+                <p style="color:var(--text-sub); margin-bottom:1rem;">プロンプトの最後に「--」から始まる文字列を足すだけで、画像の品質や形を精密にコントロールできます。</p>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#0ea5e9; color:#0ea5e9;">
+                                <i class="fa-solid fa-expand"></i>
+                                <h4>--ar (アスペクト比)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">画像の縦横比を指定</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#0ea5e9;">
+                                <h4>--ar [横幅]:[縦幅]</h4>
+                                <p>画像のサイズ・比率を変える最も多用するパラメータです。</p>
+                                <ul>
+                                    <li><strong>--ar 16:9</strong> (YouTubeサムネ、横長)</li>
+                                    <li><strong>--ar 9:16</strong> (スマホ縦画面用)</li>
+                                    <li><strong>--ar 1:1</strong> (Instagram用正方形)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#f59e0b; color:#f59e0b;">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <h4>--stylize (アート性)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">AIの「芸術的アレンジ」の強さ</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#f59e0b;">
+                                <h4>--stylize [0-1000] (略: --s)</h4>
+                                <p>数値を高くするほど、プロンプトの厳密な指示を少し無視して、AIが「芸術的で美しい画像」にアレンジしてくれます。</p>
+                                <ul>
+                                    <li><strong>--s 50</strong> (指示に忠実、少し地味)</li>
+                                    <li><strong>--s 250</strong> (デフォルト値の中間)</li>
+                                    <li><strong>--s 750</strong> (非常に芸術的・美麗)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#ec4899; color:#ec4899;">
+                                <i class="fa-solid fa-ban"></i>
+                                <h4>--no (ネガティブ)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">描いてほしくないものを指定</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#ec4899;">
+                                <h4>--no [除外する要素]</h4>
+                                <p>画像に入れたくない要素をAIに伝えます。</p>
+                                <ul>
+                                    <li><strong>--no text, watermark</strong><br>(文字や透かしを除去)</li>
+                                    <li><strong>--no people</strong><br>(風景だけで人物なし)</li>
+                                    <li><strong>--no red</strong><br>(赤色を使わない)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#8b5cf6; color:#8b5cf6;">
+                                <i class="fa-solid fa-gem"></i>
+                                <h4>--quality (画質)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">ディテールの書き込み度</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#8b5cf6;">
+                                <h4>--quality [0.25~2] (略: --q)</h4>
+                                <p>数値を上げる（2など）と生成時間は伸びますが、細かい描き込みや質感が大幅にアップします。通常はデフォルトの1で十分です。</p>
+                                <ul>
+                                    <li><strong>--q .25</strong> (草案、高速生成用)</li>
+                                    <li><strong>--q 1</strong> (デフォルト設定)</li>
+                                    <li><strong>--q 2</strong> (超高品質・時間増し)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color:#065f46; margin-top:3rem; font-size:1.3rem;"><i class="fa-solid fa-code"></i> 実践プロンプト例集</h3>
+                <p style="color:var(--text-sub);">コピーしてそのまま使えるプロンプト例です。自分の目的に合わせてカスタマイズしてください。</p>
+
+                <div class="code-box">
+                    <span class="code-label" style="background:#f59e0b;">Midjourney: ビジネスポートレート（写実系）</span>
+                    <div id="prompt-ex1">A professional Japanese businesswoman in a modern suit, sitting in a bright office cafe space, natural lighting, shallow depth of field, 8k --ar 16:9 --q 2</div>
+                    <button class="btn-copy" onclick="copyCode('prompt-ex1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
                 </div>
 
                 <div class="code-box">
-                    <span class="code-label">Markdown プロンプト例</span>
-                    <div id="prompt-ex1"># 被写体
+                    <span class="code-label" style="background:#ec4899;">Midjourney: サイバーパンク（アート系）</span>
+                    <div id="prompt-ex2">A cyberpunk cityscape at night, neon lights reflecting on wet streets, watercolor painting style, soft pastel colors, ethereal atmosphere --ar 16:9 --s 750 --no text</div>
+                    <button class="btn-copy" onclick="copyCode('prompt-ex2', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+
+                <div class="code-box">
+                    <span class="code-label" style="background:#8b5cf6;">Nano Banana用（日本語Markdown形式）</span>
+                    <div id="prompt-ex3"># 被写体
 - 年齢・性別: 20代の女性
 - 服装: モダンなスーツ
 
 # 環境・光
 - 場所: オフィスのカフェスペース
+- ライティング: 自然光、シネマティック
 
 # スタイル
-- 写真調, 高画質, 8k</div>
-                    <button class="btn-copy" onclick="copyCode('prompt-ex1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+- 写真調, 高画質, 8k, ボケ感強め</div>
+                    <button class="btn-copy" onclick="copyCode('prompt-ex3', this)"><i class="fa-regular fa-copy"></i> Copy</button>
                 </div>
 
                 <!-- Interactive Cauldron -->
@@ -392,81 +585,204 @@
                 <div class="card-header"><i class="fa-solid fa-layer-group" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半：実践・画像編集テクニック</h2></div>
                 <p style="font-size:1.1rem; margin-bottom:1.5rem;">生成した画像を思い通りに修正・加工する「インペイント」等の技術と、実務で使える20の活用法。</p>
                 
-                <div class="video-grid">
-                    <a href="https://youtu.be/SP4FceXU1e4" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/SP4FceXU1e4/hqdefault.jpg" alt="動画3">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/EcQNRpZE7Ns" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/EcQNRpZE7Ns/hqdefault.jpg" alt="動画4">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-
-                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1;">
                     <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">Nano Banana Pro ＆ Imagen 3(Google) の実践活用術と裏技です。</p>
-                </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-user-ninja" style="color:#10b981;"></i> 1. Imagen 3のテキスト再現</h4>
-                        <p>イラスト内に「看板の文字」などを正確に出力できる機能に優れており、ポスターやバナー作成に威力を発揮します。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-face-smile-wink" style="color:#f43f5e;"></i> 2. 表情とライティング</h4>
-                        <p>「シネマティックライティング」「ボケみ（DOF）」等の用語を盛り込むことで、出力のプロっぽさが向上します。</p>
-                    </div>
+                    <p style="margin-bottom:0; line-height:1.7;">Nano Banana Proの実践活用術と事例集です。下の動画サムネイルごとに解説が続きます。</p>
                 </div>
 
-                <h3 style="color:#0369a1; margin-top:3rem; font-size:1.5rem;"><i class="fa-solid fa-toolbox"></i> Nano Banana Pro 活用術 抜粋</h3>
-                
-                <details class="prompt-accordion">
-                    <summary><span class="tag">Tip</span> ① キャラクターの一貫性 (Character Reference) <i class="fa-solid fa-chevron-down"></i></summary>
-                    <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 同じ人物を違うポーズで生成。「--cref」パラメータを使います。</p>
-                        <div class="browser-mockup">
-                            <div class="browser-header">
-                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
-                            </div>
-                            <div class="browser-content">
-                                <button class="btn-copy" onclick="copyCode('p-1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                                <div id="p-1">カフェでコーヒーを飲む女性、笑顔 --cref [画像URL] --cw 100</div>
-                            </div>
-                        </div>
+                <!-- ===== 動画③ NanoBanana Pro 活用術20選 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f0fdf4,#dcfce7); border-radius:16px; border:2px solid #86efac;">
+                    <a href="https://youtu.be/SP4FceXU1e4" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/SP4FceXU1e4/hqdefault.jpg" alt="動画③" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#166534; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画③ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#14532d; line-height:1.4;">Nano Banana Pro 活用術20選</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#166534;">動画編集者や映像クリエイターが実務で使う20のテクニック</p>
                     </div>
-                </details>
+                </div>
 
-                <details class="prompt-accordion">
-                    <summary><span class="tag">Tip</span> ② 高度な部分修正 (Inpaint) <i class="fa-solid fa-chevron-down"></i></summary>
-                    <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 既存画像の「一部だけ」を指定して書き換える技術。</p>
-                        <div class="browser-mockup">
-                            <div class="browser-header">
-                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
-                            </div>
-                            <div class="browser-content">
-                                <button class="btn-copy" onclick="copyCode('p-2', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                                <div id="p-2">(服の部分を選択して) 赤いシルクのドレス</div>
-                            </div>
-                        </div>
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-layer-group" style="color: var(--accent);"></i> 活用テクニック 5つの主要カテゴリ</h4>
+                    <p style="color:var(--text-sub); font-size:0.95rem; margin-bottom:1.5rem;">動画内で紹介された20の活用術は、大きく以下の5つに分類されます。</p>
+                    <div style="display:flex; align-items:stretch; gap:1rem; flex-wrap:wrap; justify-content:center;">
+                        <div class="diagram-node" style="border-color:#3b82f6; color:#1d4ed8;"><i class="fa-solid fa-image"></i> サムネ制作<br><span style="font-size:0.8rem; font-weight:normal; color:#64748b;">新規作成/文字修正</span></div>
+                        <div class="diagram-arrow">/</div>
+                        <div class="diagram-node" style="border-color:#10b981; color:#047857;"><i class="fa-solid fa-pen-nib"></i> 部分編集<br><span style="font-size:0.8rem; font-weight:normal; color:#64748b;">インペイント/背景</span></div>
+                        <div class="diagram-arrow">/</div>
+                        <div class="diagram-node" style="border-color:#f59e0b; color:#b45309;"><i class="fa-solid fa-puzzle-piece"></i> 素材・パーツ化<br><span style="font-size:0.8rem; font-weight:normal; color:#64748b;">分解/切り抜き</span></div>
+                        <div class="diagram-arrow">/</div>
+                        <div class="diagram-node" style="border-color:#8b5cf6; color:#6d28d9;"><i class="fa-solid fa-wand-magic-sparkles"></i> スタイル変換<br><span style="font-size:0.8rem; font-weight:normal; color:#64748b;">イラスト化/構図指定</span></div>
+                        <div class="diagram-arrow">/</div>
+                        <div class="diagram-node" style="border-color:#ec4899; color:#be185d;"><i class="fa-solid fa-robot"></i> ツール連携<br><span style="font-size:0.8rem; font-weight:normal; color:#64748b;">ChatGPT / 動画AI</span></div>
                     </div>
-                </details>
+                </div>
 
-                <details class="prompt-accordion">
-                    <summary><span class="tag">Tip</span> ③ 構図・スタイルのコピー <i class="fa-solid fa-chevron-down"></i></summary>
-                    <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 手持ちの画像の雰囲気を借りる「--sref」パラメータ。</p>
-                        <div class="browser-mockup">
-                            <div class="browser-header">
-                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
+                <h3 style="color:#0ea5e9; margin-top:3rem;"><i class="fa-solid fa-star"></i> 押さえておくべき 4つの最重要テクニック</h3>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#f59e0b; color:#f59e0b;">
+                                <i class="fa-solid fa-paintbrush"></i>
+                                <h4>インペイント (Inpaint)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">画像の一部だけを修正</p>
                             </div>
-                            <div class="browser-content">
-                                <button class="btn-copy" onclick="copyCode('p-3', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                                <div id="p-3">サイバーパンクな街並み --sref [水彩画のURL]</div>
+                            <div class="flip-card-back" style="background:#f59e0b;">
+                                <h4>インペイント</h4>
+                                <p>修正したい箇所（服の色、持っている小物、背景の看板など）をブラシで塗りつぶし、プロンプトで新しい指示を与えて部分的に描き直す技術です。</p>
                             </div>
                         </div>
                     </div>
-                </details>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#10b981; color:#10b981;">
+                                <i class="fa-solid fa-expand-arrows-alt"></i>
+                                <h4>アウトペイント (Outpaint)</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">画像の枠外を拡張</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#10b981;">
+                                <h4>アウトペイント（引きの絵）</h4>
+                                <p>被写体の周りの「切れてしまった背景」をAIに推測させて描き足す技術。縦長スマホ写真をYouTube用（16:9）に横に広げたい時などに必須です。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#3b82f6; color:#3b82f6;">
+                                <i class="fa-solid fa-user-check"></i>
+                                <h4>キャラクターの一貫性</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">同じ人物で別ポーズ</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#3b82f6;">
+                                <h4>キャラ一貫性 (Cref)</h4>
+                                <p>特定の人物画像（リファレンス）を読み込ませることで、顔や服装の特徴を保ったまま「笑っている」「カフェにいる」など別シチュエーションの画像を生成します。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front" style="border-color:#8b5cf6; color:#8b5cf6;">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                <h4>高画質化アップスケール</h4>
+                                <p style="font-size:0.85rem; color:var(--text-sub); margin-top:10px;">解像度と書き込み量を増やす</p>
+                            </div>
+                            <div class="flip-card-back" style="background:#8b5cf6;">
+                                <h4>アップスケール</h4>
+                                <p>生成した画像のサイズをただ引き伸ばすのではなく、質感を保ったまま（あるいはディテールを追加しながら）解像度を2倍・4倍に上げる機能です。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz 2 -->
+                <div class="quiz-box">
+                    <div class="quiz-header"><span class="q-badge">Q2</span><h4 style="margin:0; font-size:1.2rem;">「縦長のスマホ写真を、YouTubeサムネ用（16:9の横長）に足りない背景を補って拡張したい」時に使う機能は？</h4></div>
+                    <div class="quiz-options" id="quiz4-2">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-2', this, false)"><span>A. インペイント</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-2', this, true)"><span>B. アウトペイント</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-2', this, false)"><span>C. キャラクター一貫性</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz4-2-explain">
+                        <strong>正解: B</strong><br>
+                        画像の「外側」を推測して描き足す機能がアウトペイントです。インペイントは画像「内」の一部を修正する機能です。
+                    </div>
+                </div>
+
+                <!-- ===== 動画④ 活用事例40選 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:3.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#fdf4ff,#fae8ff); border-radius:16px; border:2px solid #f0abfc;">
+                    <a href="https://youtu.be/EcQNRpZE7Ns" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/EcQNRpZE7Ns/hqdefault.jpg" alt="動画④" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#86198f; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画④ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#701a75; line-height:1.4;">ナノバナナ活用事例40選</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#a21caf;">無料で使える機能を中心に、実務で使える驚きの活用事例カテゴリ一覧</p>
+                    </div>
+                </div>
+
+                <div class="accordion" style="margin-top:1.5rem;">
+                    <details open>
+                        <summary style="background:linear-gradient(135deg,#fff1f2,#ffe4e6);"><i class="fa-solid fa-user" style="color:#f43f5e; width:20px;"></i> 人物編集の事例 <i class="fa-solid fa-chevron-down" style="color:#cbd5e1;"></i></summary>
+                        <div class="content" style="background:#fff5f5;">
+                            <ul style="margin:0 0 1rem; padding-left:1.5rem;">
+                                <li><strong>髪型・表情の変更</strong>: クールな表情を笑顔に変えるなど自然な修正</li>
+                                <li><strong>服装の着せ替え</strong>: カジュアルな服をスーツに着せ替え（証明写真用など）</li>
+                                <li><strong>シワ・シミ消し</strong>: モデルの肌を自然にレタッチ</li>
+                            </ul>
+                            <div class="code-box" style="margin:0;">
+                                <span class="code-label" style="background:#f43f5e;">プロンプト例: 服装着せ替え</span>
+                                <div id="p-persona">(服の部分をブラシで選択して)
+ネイビーのビジネススーツ、ネクタイ着用、清潔感のある証明写真風</div>
+                                <button class="btn-copy" onclick="copyCode('p-persona', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </details>
+                    <details open>
+                        <summary style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);"><i class="fa-solid fa-mountain-sun" style="color:#10b981; width:20px;"></i> 背景・シーンの事例 <i class="fa-solid fa-chevron-down" style="color:#cbd5e1;"></i></summary>
+                        <div class="content" style="background:#f0fdf4;">
+                            <ul style="margin:0 0 1rem; padding-left:1.5rem;">
+                                <li><strong>背景の完全差し替え</strong>: 白背景を「カフェ」や「南国のビーチ」に</li>
+                                <li><strong>天候・時間帯の変更</strong>: 昼間の写真を夕暮れ時や雨のシーンに変更</li>
+                                <li><strong>不要物の削除</strong>: 背景に写り込んでしまった通行人やゴミ箱を綺麗に消去</li>
+                            </ul>
+                            <div class="code-box" style="margin:0;">
+                                <span class="code-label" style="background:#10b981;">プロンプト例: 背景差し替え</span>
+                                <div id="p-bg">この人物の背景を、高級リゾートのプールサイドに変更してください。
+ヤシの木とサンセットの光、トロピカルな雰囲気</div>
+                                <button class="btn-copy" onclick="copyCode('p-bg', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </details>
+                    <details open>
+                        <summary style="background:linear-gradient(135deg,#eff6ff,#dbeafe);"><i class="fa-solid fa-palette" style="color:#3b82f6; width:20px;"></i> スタイル変換の事例 <i class="fa-solid fa-chevron-down" style="color:#cbd5e1;"></i></summary>
+                        <div class="content" style="background:#f0f5ff;">
+                            <ul style="margin:0 0 1rem; padding-left:1.5rem;">
+                                <li><strong>アニメ・イラスト風</strong>: 写真をジブリ風やアメコミ風に変換</li>
+                                <li><strong>フィギュア・3D化</strong>: 人物写真を粘土細工（クレイアニメ）風や3Dモデル風に変換</li>
+                                <li><strong>ロゴの立体化</strong>: 平面ロゴを質感のあるメタルやネオンサイン風に装飾</li>
+                            </ul>
+                            <div class="code-box" style="margin:0;">
+                                <span class="code-label" style="background:#3b82f6;">プロンプト例: ジブリ風変換</span>
+                                <div id="p-style">この写真をスタジオジブリのアニメーション風に変換してください。
+やわらかいタッチ、穏やかな色彩、幻想的な背景、宮崎駿風</div>
+                                <button class="btn-copy" onclick="copyCode('p-style', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </details>
+                    <details open>
+                        <summary style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);"><i class="fa-solid fa-briefcase" style="color:#8b5cf6; width:20px;"></i> EC・実務活用の事例 <i class="fa-solid fa-chevron-down" style="color:#cbd5e1;"></i></summary>
+                        <div class="content" style="background:#faf5ff;">
+                            <ul style="margin:0 0 1rem; padding-left:1.5rem;">
+                                <li><strong>EC商品画像の魅力化</strong>: ただの商品写真（マグカップ等）の周りにコーヒー豆や湯気を配置</li>
+                                <li><strong>広告バナー素材作成</strong>: 必要な「引き（余白）」を持った素材の生成（アウトペイント）</li>
+                                <li><strong>パースに合わせた合成</strong>: 部屋のパースに合わせてポスターや家具を自然に合成</li>
+                            </ul>
+                            <div class="code-box" style="margin:0;">
+                                <span class="code-label" style="background:#8b5cf6;">プロンプト例: EC商品演出</span>
+                                <div id="p-ec">このマグカップの周りに、熱々のコーヒーから立ち上る湯気、
+散らばったコーヒー豆、そして柔らかい朝の光を追加してください。
+商品撮影風、プレミアム感、白のテーブル</div>
+                                <button class="btn-copy" onclick="copyCode('p-ec', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Quiz 3 -->
+                <div class="quiz-box">
+                    <div class="quiz-header"><span class="q-badge">Q3</span><h4 style="margin:0; font-size:1.2rem;">同じキャラクターを「カフェにいる」「オフィスにいる」など別シチュエーションで生成するのに適役な機能は？</h4></div>
+                    <div class="quiz-options" id="quiz4-3">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-3', this, false)"><span>A. インペイント</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-3', this, false)"><span>B. アウトペイント</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4-3', this, true)"><span>C. キャラクター一貫性 (--cref)</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz4-3-explain">
+                        <strong>正解: C</strong><br>
+                        キャラクター一貫性機能（--cref）は、リファレンス画像の人物の特徴（顔や服装など）を保ちながら、全く別のポーズや背景で画像を生成できます。SNSのキャラクター運用などに必須のテクニックです。
+                    </div>
+                </div>
 
                 <!-- GAMIFIED MISSION 2 -->
                 <div class="mission-area" id="mission-group-2" style="border-color: #0ea5e9;">
@@ -507,11 +823,31 @@
                 <h3 style="color:#8b5cf6; font-size:1.8rem; margin-top:0; border-bottom:2px solid #ddd6fe; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
                     <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 4 全行程コンプリート！
                 </h3>
-                <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は<strong>「画像生成と高度加工」</strong>について学びました。<br>
-                    1枚の画像をゼロから生み出すだけでなく、リファレンス機能を駆使することで、完全にコントロールされた素材を手に入れることができます。<br><br>
+                
+                <div style="background:#fff; border-radius:12px; padding:2rem; margin:2rem 0; box-shadow:0 4px 15px rgba(0,0,0,0.03);">
+                    <h4 style="color:#6d28d9; margin-top:0; font-size:1.3rem;"><i class="fa-solid fa-thumbtack" style="color:#8b5cf6;"></i> 今日学んだキーポイント</h4>
+                    
+                    <h5 style="color:#0ea5e9; font-size:1.1rem; margin-bottom:0.5rem;"><i class="fa-regular fa-image"></i> 前半：基礎と構造</h5>
+                    <ul style="color:var(--text-sub); line-height:1.7; margin-bottom:1.5rem;">
+                        <li><strong>GPT Image vs Nano Banana</strong>: テキスト再現のGPT、超リアルと編集力のNB</li>
+                        <li><strong>プロンプトの王道の型</strong>: 主題 → 背景・状況 → 画風・スタイル → 光・カメラ</li>
+                        <li><strong>パラメータ魔法</strong>: `--ar` (比率)、`--s` (芸術性)、`--no` (除外)、`--q` (画質)</li>
+                    </ul>
+
+                    <h5 style="color:#10b981; font-size:1.1rem; margin-bottom:0.5rem;"><i class="fa-solid fa-wand-magic-sparkles"></i> 後半：実践と応用</h5>
+                    <ul style="color:var(--text-sub); line-height:1.7;">
+                        <li><strong>インペイント/アウトペイント</strong>: 画像の部分修正と外側の拡張</li>
+                        <li><strong>キャラクター一貫性 (--cref)</strong>: 同じ人物を違うポーズで生成</li>
+                        <li><strong>高画質化アップスケール</strong>: ディテールを書き込んで解像度アップ</li>
+                        <li><strong>実務活用事例</strong>: 人物レタッチやEC商品合成など、業務に直結するテクニック</li>
+                    </ul>
+                </div>
+
+                <p style="font-size: 1.15rem; line-height: 1.8; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem; font-weight:700;">
+                    お疲れ様でした！本日は「画像生成の基礎と高度加工」について学びました。<br>
                     次回はいよいよ、生成した画像に命を吹き込む「動画生成」の世界へ入ります！
                 </p>
+
                 <div style="margin-top:3rem; text-align:center;">
                     <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:50px;" onclick="window.location.href='index.html'">
                         <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
@@ -525,6 +861,54 @@
 
     <!-- Scripts -->
     <script>
+        // --- Custom Interactive JS ---
+        function typeWriter(elementId, text, speed) {
+            let i = 0;
+            const el = document.getElementById(elementId);
+            if(!el) return;
+            el.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        const typingObs = new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    if (e.target.id === 'typing4-1' && !e.target.dataset.typed) {
+                        e.target.dataset.typed = "true";
+                        typeWriter('typing4-1', "テキストから、想像を超えるビジュアルへ。", 60);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const t4_1 = document.getElementById('typing4-1');
+            if(t4_1) typingObs.observe(t4_1);
+        });
+
+        function checkQuiz(quizId, el, isCorrect) {
+            const opts = document.getElementById(quizId).querySelectorAll('.quiz-opt');
+            opts.forEach(o => {
+                o.classList.add('disabled');
+                if (o === el) o.classList.add(isCorrect ? 'correct' : 'wrong');
+            });
+            if (!isCorrect) {
+                opts.forEach(o => {
+                    if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1)
+                        o.classList.add('correct');
+                });
+            }
+            const explain = document.getElementById(quizId + '-explain');
+            if(explain) explain.classList.add('show');
+        }
+
         // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));

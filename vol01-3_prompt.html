@@ -202,6 +202,72 @@
         
         .highlight-box { background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #0369a1; border: 1px solid #7dd3fc; }
         .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #38bdf8; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+
+        /* ======= DIAGRAM BOX ======= */
+        .diagram-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 2rem; margin: 2.5rem 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .diagram-box h4 { margin: 0 0 1rem; font-size: 1.2rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+
+        /* ======= ACCORDION ======= */
+        .accordion { margin: 1.5rem 0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .accordion details { border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .accordion details:last-child { border-bottom: none; }
+        .accordion summary { padding: 1.4rem 2rem; cursor: pointer; display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); transition: background 0.2s; list-style: none; user-select: none; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion summary::before { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 0.8rem; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; width: 20px; text-align: center; }
+        .accordion details[open] summary::before { transform: rotate(180deg); }
+        .accordion summary .lead { font-weight: 400; font-size: 0.95rem; color: var(--text-sub); margin-left: auto; flex-shrink: 0; }
+        .accordion .acc-body { padding: 0 2rem 1.8rem 3.5rem; color: var(--text-sub); line-height: 1.8; font-size: 1.05rem; animation: fadeIn 0.3s ease; }
+        .accordion .acc-body p { margin: 0 0 1rem 0; }
+        .accordion .acc-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        /* ======= COLUMN BOX ======= */
+        .column-box { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1px solid #7dd3fc; border-radius: 16px; padding: 2rem; margin: 2rem 0; position: relative; }
+        .column-label { position: absolute; top: -12px; left: 24px; background: linear-gradient(135deg, #0ea5e9, #0284c7); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 14px; border-radius: 20px; letter-spacing: 1px; }
+        .column-box h4 { margin: 0.5rem 0 1rem; font-size: 1.2rem; font-weight: 800; color: #0c4a6e; }
+        .column-box p { color: #0369a1; line-height: 1.8; font-size: 1.05rem; margin: 0 0 0.8rem; }
+
+        /* ======= FLIP CARDS ======= */
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 800px; height: 300px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.4,0,.2,1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.06); overflow: hidden; }
+        .flip-front { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px solid #7dd3fc; }
+        .flip-front .flip-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .flip-front h5 { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+        .flip-front .flip-hint { margin-top: 1rem; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+        .flip-back { background: linear-gradient(135deg, var(--accent), #0284c7); color: #fff; transform: rotateY(180deg); }
+        .flip-back p { margin: 0; font-size: 0.85rem; line-height: 1.6; text-align: left; }
+        .flip-back .flip-label { position: absolute; top: 12px; right: 16px; font-size: 0.75rem; opacity: 0.7; }
+
+        /* ======= BEFORE / AFTER TOGGLE ======= */
+        .ba-toggle { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .ba-toggle h4 { margin: 0 0 1.2rem; font-weight: 800; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ba-switch { display: flex; gap: 0; margin-bottom: 1.5rem; border-radius: 12px; overflow: hidden; border: 2px solid #e2e8f0; }
+        .ba-switch button { flex: 1; padding: 0.8rem; border: none; background: #f8fafc; cursor: pointer; font-weight: 800; font-size: 1rem; transition: all 0.3s; color: var(--text-sub); }
+        .ba-switch .active-ng { background: #fef2f2; color: #991b1b; border-bottom: 3px solid #ef4444; }
+        .ba-switch .active-ok { background: #f0fdf4; color: #166534; border-bottom: 3px solid #22c55e; }
+        .ba-panel { display: none; animation: fadeIn 0.3s ease; }
+        .ba-panel.active { display: block; }
+        .ba-ng { background: #fef2f2; border-radius: 12px; padding: 1.5rem; border: 1px solid #fecaca; }
+        .ba-ok { background: #f0fdf4; border-radius: 12px; padding: 1.5rem; border: 1px solid #bbf7d0; }
+        .prompt-example { background: #1e1b4b; color: #e0e7ff; padding: 1rem 1.5rem; border-radius: 10px; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; margin: 1rem 0; white-space: pre-wrap; }
+
+        /* ======= INLINE QUIZ ======= */
+        .quiz-box { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #fcd34d; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .quiz-box h4 { margin: 0 0 1.2rem; color: #92400e; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+        .quiz-opt { display: block; width: 100%; text-align: left; padding: 1rem 1.5rem; margin: 0.5rem 0; border: 2px solid #e5e7eb; border-radius: 12px; background: #fff; cursor: pointer; font-size: 1rem; font-weight: 600; transition: all 0.2s; }
+        .quiz-opt:hover:not(.disabled) { border-color: var(--accent); background: var(--accent-bg); transform: translateX(5px); }
+        .quiz-opt.correct { border-color: #22c55e; background: #dcfce7; color: #166534; }
+        .quiz-opt.wrong { border-color: #ef4444; background: #fef2f2; color: #991b1b; }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.7; }
+        .quiz-explain { display: none; margin-top: 1rem; padding: 1rem 1.5rem; background: #fff; border-radius: 12px; border: 1px solid #d1fae5; }
+        .quiz-explain.show { display: block; animation: fadeIn 0.3s ease; }
+
+        /* ======= TYPING ANIMATION ======= */
+        .typing-area { font-size: 1.6rem; font-weight: 900; color: var(--accent); padding: 1.5rem; background: var(--accent-bg); border-radius: 16px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .typing-cursor { display: inline-block; width: 3px; height: 1.2em; background: var(--accent); margin-left: 2px; animation: blink 0.7s infinite; vertical-align: text-bottom; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -260,58 +326,221 @@
                 <div class="card-header"><i class="fa-solid fa-graduation-cap" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>前半：プロンプト基本とMarkdown</h2></div>
                 <p style="font-size:1.1rem; margin-bottom:1.5rem;">生成AIの精度を高める「プロンプトの4大要素」と、AIにとって読みやすい「Markdown記法」を学びます。</p>
                 
-                <div class="video-grid">
-                    <a href="https://youtu.be/yKI4eBOopF4" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/yKI4eBOopF4/hqdefault.jpg" alt="動画1">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/3tVEkHG3FyQ" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/3tVEkHG3FyQ/hqdefault.jpg" alt="動画2">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-
-                <div class="bento-grid">
-                    <div class="bento-item card-magic bento-row-2 bento-span-2">
-                        <span class="bento-icon">🪄</span>
-                        <span class="bento-title">プロンプトの4大要素（型）</span>
-                        <p class="bento-desc">AIへの指示は、この4つのブロックを組み合わせることで魔法のように精度が上がります。「あなたは誰で」「何を」「どんな状況で」「どう出力してほしいか」を明確に定義することが、AI使いの第一歩です。</p>
-                    </div>
-                    <div class="bento-item">
-                        <span class="bento-icon" style="color:#0ea5e9;">🎭</span>
-                        <span class="bento-title">[Role] 役割</span>
-                        <p class="bento-desc">あなたは【一流のビジネスマン】です。</p>
-                    </div>
-                    <div class="bento-item">
-                        <span class="bento-icon" style="color:#10b981;">🎯</span>
-                        <span class="bento-title">[Task] タスク</span>
-                        <p class="bento-desc">以下のメールに対する【お詫びと日程調整の返信】を作成。</p>
-                    </div>
-                    <div class="bento-item">
-                        <span class="bento-icon" style="color:#f59e0b;">🌍</span>
-                        <span class="bento-title">[Context] 背景</span>
-                        <p class="bento-desc">相手は【重要な取引先の社長】です。</p>
-                    </div>
-                    <div class="bento-item">
-                        <span class="bento-icon" style="color:#8b5cf6;">📝</span>
-                        <span class="bento-title">[Format] 出力形式</span>
-                        <p class="bento-desc">【敬語を正しく使い、3段落構成】で出力。</p>
-                    </div>
-                </div>
-
                 <div class="highlight-box">
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">構造的なプロンプト指示（Markdown記法）など、生成AIを意のままに操るための基本テクニック5選です。</p>
+                    <p style="margin-bottom:0; line-height:1.7;">下の動画サムネイルごとに、その動画の内容を完全網羅したダイジェストが続きます。</p>
                 </div>
-                
-                <div class="bento-grid" style="grid-template-rows: auto;">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-code" style="color:#f59e0b;"></i> 1. Markdown記法</h4>
-                        <p>見出し印（#）やリスト（-）を使ってプロンプトを構造化することで、AIが指示書として読み込みやすくなり、意図のズレを防ぎます。</p>
+
+                <!-- タイピングアニメーション -->
+                <div style="text-align:center; margin: 2rem 0;">
+                    <div class="typing-area" id="typing3"></div>
+                </div>
+
+                <!-- ===== 動画① メリット5 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#fffbeb,#fef3c7); border-radius:16px; border:2px solid #fcd34d;">
+                    <a href="https://youtu.be/yKI4eBOopF4" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/yKI4eBOopF4/hqdefault.jpg" alt="動画①" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#92400e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画① の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#78350f; line-height:1.4;">プロンプトエンジニアリングを学ぶメリット5</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#92400e;">なぜ今プロンプト力を磨くべきなのか？5つの観点から解説</p>
                     </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-pen-nib" style="color:#3b82f6;"></i> 2. 役割と条件の指定</h4>
-                        <p>「あなたはプロのWebライターです」のようにAIに明確なペルソナを与え、出力文字数やトーン等の条件を明記することが精度向上の大原則です。</p>
+                </div>
+                <div class="accordion" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #fcd34d;">
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-rocket" style="color:#f59e0b;"></i>
+                            1. 業務効率の向上
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>情報収集・資料作成・思考整理など、<strong>日常業務の時間を大幅に短縮</strong>できます。プロンプトの精度を上げるほど、AIが一発で期待通りの結果を返すため、やり直しの回数も減少します。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-bolt" style="color:#f59e0b;"></i>
+                            2. スキル習得のスピードアップ
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AIを<strong>パーソナルチューター</strong>として使いこなせるようになります。「この概念をExcelの関数に例えて説明して」のような指示で、自分のレベルに合わせた学習が可能に。新しいスキルの習得速度が加速します。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-lightbulb" style="color:#f59e0b;"></i>
+                            3. 創造性の拡大
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AIを<strong>「壁打ち相手」</strong>にすることで、新しいアイデアや視点を引き出せます。「この商品のキャッチコピーを10案出して、それぞれ異なる切り口で」のように使えば、自分だけでは思いつかない発想が手に入ります。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-comments" style="color:#f59e0b;"></i>
+                            4. コミュニケーション能力の向上
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AIに的確な指示を出す練習は、そのまま<strong>対人コミュニケーション力</strong>の向上につながります。「何を」「誰に」「どう伝えるか」を言語化する力が磨かれ、質問力や報告スキルも上がります。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-chart-line" style="color:#f59e0b;"></i>
+                            5. キャリアアップ
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AI時代の<strong>必須スキル</strong>として市場価値が急上昇中。「AIを使える人」から「AIを使いこなせる人」へのレベルアップは、キャリア形成において圧倒的な差別化要因になります。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- ===== 動画② 基本形 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:3rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#e0f2fe,#bae6fd); border-radius:16px; border:2px solid #38bdf8;">
+                    <a href="https://youtu.be/3tVEkHG3FyQ" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/3tVEkHG3FyQ/hqdefault.jpg" alt="動画②" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#0c4a6e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画② の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#0c4a6e; line-height:1.4;">プロンプトの基本形｜今すぐ使える「上達するコツ」</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#0369a1;">背景・入力データ・指示・出力条件の4構造＋上達4ポイント</p>
+                    </div>
+                </div>
+
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i> プロンプトの基本形（4つの構成要素）</h4>
+                    <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:1rem;">
+                        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#92400e; font-size:0.95rem; min-width:200px; text-align:center;">🌍 背景<br><span style="font-weight:400; font-size:0.75rem;">状況、文脈、前提条件</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#e0f2fe; border:2px solid #0ea5e9; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#0c4a6e; font-size:0.95rem; min-width:200px; text-align:center;">📥 入力データ<br><span style="font-weight:400; font-size:0.75rem;">処理してほしい素材・文章</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#ecfdf5; border:2px solid #10b981; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#064e3b; font-size:0.95rem; min-width:200px; text-align:center;">🎯 指示<br><span style="font-weight:400; font-size:0.75rem;">何をどうしてほしいか</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#f5f3ff; border:2px solid #8b5cf6; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#4c1d95; font-size:0.95rem; min-width:200px; text-align:center;">📝 出力条件<br><span style="font-weight:400; font-size:0.75rem;">形式・文字数・トーン</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                        </div>
+                        <div style="background:linear-gradient(135deg,#0ea5e9,#0284c7); border-radius:16px; padding:1.5rem 2rem; text-align:center; color:#fff; font-weight:800; font-size:1.1rem; box-shadow:0 4px 15px rgba(14,165,233,0.3); display:flex; flex-direction:column; gap:0.3rem;">💬 完成プロンプト<br><span style="font-weight:400; font-size:0.75rem; opacity:0.8;">（4要素を組み合わせた指示文）</span></div>
+                        <div style="font-size:2rem; color:#94a3b8;">→</div>
+                        <div style="background:#dcfce7; border:2px solid #22c55e; border-radius:16px; padding:1.5rem 2rem; text-align:center; font-weight:800; color:#14532d; font-size:1.1rem;">✅ 高精度な回答</div>
+                    </div>
+                </div>
+
+                <!-- 上達する4つのポイント -->
+                <div class="column-box">
+                    <div class="column-label">Column / 動画②より</div>
+                    <h4>💡 効果的なプロンプトを作る上達4ポイント</h4>
+                    <p>基本形に加え、以下の4ポイントを意識するとプロンプトの精度がさらに上がります：</p>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:0.5rem;">
+                        <div style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1rem; border:1px solid rgba(14,165,233,0.2);">
+                            <strong style="color:#0c4a6e;">①明確な指示</strong><br><span style="font-size:0.9rem;">具体的に・役割設定・手順指定・例示</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1rem; border:1px solid rgba(14,165,233,0.2);">
+                            <strong style="color:#0c4a6e;">②情報を提供</strong><br><span style="font-size:0.9rem;">十分な背景・文脈をAIに共有</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1rem; border:1px solid rgba(14,165,233,0.2);">
+                            <strong style="color:#0c4a6e;">③タスクを分解</strong><br><span style="font-size:0.9rem;">複雑な要求は小さなステップに分割</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.7); border-radius:10px; padding:1rem; border:1px solid rgba(14,165,233,0.2);">
+                            <strong style="color:#0c4a6e;">④考える時間を与える</strong><br><span style="font-size:0.9rem;">「ステップバイステップで」と指示</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- フリップカード4枚 -->
+                <h3 style="display:flex; align-items:center; gap:10px; margin-top:2.5rem;"><i class="fa-solid fa-layer-group" style="color:var(--accent);"></i> カードをクリックして用語を覚えよう</h3>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fde047;"><div class="flip-icon">🌍</div><h5>背景 とは？</h5><div class="flip-hint" style="color:#ca8a04;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #ca8a04, #a16207);"><div class="flip-label">Answer</div>
+                                <p>AIに<strong>「今からやることの前提」</strong>を伝える要素。<br><br>「あなたはプロの編集者です」「読者はAI初心者」など、<strong>状況・相手・目的</strong>を共有することで、AIがトーンや専門度を自動調整します。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front"><div class="flip-icon">📥</div><h5>入力データ とは？</h5><div class="flip-hint">Click to reveal</div></div>
+                            <div class="flip-back"><div class="flip-label">Answer</div>
+                                <p>AIに<strong>処理してほしい素材</strong>を渡す要素。<br><br>要約したい文章、分析したいデータ、翻訳したいテキストなどを貼り付けます。<strong>「仕事の原材料」</strong>をAIに渡すイメージです。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;"><div class="flip-icon">🎯</div><h5>指示 とは？</h5><div class="flip-hint" style="color:#059669;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #059669, #047857);"><div class="flip-label">Answer</div>
+                                <p>AIに<strong>「何をどうしてほしいか」</strong>を伝える核心部分。<br><br>「要約して」より「800字以内で、初心者向けに要約して」の方が精度が高い。<strong>動詞＋対象＋条件</strong>の3点セットで書くのがコツ。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #c4b5fd;"><div class="flip-icon">📝</div><h5>出力条件 とは？</h5><div class="flip-hint" style="color:#7c3aed;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #7c3aed, #6d28d9);"><div class="flip-label">Answer</div>
+                                <p>AIの<strong>出力形式をコントロール</strong>する要素。<br><br>「箇条書き」「表形式」「3段落構成」など。Markdown記法（#見出し、-リスト）を活用すると、AIが構造を正確に理解し、<strong>意図通りのレイアウト</strong>で出力。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BA: プロンプト比較 -->
+                <div class="ba-toggle">
+                    <h4><i class="fa-solid fa-arrows-left-right" style="color:#f59e0b;"></i> プロンプトのNG例 vs 4要素活用例</h4>
+                    <div class="ba-switch">
+                        <button class="active-ng" onclick="switchBA(this,'ba3-ng','ba3-ok','ng')">❌ よくあるNG</button>
+                        <button onclick="switchBA(this,'ba3-ok','ba3-ng','ok')">✅ 4要素活用</button>
+                    </div>
+                    <div id="ba3-ng" class="ba-panel ba-ng active">
+                        <h4><i class="fa-solid fa-xmark"></i> ありがちなNG</h4>
+                        <div class="prompt-example">ブログ記事を書いて</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ 何の記事？誰向け？何文字？トーンは？全て不明でAI任せ</p>
+                        <div class="prompt-example" style="margin-top:1rem;">メールの返信を作って</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ 相手との関係性やトーンが不明。敬語レベルが安定しない</p>
+                        <div class="prompt-example" style="margin-top:1rem;">この文章を直して</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ 何を基準に直すのか不明。誤字？文体？論理構成？</p>
+                    </div>
+                    <div id="ba3-ok" class="ba-panel ba-ok">
+                        <h4><i class="fa-solid fa-check"></i> 4要素を活用した例</h4>
+                        <div class="prompt-example"># 命令 [Role + Task]
+あなたは経験豊富なWebライターです。
+以下の制約条件と入力文をもとに、ブログ記事を作成してください。
+
+# 制約条件 [Format]
+- 文字数は800文字程度
+- 初心者にもわかりやすいですます調
+- 専門用語には簡単な解説を添えること
+
+# 背景 [Context]
+読者はAI初心者のビジネスパーソンです。</div>
+                        <p style="color:#065f46; line-height:1.7;">→ 4要素＋Markdown記法で構造化。AIは一発で期待通りの出力を返す！</p>
+                    </div>
+                </div>
+
+                <!-- インラインクイズ -->
+                <div class="quiz-box" id="quiz3-1">
+                    <h4><i class="fa-solid fa-brain"></i> 理解度チェック</h4>
+                    <p style="font-weight:700; color:#78350f; margin-bottom:1rem;">Q. プロンプトの4大要素のうち、最も効果が大きく最初に記述すべきなのは？</p>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-1', this, false)">A. Format（出力形式）</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-1', this, true)">B. Role（役割）</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-1', this, false)">C. Context（背景）</button>
+                    <div class="quiz-explain" id="quiz3-1-explain">
+                        <p style="margin:0; line-height:1.7;"><strong>正解はB！</strong> Roleを指定すると、AIの語彙・判断基準・トーンが一気に変わります。「あなたはプロのWebライターです」と最初に書くだけで、後続の出力品質が劇的に向上します。</p>
                     </div>
                 </div>
 
@@ -404,37 +633,230 @@
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #8b5cf6;">
                 <div class="card-header"><i class="fa-solid fa-wand-magic-sparkles" style="color:#8b5cf6; background:#f5f3ff;"></i><h2>後半：応用テクニック</h2></div>
-                <p style="font-size:1.1rem; margin-bottom:1.5rem;">高度なプロンプトテクニックである「Few-Shot」や「Chain of Thought」を学びます。</p>
+                <p style="font-size:1.1rem; margin-bottom:1.5rem;">プロンプトの構造化記法（Markdown/XML/YAML）と、AIの回答精度を劇的に変える「一言プロンプト」を学びます。</p>
                 
-                <div class="video-grid">
-                    <a href="https://youtu.be/PmVtulQfOR0" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/PmVtulQfOR0/hqdefault.jpg" alt="動画3">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/i2Z2TtUe9Kk" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/i2Z2TtUe9Kk/hqdefault.jpg" alt="動画4">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/hf2-6gZmFlo/hqdefault.jpg" alt="動画5">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-
                 <div class="highlight-box">
                     <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">長文処理や複雑なタスクを失敗させないための、AIの精度爆上げテクニックです。</p>
+                    <p style="margin-bottom:0; line-height:1.7;">下の動画サムネイルごとに、その動画の内容を完全網羅したダイジェストが続きます。</p>
                 </div>
-                
-                <div class="bento-grid" style="grid-template-rows: auto;">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-sitemap" style="color:#10b981;"></i> 1. ステップ・バイ・ステップ</h4>
-                        <p>複雑な要求は一度にさせず、「まず現状分析、次に課題抽出、最後に解決策」のように段階的に思考させることで、論理的な回答を引き出せます。</p>
+
+                <!-- ===== 動画③ 記号活用術 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f5f3ff,#ede9fe); border-radius:16px; border:2px solid #c4b5fd;">
+                    <a href="https://youtu.be/PmVtulQfOR0" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/PmVtulQfOR0/hqdefault.jpg" alt="動画③" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#5b21b6; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画③ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#4c1d95; line-height:1.4;">AIエンジニアが使う「魔法の記号」活用術</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#6d28d9;">コロン・ハイフン・引用符・バッククォートで指示を明確化</p>
                     </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-reply-all" style="color:#8b5cf6;"></i> 2. Few-Shot Prompting</h4>
-                        <p>求める出力の「具体例（入力→出力のセット）」をいくつかプロンプト内に含めることで、望むフォーマットでの確実な出力を担保します。</p>
+                </div>
+
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #c4b5fd;"><div class="flip-icon">:</div><h5>コロン <code>:</code></h5><div class="flip-hint" style="color:#7c3aed;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #7c3aed, #6d28d9);"><div class="flip-label">Usage</div>
+                                <p>指示と内容を<strong>区切る</strong>記号。「要約してください: 『ここに本文』」のように使い、AIに<strong>「ここから先が処理対象」</strong>と明示します。コロンの後にスペースを入れるのがポイント。</p>
+                            </div>
+                        </div>
                     </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7;"><div class="flip-icon">-</div><h5>ハイフン <code>-</code></h5><div class="flip-hint" style="color:#059669;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #059669, #047857);"><div class="flip-label">Usage</div>
+                                <p><strong>箇条書き・条件リスト</strong>に使用。「- 800字以内」「- ですます調」のように条件を並べると、AIが<strong>各条件を漏れなく実行</strong>します。チェックリストにも最適。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #fefce8, #fef9c3); border-color: #fde047;"><div class="flip-icon">""</div><h5>ダブルクォート <code>""</code></h5><div class="flip-hint" style="color:#ca8a04;">Click to reveal</div></div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #ca8a04, #a16207);"><div class="flip-label">Usage</div>
+                                <p>特定の文字列を<strong>厳密に扱わせる</strong>記号。「"AI活用"について解説して」とすると、AIはこのキーワードを<strong>そのまま保持</strong>して出力します。固有名詞や専門用語に有効。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front"><div class="flip-icon">```</div><h5>バッククォート <code>```</code></h5><div class="flip-hint">Click to reveal</div></div>
+                            <div class="flip-back"><div class="flip-label">Usage</div>
+                                <p>三重バッククォートで<strong>コードブロックやテキスト領域</strong>を囲む記号。「以下のテキストを要約: ```本文```」のように使うと、AIが<strong>指示と素材を完全に分離</strong>して処理します。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 動画④ Markdown/XML/YAML ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f5f3ff,#ede9fe); border-radius:16px; border:2px solid #c4b5fd;">
+                    <a href="https://youtu.be/i2Z2TtUe9Kk" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/i2Z2TtUe9Kk/hqdefault.jpg" alt="動画④" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#5b21b6; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画④ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#4c1d95; line-height:1.4;">プロンプトの「#」って何？ 構造化記法を徹底解説</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#6d28d9;">Markdown / XML / YAML — 3つの記法と使い分け</p>
+                    </div>
+                </div>
+
+                <div class="accordion" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 2px solid #c4b5fd;">
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-heading" style="color:#0ea5e9;"></i>
+                            Markdown記法（最も推奨）
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p><code>#</code> で見出し、<code>-</code> で箇条書き、<code>**太字**</code> で強調。<strong>最も簡単で汎用性が高い</strong>記法です。AIモデルの多くがMarkdownで学習しているため、構造の理解精度が最も高い。プロンプト構造化の第一歩として必ず覚えましょう。</p>
+                            <div class="prompt-example"># 命令
+あなたは経験豊富なWebライターです。
+
+## 制約条件
+- 800文字程度
+- **初心者向け**のですます調
+
+## 入力文
+（ここに文章を貼り付け）</div>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-tags" style="color:#8b5cf6;"></i>
+                            XML記法（役割を明確に分離）
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>タグ（<code>&lt;role&gt;&lt;/role&gt;</code>）で各セクションを囲む記法。<strong>セクションの開始と終了が明確</strong>なため、長いプロンプトで要素を混同しにくいのが利点。Claude（Anthropic）では特に効果的です。</p>
+                            <div class="prompt-example">&lt;role&gt;あなたはベテラン編集者です&lt;/role&gt;
+&lt;task&gt;以下の文章をブログ記事に書き換えて&lt;/task&gt;
+&lt;condition&gt;800文字・ですます調&lt;/condition&gt;
+&lt;input&gt;（本文）&lt;/input&gt;</div>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-bars-staggered" style="color:#ec4899;"></i>
+                            YAML記法（キーと値をセットで）
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p><code>キー: 値</code> の形式で情報を整理する記法。<strong>設定ファイル的な書き方</strong>で、条件が多い場合に見通しが良くなります。プログラミング経験がある方にはお馴染みの形式です。</p>
+                            <div class="prompt-example">role: ベテラン編集者
+task: ブログ記事の作成
+conditions:
+  - 文字数: 800字
+  - トーン: ですます調
+  - 対象読者: AI初心者</div>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- ===== 動画⑤ 一言プロンプトTOP7 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#fffbeb,#fef3c7); border-radius:16px; border:2px solid #fcd34d;">
+                    <a href="https://youtu.be/hf2-6gZmFlo" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/hf2-6gZmFlo/hqdefault.jpg" alt="動画⑤" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#92400e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画⑤ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#78350f; line-height:1.4;">AIの回答精度が覚醒する「一言プロンプト」TOP7</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#92400e;">たった1行で出力が劇変するプロ厳選の魔法フレーズ</p>
+                    </div>
+                </div>
+
+                <div class="accordion" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 2px solid #fcd34d;">
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#f59e0b;">🥇</span>
+                            第1位：「追加で必要な情報があれば質問してください」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>あらゆるプロンプトの最後に添えるべき<strong>最強の一言</strong>。AIとの関係を一方通行→双方向に変え、<strong>手戻りをゼロ</strong>にします。AIが不足情報を自ら質問してくれるため、最短で高品質な成果物が完成します。</p>
+                        </div>
+                    </details>
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#94a3b8;">🥈</span>
+                            第2位：「今の回答は70点です。100点にしてください」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>点数で<strong>自己改善を促す</strong>テクニック。AIは点数のギャップを自己分析し、不足部分を自動で補強します。指示待ちオペレーター→自分で考える優秀パートナーに進化させる一言。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#cd7f32;">🥉</span>
+                            第3位：「最高の回答を引き出すには、どう指示すればいい？」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p><strong>メタプロンプティング</strong>＝AIに最適なプロンプトを作らせる逆転の発想。AIは「どう聞けばAIが答えやすいか」を最もよく知っているため、<strong>プロ顔負けの指示書</strong>が手に入ります。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#8b5cf6;">4</span>
+                            第4位：「なぜを繰り返して本質に迫って」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AIに<strong>深掘り思考</strong>を促すプロンプト。「なぜ？」を連鎖させることで、問題の本質・根本原因までAIに掘り下げさせます。表層的な回答で終わらせない必須テクニック。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#8b5cf6;">5</span>
+                            第5位：「分からないことは分からないと書いて」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>AIの<strong>ハルシネーション（知ったかぶり）を防止</strong>する一言。AIが不確かな情報で回答を捏造するのを防ぎ、信頼性と業務の安全性を高めます。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#8b5cf6;">6</span>
+                            第6位：「SOW形式でまとめて」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>SOW（Statement of Work）形式で<strong>曖昧さを排除し全体像を構造化</strong>するプロンプト。作業範囲・成果物・スケジュールを明確にさせるのに最適で、プロジェクト管理に即使えます。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <span class="acc-icon" style="font-weight:900; color:#8b5cf6;">7</span>
+                            第7位：「適切な文章フレームワークを選んで書いて」
+                            <span class="lead">▼ 開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>文章作成時に<strong>内容だけでなく構造（PREP法等）までAIに委ねる</strong>テクニック。AIが内容に最適なフレームワークを自律判断し、読み手の心を動かす文章を生成します。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- クイズ -->
+                <div class="quiz-box" id="quiz3-2">
+                    <h4><i class="fa-solid fa-brain"></i> 後半の理解度チェック</h4>
+                    <p style="font-weight:700; color:#78350f; margin-bottom:1rem;">Q. AIに「追加で必要な情報があれば質問して」と伝える最大のメリットは？</p>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-2', this, false)">A. AIのハルシネーションを防げる</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-2', this, true)">B. AIとの対話が双方向になり手戻りがゼロになる</button>
+                    <button class="quiz-opt" onclick="checkQuiz('quiz3-2', this, false)">C. AIの回答が長くなる</button>
+                    <div class="quiz-explain" id="quiz3-2-explain">
+                        <p style="margin:0; line-height:1.7;"><strong>正解はB！</strong> この一言を添えると、AIが不足情報を自ら質問してくれるようになります。一方通行の指示から双方向の対話に変わるため、手戻りなく最短で高品質な成果物にたどり着けます。</p>
+                    </div>
+                </div>
+
+                <!-- コラム: プロンプトシート -->
+                <div class="column-box">
+                    <div class="column-label">Column / 実習素材</div>
+                    <h4>プロンプト一覧シートを活用しよう</h4>
+                    <p>実務で使える<strong>プロンプトテンプレート集</strong>がスプレッドシートにまとまっています。コピペでそのまま使えるものから、自分の業務に合わせてカスタマイズするものまで。「自分専用プロンプトノート」を作っておきましょう。</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1FK-Pocn0T-tuCLTht0rUJc622tlv1x_68xZ8lLTlJR4/edit?usp=sharing" target="_blank" class="btn" style="background: linear-gradient(135deg, #0ea5e9, #0284c7); margin-top: 0.5rem; font-size:0.95rem;"><i class="fa-solid fa-table"></i> プロンプト一覧シートを開く</a>
                 </div>
 
                 <!-- Interactive Cauldron -->
@@ -517,15 +939,43 @@
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #10b981; background: #f0fdf4;">
                 <h3 style="color:#10b981; font-size:1.8rem; margin-top:0; border-bottom:2px solid #a7f3d0; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
-                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 3 全行程コンプリート！
+                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 3 学習のまとめ
                 </h3>
-                <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は<strong>「プロンプトエンジニアリング」</strong>について学びました。<br>
-                    プロンプトの4大要素「Role・Task・Context・Format」とMarkdown記法を駆使することで、AIの頭脳を強力なアシスタントへと変貌させることができます。<br><br>
-                    スプレッドシートのテンプレートを活用し、日々の業務を効率化していきましょう！
-                </p>
-                
-                <div style="margin-top:3rem; text-align:center;">
+
+                <div style="max-width:700px; margin: 2rem auto; text-align:left;">
+                    <h4 style="font-size:1.3rem; font-weight:800; color:#064e3b; margin-bottom:1.5rem; text-align:center;">📌 今日学んだキーポイント</h4>
+
+                    <div style="background:#fff; border:1px solid #d1fae5; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#059669; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">📝 前半：メリット5 ＆ プロンプト基本形</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li>メリット5：業務効率・スキルUP・創造性・コミュ力・キャリア</li>
+                            <li>プロンプト基本形：<strong>背景・入力データ・指示・出力条件</strong></li>
+                            <li>上達の4ポイント：明確な指示・情報提供・タスク分解・考える時間</li>
+                            <li>Markdown記法（# 見出し、- リスト）で<strong>構造化</strong></li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fff; border:1px solid #e9d5ff; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#7c3aed; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">⚡ 後半：応用テクニック（動画③④⑤）</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li><strong>魔法の記号</strong>：コロン・ハイフン・引用符・バッククォートで指示を明確化</li>
+                            <li><strong>構造化記法</strong>：Markdown / XML / YAMLで精度を向上</li>
+                            <li><strong>一言プロンプトTOP7</strong>：「追加で質問して」「70点→100点に」等</li>
+                            <li><strong>メタプロンプティング</strong>：AIに最適なプロンプトを逆提案させる</li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:16px; padding:1.5rem; margin-bottom:2rem;">
+                        <h5 style="color:#92400e; font-weight:800; margin:0 0 0.8rem; font-size:1.05rem;">💡 明日から実践できること</h5>
+                        <ul style="line-height:2; margin:0; padding-left:1.5rem; color:#78350f;">
+                            <li>実務メールを「背景・入力・指示・出力条件」でプロンプト化してみる</li>
+                            <li>会議議事録を「CoT + Markdown」で要約させてみる</li>
+                            <li>スプレッドシートから3つ選んで自分用ノートに保存</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top:1rem; text-align:center;">
                     <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #10b981, #059669); border-radius:50px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);" onclick="window.location.href='index.html'">
                         <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
                     </button>
@@ -538,6 +988,49 @@
 
     <!-- Scripts -->
     <script>
+        // --- Before/After Toggle ---
+        function switchBA(btn, showId, hideId, type) {
+            document.getElementById(showId).classList.add('active');
+            document.getElementById(hideId).classList.remove('active');
+            const btns = btn.parentElement.querySelectorAll('button');
+            btns.forEach(b => { b.className = ''; });
+            btn.className = type === 'ng' ? 'active-ng' : 'active-ok';
+        }
+
+        // --- Inline Quiz ---
+        function checkQuiz(quizId, el, isCorrect) {
+            const box = document.getElementById(quizId);
+            const opts = box.querySelectorAll('.quiz-opt');
+            opts.forEach(o => {
+                o.classList.add('disabled');
+                if (o === el) o.classList.add(isCorrect ? 'correct' : 'wrong');
+            });
+            if (!isCorrect) {
+                opts.forEach(o => {
+                    if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1)
+                        o.classList.add('correct');
+                });
+            }
+            document.getElementById(quizId + '-explain').classList.add('show');
+        }
+
+        // --- Typing Animation ---
+        function typeWriter(elementId, text, speed = 50) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.innerHTML = '<span class="typing-cursor"></span>';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML = text.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+                    i++;
+                    setTimeout(type, speed);
+                } else { el.innerHTML = text; }
+            }
+            type();
+        }
+        let typed3 = false;
+
         // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -547,6 +1040,21 @@
             for(let i=0; i<buttons.length; i++){
                 if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
+                }
+            }
+            if (tabId === 'tab-first' && !typed3) {
+                typed3 = true;
+                const typingEl = document.getElementById('typing3');
+                if (typingEl) {
+                    const obs = new IntersectionObserver((entries) => {
+                        entries.forEach(e => {
+                            if (e.isIntersecting) {
+                                obs.disconnect();
+                                typeWriter('typing3', 'AIへの指示は「魔法の型」で組み立てろ。', 60);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    obs.observe(typingEl);
                 }
             }
         }

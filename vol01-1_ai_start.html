@@ -6,6 +6,7 @@
     <title>Day 1 | Generative AI & Prompt</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <style>
         :root {
             --bg-body: #f8fafc;
@@ -137,6 +138,56 @@
         .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
         .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
 
+        /* New Boxes (Phase 1) */
+        .point-box { background: var(--teal-bg); border-left: 5px solid var(--teal); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.08); }
+        .point-box h4 { margin: 0 0 0.8rem; color: var(--teal); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .point-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+        
+        .danger-box { background: #fef2f2; border: 2px solid #fecaca; padding: 1.8rem 2rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.08); }
+        .danger-box h4 { margin: 0 0 0.8rem; color: var(--danger); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .danger-box p { margin: 0; color: #7f1d1d; line-height: 1.7; font-size: 1.05rem;}
+        
+        .column-box { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 1px solid #e9d5ff; padding: 2rem 2.5rem; border-radius: 16px; margin: 2.5rem 0; position: relative; box-shadow: 0 8px 25px rgba(168, 85, 247, 0.08); }
+        .column-label { position: absolute; top: -14px; left: 24px; background: linear-gradient(135deg, #a855f7, #7c3aed); color: #fff; padding: 4px 20px; font-size: 0.9rem; font-weight: 800; border-radius: 20px; box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3); letter-spacing: 1px;}
+        .column-box h4 { margin: 0.5rem 0 1rem; color: #5b21b6; font-size: 1.3rem; font-weight: 800; border-bottom: 2px dashed #d8b4fe; padding-bottom: 0.8rem;}
+        
+        .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 2rem 0; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .compare-table th { background: var(--bg-body); color: var(--text-main); font-weight: 800; padding: 1.2rem 1rem; text-align: left; border-bottom: 2px solid #cbd5e1; }
+        .compare-table td { padding: 1.2rem 1rem; border-bottom: 1px solid #e2e8f0; color: var(--text-sub); line-height: 1.6; }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:hover td { background: var(--teal-bg); }
+        
+        .key-term { background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.95em; }
+        .key-concept { background: #e0f2fe; color: #0369a1; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.95em; }
+        
+        .video-wrapper { display: flex; flex-direction: column; gap: 0.8rem; }
+        .video-desc { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.2rem; margin-top: -10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .video-desc h5 { margin: 0 0 0.5rem 0; font-size: 1.1rem; color: var(--text-main); font-weight: 800;}
+        .video-desc p { margin: 0; font-size: 0.95rem; color: var(--text-sub); line-height: 1.5; }
+        .video-tag { display: inline-block; background: var(--accent-bg); color: var(--accent); font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; font-weight: 700; margin-bottom: 0.5rem; }
+
+        /* Accordion */
+        .accordion { margin: 1.5rem 0; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+        .accordion details { border-bottom: 1px solid #f1f5f9; }
+        .accordion details:last-child { border-bottom: none; }
+        .accordion summary { padding: 1.4rem 2rem; cursor: pointer; display: flex; align-items: center; gap: 1rem; font-weight: 800; font-size: 1.1rem; color: var(--text-main); transition: background 0.2s; list-style: none; user-select: none; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion summary::before { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 0.8rem; color: var(--accent); transition: transform 0.3s; flex-shrink: 0; width: 20px; text-align: center; }
+        .accordion details[open] summary::before { transform: rotate(180deg); }
+        .accordion summary:hover { background: var(--accent-bg); }
+        .accordion summary .lead { font-weight: 400; font-size: 0.95rem; color: var(--text-sub); margin-left: auto; flex-shrink: 0; }
+        .accordion .acc-body { padding: 0 2rem 1.8rem 3.5rem; color: var(--text-sub); line-height: 1.8; font-size: 1.05rem; animation: fadeIn 0.3s ease; }
+        .accordion .acc-body p { margin: 0 0 1rem 0; }
+        .accordion .acc-body ul { margin: 0.5rem 0; padding-left: 1.5rem; }
+        .accordion .acc-body li { margin-bottom: 0.5rem; }
+        .accordion .acc-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        /* Mermaid Diagram Container */
+        .diagram-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.5rem 2rem; margin: 2.5rem 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .diagram-box h4 { margin: 0 0 1rem; font-size: 1.2rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 0.8rem; }
+        .diagram-box .mermaid { max-width: 700px; margin: 0 auto; }
+        .diagram-box .mermaid svg { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+
         /* Content List Grid */
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
         .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
@@ -202,6 +253,70 @@
         /* Floating Action */
         .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #3b82f6); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
         .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(79, 70, 229, 0.6); color: white; }
+
+        /* ======= FLIP CARDS ======= */
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 800px; height: 300px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(.4,0,.2,1); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.06); overflow: hidden; }
+        .flip-front { background: linear-gradient(135deg, #eef2ff, #e0e7ff); border: 2px solid #c7d2fe; }
+        .flip-front .flip-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .flip-front h5 { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
+        .flip-front .flip-hint { font-size: 0.8rem; color: var(--accent); margin-top: 0.8rem; opacity: 0.7; }
+        .flip-back { background: linear-gradient(135deg, var(--accent), #3b82f6); color: #fff; transform: rotateY(180deg); }
+        .flip-back p { margin: 0; font-size: 0.85rem; line-height: 1.6; text-align: left; }
+        .flip-back .flip-label { position: absolute; top: 12px; right: 16px; font-size: 0.75rem; opacity: 0.7; }
+
+        /* ======= BEFORE / AFTER TOGGLE ======= */
+        .ba-container { margin: 2.5rem 0; }
+        .ba-toggle { display: flex; background: #e2e8f0; border-radius: 30px; padding: 4px; margin-bottom: 1.5rem; max-width: 360px; }
+        .ba-toggle button { flex: 1; padding: 0.8rem; border: none; border-radius: 26px; font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: all 0.3s; background: transparent; color: var(--text-sub); }
+        .ba-toggle button.active-ng { background: var(--danger); color: #fff; box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
+        .ba-toggle button.active-ok { background: var(--teal); color: #fff; box-shadow: 0 4px 12px rgba(13,148,136,0.3); }
+        .ba-panel { display: none; border-radius: 16px; padding: 2rem; animation: fadeIn 0.4s ease; }
+        .ba-panel.active { display: block; }
+        .ba-ng { background: #fef2f2; border: 2px solid #fecaca; }
+        .ba-ng h4 { color: var(--danger); margin: 0 0 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ba-ok { background: #f0fdf4; border: 2px solid #bbf7d0; }
+        .ba-ok h4 { color: var(--teal); margin: 0 0 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .ba-panel .prompt-example { background: #1e293b; color: #e2e8f0; padding: 1.2rem 1.5rem; border-radius: 12px; font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.7; margin: 1rem 0; white-space: pre-wrap; }
+
+        /* ======= STEP CARDS ======= */
+        .step-carousel { position: relative; margin: 2.5rem 0; }
+        .step-track { overflow: hidden; border-radius: 20px; border: 2px solid #e2e8f0; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.04); }
+        .step-slide { display: none; padding: 2.5rem; animation: fadeIn 0.5s ease; }
+        .step-slide.active { display: block; }
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; background: var(--accent); color: #fff; font-family: 'Teko', sans-serif; font-size: 1.8rem; font-weight: 700; border-radius: 14px; margin-bottom: 1.2rem; box-shadow: 0 4px 12px var(--accent-glow); }
+        .step-slide h4 { font-size: 1.4rem; font-weight: 800; margin: 0 0 1rem; }
+        .step-slide p { font-size: 1.05rem; color: var(--text-sub); line-height: 1.8; margin: 0 0 1.5rem; }
+        .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f1f5f9; }
+        .step-dots { display: flex; gap: 8px; }
+        .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #e2e8f0; transition: all 0.3s; }
+        .step-dot.active { background: var(--accent); transform: scale(1.3); }
+        .step-dot.done { background: var(--teal); }
+
+        /* ======= INLINE QUIZ ======= */
+        .quiz-box { background: linear-gradient(135deg, #faf5ff, #f3e8ff); border: 2px solid #e9d5ff; border-radius: 20px; padding: 2.5rem; margin: 2.5rem 0; position: relative; overflow: hidden; }
+        .quiz-box::before { content: '🧠'; position: absolute; top: -10px; right: -10px; font-size: 5rem; opacity: 0.08; }
+        .quiz-box h4 { font-size: 1.3rem; font-weight: 800; color: #5b21b6; margin: 0 0 0.5rem; display: flex; align-items: center; gap: 0.8rem; }
+        .quiz-q { font-size: 1.15rem; color: var(--text-main); font-weight: 700; margin: 1rem 0 1.5rem; line-height: 1.6; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { padding: 1rem 1.5rem; border: 2px solid #d8b4fe; border-radius: 14px; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: all 0.3s; background: #fff; display: flex; align-items: center; gap: 1rem; }
+        .quiz-opt:hover { border-color: #a855f7; background: #faf5ff; transform: translateX(5px); }
+        .quiz-opt .opt-label { width: 32px; height: 32px; border-radius: 50%; background: #e9d5ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+        .quiz-opt.correct { border-color: var(--teal); background: #f0fdf4; }
+        .quiz-opt.correct .opt-label { background: var(--teal); color: #fff; }
+        .quiz-opt.wrong { border-color: var(--danger); background: #fef2f2; opacity: 0.6; }
+        .quiz-opt.disabled { pointer-events: none; }
+        .quiz-explain { display: none; margin-top: 1.5rem; padding: 1.5rem; background: #fff; border-radius: 14px; border: 1px solid #d8b4fe; animation: fadeIn 0.5s ease; }
+        .quiz-explain.show { display: block; }
+        .quiz-explain p { margin: 0; line-height: 1.7; color: var(--text-main); }
+
+        /* ======= TYPING ANIMATION ======= */
+        .typing-area { font-size: 1.4rem; font-weight: 800; color: var(--accent); min-height: 2.5rem; margin: 1.5rem 0; }
+        .typing-cursor { display: inline-block; width: 3px; height: 1.3em; background: var(--accent); margin-left: 2px; animation: blink 0.7s infinite; vertical-align: text-bottom; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body>
@@ -262,40 +377,262 @@
                 <p style="font-size:1.1rem; margin-bottom:1.5rem;">生成AIがどのように機能し、どう使えばよいのかを理解するための基本動画です。</p>
                 
                 <div class="video-grid">
-                    <a href="https://youtu.be/WJ1R3D0ntf8" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/WJ1R3D0ntf8/maxresdefault.jpg" alt="動画1" onerror="this.src='https://img.youtube.com/vi/WJ1R3D0ntf8/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/KUNBWh9rprI" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/KUNBWh9rprI/maxresdefault.jpg" alt="動画2" onerror="this.src='https://img.youtube.com/vi/KUNBWh9rprI/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/NBWGnzpeEHk" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/NBWGnzpeEHk/maxresdefault.jpg" alt="動画3" onerror="this.src='https://img.youtube.com/vi/NBWGnzpeEHk/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/o5kXK5JvIt8" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/o5kXK5JvIt8/maxresdefault.jpg" alt="動画4" onerror="this.src='https://img.youtube.com/vi/o5kXK5JvIt8/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/WJ1R3D0ntf8" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/WJ1R3D0ntf8/maxresdefault.jpg" alt="Google生成AIの始め方" onerror="this.src='https://img.youtube.com/vi/WJ1R3D0ntf8/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag">Basic</span>
+                            <h5>Google生成AIの始め方</h5>
+                            <p>Geminiの基本操作とGoogleアカウントでの初期設定手順を画面付きで解説します。</p>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/KUNBWh9rprI" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/KUNBWh9rprI/maxresdefault.jpg" alt="AIで何ができるのか" onerror="this.src='https://img.youtube.com/vi/KUNBWh9rprI/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag">Concept</span>
+                            <h5>AIで何ができるのか</h5>
+                            <p>文章生成・要約・翻訳・アイデア出しなど、生成AIが持つ多様な基本能力を紹介します。</p>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/NBWGnzpeEHk" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/NBWGnzpeEHk/maxresdefault.jpg" alt="NotebookLMの使い方" onerror="this.src='https://img.youtube.com/vi/NBWGnzpeEHk/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag">Tool</span>
+                            <h5>NotebookLMの使い方</h5>
+                            <p>複数資料を読み込ませて自分専用のAIをつくる、Googleの研究支援AIの活用法。</p>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/o5kXK5JvIt8" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/o5kXK5JvIt8/maxresdefault.jpg" alt="Gemini実践デモ" onerror="this.src='https://img.youtube.com/vi/o5kXK5JvIt8/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag">Demo</span>
+                            <h5>Gemini実践デモ</h5>
+                            <p>実際にGeminiに様々な指示（プロンプト）を入力し、対話しながら結果を引き出すチュートリアル。</p>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="highlight-box">
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
                     <p style="margin-bottom:0; line-height:1.7;">時間がない方はここをチェック！AIの歴史から将来の影響、そしてGoogleのGeminiの使い方まで、前半4本の動画のエッセンスをまとめました。</p>
                 </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-robot" style="color:#3b82f6;"></i> 1. AI（人工知能）とは？</h4>
-                        <p>人間のように学習・推論するプログラムです。特化型AIから汎用AIへ進化し、現在はディープラーニング（深層学習）が第3次AIブームを牽引しています。</p>
+
+                <!-- タイピングアニメーション -->
+                <div style="text-align:center; margin: 2rem 0;">
+                    <div class="typing-area" id="typing1"></div>
+                </div>
+
+                <!-- Geminiフロー図（純HTML/CSS） -->
+                <div class="diagram-box" style="padding: 1.5rem 2rem;">
+                    <h4><i class="fa-solid fa-diagram-project" style="color: var(--accent);"></i> Gemini活用の全体像</h4>
+                    <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:0.5rem;">
+                        <div style="background:#eef2ff; border:2px solid #4f46e5; border-radius:12px; padding:0.8rem 1.5rem; font-weight:800; color:#1e1b4b; text-align:center;">💬 あなたの質問</div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="background:linear-gradient(135deg,#4f46e5,#3b82f6); border-radius:14px; padding:0.8rem 1.5rem; color:#fff; font-weight:800; text-align:center; box-shadow:0 4px 12px rgba(79,70,229,0.3);">🤖 Gemini</div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+                            <div style="background:#fff; border:1px solid #c7d2fe; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#4f46e5; font-size:0.9rem;">📝 壁打ち</div>
+                            <div style="background:#fff; border:1px solid #c7d2fe; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#4f46e5; font-size:0.9rem;">📄 要約・翻訳</div>
+                            <div style="background:#fff; border:1px solid #c7d2fe; border-radius:8px; padding:0.4rem 1rem; font-weight:700; color:#4f46e5; font-size:0.9rem;">🎨 アイデア出し</div>
+                        </div>
+                        <div style="font-size:1.5rem; color:#94a3b8;">→</div>
+                        <div style="background:#f0fdfa; border:2px solid #0d9488; border-radius:12px; padding:0.8rem 1.5rem; font-weight:800; color:#134e4a; text-align:center;">✨ 洗練されたアウトプット</div>
                     </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-user-tie" style="color:#f59e0b;"></i> 2. 今後の仕事への影響</h4>
-                        <p>手順が決まっている定型業務はAIに代替されやすく、コミュニケーション・創造性・柔軟な課題解決が求められる仕事は生き残るとされています。</p>
+                </div>
+
+                <!-- フリップカード：キーワード学習 -->
+                <h3 style="font-size:1.3rem; font-weight:800; margin:2.5rem 0 0.5rem; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-clone" style="color:var(--accent);"></i> カードをクリックして用語を覚えよう</h3>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front">
+                                <div class="flip-icon">🤖</div>
+                                <h5>Gemini とは？</h5>
+                                <div class="flip-hint">Click to reveal</div>
+                            </div>
+                            <div class="flip-back">
+                                <div class="flip-label">Answer</div>
+                                <p>Googleの生成AI。<strong>検索ではなく「壁打ち」</strong>が真骨頂。<br>一発で完璧な答えを求めるのではなく「こういう企画どう思う？」「もっと柔らかい表現にして」と<strong>対話を重ねてアイデアを練り上げる</strong>のが効果的。<br><br><em>活用例：</em>長文メールの要約、角の立たない断りメール作成、動画タイトル案の大量出しなど。</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bento-item" style="grid-column: 1 / -1;">
-                        <h4><i class="fa-solid fa-sparkles" style="color:#10b981;"></i> 3. Google Geminiの使い方</h4>
-                        <p>文章作成、要約、翻訳、アイデア出しから画像生成までできる無料アシスタント。的確な「プロンプト（指示文）」による対話が精度を高める鍵になります。</p>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front">
+                                <div class="flip-icon">💬</div>
+                                <h5>プロンプト とは？</h5>
+                                <div class="flip-hint">Click to reveal</div>
+                            </div>
+                            <div class="flip-back">
+                                <div class="flip-label">Answer</div>
+                                <p>AIへの指示文。<strong>「役割」「文脈」「制約」</strong>の3要素がカギ。<br><br>❌「AIについて教えて」<br>⭕「あなたはプロの編集者です。SNS用30秒動画のタイトル案を5つ箇条書きで出してください」<br><br>この差だけで回答品質が激変する。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front">
+                                <div class="flip-icon">📓</div>
+                                <h5>NotebookLM とは？</h5>
+                                <div class="flip-hint">Click to reveal</div>
+                            </div>
+                            <div class="flip-back">
+                                <div class="flip-label">Answer</div>
+                                <p>自分のPDFやDocsだけを読み込ませて回答させる<strong>「自分専用のAIアシスタント」</strong>。<br><br>複数の長文資料を読み込ませて「共通点は？」「矛盾する箇所は？」と質問できる。一般AIと違い<strong>自分の資料の中だけから回答</strong>する安心感。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-front" style="background: linear-gradient(135deg, #fef2f2, #fecaca); border-color: #fca5a5;">
+                                <div class="flip-icon">⚠️</div>
+                                <h5>ハルシネーション とは？</h5>
+                                <div class="flip-hint" style="color:var(--danger);">Click to reveal</div>
+                            </div>
+                            <div class="flip-back" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                                <div class="flip-label">Answer</div>
+                                <p>AIが<strong>もっともらしい嘘をつく</strong>現象（幻覚）。<br><br>特に日付・人名・専門知識で頻発。「存在しない論文」「架空の統計」を堂々と出すことも。<br>対策：<strong>必ず公式サイト等で裏取り</strong>する習慣を。AIは「優秀だが知ったかぶりする後輩」。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- プロンプト3要素の図解（純HTML/CSS） -->
+                <div class="diagram-box" style="padding: 2rem;">
+                    <h4><i class="fa-solid fa-puzzle-piece" style="color:#f59e0b;"></i> プロンプトの3要素</h4>
+                    <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:1rem;">
+                        <!-- 3要素 -->
+                        <div style="display:flex; flex-direction:column; gap:0.8rem;">
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#92400e; font-size:0.95rem; min-width:180px; text-align:center;">🎭 役割<br><span style="font-weight:400; font-size:0.75rem;">例：プロの編集者として</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#e0f2fe; border:2px solid #38bdf8; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#0c4a6e; font-size:0.95rem; min-width:180px; text-align:center;">📋 文脈<br><span style="font-weight:400; font-size:0.75rem;">例：SNS用30秒動画の</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:0.8rem;">
+                                <div style="background:#fce7f3; border:2px solid #ec4899; border-radius:12px; padding:0.7rem 1.3rem; font-weight:800; color:#831843; font-size:0.95rem; min-width:180px; text-align:center;">🔒 制約<br><span style="font-weight:400; font-size:0.75rem;">例：箇条書きで5つ</span></div>
+                                <div style="color:#94a3b8; font-size:1.2rem;">→</div>
+                            </div>
+                        </div>
+                        <!-- プロンプト -->
+                        <div style="background:linear-gradient(135deg,#4f46e5,#3b82f6); border-radius:16px; padding:1.5rem 2rem; text-align:center; color:#fff; font-weight:800; font-size:1.1rem; box-shadow:0 4px 15px rgba(79,70,229,0.3); display:flex; flex-direction:column; gap:0.3rem;">💬 プロンプト<br><span style="font-weight:400; font-size:0.75rem; opacity:0.8;">（3要素を組み合わせた指示文）</span></div>
+                        <!-- 矢印 -->
+                        <div style="font-size:2rem; color:#94a3b8;">→</div>
+                        <!-- 結果 -->
+                        <div style="background:#dcfce7; border:2px solid #22c55e; border-radius:16px; padding:1.5rem 2rem; text-align:center; font-weight:800; color:#14532d; font-size:1.1rem;">✅ 高品質な回答</div>
+                    </div>
+                </div>
+
+                <!-- Before/After トグル -->
+                <h3 style="font-size:1.3rem; font-weight:800; margin:2.5rem 0 0.5rem; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-right-left" style="color:var(--teal);"></i> プロンプトのNG例 vs 良い例</h3>
+                <div class="ba-container">
+                    <div class="ba-toggle">
+                        <button class="active-ng" onclick="switchBA(this,'ba1-ng','ba1-ok','ng')">❌ NG例</button>
+                        <button onclick="switchBA(this,'ba1-ok','ba1-ng','ok')">✅ 良い例</button>
+                    </div>
+                    <div id="ba1-ng" class="ba-panel ba-ng active">
+                        <h4><i class="fa-solid fa-xmark"></i> ありがちなダメ指示</h4>
+                        <div class="prompt-example">AIについて教えて</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ <strong>範囲が広すぎ</strong>てAIは一般的な回答しかできない。まるで「なんか面白いこと言って」と言われるようなもの。</p>
+                        <div class="prompt-example" style="margin-top:1rem;">この文章を直して</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ <strong>「何を」「どう」直すか不明</strong>。誤字修正？トーン変更？短縮？AIはエスパーではない。</p>
+                        <div class="prompt-example" style="margin-top:1rem;">面白い動画のアイデアください</div>
+                        <p style="color:#7f1d1d; line-height:1.7;">→ <strong>「誰向け」「何の目的」「どんなジャンル」</strong>が抜けている。出てくるアイデアは使い物にならない。</p>
+                    </div>
+                    <div id="ba1-ok" class="ba-panel ba-ok">
+                        <h4><i class="fa-solid fa-check"></i> 3要素を入れた指示</h4>
+                        <div class="prompt-example">あなたは映像制作のプロです。[役割]
+20代女性向けのSNS用30秒動画の [文脈]
+タイトル案を箇条書きで5つ提案してください。[制約]
+テーマは「朝のルーティン」です。</div>
+                        <p style="color:#065f46; line-height:1.7;">→ 役割・文脈・制約が明確。AIはピンポイントで高品質な回答を出せる！</p>
+                        <div class="prompt-example" style="margin-top:1rem;">あなたはビジネスマナーの専門家です。[役割]
+新入社員がクライアントに送る [文脈]
+お詫びメールの文案を、丁寧だが堅すぎないトーンで [制約]
+3パターン作成してください。</div>
+                        <p style="color:#065f46; line-height:1.7;">→ 具体的な場面設定＋出力フォーマット指定で、すぐ使える回答が返ってくる。</p>
+                    </div>
+                </div>
+
+                <!-- インラインクイズ -->
+                <div class="quiz-box" id="quiz1">
+                    <h4><i class="fa-solid fa-brain"></i> 理解度チェック</h4>
+                    <div class="quiz-q">Q. Geminiを最も効果的に使うための心構えは？</div>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">
+                            <span class="opt-label">A</span> 正確な答えを一発で出させるツールとして使う
+                        </div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, true)">
+                            <span class="opt-label">B</span> 対話を繰り返してアイデアを練り上げる壁打ち相手として使う
+                        </div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">
+                            <span class="opt-label">C</span> Google検索の代わりに事実確認ツールとして使う
+                        </div>
+                    </div>
+                    <div class="quiz-explain" id="quiz1-explain">
+                        <p>✅ 正解は <strong>B</strong>！Geminiの真価は「壁打ち」にあります。最初から完璧を求めず、対話を重ねてアウトプットの質を高めていくのが最も効果的な使い方です。Cは要注意 — AIはファクトチェック用には不向き（ハルシネーションの危険性）です。</p>
+                    </div>
+                </div>
+
+                <!-- コラム：魔法のテンプレート集（常時表示） -->
+                <div class="column-box">
+                    <div class="column-label">Column / 魔法のテンプレ</div>
+                    <h4>プロンプト入力に迷ったら…「魔法のテンプレート」</h4>
+                    <p>プロンプトをゼロから考えるのは難しいもの。そんな時は<strong>用途別のテンプレート</strong>をコピペして使うのが近道です。</p>
+                    <ul style="line-height: 2; margin: 1rem 0; padding-left: 1.5rem;">
+                        <li><strong>構成案作成：</strong>「〇〇のテーマで動画構成案を5パート構成で作って」</li>
+                        <li><strong>文章校正：</strong>「以下の文章を、ビジネスメールに適したトーンに修正して」</li>
+                        <li><strong>要約：</strong>「以下の記事を小学5年生にもわかる言葉で3行に要約して」</li>
+                        <li><strong>アイデア出し：</strong>「〇〇のテーマで、バズるSNS投稿のアイデアを10個」</li>
+                    </ul>
+                    <a href="https://note.com" target="_blank" class="btn btn-sm" style="background: linear-gradient(135deg, #a855f7, #7c3aed); margin-top: 0.5rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> 魔法のテンプレート集を見る</a>
+                </div>
+
+                <!-- ステップカード：実習ガイド -->
+                <h3 style="font-size:1.3rem; font-weight:800; margin:2.5rem 0 0.5rem; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-shoe-prints" style="color:var(--accent);"></i> ステップ・バイ・ステップ実習</h3>
+                <div class="step-carousel" id="steps1">
+                    <div class="step-track">
+                        <div class="step-slide active">
+                            <div class="step-num">1</div>
+                            <h4>Geminiを開いてサインイン</h4>
+                            <p>ブラウザで <a href="https://gemini.google.com" target="_blank" style="color:var(--accent); font-weight:700;">gemini.google.com</a> にアクセスし、Googleアカウントでサインインしてください。</p>
+                            <div class="step-nav">
+                                <div></div>
+                                <div class="step-dots"><span class="step-dot active"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                                <button class="btn btn-sm" onclick="stepNext('steps1',1)">次へ <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="step-slide">
+                            <div class="step-num">2</div>
+                            <h4>役割を与えて対話を開始</h4>
+                            <p>次のように入力してみましょう：<br><br><code style="background:#1e293b; color:#e2e8f0; padding:8px 14px; border-radius:8px; display:inline-block; font-size:0.95rem;">あなたは優秀な編集者です。私の文章を校正してください。</code><br><br>このように「役割」を最初に伝えることで、AIの回答品質が変わります。</p>
+                            <div class="step-nav">
+                                <button class="btn btn-sm btn-outline" onclick="stepPrev('steps1',1)"><i class="fa-solid fa-arrow-left"></i> 戻る</button>
+                                <div class="step-dots"><span class="step-dot done"></span><span class="step-dot active"></span><span class="step-dot"></span></div>
+                                <button class="btn btn-sm" onclick="stepNext('steps1',2)">次へ <i class="fa-solid fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="step-slide">
+                            <div class="step-num">3</div>
+                            <h4>NotebookLMにPDFを読み込ませる</h4>
+                            <p><a href="https://notebooklm.google.com/" target="_blank" style="color:var(--accent); font-weight:700;">NotebookLM</a>を開き、手元にあるPDFや資料をアップロード。<br><br>「この資料を3行で要約して」と質問してみましょう。自分専用AIの威力を体感できます！ 🎉</p>
+                            <div class="step-nav">
+                                <button class="btn btn-sm btn-outline" onclick="stepPrev('steps1',2)"><i class="fa-solid fa-arrow-left"></i> 戻る</button>
+                                <div class="step-dots"><span class="step-dot done"></span><span class="step-dot done"></span><span class="step-dot active"></span></div>
+                                <div></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -310,24 +647,24 @@
                         <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
                             <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>Googleアカウントの準備</h4>
-                                <p>ブラウザでGeminiを開き、Googleアカウントでサインインする。</p>
+                                <h4>Geminiで最初の会話をする</h4>
+                                <p>Geminiを開き、「あなたは優秀な編集者です。私の文章を校正して。」と役割を与えて対話を開始する。</p>
                                 <a href="https://gemini.google.com" target="_blank" class="btn btn-sm" onclick="event.stopPropagation();"><i class="fa-solid fa-arrow-up-right-from-square"></i> Geminiを開く</a>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
                             <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>NotebookLMへのアクセス</h4>
-                                <p>GoogleのAIノートブック機能「NotebookLM」を開いて確認する。</p>
+                                <h4>NotebookLMにPDFを読み込ませる</h4>
+                                <p>NotebookLMを開き、手元にある適当なPDF（または資料Doc）をアップロードして要約を出力させる。</p>
                                 <a href="https://notebooklm.google.com/" target="_blank" class="btn btn-sm btn-outline" onclick="event.stopPropagation();"><i class="fa-solid fa-book-open"></i> NotebookLMを開く</a>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_3', this, 1)">
                             <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>資料ドキュメントの確認</h4>
-                                <p>共有されたドキュメントやプロンプトテキストを開いて確認する。</p>
+                                <h4>「ねこプロンプト.txt」の確認</h4>
+                                <p>共有フォルダ内にある「ねこプロンプト.txt」を開き、プロンプトの記述構造（スタイル＋構図＋色調）を確認する。</p>
                                 <a href="https://docs.google.com/document/d/16k1obzkjpxKIn6bo5fPYVEEQeJXJvUDkBnPTEJMbnC8/edit?usp=sharing" target="_blank" class="btn btn-sm btn-outline" onclick="event.stopPropagation();"><i class="fa-solid fa-file-lines"></i> 共有Docsを開く</a>
                             </div>
                         </li>
@@ -349,32 +686,129 @@
                 <p style="font-size:1.1rem; margin-bottom:1.5rem;">生成AIの限界を知ること（ファクトチェック）、そして主要な画像生成AIの特徴を把握します。</p>
                 
                 <div class="video-grid">
-                    <a href="https://youtu.be/j9XJJkh2OYM" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/j9XJJkh2OYM/maxresdefault.jpg" alt="動画5" onerror="this.src='https://img.youtube.com/vi/j9XJJkh2OYM/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/xUXyDaMqL60" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/xUXyDaMqL60/maxresdefault.jpg" alt="動画6" onerror="this.src='https://img.youtube.com/vi/xUXyDaMqL60/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                    <a href="https://youtu.be/vJLDbXaSKW4" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/vJLDbXaSKW4/maxresdefault.jpg" alt="動画7" onerror="this.src='https://img.youtube.com/vi/vJLDbXaSKW4/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/j9XJJkh2OYM" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/j9XJJkh2OYM/maxresdefault.jpg" alt="4つの画像生成AIの比較" onerror="this.src='https://img.youtube.com/vi/j9XJJkh2OYM/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag" style="background:#fef3c7; color:#d97706;">Comparison</span>
+                            <h5>4つの画像生成AIの比較</h5>
+                            <p>NanoBanana, Seedreem, Midjourney, Fireflyの特徴と適材適所を解説。</p>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/xUXyDaMqL60" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/xUXyDaMqL60/maxresdefault.jpg" alt="画像生成プロンプトの基本" onerror="this.src='https://img.youtube.com/vi/xUXyDaMqL60/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag" style="background:#e0e7ff; color:#4f46e5;">Prompt</span>
+                            <h5>画像生成プロンプトの基本</h5>
+                            <p>イメージ通りに画像を生成するための「呪文」の唱え方の基本パターン。</p>
+                        </div>
+                    </div>
+                    <div class="video-wrapper">
+                        <a href="https://youtu.be/vJLDbXaSKW4" target="_blank" class="video-thumb">
+                            <img src="https://img.youtube.com/vi/vJLDbXaSKW4/maxresdefault.jpg" alt="6つのプロンプトで比較" onerror="this.src='https://img.youtube.com/vi/vJLDbXaSKW4/hqdefault.jpg'">
+                            <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                        </a>
+                        <div class="video-desc">
+                            <span class="video-tag" style="background:#fce7f3; color:#db2777;">Experiment</span>
+                            <h5>6つのプロンプトで比較</h5>
+                            <p>4つのAIに全く同じプロンプトを入力し、生成結果の個性の違いを検証します。</p>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
                     <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-triangle-exclamation"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
                     <p style="margin-bottom:0; line-height:1.7;">生成AIの「弱点」と各画像生成AIの「特徴」を把握することが後半のテーマです。</p>
                 </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-mask" style="color:#ef4444;"></i> 1. AIの弱点（ハルシネーション）</h4>
-                        <p>AIはもっともらしい嘘をつくことがあります。特に日付や事実関係についてはAIの回答を鵜呑みにせず、必ず一次情報でファクトチェックを行うことが実務における必須スキルです。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-image" style="color:#8b5cf6;"></i> 2. 画像生成AIの適材適所</h4>
-                        <p>「NanoBananaPro」「Seedream4.0」「Midjourney」「Adobe Firefly」など、目的に応じたツール選択が重要です。</p>
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th>AIツール</th>
+                            <th>得意なこと・特徴</th>
+                            <th>おすすめの活用シーン</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>NanoBanana Pro</strong></td>
+                            <td>アニメ風、イラスト調に特化。プロンプトへの忠実度が高い。</td>
+                            <td>サムネイルのキャラクター、漫画風の挿絵</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Seedream 4.0</strong></td>
+                            <td>写真のようにリアルな実写生成。質感表現が豊か。</td>
+                            <td>風景画、リアルな人物ポスター、商品背景</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Midjourney</strong></td>
+                            <td>芸術的・アーティスティックな表現。品質が極めて高い。</td>
+                            <td>コンセプトアート、エモい雰囲気の素材</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adobe Firefly</strong></td>
+                            <td>商用利用に安全。文字入れや既存画像の合成・拡張が得意。</td>
+                            <td>バナー作成、写真の一部修正、安心な商用利用</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+                <!-- 後半ダイジェスト（アコーディオン） -->
+                <div class="accordion" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border: 2px solid #c4b5fd;">
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-wand-magic-sparkles" style="color:#8b5cf6;"></i>
+                            1. 「プロンプト」で世界が変わる
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>画像生成AIは、テキスト生成AI以上に<span class="key-term">プロンプトへの依存度</span>が高いのが特徴です。単に「猫」と入力するのと、「油絵風の、窓辺で眠る三毛猫、夕暮れ時の暖かい照明」と指定するのとでは、結果のクオリティが天と地ほど変わります。</p>
+                        </div>
+                    </details>
+
+                    <details open>
+                        <summary style="background: rgba(255,255,255,0.6);">
+                            <i class="acc-icon fa-solid fa-palette" style="color:#ec4899;"></i>
+                            2. 同じ指示でも「AIの個性」が出る
+                            <span class="lead">▼ クリックで開閉</span>
+                        </summary>
+                        <div class="acc-body">
+                            <p>動画でも検証した通り、同じプロンプトを入力しても、ツールによって出力される絵のテイストが全く異なります。「このテイストを出したいならこのツール」という<span class="key-concept">ツールの引き出し</span>を持っておくことが、クリエイターとしての強みになります。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="code-box">
+                    <div class="code-label">Template / 画像生成の基本4要素</div>
+                    <button class="copy-btn" onclick="copyPrompt(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                    <pre style="margin:0; overflow-x:auto;">
+[主題]：
+（例：カフェでノートパソコンを開いて仕事をする若い女性）
+
+[スタイル・画風]：
+（例：リアルな写真風 / アニメ風 / 水彩画風など）
+
+[構図・アングル]：
+（例：バストアップ / 俯瞰視点 / 広角レンズで撮影）
+
+[照明・色調]：
+（例：自然光、シネマティックライティング、パステルカラー）</pre>
+                </div>
+
+                <div class="column-box" style="margin-top: 2.5rem;">
+                    <div class="column-label">Column / 実習素材</div>
+                    <h4>「ねこプロンプト.txt」で画像生成を体験しよう</h4>
+                    <p>配布資料内の<strong>「ねこプロンプト.txt」</strong>には、かわいい猫画像を生成するための<strong>様々な条件指定パターン</strong>（スタイル＋構図＋色調）のサンプルが入っています。</p>
+                    <p style="margin-top:0.8rem;">まずはコピペして結果の違いを体感しましょう！同じプロンプトでもツールごとに全然違う猫が出てきます 🐱</p>
+                    <div style="display: flex; gap: 0.8rem; margin-top: 1rem; flex-wrap: wrap;">
+                        <a href="https://docs.google.com/document/d/16k1obzkjpxKIn6bo5fPYVEEQeJXJvUDkBnPTEJMbnC8/edit?usp=sharing" target="_blank" class="btn btn-sm" style="background: linear-gradient(135deg, #a855f7, #7c3aed);"><i class="fa-solid fa-file-lines"></i> ねこプロンプト.txt を開く</a>
+                        <a href="https://gemini.google.com" target="_blank" class="btn btn-sm btn-outline"><i class="fa-solid fa-robot"></i> Geminiで試す</a>
                     </div>
                 </div>
 
@@ -415,15 +849,43 @@
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #10b981; background: #f0fdf4;">
                 <h3 style="color:#10b981; font-size:1.8rem; margin-top:0; border-bottom:2px solid #a7f3d0; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
-                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 1 全行程コンプリート！
+                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 1 学習のまとめ
                 </h3>
-                <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は<strong>「テキスト生成AI（Gemini）」</strong>による思考の拡張と、<br>
-                    <strong>「画像生成AI 4天王」</strong>それぞれの得意分野の違いについて学びました。<br><br>
-                    今日作成したノートをもとに、明日以降も様々な魔法を実践して使いこなしていきましょう！
-                </p>
-                
-                <div style="margin-top:3rem; text-align:center;">
+
+                <div style="max-width:700px; margin: 2rem auto; text-align:left;">
+                    <h4 style="font-size:1.3rem; font-weight:800; color:#064e3b; margin-bottom:1.5rem; text-align:center;">📌 今日学んだキーポイント</h4>
+
+                    <div style="background:#fff; border:1px solid #d1fae5; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#059669; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">🤖 前半：Gemini実習</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li>Geminiは「検索エンジン」ではなく<strong>「思考の壁打ちパートナー」</strong></li>
+                            <li>プロンプトの3要素：<strong>役割・文脈・制約</strong>を明確に</li>
+                            <li><strong>ハルシネーション</strong>に注意— AIの回答は必ずファクトチェック</li>
+                            <li>NotebookLMで<strong>自分専用のAIアシスタント</strong>を作れる</li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fff; border:1px solid #e9d5ff; border-radius:16px; padding:1.8rem; margin-bottom:1.5rem;">
+                        <h5 style="color:#7c3aed; font-weight:800; margin:0 0 1rem; font-size:1.1rem;">🎨 後半：画像生成AI比較</h5>
+                        <ul style="line-height:2.2; margin:0; padding-left:1.5rem; color:var(--text-main);">
+                            <li>画像生成AIは<strong>プロンプトの具体性</strong>が結果を左右する</li>
+                            <li>同じ指示でもツールごとに<strong>個性が全く違う</strong></li>
+                            <li>NanoBanana Pro / Seedream / Midjourney / Fireflyの<strong>使い分け</strong></li>
+                            <li>画像生成の基本4要素：<strong>主題・スタイル・構図・照明</strong></li>
+                        </ul>
+                    </div>
+
+                    <div style="background:#fef3c7; border:2px solid #f59e0b; border-radius:16px; padding:1.5rem; margin-bottom:2rem;">
+                        <h5 style="color:#92400e; font-weight:800; margin:0 0 0.8rem; font-size:1.05rem;">💡 明日から実践できること</h5>
+                        <ul style="line-height:2; margin:0; padding-left:1.5rem; color:#78350f;">
+                            <li>業務メールをGeminiで下書きしてみる</li>
+                            <li>会議の議事録をNotebookLMで分析してみる</li>
+                            <li>SNS用のアイキャッチ画像を生成してみる</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top:1rem; text-align:center;">
                     <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #10b981, #059669); border-radius:50px; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);" onclick="window.location.href='index.html'">
                         <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
                     </button>
@@ -436,6 +898,75 @@
 
     <!-- Scripts -->
     <script>
+        // --- Mermaid init ---
+        mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#eef2ff', primaryTextColor: '#1e1b4b', primaryBorderColor: '#4f46e5', lineColor: '#94a3b8', fontSize: '14px' }});
+
+        // --- Before/After Toggle ---
+        function switchBA(btn, showId, hideId, type) {
+            document.getElementById(showId).classList.add('active');
+            document.getElementById(hideId).classList.remove('active');
+            const btns = btn.parentElement.querySelectorAll('button');
+            btns.forEach(b => { b.className = ''; });
+            btn.className = type === 'ng' ? 'active-ng' : 'active-ok';
+        }
+
+        // --- Inline Quiz ---
+        function checkQuiz(quizId, el, isCorrect) {
+            const box = document.getElementById(quizId);
+            const opts = box.querySelectorAll('.quiz-opt');
+            opts.forEach(o => {
+                o.classList.add('disabled');
+                if (o === el) {
+                    o.classList.add(isCorrect ? 'correct' : 'wrong');
+                }
+            });
+            if (!isCorrect) {
+                opts.forEach(o => {
+                    if (o.getAttribute('onclick') && o.getAttribute('onclick').indexOf('true') !== -1) {
+                        o.classList.add('correct');
+                    }
+                });
+            }
+            document.getElementById(quizId + '-explain').classList.add('show');
+        }
+
+        // --- Step Carousel ---
+        function stepNext(carouselId, currentIdx) {
+            const car = document.getElementById(carouselId);
+            const slides = car.querySelectorAll('.step-slide');
+            if (currentIdx < slides.length) {
+                slides[currentIdx - 1].classList.remove('active');
+                slides[currentIdx].classList.add('active');
+            }
+        }
+        function stepPrev(carouselId, targetIdx) {
+            const car = document.getElementById(carouselId);
+            const slides = car.querySelectorAll('.step-slide');
+            slides.forEach(s => s.classList.remove('active'));
+            slides[targetIdx - 1].classList.add('active');
+        }
+
+        // --- Typing Animation ---
+        function typeWriter(elementId, text, speed = 50) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.innerHTML = '<span class="typing-cursor"></span>';
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    el.innerHTML = text.substring(0, i + 1) + '<span class="typing-cursor"></span>';
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    el.innerHTML = text;
+                }
+            }
+            type();
+        }
+        // Trigger typing on first tab switch
+        let typed1 = false;
+        const origSwitchTab = null;
+
         // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -445,6 +976,22 @@
             for(let i=0; i<buttons.length; i++){
                 if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
+                }
+            }
+            // Trigger typing when user scrolls to the typing area
+            if (tabId === 'tab-first' && !typed1) {
+                typed1 = true;
+                const typingEl = document.getElementById('typing1');
+                if (typingEl) {
+                    const obs = new IntersectionObserver((entries) => {
+                        entries.forEach(e => {
+                            if (e.isIntersecting) {
+                                obs.disconnect();
+                                typeWriter('typing1', 'Geminiは「検索エンジン」ではない。「思考のパートナー」だ。', 60);
+                            }
+                        });
+                    }, { threshold: 0.5 });
+                    obs.observe(typingEl);
                 }
             }
         }
