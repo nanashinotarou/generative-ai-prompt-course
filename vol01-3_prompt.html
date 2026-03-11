@@ -611,39 +611,18 @@
             updateProgress();
         });
 
-        function toggleTask(taskId, element, groupId) {
-            const done = element.classList.toggle('completed');
-            state[taskId] = done;
-            localStorage.setItem('day3_premium_prog', JSON.stringify(state));
-            
-            updateProgress();
-            checkGroups(groupId);
-        }
-
-        function checkGroups(triggerGroupId = null) {
-            for(let groupId in missionGroups) {
-                const groupTasks = missionGroups[groupId];
-                const allDone = groupTasks.every(t => state[t]);
-                const groupArea = document.getElementById('mission-group-' + groupId);
-                
-                if (groupArea) {
-                    if (allDone && !groupArea.classList.contains('completed')) {
-                        groupArea.classList.add('completed');
-                        if(groupId == triggerGroupId) {
-                            if(groupId == 2) fireConfetti(); 
-                        }
-                    } else if (!allDone) {
+        
+        // --- Standardized Checklist & Progress Logic ---
+        
+                            } else if (!allDone) {
                         groupArea.classList.remove('completed');
                     }
                 }
             }
         }
 
-        function updateProgress() {
-            const count = allTasks.filter(t => state[t]).length;
-            const pct = Math.round((count / allTasks.length) * 100);
-            document.getElementById('progress-bar').style.width = pct + '%';
-            document.getElementById('progress-percent').innerText = pct + '%';
+        
+         catch(e) { console.error("Audio error", e); }
         }
 
         // Drag & Drop
@@ -688,19 +667,7 @@
         }
 
         // Confetti Function
-        function fireConfetti() {
-            const c = document.getElementById('confetti');
-            const ctx = c.getContext('2d');
-            c.width = window.innerWidth; c.height = window.innerHeight;
-            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
-            for (let i = 0; i < 150; i++) {
-                pieces.push({
-                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
-                    w: Math.random() * 8 + 6, h: Math.random() * 8 + 6,
-                    vx: Math.random() * 6 - 3, vy: Math.random() * 5 + 3,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    rot: Math.random() * 360, rs: Math.random() * 10 - 5
-                });
+        );
             }
             let aid;
             function upd() {

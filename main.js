@@ -770,7 +770,7 @@ document.addEventListener('DOMContentLoaded', () => {
             /* --- PROGRESS BAR --- */
             .scroll-progress-container {
                 position: fixed;
-                top: 0;
+                bottom: 0;
                 left: 0;
                 width: 100%;
                 height: 4px;
@@ -791,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const barContainer = document.createElement('div');
             barContainer.className = 'scroll-progress-container';
             barContainer.innerHTML = '<div class="scroll-progress-bar"></div>';
-            document.body.prepend(barContainer);
+            document.body.appendChild(barContainer);
         }
 
         // 3. Auto-Apply Reveal Classes & Observe
