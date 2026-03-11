@@ -1,1000 +1,425 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 2 | Generative AI & Prompt</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600&display=swap"
-        rel="stylesheet">
+    <title>Day 2 | Canva Basics & Video Editing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
-            --bg-body: #f5f7fa;
-            --bg-card: rgba(255, 255, 255, 0.92);
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --accent: #4f46e5;
-            --accent-light: #818cf8;
-            --accent-bg: #eef2ff;
-            --accent-glow: rgba(79, 70, 229, 0.15);
-            --teal: #0d9488;
-            --teal-bg: #f0fdfa;
-            --border: rgba(0, 0, 0, 0.08);
-            --glass-blur: blur(14px);
-            --radius: 18px;
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent: #10b981;
+            --accent-light: #34d399;
+            --accent-bg: #ecfdf5;
+            --clickable: #0ea5e9;
+            --clickable-light: #e0f2fe;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --canva-blue: #00c4cc;
+            --glass-blur: blur(16px);
+            --radius: 20px;
         }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Noto Sans JP', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
-            background-image:
-                radial-gradient(ellipse at 20% 0%, rgba(79, 70, 229, 0.06), transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(13, 148, 136, 0.06), transparent 50%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 196, 204, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
             background-attachment: fixed;
             min-height: 100vh;
         }
 
-
-
-        /* ===== HEADER ===== */
+        /* Fixed Header */
         .fixed-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000;
+            padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
         }
 
         .back-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.2s;
+            color: var(--text-sub); text-decoration: none; font-weight: 700;
+            display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--clickable); }
+
+        .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--canva-blue), var(--purple)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Navigation Sidebar */
+        .toc-sidebar {
+            position: fixed; top: 100px; left: 20px; width: 220px; background: white; padding: 1.5rem 1rem;
+            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; z-index: 100;
+        }
+        .toc-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 10px; }
+        .toc-link {
+            display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px;
+            color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
+        }
+        .toc-link:hover { background: #f1f5f9; color: var(--clickable); }
+        .toc-link.active { background: var(--clickable-light); color: var(--clickable); }
+        .toc-link i { font-size: 1.1rem; width: 20px; text-align: center; }
+
+        /* Main Content Container */
+        .container { max-width: 900px; margin: 100px auto 100px; padding: 0 20px 0 240px; }
+        @media (max-width: 1200px) {
+            .toc-sidebar { display: none; }
+            .container { padding-left: 20px; }
         }
 
-        .back-link:hover {
-            color: #4338ca;
-        }
+        /* Section Styling */
+        .course-section { margin-bottom: 5rem; animation: fadeInUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
+        .course-section.visible { opacity: 1; transform: translateY(0); }
+        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px solid #e2e8f0; }
+        .section-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; background: var(--text-main); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .section-title { margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        .progress-container {
-            flex-grow: 1;
-            max-width: 350px;
-            margin: 0 2rem;
-        }
+        .ch-goal { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .ch-first { background: linear-gradient(135deg, #00c4cc, #009ca6); }
+        .ch-second { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .ch-wrap { background: linear-gradient(135deg, #10b981, #059669); }
 
-        .progress-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            margin-bottom: 4px;
-            color: var(--accent);
-            font-weight: 700;
-        }
+        /* Components */
+        .glass-card { background: var(--bg-card); border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: transform 0.3s, box-shadow 0.3s; }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
+        .card-header-small { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; font-weight: 700; font-size: 1.3rem;}
+        
+        .explain-box { background: #eff6ff; border-left: 4px solid var(--clickable); padding: 1.5rem; border-radius: 0 12px 12px 0; margin-bottom: 2rem; line-height: 1.7; position: relative;}
+        .explain-title { font-weight: 800; color: #1e3a8a; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;}
+        .explain-box.concept { background: #e0f2fe; border-left-color: #0ea5e9; }
+        .explain-box.concept .explain-title { color: #0369a1; }
+        .explain-box.practice { background: #f0fdf4; border-left-color: #10b981; }
+        .explain-box.practice .explain-title { color: #065f46; }
 
-        .progress-bar-bg {
-            height: 8px;
-            background: var(--accent-bg);
-            border-radius: 10px;
-            overflow: hidden;
-        }
+        .hero { text-align: center; margin-bottom: 4rem; }
+        .day-badge { background: var(--text-main); color: #fff; padding: 0.5rem 2rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.5rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1.5px; line-height: 1.2; }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-light), var(--accent));
-            width: 0%;
-            border-radius: 10px;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; margin-bottom: 2rem;}
+        .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s; background: #000;}
+        .video-thumb:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: var(--canva-blue);}
+        .video-thumb img { width: 100%; display: block; opacity: 0.9; transition: opacity 0.3s, transform 0.5s;}
+        .video-thumb:hover img { opacity: 1; transform: scale(1.05);}
+        .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: all 0.3s;}
+        .video-thumb:hover .play-overlay { background: rgba(0, 196, 204, 0.3);}
+        .play-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ef4444; font-size: 1.8rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.3s;}
+        .video-thumb:hover .play-icon { transform: scale(1.1); background: #fff; color: #b91c1c; }
 
-        /* ===== HERO ===== */
-        .container {
-            max-width: 960px;
-            margin: 90px auto 60px;
-            padding: 0 20px;
-        }
+        /* Widget Styles */
+        .widget-area { background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 16px; padding: 2.5rem; color: #f8fafc; margin: 2.5rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #334155; position:relative; overflow:hidden;}
+        .widget-title { font-size: 1.5rem; font-weight: 800; margin-top: 0; margin-bottom: 0.5rem; color: var(--canva-blue); display: flex; align-items: center; gap: 12px; }
+        .widget-desc { color: #94a3b8; font-size: 0.95rem; margin-bottom: 2rem; border-bottom: 1px solid #334155; padding-bottom: 1rem;}
+        
+        .design-board { display:flex; flex-direction:column; gap:15px; background:#000; border-radius:12px; padding:4px; position:relative; height: 250px;}    
+        .design-canvas { background:#fff; border-radius:8px; flex-grow:1; display:flex; align-items:center; justify-content:center; color:#94a3b8; position:relative; overflow:hidden; font-weight:bold;}
+        .floating-elem { position:absolute; font-size:3rem; pointer-events:none; transition:all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity:0;}
+        .design-controls { display:flex; gap:10px; padding:10px; background:#1e293b; border-radius:8px;}
+        .d-btn { flex:1; padding:10px; font-weight:bold; border-radius:6px; cursor:pointer; border:none; background:#334155; color:#fff; transition:0.2s;}
+        .d-btn:hover { background:var(--canva-blue); color:#fff; }
 
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.7s ease-out;
-        }
-
-        .day-badge {
-            display: inline-block;
-            background: var(--accent);
-            color: #fff;
-            padding: 0.35rem 1.4rem;
-            border-radius: 30px;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.4rem;
-            letter-spacing: 3px;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: clamp(2rem, 4.5vw, 3rem);
-            margin: 0 0 1rem;
-            color: var(--text-main);
-            font-weight: 900;
-        }
-
-        .sub-goal {
-            color: var(--text-sub);
-            font-size: 1.05rem;
-            max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-
-        /* ===== TABS ===== */
-        .tab-container {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .tab-btn {
-            background: #fff;
-            border: 2px solid var(--border);
-            color: var(--text-sub);
-            padding: 0.8rem 2rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 700;
-            transition: all 0.25s;
-        }
-
-        .tab-btn:hover {
-            border-color: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .tab-btn.active {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* ===== GLASS CARDS ===== */
-        .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: var(--glass-blur);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: var(--radius);
-            padding: 2rem 2.5rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 1rem;
-        }
-
-        .card-header i {
-            font-size: 1.3rem;
-            color: var(--accent);
-            background: var(--accent-bg);
-            padding: 0.85rem;
-            border-radius: 12px;
-        }
-
-        .card-header h2 {
-            margin: 0;
-            font-size: 1.4rem;
-            color: var(--text-main);
-        }
-
-        /* ===== TOOL BOXES ===== */
-        .box {
-            padding: 1.8rem;
-            border-radius: 14px;
-            margin: 1.8rem 0;
-            position: relative;
-            padding-top: 2.2rem;
-        }
-
-        .box h4 {
-            margin-top: 0;
-            font-size: 1.15rem;
-            font-weight: 700;
-        }
-
-        .box p,
-        .box ul {
-            margin-bottom: 0;
-        }
-
-        .box.canva {
-            background: linear-gradient(135deg, #fdf4ff, #fae8ff);
-            border: 1px solid #e9d5ff;
-        }
-
-        .box.canva::before {
-            content: "\f53f";
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
-            position: absolute;
-            top: -18px;
-            left: 24px;
-            background: linear-gradient(135deg, #a855f7, #7c3aed);
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
-        }
-
-        .box.canva h4 {
-            color: #6b21a8;
-        }
-
-        /* ===== CHECKLIST ===== */
-        .task-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .task-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.2rem 1.5rem;
-            border-radius: 14px;
-            background: #fff;
-            margin-bottom: 0.8rem;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: 1px solid #f1f5f9;
-        }
-
-        .task-item:hover {
-            border-color: var(--accent-light);
-            background: var(--accent-bg);
-        }
-
-        .task-item.completed {
-            background: var(--teal-bg);
-            border-color: #99f6e4;
-        }
-
-        .custom-checkbox {
-            width: 26px;
-            height: 26px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s;
-            flex-shrink: 0;
-            margin-top: 2px;
-            background: #fff;
-        }
-
-        .task-item.completed .custom-checkbox {
-            background: var(--teal);
-            border-color: var(--teal);
-        }
-
-        .custom-checkbox i {
-            color: #fff;
-            font-size: 13px;
-            opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.25s;
-        }
-
-        .task-item.completed .custom-checkbox i {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .task-content h3 {
-            margin: 0 0 0.4rem;
-            font-size: 1.05rem;
-            color: var(--text-main);
-        }
-
-        .task-item.completed .task-content h3 {
-            color: var(--teal);
-        }
-
-        .task-content p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: var(--text-sub);
-            line-height: 1.5;
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 0.55rem 1.3rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 700;
-            transition: all 0.2s;
-            cursor: pointer;
-            margin-top: 0.8rem;
-            box-shadow: 0 2px 8px var(--accent-glow);
-        }
-
-        .btn:hover {
-            background: #4338ca;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--accent-glow);
-        }
-
-        .btn-copy {
-            background: #fff;
-            color: var(--text-main);
-            border: 1px solid #e2e8f0;
-            box-shadow: none;
-        }
-
-        .btn-copy:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
-
-        /* ===== VIDEO GRID ===== */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1.2rem;
-        }
-
-        .video-thumb {
-            position: relative;
-            border-radius: 14px;
-            overflow: hidden;
-            display: block;
-            border: 3px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s;
-            background: #000;
-        }
-
-        .video-thumb:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-            border-color: var(--accent-light);
-        }
-
-        .video-thumb img {
-            width: 100%;
-            display: block;
-            opacity: 0.92;
-            transition: opacity 0.3s, transform 0.5s;
-        }
-
-        .video-thumb:hover img {
-            opacity: 1;
-            transform: scale(1.04);
-        }
-
-        .video-thumb .play-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .video-thumb:hover .play-overlay {
-            background: rgba(79, 70, 229, 0.2);
-        }
-
-        .play-overlay i {
-            color: #fff;
-            font-size: 2.8rem;
-            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s;
-        }
-
-        .video-thumb:hover .play-overlay i {
-            transform: scale(1.15);
-        }
-
-        /* ===== INFO BOX ===== */
-        .info-box {
-            background: var(--accent-bg);
-            border-left: 4px solid var(--accent);
-            padding: 1.2rem 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 1.5rem 0;
-        }
-
-        .info-box h4 {
-            margin: 0 0 0.5rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.05rem;
-        }
-
-        .info-box p {
-            margin: 0;
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* ===== CONFETTI ===== */
-        #confetti {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 9998;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .dev-link {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(15, 23, 42, 0.9);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 9999;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            pointer-events: auto;
-        }
-
-        .dev-link:hover {
-            background: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px var(--accent-glow);
-            border-color: var(--accent-light);
-        }
+        /* Mission Checkboxes (Gamification) */
+        .mission-panel { background: #fff; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 2rem; margin: 2.5rem 0; display: flex; align-items: center; gap: 2rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;}
+        .mission-panel:hover { border-color: var(--accent); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1); }
+        .ms-icon { font-size: 3rem; color: #cbd5e1; transition: color 0.3s; }
+        .mission-panel:hover .ms-icon { color: var(--accent-light); }
+        .ms-content { flex-grow: 1; }
+        .ms-content h3 { margin: 0 0 0.5rem; font-size: 1.4rem; color: var(--text-main); }
+        .ms-content p { margin: 0; color: var(--text-sub); line-height: 1.6; }
+        
+        .ms-check { width: 44px; height: 44px; border: 3px solid #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .ms-check i { color: #fff; font-size: 20px; opacity: 0; transform: scale(0); transition: all 0.4s; }
+        
+        .mission-panel.completed { border-color: var(--accent); background: #fff; border-style: solid;}
+        .mission-panel.completed .ms-icon { color: var(--accent); }
+        .mission-panel.completed .ms-check { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
+        .mission-panel.completed .ms-check i { opacity: 1; transform: scale(1); }
+        
+        .wax-seal { position: absolute; top: 10px; right: 80px; width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #fca5a5, #ef4444, #991b1b); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-20deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 1.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3); border: 2px solid #b91c1c; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); z-index: 10;}
+        .wax-seal::after { content: ''; position: absolute; inset: 5px; border: 1px dotted rgba(255,255,255,0.5); border-radius: 50%; }
+        .mission-panel.completed .wax-seal { animation: stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-20deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: var(--text-main); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-decoration: none; transition: all 0.3s; z-index: 1000; border: 2px solid rgba(255,255,255,0.2); }
+        .home-btn:hover { transform: translateY(-5px) scale(1.05); background: var(--canva-blue); color: white; }
+        
+        .btn-link { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; background:linear-gradient(135deg, #00c4cc, #009ca6); color:#fff; text-decoration:none; border-radius:30px; font-weight:700; transition:all 0.3s; box-shadow:0 6px 15px rgba(0,196,204,0.3); margin:10px 10px 10px 0;}
+        .btn-link:hover { transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,196,204,0.4);}
     </style>
 </head>
-
 <body>
-
-
-
-    <canvas id="confetti"></canvas>
-
-    <!-- Header -->
     <header class="fixed-header">
-        <a href="index.html" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Course Home
-        </a>
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
         <div class="progress-container">
-            <div class="progress-text">
-                <span>Day 2 Progress</span>
-                <span id="progress-percent">0%</span>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="progress-bar"></div>
-            </div>
+            <div class="progress-text"><span>Day 2 Progress</span><span id="progress-percent">0%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
         </div>
-        <div style="width:80px;"></div>
+        <div style="width:100px;"></div>
     </header>
 
-    <div class="container content">
-        <!-- Hero -->
-        <div class="hero">
-            <div class="day-badge">DAY 02</div>
-            <h1>Canvaの基本操作</h1>
-            <p class="sub-goal">
-                本日の目標：デザインツールとしてのCanvaの活用法を学び、AI機能を使った効果的なコンテンツ制作を行う。<br>
-                プロンプトを中心に作成した動画作品を3本以上作成し、任意のSNSで公開するための第一歩です。
-            </p>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tab-container">
-            <button class="tab-btn active" onclick="switchTab('half1')">前半：Canvaの使い方を覚えよう</button>
-            <button class="tab-btn" onclick="switchTab('half2')">後半：プロンプト学習用ノートを作ろう</button>
-        </div>
-
-        <!-- =================== 前半 =================== -->
-        <div id="half1" class="tab-content active">
-
-            <!-- 実習の目的 -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-bullseye"></i>
-                    <h2>🎯 実習の目的</h2>
-                </div>
-                <p>デザインツール「Canva」の基本操作をマスターし、AI搭載の最新機能を活用できるようになります。</p>
-                <div class="info-box">
-                    <h4><i class="fa-solid fa-lightbulb"></i> 今日のゴール</h4>
-                    <p>① Canvaの画面構成と基本操作を理解する<br>
-                        ② テンプレートを活用してデザインを作成できるようになる<br>
-                        ③ CanvaのAI機能を使ったコンテンツ制作を体験する</p>
-                </div>
-                <div class="info-box" style="margin-top:1rem;">
-                    <h4><i class="fa-solid fa-right-to-bracket"></i> Canvaログイン方法</h4>
-                    <p>Googleアカウントでログインするのが最も簡単です。Day1で使ったGeminiと同じGoogleアカウントを使いましょう。<br>
-                        <a href="https://www.canva.com/" target="_blank" style="color:#4f46e5; font-weight:700;">→
-                            canva.com にアクセス</a>
-                    </p>
-                </div>
-            </div>
-
-            <!-- 動画①: Canva使い方入門 -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>📺 動画① Canva使い方入門・基礎講座</h2>
-                </div>
-                <a href="https://youtu.be/nRds9qeaLiM" target="_blank" class="video-thumb" style="max-width:400px;">
-                    <img src="https://img.youtube.com/vi/nRds9qeaLiM/mqdefault.jpg" alt="Canva基礎">
-                    <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                </a>
-                <div class="box canva" style="margin-top:2rem;">
-                    <h4>Canvaの基本操作</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li><strong>ホーム画面：</strong>テンプレート検索、最近のデザイン、おすすめが表示される</li>
-                        <li><strong>デザイン作成：</strong>「デザインを作成」→ サイズ選択（SNS投稿, プレゼン, 動画など）</li>
-                        <li><strong>テンプレート：</strong>プロ品質のテンプレートを検索して、テキストや色を変えるだけでOK</li>
-                        <li><strong>要素の編集：</strong>テキスト・画像・図形をクリックして位置・大きさ・色を自由に変更</li>
-                        <li><strong>レイヤー操作：</strong>要素の重なり順を「前面へ移動」「背面へ移動」で調整</li>
-                        <li><strong>ページ追加：</strong>スライドや動画の場合、ページを追加して連続するコンテンツを作成</li>
-                        <li><strong>ダウンロード：</strong>PNG、JPG、PDF、MP4など様々な形式で書き出し可能</li>
-                    </ul>
-                </div>
-                <div class="box canva" style="margin-top:1.5rem;">
-                    <h4>よく使うショートカット</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li><strong>Ctrl + C / V：</strong>コピー＆ペースト</li>
-                        <li><strong>Ctrl + Z：</strong>元に戻す（やり直し）</li>
-                        <li><strong>Ctrl + G：</strong>グループ化（複数要素をまとめる）</li>
-                        <li><strong>Ctrl + D：</strong>複製（素早くコピー）</li>
-                        <li><strong>/（スラッシュ）：</strong>マジックショートカット（要素の素早い追加）</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 動画②: CanvaのAI機能 -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>📺 動画② CanvaのAI機能ランキング9選</h2>
-                </div>
-                <a href="https://youtu.be/nstHWt2_4LE" target="_blank" class="video-thumb" style="max-width:400px;">
-                    <img src="https://img.youtube.com/vi/nstHWt2_4LE/mqdefault.jpg" alt="AI機能ランキング">
-                    <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                </a>
-                <div class="box canva" style="margin-top:2rem;">
-                    <h4>CanvaのチートAI機能（2025最新アップデート含む）</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li><strong>① マジック生成（テキスト→画像）：</strong>テキストを入力するだけでAIが画像を生成。「猫が宇宙を歩く」など</li>
-                        <li><strong>② マジック消しゴム：</strong>不要なオブジェクトをワンクリックで削除。背景も自動補完</li>
-                        <li><strong>③ 背景リムーバ：</strong>写真の背景を一瞬で除去。人物だけを切り抜きたい時に最強</li>
-                        <li><strong>④ マジック拡張：</strong>画像の足りない部分をAIが自然に拡張。構図の変更に便利</li>
-                        <li><strong>⑤ マジックリサイズ：</strong>一つのデザインを複数サイズに一括リサイズ（Instagram→YouTube→X）</li>
-                        <li><strong>⑥ マジック作文（テキスト生成）：</strong>テーマを入力するとAIが文章を自動作成。キャプションやブログに</li>
-                        <li><strong>⑦ テキスト→動画：</strong>テキスト入力だけでスライドショー動画を自動生成</li>
-                        <li><strong>⑧ 翻訳機能：</strong>デザイン内のテキストを他言語に自動翻訳</li>
-                        <li><strong>⑨ Dream Lab：</strong>高品質なAI画像生成スタジオ。スタイル指定で多彩な表現</li>
-                    </ul>
-                </div>
-                <div class="info-box">
-                    <h4><i class="fa-solid fa-star"></i> おすすめの使い方</h4>
-                    <p>まずは<strong>テンプレートを選ぶ</strong> → <strong>テキストを変える</strong> →
-                        <strong>AI機能で画像を追加</strong>の3ステップが最速です。<br>
-                        慣れてきたら「マジック消しゴム」「背景リムーバ」で写真編集も挑戦してみましょう！</p>
-                </div>
-            </div>
-
-            <!-- 実践ステップ -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-shoe-prints"></i>
-                    <h2>👣 実践ステップ</h2>
-                </div>
-                <div class="box canva">
-                    <h4>Step 1: テンプレートでSNS投稿を作ろう</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li>Canvaホーム → 「Instagramの投稿」をクリック</li>
-                        <li>好きなテンプレートを選択</li>
-                        <li>テキストを自分の内容に変更</li>
-                        <li>色やフォントを変更してオリジナルにアレンジ</li>
-                        <li>ダウンロード → PNG形式で保存</li>
-                    </ul>
-                </div>
-                <div class="box canva" style="margin-top:1.5rem;">
-                    <h4>Step 2: AI画像生成を試そう</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li>左サイドバーの「アプリ」→「マジック生成」を開く</li>
-                        <li>プロンプトを入力（例：「桜の下でピクニックする猫」）</li>
-                        <li>スタイルを選択（写真風、水彩画風、アニメ風など）</li>
-                        <li>生成された画像をデザインに配置</li>
-                    </ul>
-                </div>
-                <div class="box canva" style="margin-top:1.5rem;">
-                    <h4>Step 3: 動画を作ってみよう</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li>「デザインを作成」→「動画」→「TikTok動画(9:16)」を選択</li>
-                        <li>テンプレートを選んでテキストや画像を入れ替え</li>
-                        <li>各ページにアニメーションを追加（ワイプ、フェード等）</li>
-                        <li>BGM追加 → 左サイドバー「オーディオ」からフリー音源を選択</li>
-                        <li>ダウンロード → MP4形式で保存</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ミッション -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-list-check"></i>
-                    <h2>🧰 前半のミッション</h2>
-                </div>
-                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
-                    以下のミッションをすべてクリアしてチェックを入れましょう！進行度がアップします。
-                </p>
-
-                <ul class="task-list">
-                    <li class="task-item" onclick="toggleTask('t1_1', this)">
-                        <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>参考動画の視聴と実習</h3>
-                            <p>参考動画2本を見ながら、Canvaの基本操作とAI機能を実際に手を動かして使ってみましょう。</p>
-                        </div>
-                    </li>
-
-                    <li class="task-item" onclick="toggleTask('t1_2', this)">
-                        <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>テンプレートでSNS投稿画像を1枚作成</h3>
-                            <p>Step 1の手順に沿って、テンプレートを使ったSNS投稿画像を1枚作成しましょう。</p>
-                        </div>
-                    </li>
-
-                    <li class="task-item" onclick="toggleTask('t1_3', this)">
-                        <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>AI画像生成を1回以上試す</h3>
-                            <p>Canvaの「マジック生成」で好きなプロンプトを入力し、AI画像を生成してみましょう。</p>
-                        </div>
-                    </li>
-
-                    <li class="task-item" onclick="toggleTask('t1_4', this)">
-                        <div class="custom-checkbox" id="check_t1_4"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>デザインの保存と提出</h3>
-                            <p>作ったデザインは、必ずファイル名に自分の名前をつけてから、自分のフォルダの中に格納しましょう。</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- =================== 後半 =================== -->
-        <div id="half2" class="tab-content">
-
-            <!-- 目的 -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-bullseye"></i>
-                    <h2>🎯 実習の目的</h2>
-                </div>
-                <p>画像生成プロンプトのコツを覚え、後からすぐに使えるように「自分だけのプロンプトノート」を作成します。</p>
-            </div>
-
-            <!-- 動画③: Affinity by Canva -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>📺 動画③ Canva最強アプデ「Affinity by Canva」爆誕！</h2>
-                </div>
-                <a href="https://youtu.be/ThbMYDqI0VY" target="_blank" class="video-thumb" style="max-width:400px;">
-                    <img src="https://img.youtube.com/vi/ThbMYDqI0VY/mqdefault.jpg" alt="Affinity by Canva">
-                    <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                </a>
-                <div class="box canva" style="margin-top:2rem;">
-                    <h4>この動画で学ぶこと</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li><strong>Affinityとは：</strong>Canvaが買収したプロ向けのクリエイティブスイート（AI機能以外は完全無料化）</li>
-                        <li><strong>Affinity Designer：</strong>Illustratorのようなベクター描画ツール</li>
-                        <li><strong>Affinity Photo：</strong>Photoshopのような高度な写真編集・合成ツール</li>
-                        <li><strong>Affinity Publisher：</strong>InDesignのようなページレイアウトツール</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 動画④: Nano Banana -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i>
-                    <h2>📺 動画④ 無料AI「Nano Banana」画像編集テク15選</h2>
-                </div>
-                <a href="https://youtu.be/JiUFPy97nEU" target="_blank" class="video-thumb" style="max-width:400px;">
-                    <img src="https://img.youtube.com/vi/JiUFPy97nEU/mqdefault.jpg" alt="Nano Bananaテクニック">
-                    <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                </a>
-                <div class="box canva" style="margin-top:2rem;">
-                    <h4>この動画で学ぶこと</h4>
-                    <ul style="padding-left:20px; line-height:2;">
-                        <li><strong>高精度な画像編集：</strong>プロンプトだけで不要な人やモノを完璧に消去</li>
-                        <li><strong>背景の変更：</strong>写真の「背景だけ」を自由自在に変更する技術</li>
-                        <li><strong>画質向上：</strong>古い写真やぼやけた画像をAIで鮮明に高画質化（アップスケール）</li>
-                        <li>無料AIツールを組み合わせてプロ級の仕上がりにする方法</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 実習ミッション -->
-            <div class="glass-card">
-                <div class="card-header">
-                    <i class="fa-solid fa-person-digging"></i>
-                    <h2>🧰 実習：プロンプト学習用のノートを作ろう</h2>
-                </div>
-                <p style="margin-bottom:1.5rem; color:var(--text-sub);">
-                    以下のミッションを順番にクリアして、画像生成のコツを自分のものにしましょう！
-                </p>
-
-                <ul class="task-list">
-                    <!-- タスク1 -->
-                    <li class="task-item" onclick="toggleTask('t2_1', this)">
-                        <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>プロンプトのまとめノートを作成</h3>
-                            <p>Nano Bananaで使える画像生成プロンプトをノートにまとめよう。以下のリストから気に入ったプロンプトをピックアップし、Canvaやドキュメントに保存します。</p>
-                            <div style="margin-top:10px;">
-                                <button class="btn btn-copy"
-                                    onclick="copyText('https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing', event)">
-                                    <i class="fa-regular fa-copy"></i> URLコピー
-                                </button>
-                                <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing"
-                                    target="_blank" class="btn" style="background:#10b981; border-color:#10b981;"
-                                    onclick="event.stopPropagation();">
-                                    <i class="fa-solid fa-table"></i> プロンプト一覧表を開く
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- タスク2 -->
-                    <li class="task-item" onclick="toggleTask('t2_2', this)">
-                        <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>画像素材をダウンロードして加工</h3>
-                            <p>加工用の画像素材をドライブからダウンロードし、Nano Bananaなどで実際に背景変更や不要物消去などのプロンプト編集を試してみましょう。</p>
-                            <div style="margin-top:10px;">
-                                <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing"
-                                    target="_blank" class="btn" onclick="event.stopPropagation();">
-                                    <i class="fa-brands fa-google-drive"></i> 加工用画像素材を開く
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <!-- タスク3 -->
-                    <li class="task-item" onclick="toggleTask('t2_3', this)">
-                        <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
-                        <div class="task-content">
-                            <h3>【発展】追加ツールを触ってみよう</h3>
-                            <p>時間が余った人は、以下のツールにも触れてみましょう。</p>
-                            <div class="info-box" style="margin-top:10px;">
-                                <strong>Affinity by Canva</strong>（ダウンロード版 Mac/Winのみ）<br>
-                                AI機能以外全部無料<br>
-                                <a href="https://www.affinity.studio/ja_jp" target="_blank" style="color:#2563eb;"
-                                    onclick="event.stopPropagation();">→ 公式サイトへ</a><br><br>
-
-                                <strong>AIEASE</strong>（毎日無料クレジット +5）<br>
-                                <a href="https://www.aiease.ai/" target="_blank" style="color:#2563eb;"
-                                    onclick="event.stopPropagation();">→ 公式サイトへ</a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Quiz Area -->
-        <div class="quiz-area glass-card" style="margin-top:3rem; text-align:center;">
-            <h2 style="font-size:1.6rem; margin:0 0 0.5rem; color:var(--accent);">📝 理解度チェック</h2>
-            <p style="color:var(--text-sub); margin-bottom:1.5rem;">Day 2 で学んだことを確認しましょう</p>
-            <div id="quiz-vol02-1" style="text-align:left;">
-                <div style="text-align:center; color:var(--text-sub);">クイズを読み込み中...</div>
-            </div>
-        </div>
-
-        <!-- Dev Notes Link -->
-        <div style="text-align:center; margin:40px 0;">
-            <a href="index_dev_notes.html" class="btn"
-                style="border-radius:30px; padding:12px 28px; background:#f1f5f9; color:var(--text-sub); box-shadow:none; border:1px solid #e2e8f0;">
-                <i class="fa-solid fa-code"></i> 開発者ノート
-            </a>
-        </div>
+    <div class="toc-sidebar">
+        <div class="toc-title">IN THIS LESSON</div>
+        <nav style="display:flex; flex-direction:column; gap:8px;">
+            <a href="#sec-goal" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-bullseye" style="color:#f59e0b"></i> 本日の目標</a>
+            <a href="#sec-first" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-palette" style="color:#00c4cc"></i> 前半：Canva操作</a>
+            <a href="#sec-second" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-wand-magic-sparkles" style="color:#8b5cf6"></i> 後半：画像生成AI</a>
+            <a href="#sec-summary" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-flag-checkered" style="color:#10b981"></i> 今日のまとめ</a>
+        </nav>
     </div>
 
-    <!-- Scripts -->
+    <div class="container">
+        <!-- HERO -->
+        <div class="hero course-section visible" style="margin-top: 2rem;">
+            <div class="day-badge">DAY 02</div>
+            <h1>Canva基本と<br>動画編集</h1>
+        </div>
+
+        <!-- 1. COURSE GOAL -->
+        <section id="sec-goal" class="course-section">
+            <div class="section-header">
+                <div class="section-icon ch-goal"><i class="fa-solid fa-bullseye"></i></div>
+                <h2 class="section-title">1. 今日のコース目標</h2>
+            </div>
+            
+            <div class="glass-card">
+                <div class="explain-box concept" style="background: #fffbef; border-left-color: #f59e0b; font-size: 1.1rem;">
+                    <div class="explain-title" style="color:#b45309; font-size:1.3rem;"><i class="fa-solid fa-compass"></i> クリエイティブの基盤を作る</div>
+                    本日の研修テーマは、<b>「Canvaの基本操作、AI機能の活用法、および動画編集技術」</b>です。<br><br>
+                    最終目標の「動画作品公開」に向けて、生成した素材などを組み合わせ、適切に編集・デザインできる力が必要です。<br>今回は**「デザインツールとしてのCanvaの活用法」**と、**「画像生成プロンプトの基礎」**を学び、効果的なコンテンツ制作のための基盤を固めます。
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. FIRST HALF -->
+        <section id="sec-first" class="course-section">
+            <div class="section-header">
+                <div class="section-icon ch-first"><i class="fa-solid fa-palette"></i></div>
+                <h2 class="section-title">2. 前半：Canvaの使い方</h2>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header-small"><i class="fa-solid fa-film" style="color:#00c4cc;"></i> 再生動画についての説明と解説</div>
+                
+                <div class="explain-box concept">
+                    <div class="explain-title"><i class="fa-solid fa-layer-group"></i> 直感的なデザインツール</div>
+                    Canvaは、ブラウザ上で誰でも簡単に美しいデザインが作成できる神ツールです。動画編集から画像作成まで一括で行えるため、今後の制作のベースキャンプとなります。<br>提供動画で基本的な操作方法とAI機能（Magic Studioなど）を確認しましょう。
+                </div>
+
+                <div class="video-grid">
+                    <a href="https://youtu.be/nRds9qeaLiM" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/nRds9qeaLiM/maxresdefault.jpg" alt="動画1" onerror="this.src='https://img.youtube.com/vi/nRds9qeaLiM/hqdefault.jpg'">
+                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                    </a>
+                    <a href="https://youtu.be/nstHWt2_4LE" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/nstHWt2_4LE/maxresdefault.jpg" alt="動画2" onerror="this.src='https://img.youtube.com/vi/nstHWt2_4LE/hqdefault.jpg'">
+                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Practical Section -->
+            <div class="glass-card">
+                <div class="card-header-small"><i class="fa-solid fa-laptop-code" style="color:#10b981;"></i> 実習内容の説明と解説</div>
+                
+                <div class="explain-box practice">
+                    <div class="explain-title"><i class="fa-solid fa-pen-ruler"></i> 手を動かす・Canvaを使ってみよう</div>
+                    参考動画を見ながら、Canvaを開いて実際に機能を使ってみましょう。<br>
+                    <b style="color:#ef4444;">※重要：</b>作ったデザインは、必ずファイル名に自分の名前をつけてから、自分のフォルダの中に格納してください。
+                </div>
+                
+                <div>
+                    <a href="https://www.canva.com/" target="_blank" class="btn-link"><i class="fa-solid fa-c"></i> Canvaを開く</a>
+                </div>
+
+                <div class="widget-area">
+                    <div class="widget-title"><i class="fa-solid fa-vr-cardboard"></i> 疑似体験: Canvaコンポジション</div>
+                    <div class="widget-desc">ボタンを押して、キャンバスに要素が配置されていく（コンポジション）感覚を体験しよう。</div>
+                    
+                    <div class="design-board">
+                        <div class="design-canvas" id="canvas-area">
+                            <i class="fa-solid fa-image floating-elem" style="color:#bfdbfe;"></i>
+                            <i class="fa-solid fa-font floating-elem" style="color:#fca5a5;"></i>
+                            <i class="fa-solid fa-music floating-elem" style="color:#d9f99d;"></i>
+                            <span id="canvas-text">Empty Canvas</span>
+                        </div>
+                        <div class="design-controls">
+                            <button class="d-btn" onclick="addElem(0, '40%', '20%', 'image')"><i class="fa-solid fa-image"></i> 画像追加</button>
+                            <button class="d-btn" onclick="addElem(1, '20%', '60%', 'font')"><i class="fa-solid fa-font"></i> テキスト</button>
+                            <button class="d-btn" onclick="addElem(2, '70%', '40%', 'music')"><i class="fa-solid fa-music"></i> BGM</button>
+                            <button class="d-btn" style="background:var(--accent);" onclick="resetCanvas()"><i class="fa-solid fa-trash"></i> リセット</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mission-panel" onclick="completeMission(this, 1)">
+                    <div class="wax-seal" style="background:#00c4cc; border-color:#009ca6;"><i class="fa-solid fa-floppy-disk"></i></div>
+                    <div class="ms-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="ms-content">
+                        <h3>Mission 1: デザイン保存＆整理</h3>
+                        <p>Canvaで作成したデザインに自分の名前を付け、指定のフォルダへ正しく格納した。</p>
+                    </div>
+                    <div class="ms-check"><i class="fa-solid fa-check"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SECOND HALF -->
+        <section id="sec-second" class="course-section">
+            <div class="section-header">
+                <div class="section-icon ch-second"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h2 class="section-title">3. 後半：画像生成とプロンプト</h2>
+            </div>
+
+            <div class="glass-card">
+                <div class="card-header-small"><i class="fa-solid fa-film" style="color:#8b5cf6;"></i> 再生動画についての説明と解説</div>
+                
+                <div class="explain-box concept" style="background: #f5f3ff; border-left-color: #8b5cf6;">
+                    <div class="explain-title" style="color: #5b21b6;"><i class="fa-solid fa-comment-dots"></i> 狙った画像を出すための「呪文」</div>
+                    AIに画像を生成させるための指示文を「プロンプト」と呼びます。<br>
+                    適当な言葉でも画像は出ますが、「高品質で」「思い描いた構図の」画像を出すためには、プロンプトの型やコツを知る必要があります。
+                </div>
+
+                <div class="video-grid">
+                    <a href="https://youtu.be/ThbMYDqI0VY" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/ThbMYDqI0VY/maxresdefault.jpg" alt="後半動画1" onerror="this.src='https://img.youtube.com/vi/ThbMYDqI0VY/hqdefault.jpg'">
+                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                    </a>
+                    <a href="https://youtu.be/JiUFPy97nEU" target="_blank" class="video-thumb">
+                        <img src="https://img.youtube.com/vi/JiUFPy97nEU/maxresdefault.jpg" alt="後半動画2" onerror="this.src='https://img.youtube.com/vi/JiUFPy97nEU/hqdefault.jpg'">
+                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Practical Section -->
+            <div class="glass-card">
+                <div class="card-header-small"><i class="fa-solid fa-laptop-code" style="color:#10b981;"></i> 実習内容の説明と解説</div>
+                
+                <div class="explain-box practice">
+                    <div class="explain-title"><i class="fa-solid fa-book-open"></i> プロンプト学習用のノート作成</div>
+                    Nano Bananaで使える画像生成プロンプトをノートにまとめ、「すぐコピペして使える自分だけの魔法書」を作りましょう。<br>
+                    時間が余った人は、「Affinity by Canva」や「AIEASE」等の他ツールも触ってみてください。
+                </div>
+                
+                <div>
+                    <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing" target="_blank" class="btn-link" style="background:linear-gradient(135deg, #10b981, #059669);"><i class="fa-solid fa-table"></i> 動画内プロンプト一覧</a>
+                    <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing" target="_blank" class="btn-link" style="background:linear-gradient(135deg, #f59e0b, #d97706);"><i class="fa-solid fa-images"></i> 加工用画像素材</a>
+                    <a href="https://www.affinity.studio/ja_jp" target="_blank" class="btn-link" style="background:#0f172a;"><i class="fa-solid fa-pen-nib"></i> Affinity by Canva</a>
+                    <a href="https://www.aiease.ai/" target="_blank" class="btn-link" style="background:#8b5cf6;"><i class="fa-solid fa-bolt"></i> AIEASE</a>
+                </div>
+
+                <div class="mission-panel" onclick="completeMission(this, 2)">
+                    <div class="wax-seal" style="background:#8b5cf6; border-color:#6d28d9;"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="ms-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="ms-content">
+                        <h3>Mission 2: プロンプト魔法書完成</h3>
+                        <p>動画から学んだプロンプトのコツをノートにまとめ、後からすぐに再利用できる状態にした。</p>
+                    </div>
+                    <div class="ms-check"><i class="fa-solid fa-check"></i></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SUMMARY -->
+        <section id="sec-summary" class="course-section">
+            <div class="section-header">
+                <div class="section-icon ch-wrap"><i class="fa-solid fa-flag-checkered"></i></div>
+                <h2 class="section-title">4. 今日のまとめ</h2>
+            </div>
+
+            <div class="glass-card" style="border: 2px solid var(--accent); background: #f0fdf4;">
+                <h3 style="color:var(--accent); font-size:1.5rem; margin-top:0; border-bottom:1px solid #a7f3d0; padding-bottom:1rem; display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-medal"></i> Day 2 コンプリート！
+                </h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #064e3b; margin-top:1.5rem;">
+                    お疲れ様でした！本日は視覚表現の要となる「Canvaの操作」と「画像生成プロンプト」について学びました。<br><br>
+                    生成AIが出力した素材は、そのままでは作品になりません。Canvaのようなツールでデザイン・編集することで、初めて「意図を持ったコンテンツ」へと昇華されます。このループを息をするように行えるようになりましょう！
+                </p>
+                <div style="margin-top:2rem; text-align:center;">
+                    <button class="btn-link" style="border:none; padding:15px 40px; background:linear-gradient(135deg, #10b981, #059669); font-size:1.1rem; cursor:pointer;" onclick="finishDay()">
+                        <i class="fa-solid fa-check-circle"></i> 学習完了を記録してHomeへ
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
+
     <script>
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    const sections = ['sec-goal', 'sec-first', 'sec-second', 'sec-summary'];
+                    const idx = sections.indexOf(entry.target.id);
+                    if(idx !== -1) {
+                        const pct = ((idx + 1) / 4) * 100;
+                        document.getElementById('progress-bar').style.width = pct + '%';
+                        document.getElementById('progress-percent').innerText = Math.round(pct) + '%';
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
 
+        document.querySelectorAll('.course-section').forEach((sec) => {
+            observer.observe(sec);
+        });
 
-        // --- Tab Switching ---
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+        // Sidebar Navigation highlighting
+        function updateNav(el) {
+            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        // --- Copy Utility ---
-        function copyText(text, event) {
-            event.stopPropagation();
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = event.currentTarget;
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                btn.style.background = '#059669'; btn.style.color = '#fff'; btn.style.borderColor = '#059669';
-                setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+        // Mission Logic
+        function completeMission(el, misId) {
+            if(el.classList.contains('completed')) return;
+            el.classList.add('completed');
+            try {
+                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                audio.volume = 0.4; audio.play();
+            } catch(e) {}
+        }
+        
+        // Widget Logic
+        function addElem(idx, top, left, type) {
+            document.getElementById('canvas-text').style.display = 'none';
+            const elems = document.querySelectorAll('.floating-elem');
+            if(elems[idx]){
+                elems[idx].style.opacity = '1';
+                elems[idx].style.transform = `translate(${left}, ${top})`;
+            }
+        }
+        function resetCanvas() {
+            document.getElementById('canvas-text').style.display = 'block';
+            const elems = document.querySelectorAll('.floating-elem');
+            elems.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = `translate(0, 0)`;
             });
         }
 
-        // --- Progress ---
-        const totalTasks = 7;
-        let completedTasks = {};
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('day2_progress');
-            if (saved) {
-                completedTasks = JSON.parse(saved);
-                for (const [tid, done] of Object.entries(completedTasks)) {
-                    if (done) {
-                        const el = document.getElementById('check_' + tid);
-                        if (el) el.parentElement.classList.add('completed');
-                    }
-                }
-            }
-            updateProgress();
-        });
-
-        function toggleTask(taskId, element) {
-            const done = element.classList.toggle('completed');
-            completedTasks[taskId] = done;
-            localStorage.setItem('day2_progress', JSON.stringify(completedTasks));
-            updateProgress();
-        }
-
-        function updateProgress() {
-            const count = Object.values(completedTasks).filter(v => v).length;
-            const pct = Math.round((count / totalTasks) * 100);
-            document.getElementById('progress-bar').style.width = pct + '%';
-            document.getElementById('progress-percent').innerText = pct + '%';
-            if (pct === 100 && count > 0 && !sessionStorage.getItem('day2_celebrated')) {
-                fireConfetti(); sessionStorage.setItem('day2_celebrated', 'true');
-            } else if (pct < 100) { sessionStorage.removeItem('day2_celebrated'); }
-        }
-
-        // --- Confetti ---
-        function fireConfetti() {
-            const c = document.getElementById('confetti');
-            const ctx = c.getContext('2d');
-            c.width = window.innerWidth; c.height = window.innerHeight;
-            const pieces = [], colors = ['#818cf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#38bdf8'];
-            for (let i = 0; i < 130; i++) {
-                pieces.push({
-                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
-                    w: Math.random() * 8 + 4, h: Math.random() * 8 + 4,
-                    vx: Math.random() * 5 - 2.5, vy: Math.random() * 4 + 2,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    rot: Math.random() * 360, rs: Math.random() * 8 - 4
-                });
-            }
-            let aid;
-            function upd() {
-                ctx.clearRect(0, 0, c.width, c.height); let active = false;
-                pieces.forEach(p => {
-                    p.y += p.vy; p.x += p.vx; p.rot += p.rs;
-                    if (p.y < c.height) active = true;
-                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot * Math.PI / 180);
-                    ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
-                });
-                if (active) aid = requestAnimationFrame(upd); else ctx.clearRect(0, 0, c.width, c.height);
-            }
-            upd();
-            setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 5000);
+        function finishDay() {
+            window.location.href = "index.html";
         }
     </script>
-    <a href="index_dev_notes.html#day2" class="dev-link">
-        <i class="fa-solid fa-code"></i>
-        <span>制作の裏側・デザインの意図</span>
-    </a>
-
-    <script src="main.js"></script>
 </body>
-
 </html>
