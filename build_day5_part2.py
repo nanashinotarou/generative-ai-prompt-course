@@ -122,7 +122,7 @@ html_content = """
                     <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 5 全行程コンプリート！
                 </h3>
                 <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は**「テキストから動画への変換技術の基礎とカメラワーク」**について学びました。<br>
+                    お疲れ様でした！本日は<strong>「テキストから動画への変換技術の基礎とカメラワーク」</strong>について学びました。<br>
                     世界観の設定から、微細な表情の制御、プロの映像作家のようなカメラワークまで、AIを活用して頭の中の映像を具現化するためのディレクション術を習得できたはずです。<br><br>
                     <strong>これで、Day1からDay5まで続いた「生成AIとプロンプト基礎研修」はすべて修了となります。</strong><br>
                     ここからは、学んだ技術を自分自身の業務や制作活動で存分に発揮してください！

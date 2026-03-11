@@ -128,7 +128,7 @@
                     <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 4 全行程コンプリート！
                 </h3>
                 <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は**「画像生成と高度加工」**について学びました。<br>
+                    お疲れ様でした！本日は<strong>「画像生成と高度加工」</strong>について学びました。<br>
                     1枚の画像をゼロから生み出すだけでなく、リファレンス（参照）機能やInpaint（部分修正）を駆使することで、完全にコントロールされた素材を手に入れることができます。<br><br>
                     次回はいよいよ、生成した画像に命を吹き込む「動画生成」の世界へ入ります！
                 </p>

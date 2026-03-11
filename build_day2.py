@@ -397,7 +397,7 @@ html_content = """<!DOCTYPE html>
                     <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 2 全行程コンプリート！
                 </h3>
                 <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は**「Canva」と「AIの連携」**をテーマに学びました。<br>
+                    お疲れ様でした！本日は<strong>「Canva」と「AIの連携」</strong>をテーマに学びました。<br>
                     優れたプロンプトだけがあっても、それを表現できるプラットフォームがなければ人の心は動きません。<br><br>
                     Canvaの強力なテンプレートとAIの魔法をかき混ぜて、<br>
                     誰もが驚くような美しいデジタル作品・動画を作り上げていきましょう！
