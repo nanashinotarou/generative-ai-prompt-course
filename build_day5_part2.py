@@ -1,4 +1,6 @@
+import os
 
+html_content = """
         <!-- ==========================================
              TAB 3: SECOND HALF
         ========================================== -->
@@ -263,3 +265,9 @@
     </script>
 </body>
 </html>
+"""
+
+with open("build_day5_part2.py", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("Generated build_day5_part2.py")

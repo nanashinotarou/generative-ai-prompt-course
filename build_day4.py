@@ -1,10 +1,13 @@
-<!DOCTYPE html>
+﻿# -*- coding: utf-8 -*-
+import os
+
+html_content = """<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 4 | Image Generation Basics</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Day 4 | Nano Banana Pro & Image Generation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -15,12 +18,10 @@
             --accent: #10b981;
             --accent-light: #34d399;
             --accent-bg: #ecfdf5;
+            --accent-glow: rgba(16, 185, 129, 0.25);
             --clickable: #0ea5e9;
-            --clickable-light: #e0f2fe;
+            --clickable-bg: #e0f2fe;
             --danger: #ef4444;
-            --warning: #f59e0b;
-            --purple: #8b5cf6;
-            --pink: #ec4899;
             --glass-blur: blur(16px);
             --radius: 20px;
         }
@@ -34,8 +35,8 @@
             background: var(--bg-body);
             color: var(--text-main);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(236, 72, 153, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+                radial-gradient(ellipse at 10% 20%, rgba(16, 185, 129, 0.08), transparent 40%),
+                radial-gradient(ellipse at 90% 80%, rgba(14, 165, 233, 0.08), transparent 40%);
             background-attachment: fixed;
             min-height: 100vh;
         }
@@ -58,116 +59,166 @@
         .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
         .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--purple)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--clickable), var(--accent)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* Navigation Sidebar */
-        .toc-sidebar {
-            position: fixed; top: 100px; left: 20px; width: 220px; background: white; padding: 1.5rem 1rem;
-            border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; z-index: 100;
+        /* Main Container */
+        .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
+
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
+        .day-badge { background: var(--accent); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.2rem; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
+        .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+
+        /* Custom Tabs */
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: var(--text-sub); padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
+        .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
+        
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        /* Glass Card */
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform 0.3s, box-shadow 0.3s; }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 1.2rem; }
+        .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
+
+        /* Content Blocks */
+        .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
+        .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+
+        /* Video Grid */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin: 2rem 0;}
+        .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 4px solid #fff; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #000;}
+        .video-thumb:hover { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15); border-color: var(--accent-light);}
+        .video-thumb img { width: 100%; display: block; opacity: 0.85; transition: opacity 0.4s, transform 0.6s;}
+        .video-thumb:hover img { opacity: 1; transform: scale(1.06);}
+        .play-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.15); display: flex; align-items: center; justify-content: center; transition: all 0.3s;}
+        .video-thumb:hover .play-overlay { background: rgba(16, 185, 129, 0.25);}
+        .play-overlay i { color: #fff; font-size: 3.5rem; text-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); transition: transform 0.3s;}
+        .video-thumb:hover .play-overlay i { transform: scale(1.15);}
+
+        /* ---------------------------------
+           BENTO GRID & CUSTOM UI
+        --------------------------------- */
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--clickable); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0; }
+
+        /* Browser Mockup / Code Box */
+        .mockup-container { margin: 2.5rem 0; display: flex; justify-content: center; perspective: 1000px; }
+        .browser-mockup { width: 100%; background: #1e293b; border-radius: 12px; overflow: hidden; margin: 1.5rem 0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155; }
+        .browser-header { background: #0f172a; padding: 12px 16px; display: flex; gap: 8px; border-bottom: 1px solid #334155; align-items:center;}
+        .browser-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .browser-content { padding: 1.5rem; color: #f8fafc; font-family: 'Fira Code', 'Consolas', monospace; font-size: 0.95rem; line-height: 1.7; position: relative; white-space:pre-wrap;}
+        
+        .code-box { background: #1e293b; color: #e2e8f0; padding: 2.2rem 2.2rem 1.8rem; border-radius: 12px; font-family: 'Fira Code', 'Consolas', monospace; position: relative; font-size: 0.95rem; line-height: 1.8; margin: 2rem 0; border-left: 4px solid var(--accent);}
+        .code-label { position: absolute; top: -14px; left: 20px; background: var(--accent); color: #fff; padding: 4px 16px; font-size: 0.85rem; font-weight: 800; border-radius: 8px; font-family:'Noto Sans JP', sans-serif;}
+        
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--clickable); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; transition: all 0.2s; cursor: pointer; margin-top: 1rem; box-shadow: 0 6px 15px rgba(14, 165, 233, 0.3); }
+        .btn:hover { background: #0284c7; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(14, 165, 233, 0.4); }
+        .btn-copy { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; margin:0;}
+        .btn-copy:hover { background: rgba(255,255,255,0.2); transform:none; }
+
+        /* Accordion (Prompt List) */
+        .prompt-accordion { margin-bottom: 1.2rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; overflow: hidden; transition: box-shadow 0.3s; }
+        .prompt-accordion:hover { box-shadow: 0 8px 15px rgba(0,0,0,0.04); border-color:#cbd5e1;}
+        .prompt-accordion summary { padding: 1.2rem 1.5rem; font-weight: 800; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; gap: 1rem; list-style: none; background: #f8fafc; color:var(--text-main);}
+        .prompt-accordion summary::-webkit-details-marker { display: none; }
+        .prompt-accordion summary i.fa-chevron-down { color: var(--text-sub); transition: transform 0.3s; margin-left: auto; }
+        .prompt-accordion[open] summary i.fa-chevron-down { transform: rotate(180deg); }
+        .prompt-accordion[open] summary { border-bottom: 1px solid #e2e8f0; background: #fff; color:var(--clickable);}
+        .prompt-content { padding: 1.5rem; animation: slideDown 0.3s ease; }
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
+        .yt-time-btn { display: inline-flex; align-items: center; gap: 6px; background: #fee2e2; color: #b91c1c; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; border: 1px solid #fca5a5; white-space: nowrap; margin-bottom: 10px;}
+        .yt-time-btn:hover { background: #fca5a5; color: #7f1d1d; }
+
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Workflow */
+        .workflow { display: flex; flex-direction:column; gap: 1.5rem; position: relative; margin: 3.5rem 0 3.5rem 2rem; }
+        .workflow::before { content: ""; position: absolute; top: 10px; bottom: 10px; left: 24px; width: 4px; background: #e2e8f0; z-index: 0; }
+        .flow-step { display: flex; align-items: flex-start; gap: 2rem; position: relative; z-index: 1; }
+        .step-icon { width: 52px; height: 52px; background: #fff; border: 4px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-shrink:0;}
+        .flow-step:hover .step-icon { background: var(--accent); color: #fff; transform: scale(1.15); box-shadow: 0 10px 25px var(--accent-glow); }
+        .step-content { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; flex-grow:1; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
+        .step-content h4 { font-weight: 800; display: block; margin: 0 0 0.5rem; font-size: 1.1rem; color:var(--text-main);}
+        
+        /* ---------------------------------
+           GAMIFICATION & CHECKLIST
+        --------------------------------- */
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .mission-header { text-align: center; margin-bottom: 2rem; }
+        .mission-header h3 { font-size: 1.6rem; color: var(--text-main); margin:0 0 0.5rem; font-weight:800; display:flex; justify-content:center; align-items:center; gap:10px;}
+        .mission-header p { color: var(--text-sub); margin:0; font-size:1.05rem;}
+
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0; transition: all 0.3s; cursor: pointer; position: relative; z-index: 2;}
+        .task-item:hover { border-color: var(--accent-light); background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.04); transform: translateX(5px);}
+        .task-item.completed { background: #d1fae5; border-color: #6ee7b7; }
+        
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; margin-top: 2px; background: #fff; }
+        .task-item.completed .custom-checkbox { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox i { color: #fff; font-size: 16px; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; transform: scale(1); }
+        
+        .task-content { flex: 1; }
+        .task-content h4 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
+        .task-item.completed .task-content h4 { color: #059669; }
+        .task-content p { margin: 0; font-size: 1rem; color: var(--text-sub); line-height: 1.6; }
+
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #fca5a5, #ef4444, #991b1b); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #b91c1c; z-index: 10;}
+        .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        @keyframes stampIn { 
+            0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 
+            60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 
+            80% { transform: scale(1.1) rotate(-2deg); } 
+            100% { opacity: 1; transform: scale(1) rotate(0deg); } 
         }
-        .toc-title { font-size: 0.85rem; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 10px; }
-        .toc-link {
-            display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px;
-            color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;
-        }
-        .toc-link:hover { background: #f1f5f9; color: var(--clickable); }
-        .toc-link.active { background: var(--clickable-light); color: var(--clickable); }
-        .toc-link i { font-size: 1.1rem; width: 20px; text-align: center; }
 
-        /* Main Content Container */
-        .container { max-width: 900px; margin: 100px auto 100px; padding: 0 20px 0 240px; }
-        @media (max-width: 1200px) {
-            .toc-sidebar { display: none; }
-            .container { padding-left: 20px; }
-        }
+        #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Section Styling */
-        .course-section { margin-bottom: 5rem; animation: fadeInUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
-        .course-section.visible { opacity: 1; transform: translateY(0); }
-        .section-header { display: flex; align-items: center; gap: 15px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 3px solid #e2e8f0; }
-        .section-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; background: var(--text-main); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-        .section-title { margin: 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #059669); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.6); color: white; }
 
-        .ch-goal { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .ch-first { background: linear-gradient(135deg, #ec4899, #be185d); }
-        .ch-second { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-        .ch-wrap { background: linear-gradient(135deg, #10b981, #059669); }
+        /* Cauldron Feature */
+        .cauldron-container { display: flex; gap: 2rem; margin: 3rem 0; background: #fff; padding: 2.5rem; border-radius: 20px; border: 2px dashed #cbd5e1; transition:all 0.3s;}
+        .cauldron-container.drag-over { border-color: var(--accent); background: var(--accent-bg); }
+        .cauldron-ingredients { flex: 1; display: flex; flex-wrap:wrap; gap: 1rem; align-content:flex-start;}
+        .drag-chip { padding: 10px 20px; border-radius: 30px; cursor: grab; font-weight: 800; font-size: 1rem; color: #fff; transition: transform 0.2s, box-shadow 0.2s; user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border:none;}
+        .drag-chip:active { cursor: grabbing; transform: scale(0.95); }
+        .drag-chip.used { opacity:0.5; pointer-events:none; filter:grayscale(1);}
+        .chip-sub { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .chip-style { background: linear-gradient(135deg, #ec4899, #be185d); }
+        .chip-param { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
 
-        /* Components */
-        .glass-card { background: var(--bg-card); border: 1px solid rgba(0,0,0,0.05); border-radius: var(--radius); padding: 2.5rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.02); transition: transform 0.3s, box-shadow 0.3s; }
-        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
-        .card-header-small { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; font-weight: 700; font-size: 1.3rem;}
+        .cauldron-pot-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; min-height:200px;}
+        .cauldron-dropzone { color:#94a3b8; text-align:center; font-weight:800; font-size:1.2rem;}
+        .cauldron-dropzone i { font-size: 3rem; margin-bottom:10px; display:block;}
         
-        .explain-box { background: #eff6ff; border-left: 4px solid var(--clickable); padding: 1.5rem; border-radius: 0 12px 12px 0; margin-bottom: 2rem; line-height: 1.7; position: relative;}
-        .explain-title { font-weight: 800; color: #1e3a8a; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;}
-        .explain-box.concept { background: #fdf2f8; border-left-color: #ec4899; }
-        .explain-box.concept .explain-title { color: #9d174d; }
-        .explain-box.practice { background: #f0fdf4; border-left-color: #10b981; }
-        .explain-box.practice .explain-title { color: #065f46; }
+        .cauldron-result { margin-top: 1.5rem; width: 100%; display: none; animation: fadeIn 0.5s; padding:2rem;}
+        .cauldron-out-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;}
+        .cauldron-out-chips .drag-chip { cursor:default; box-shadow:none; padding: 6px 14px; font-size:0.9rem;}
 
-        .hero { text-align: center; margin-bottom: 4rem; }
-        .day-badge { background: var(--text-main); color: #fff; padding: 0.5rem 2rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.5rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.5rem; }
-        .hero h1 { font-size: clamp(2.5rem, 4vw, 3.5rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1.5px; line-height: 1.2; }
-
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; margin-bottom: 2rem;}
-        .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: all 0.3s; background: #000;}
-        .video-thumb:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: var(--pink);}
-        .video-thumb img { width: 100%; display: block; opacity: 0.9; transition: opacity 0.3s, transform 0.5s;}
-        .video-thumb:hover img { opacity: 1; transform: scale(1.05);}
-        .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: all 0.3s;}
-        .video-thumb:hover .play-overlay { background: rgba(236, 72, 153, 0.3);}
-        .play-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ef4444; font-size: 1.8rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.3s;}
-        .video-thumb:hover .play-icon { transform: scale(1.1); background: #fff; color: #b91c1c; }
-
-        /* Widget Styles */
-        .widget-area { background: #18181b; border-radius: 16px; padding: 2.5rem; color: #f8fafc; margin: 2.5rem 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); border: 1px solid #3f3f46; position:relative; overflow:hidden;}
-        .widget-title { font-size: 1.5rem; font-weight: 800; margin-top: 0; margin-bottom: 0.5rem; color: #f472b6; display: flex; align-items: center; gap: 12px; }
-        .widget-desc { color: #a1a1aa; font-size: 0.95rem; margin-bottom: 2rem; border-bottom: 1px solid #3f3f46; padding-bottom: 1rem;}
-        
-        .slot-machine { display: flex; gap: 10px; margin-bottom: 20px;}
-        .sm-col { flex: 1; background: #27272a; border-radius: 8px; padding: 15px; text-align: center; border: 1px solid #52525b; min-height:80px; display:flex; flex-direction:column; justify-content:center;}
-        .sm-label { font-size: 0.75rem; color: #a1a1aa; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
-        .sm-value { font-size: 1.1rem; font-weight: bold; color: #fff;}
-        .sm-value.spinning { animation: blurSpin 0.2s infinite; color: #f472b6; }
-        
-        .gen-btn { width: 100%; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 1.1rem; border: none; background: linear-gradient(135deg, #ec4899, #be185d); color: white; cursor: pointer; transition: 0.2s; box-shadow:0 10px 20px rgba(236,72,153,0.3);}
-        .gen-btn:hover { filter: brightness(1.1); transform: translateY(-2px);}
-        .gen-btn:active { transform: translateY(0);}
-        
-        @keyframes blurSpin { 0% { opacity: 1; filter: blur(0px); transform: translateY(0); } 50% { opacity: 0.5; filter: blur(2px); transform: translateY(-5px); } 100% { opacity: 1; filter: blur(0px); transform: translateY(0); } }
-
-        /* Mission Checkboxes (Gamification) */
-        .mission-panel { background: #fff; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 2rem; margin: 2.5rem 0; display: flex; align-items: center; gap: 2rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;}
-        .mission-panel:hover { border-color: var(--accent); background: #f0fdf4; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1); }
-        .ms-icon { font-size: 3rem; color: #cbd5e1; transition: color 0.3s; }
-        .mission-panel:hover .ms-icon { color: var(--accent-light); }
-        .ms-content { flex-grow: 1; }
-        .ms-content h3 { margin: 0 0 0.5rem; font-size: 1.4rem; color: var(--text-main); }
-        .ms-content p { margin: 0; color: var(--text-sub); line-height: 1.6; }
-        
-        .ms-check { width: 44px; height: 44px; border: 3px solid #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #fff; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .ms-check i { color: #fff; font-size: 20px; opacity: 0; transform: scale(0); transition: all 0.4s; }
-        
-        .mission-panel.completed { border-color: var(--accent); background: #fff; border-style: solid;}
-        .mission-panel.completed .ms-icon { color: var(--accent); }
-        .mission-panel.completed .ms-check { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
-        .mission-panel.completed .ms-check i { opacity: 1; transform: scale(1); }
-        
-        .wax-seal { position: absolute; top: 10px; right: 80px; width: 70px; height: 70px; background: radial-gradient(circle at 30% 30%, #fca5a5, #ef4444, #991b1b); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-20deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 1.8rem; box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3); border: 2px solid #b91c1c; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); z-index: 10;}
-        .wax-seal::after { content: ''; position: absolute; inset: 5px; border: 1px dotted rgba(255,255,255,0.5); border-radius: 50%; }
-        .mission-panel.completed .wax-seal { animation: stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-20deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
-        
-        .home-btn { position: fixed; bottom: 30px; right: 30px; background: var(--text-main); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-decoration: none; transition: all 0.3s; z-index: 1000; border: 2px solid rgba(255,255,255,0.2); }
-        .home-btn:hover { transform: translateY(-5px) scale(1.05); background: var(--pink); color: white; }
-        
-        .btn-link { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; background:linear-gradient(135deg, var(--pink), #be185d); color:#fff; text-decoration:none; border-radius:30px; font-weight:700; transition:all 0.3s; box-shadow:0 6px 15px rgba(236,72,153,0.3); margin:10px 10px 10px 0;}
-        .btn-link:hover { transform:translateY(-2px); box-shadow:0 10px 20px rgba(236,72,153,0.4);}
     </style>
 </head>
 <body>
+
+    <canvas id="particles"></canvas>
+    <canvas id="confetti"></canvas>
+
+    <!-- Header -->
     <header class="fixed-header">
         <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
         <div class="progress-container">
@@ -177,245 +228,487 @@
         <div style="width:100px;"></div>
     </header>
 
-    <div class="toc-sidebar">
-        <div class="toc-title">IN THIS LESSON</div>
-        <nav style="display:flex; flex-direction:column; gap:8px;">
-            <a href="#sec-goal" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-bullseye" style="color:#f59e0b"></i> 本日の目標</a>
-            <a href="#sec-first" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-image" style="color:#ec4899"></i> 前半：画像生成の基本</a>
-            <a href="#sec-second" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-layer-group" style="color:#8b5cf6"></i> 後半：プロンプトによる応用</a>
-            <a href="#sec-summary" class="toc-link" onclick="updateNav(this)"><i class="fa-solid fa-flag-checkered" style="color:#10b981"></i> 今日のまとめ</a>
-        </nav>
-    </div>
-
     <div class="container">
-        <!-- HERO -->
-        <div class="hero course-section visible" style="margin-top: 2rem;">
+        <!-- Hero -->
+        <div class="hero">
             <div class="day-badge">DAY 04</div>
-            <h1>画像生成の基礎</h1>
+            <h1>Nano Banana Pro 教科書</h1>
+            <p>本日の目標：テキストから画像への変換技術の基礎をマスターする。<br>プロンプトによる画像生成のキホンから、実務で使える高度な編集テクニックまでを網羅します。</p>
         </div>
 
-        <!-- 1. COURSE GOAL -->
-        <section id="sec-goal" class="course-section">
-            <div class="section-header">
-                <div class="section-icon ch-goal"><i class="fa-solid fa-bullseye"></i></div>
-                <h2 class="section-title">1. 今日のコース目標</h2>
-            </div>
-            
-            <div class="glass-card">
-                <div class="explain-box concept" style="background: #fffbef; border-left-color: #f59e0b; font-size: 1.1rem;">
-                    <div class="explain-title" style="color:#b45309; font-size:1.3rem;"><i class="fa-solid fa-compass"></i> テキストを視覚化する</div>
-                    本日の研修テーマは、<b>「画像生成の基礎」</b>です。<br><br>
-                    最終作品となる「動画制作」においては、素材となる「高品質な画像」を生成する力が直接クオリティに直結します。<br>
-                    今回はテキストから視覚的コンテンツを生成する基本的なスキルを体系的に学びます。
+        <!-- Premium Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> コース目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-image" style="color:#10b981;"></i> 前半：画像の基礎・応用</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-layer-group" style="color:#0ea5e9;"></i> 後半：実践・活用テク</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#8b5cf6;"></i> 今日のまとめ</button>
+        </div>
+
+        <!-- ==========================================
+             TAB 1: COURSE GOALS
+        ========================================== -->
+        <div id="tab-goal" class="tab-content active">
+            <div class="glass-card" style="border-top: 5px solid #f59e0b;">
+                <div class="card-header"><i class="fa-solid fa-compass" style="color:#f59e0b; background:#fffbeb;"></i><h2>本日の研修ねらい</h2></div>
+                <div class="info-box" style="border-left-color: #f59e0b; background: #fffbeb;">
+                    <h4 style="color:#b45309;"><i class="fa-solid fa-wand-magic-sparkles"></i> 思い通りのビジュアルを生み出す力</h4>
+                    <p style="color:#92400e;">
+                        本日は「画像生成AI」の基礎と実践的な活用方法を学びます。<br><br>
+                        テキストから画像を生成する際の「プロンプトの型」を理解し、さらに生成された画像を思い通りに「加工・修正」するテクニックを習得します。動画編集やデザイン実務において、もはや他人の素材を探す時間は不要になります。自分の頭の中のビジュアルを最速で具現化できる人材になりましょう！
+                    </p>
                 </div>
             </div>
-        </section>
-
-        <!-- 2. FIRST HALF -->
-        <section id="sec-first" class="course-section">
-            <div class="section-header">
-                <div class="section-icon ch-first"><i class="fa-solid fa-image"></i></div>
-                <h2 class="section-title">2. 前半：画像生成の基本</h2>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px; background:#f59e0b;" onclick="switchTab('tab-first'); window.scrollTo(0,0);">
+                    前半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </div>
+        </div>
 
-            <div class="glass-card">
-                <div class="card-header-small"><i class="fa-solid fa-film" style="color:#ec4899;"></i> 再生動画についての説明と解説</div>
+        <!-- ==========================================
+             TAB 2: FIRST HALF
+        ========================================== -->
+        <div id="tab-first" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #10b981;">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：AI画像生成の基礎・応用</h2></div>
+                <p style="font-size:1.1rem; margin-bottom:1.5rem;">画像生成の基本構造（被写体・構図・パラメーター）を理解しましょう。</p>
                 
-                <div class="explain-box concept">
-                    <div class="explain-title"><i class="fa-solid fa-camera"></i> まずは意図した絵を出す</div>
-                    画像生成AI（Midjourney、Nano Bananaなど）で、まずはパッと思い描いたものを視覚化してみましょう。<br>
-                    最初のステップは、「被写体」と「スタイル（写真風か、アニメ風か）」を伝えることです。
-                </div>
-
                 <div class="video-grid">
                     <a href="https://youtu.be/3ATfzId9wrM" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/3ATfzId9wrM/maxresdefault.jpg" alt="動画1" onerror="this.src='https://img.youtube.com/vi/3ATfzId9wrM/hqdefault.jpg'">
-                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                        <img src="https://img.youtube.com/vi/3ATfzId9wrM/hqdefault.jpg" alt="動画1">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                     <a href="https://youtu.be/jyZ1D9dP4fI" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/jyZ1D9dP4fI/maxresdefault.jpg" alt="動画2" onerror="this.src='https://img.youtube.com/vi/jyZ1D9dP4fI/hqdefault.jpg'">
-                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                        <img src="https://img.youtube.com/vi/jyZ1D9dP4fI/hqdefault.jpg" alt="動画2">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                 </div>
 
-                <div class="widget-area">
-                    <div class="widget-title"><i class="fa-solid fa-dice"></i> 疑似体験: プロンプトルーレット</div>
-                    <div class="widget-desc">被写体・トーン・画風の組み合わせで画像は無限に変化します。ルーレットを回してプロンプトの多様性を体感しましょう。</div>
-                    
-                    <div class="slot-machine">
-                        <div class="sm-col">
-                            <div class="sm-label">被写体 (Subject)</div>
-                            <div class="sm-value" id="slot1">サイバーパンクな猫</div>
-                        </div>
-                        <div class="sm-col">
-                            <div class="sm-label">ライティング (Lighting)</div>
-                            <div class="sm-value" id="slot2">ネオンライト</div>
-                        </div>
-                        <div class="sm-col">
-                            <div class="sm-label">画風 (Style)</div>
-                            <div class="sm-value" id="slot3">3Dレンダリング</div>
+                <div class="bento-grid">
+                    <div class="bento-item" style="border-top:4px solid #f59e0b;">
+                        <h4><i class="fa-solid fa-image" style="color:#f59e0b;"></i> 被写体 (Subject)</h4>
+                        <p>誰が・何が主役かを明確にします。年齢、性別、服装など。（例：ゴールデンレトリバー）</p>
+                    </div>
+                    <div class="bento-item" style="border-top:4px solid #ec4899;">
+                        <h4><i class="fa-solid fa-camera" style="color:#ec4899;"></i> 構図・光・スタイル</h4>
+                        <p>どんな雰囲気で撮られた写真かを追加します。（例：シネマティック、水彩画）</p>
+                    </div>
+                    <div class="bento-item" style="border-top:4px solid #8b5cf6;">
+                        <h4><i class="fa-solid fa-sliders" style="color:#8b5cf6;"></i> パラメーター</h4>
+                        <p>アスペクト比などのシステム設定です。（例：--ar 16:9）</p>
+                    </div>
+                </div>
+
+                <div class="code-box">
+                    <span class="code-label">Markdown プロンプト例</span>
+                    # 被写体<br>- 年齢・性別: 20代の女性<br>- 服装: モダンなスーツ<br><br>
+                    # 環境・光<br>- 場所: オフィスのカフェスペース<br><br>
+                    # スタイル<br>- 写真調, 高画質, 8k
+                    <button class="btn-copy" onclick="copyCode('prompt-ex1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                    <div id="prompt-ex1" style="display:none;"># 被写体\n- 年齢・性別: 20代の女性\n- 服装: モダンなスーツ\n\n# 環境・光\n- 場所: オフィスのカフェスペース\n\n# スタイル\n- 写真調, 高画質, 8k</div>
+                </div>
+
+                <!-- Interactive Cauldron -->
+                <h3 style="color:#065f46; margin-top:3rem; font-size:1.5rem;"><i class="fa-solid fa-flask-vial"></i> 体験：プロンプト調合釜（Cauldron Simulator）</h3>
+                <p>要素（チップ）を下の「魔法の釜（ドロップゾーン）」にドラッグ＆ドロップして完成させましょう！</p>
+                <div class="cauldron-container" id="cauldron-drop-area">
+                    <div class="cauldron-ingredients" id="ingredients-list">
+                        <div class="drag-chip chip-sub" draggable="true" data-text="サイバーパンクな街並み," id="c_ing1"><i class="fa-solid fa-city"></i> サイバーパンク街 (Subject)</div>
+                        <div class="drag-chip chip-style" draggable="true" data-text="水彩画タッチ, 淡い色合い," id="c_ing2"><i class="fa-solid fa-palette"></i> 水彩画タッチ (Style)</div>
+                        <div class="drag-chip chip-style" draggable="true" data-text="シネマティックライティング, 8k," id="c_ing3"><i class="fa-solid fa-video"></i> シネマティック (Lighting)</div>
+                        <div class="drag-chip chip-param" draggable="true" data-text="--ar 16:9" id="c_ing4"><i class="fa-solid fa-expand"></i> 横長 (--ar)</div>
+                    </div>
+                    <div class="cauldron-pot-area" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                        <div class="cauldron-dropzone" id="cauldron-state">
+                            <i class="fa-solid fa-fire text-slate-400"></i>
+                            <span id="cauldron-msg">ここにドロップ！(<span id="ing-count">0</span>/4)</span>
                         </div>
                     </div>
-                    
-                    <button class="gen-btn" onclick="spinRoulette()"><i class="fa-solid fa-wand-magic-sparkles"></i> ランダム生成プロンプトを作成</button>
-                </div>
-            </div>
-
-            <!-- Practical Section -->
-            <div class="glass-card">
-                <div class="card-header-small"><i class="fa-solid fa-laptop-code" style="color:#10b981;"></i> 実習内容の説明と解説</div>
-                
-                <div class="explain-box practice">
-                    <div class="explain-title"><i class="fa-solid fa-pen"></i> ノートまとめ</div>
-                    動画を見ながら、生成のコツとMarkdown記法への理解を深め、ノートをまとめましょう。
                 </div>
 
-                <div class="mission-panel" onclick="completeMission(this, 1)">
-                    <div class="wax-seal" style="background:#ec4899; border-color:#9d174d;"><i class="fa-solid fa-book-open"></i></div>
-                    <div class="ms-icon"><i class="fa-solid fa-file-pen"></i></div>
-                    <div class="ms-content">
-                        <h3>Mission 1: 基本ノート作成</h3>
-                        <p>動画から画像生成の基礎的なコツを抽出してノートにまとめた。</p>
+                <div class="code-box cauldron-result" id="cauldron-result">
+                    <span class="code-label" style="background:#10b981;">完成したプロンプト</span>
+                    <div class="cauldron-out-chips" id="cauldron-out-chips"></div>
+                    <div id="cauldron-out-text" style="font-family: inherit;"></div>
+                    <button class="btn" style="margin-top:1.5rem; background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; display:block;" onclick="simImages()"><i class="fa-solid fa-wand-magic-sparkles"></i> 擬似生成する</button>
+                    <div id="sim-result" style="display:none; margin-top:1rem; color:#34d399; font-weight:bold;">✨ AI Image Generated! (Simulation)</div>
+                </div>
+
+                <!-- GAMIFIED MISSION 1 -->
+                <div class="mission-area" id="mission-group-1" style="border-color: #10b981;">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #6ee7b7, #10b981, #047857); border-color:#065f46;"><i class="fa-solid fa-check"></i></div>
+                    <div class="mission-header">
+                        <h3 style="color:#10b981;"><i class="fa-solid fa-clipboard-list"></i> MILESTONE 1: 画像生成の基礎</h3>
+                        <p>プロンプトの構成要素をマスターしよう。</p>
                     </div>
-                    <div class="ms-check"><i class="fa-solid fa-check"></i></div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>基礎動画の視聴</h4>
+                                <p>動画①②を視聴し、画像生成の基本的な考え方を理解する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>調合釜シミュレーターの完了</h4>
+                                <p>上のシミュレーターで4つの要素をドラッグ＆ドロップし、「擬似生成」ボタンを押す。</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-            </div>
-        </section>
 
-        <!-- 3. SECOND HALF -->
-        <section id="sec-second" class="course-section">
-            <div class="section-header">
-                <div class="section-icon ch-second"><i class="fa-solid fa-layer-group"></i></div>
-                <h2 class="section-title">3. 後半：プロンプトによる応用</h2>
             </div>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px; background:#10b981;" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
+                    後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+"""
 
-            <div class="glass-card">
-                <div class="card-header-small"><i class="fa-solid fa-film" style="color:#8b5cf6;"></i> 再生動画についての説明と解説</div>
+with open("vol04-1_nano_banana.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("Generated vol04-1_nano_banana.html")
+import os
+
+html_content = """
+        <!-- ==========================================
+             TAB 3: SECOND HALF
+        ========================================== -->
+        <div id="tab-second" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #0ea5e9;">
+                <div class="card-header"><i class="fa-solid fa-layer-group" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半：実践・画像編集テクニック</h2></div>
+                <p style="font-size:1.1rem; margin-bottom:1.5rem;">生成した画像を思い通りに修正・加工する「インペイント」等の技術と、実務で使える20の活用法。</p>
                 
-                <div class="explain-box concept" style="background: #f5f3ff; border-left-color: #8b5cf6;">
-                    <div class="explain-title" style="color: #5b21b6;"><i class="fa-solid fa-sliders"></i> ディテールをコントロールする</div>
-                    後半の動画では、より思い通りの画像を引き出すための「コントロール（制御）」に着目します。<br>
-                    構図の指定、カメラアングル、不要な要素を消すネガティブプロンプトなど、プロのプロンプトエンジニアリングを追体験しましょう。
-                </div>
-
                 <div class="video-grid">
                     <a href="https://youtu.be/SP4FceXU1e4" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/SP4FceXU1e4/maxresdefault.jpg" alt="後半動画1" onerror="this.src='https://img.youtube.com/vi/SP4FceXU1e4/hqdefault.jpg'">
-                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                        <img src="https://img.youtube.com/vi/SP4FceXU1e4/hqdefault.jpg" alt="動画3">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                     <a href="https://youtu.be/EcQNRpZE7Ns" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/EcQNRpZE7Ns/maxresdefault.jpg" alt="後半動画2" onerror="this.src='https://img.youtube.com/vi/EcQNRpZE7Ns/hqdefault.jpg'">
-                        <div class="play-overlay"><div class="play-icon"><i class="fa-solid fa-play" style="margin-left:4px;"></i></div></div>
+                        <img src="https://img.youtube.com/vi/EcQNRpZE7Ns/hqdefault.jpg" alt="動画4">
+                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                 </div>
-            </div>
 
-            <!-- Practical Section -->
-            <div class="glass-card">
-                <div class="card-header-small"><i class="fa-solid fa-laptop-code" style="color:#10b981;"></i> 実習内容の説明と解説</div>
+                <h3 style="color:#0369a1; margin-top:3rem; font-size:1.5rem;"><i class="fa-solid fa-toolbox"></i> Nano Banana Pro 活用術 抜粋</h3>
                 
-                <div class="explain-box practice">
-                    <div class="explain-title"><i class="fa-solid fa-book-open"></i> ノートまとめの継続</div>
-                    引き続き、動画を見ながら応用的な生成のコツをノートにまとめましょう。<br>
-                    すぐに使える構文としてストックしておくことがポイントです。
-                </div>
-
-                <div class="mission-panel" onclick="completeMission(this, 2)">
-                    <div class="wax-seal" style="background:#8b5cf6; border-color:#6d28d9;"><i class="fa-solid fa-code-branch"></i></div>
-                    <div class="ms-icon"><i class="fa-solid fa-diagram-project"></i></div>
-                    <div class="ms-content">
-                        <h3>Mission 2: 応用ノート完成</h3>
-                        <p>応用的な画像生成コントロールのコツをノートに記述した。</p>
+                <!-- Accordions -->
+                <details class="prompt-accordion">
+                    <summary><span class="tag">Tip</span> ① キャラクターの一貫性 (Character Reference) <i class="fa-solid fa-chevron-down"></i></summary>
+                    <div class="prompt-content">
+                        <p style="margin-top:0;"><strong>解説:</strong> 同じ人物を違うポーズや服装で生成。「--cref」パラメータを使います。</p>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
+                            </div>
+                            <div class="browser-content">
+                                <button class="btn-copy" onclick="copyCode('p-1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                                <div id="p-1">カフェでコーヒーを飲む女性、笑顔 --cref [画像URL] --cw 100</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="ms-check"><i class="fa-solid fa-check"></i></div>
+                </details>
+
+                <details class="prompt-accordion">
+                    <summary><span class="tag">Tip</span> ② 高度な部分修正 (Inpaint) <i class="fa-solid fa-chevron-down"></i></summary>
+                    <div class="prompt-content">
+                        <p style="margin-top:0;"><strong>解説:</strong> 既存画像の「一部だけ」を指定して別のものに書き換える技術。服を変えたり、不要なものを消したりできます。</p>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
+                            </div>
+                            <div class="browser-content">
+                                <button class="btn-copy" onclick="copyCode('p-2', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                                <div id="p-2">(服の部分を選択して) 赤いシルクのドレス</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="prompt-accordion">
+                    <summary><span class="tag">Tip</span> ③ 構図・スタイルのコピー (Style Reference) <i class="fa-solid fa-chevron-down"></i></summary>
+                    <div class="prompt-content">
+                        <p style="margin-top:0;"><strong>解説:</strong> 手持ちの画像の「雰囲気や画風」だけを借りて新しい画像を作ります。「--sref」パラメータを使います。</p>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
+                            </div>
+                            <div class="browser-content">
+                                <button class="btn-copy" onclick="copyCode('p-3', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                                <div id="p-3">サイバーパンクな街並み --sref [水彩画の画像URL]</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="prompt-accordion">
+                    <summary><span class="tag">Tip</span> ④ 画像の拡張 (Outpaint / Zoom) <i class="fa-solid fa-chevron-down"></i></summary>
+                    <div class="prompt-content">
+                        <p style="margin-top:0;"><strong>解説:</strong> 縦長で作ってしまった画像をアップスケールせずに横の背景をAIに描き足させ、16:9に変えることができます。</p>
+                        <div class="browser-mockup">
+                            <div class="browser-header">
+                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
+                            </div>
+                            <div class="browser-content">
+                                <button class="btn-copy" onclick="copyCode('p-4', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                                <div id="p-4">(Pan ➡️ ボタンをクリック)</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- GAMIFIED MISSION 2 -->
+                <div class="mission-area" id="mission-group-2" style="border-color: #0ea5e9;">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #7dd3fc, #0ea5e9, #0369a1); border-color:#0284c7;"><i class="fa-solid fa-stamp"></i></div>
+                    <div class="mission-header">
+                        <h3 style="color:#0ea5e9;"><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: 応用と実践</h3>
+                        <p>高度な技術で実務プロンプトを完成させよう！</p>
+                    </div>
+                    
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
+                            <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>活用術動画の視聴</h4>
+                                <p>動画③④を視聴し、インペイントなどの加工技術を学ぶ。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
+                            <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>プロンプトのストック</h4>
+                                <p>上の活用術アコーディオンから、自分が使いそうなテクニックをクリップボードにコピー（またはメモ）する。</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </section>
 
-        <!-- 4. SUMMARY -->
-        <section id="sec-summary" class="course-section">
-            <div class="section-header">
-                <div class="section-icon ch-wrap"><i class="fa-solid fa-flag-checkered"></i></div>
-                <h2 class="section-title">4. 今日のまとめ</h2>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:#8b5cf6; border-radius:30px;" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
+                    本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
+                </button>
             </div>
+        </div>
 
-            <div class="glass-card" style="border: 2px solid var(--accent); background: #f0fdf4;">
-                <h3 style="color:var(--accent); font-size:1.5rem; margin-top:0; border-bottom:1px solid #a7f3d0; padding-bottom:1rem; display:flex; align-items:center; gap:10px;">
-                    <i class="fa-solid fa-medal"></i> Day 4 コンプリート！
+        <!-- ==========================================
+             TAB 4: SUMMARY
+        ========================================== -->
+        <div id="tab-summary" class="tab-content">
+            <div class="glass-card" style="border: 2px solid #8b5cf6; background: #faf5ff;">
+                <h3 style="color:#8b5cf6; font-size:1.8rem; margin-top:0; border-bottom:2px solid #ddd6fe; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
+                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 4 全行程コンプリート！
                 </h3>
-                <p style="font-size: 1.1rem; line-height: 1.8; color: #064e3b; margin-top:1.5rem;">
-                    お疲れ様でした！本日は視覚表現の要である「画像生成」の基礎から応用コントロールを学びました。<br><br>
-                    高品質な一枚絵を作れるようになれば、明日の「動画生成（Day 5）」において、圧倒的に有利になります。動画生成AIは「ベースとなる画像」の品質に強く依存するからです。本日まとめたプロンプトノートは、明日から強力な武器になります！
+                <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
+                    お疲れ様でした！本日は**「画像生成と高度加工」**について学びました。<br>
+                    1枚の画像をゼロから生み出すだけでなく、リファレンス（参照）機能やInpaint（部分修正）を駆使することで、完全にコントロールされた素材を手に入れることができます。<br><br>
+                    次回はいよいよ、生成した画像に命を吹き込む「動画生成」の世界へ入ります！
                 </p>
-                <div style="margin-top:2rem; text-align:center;">
-                    <button class="btn-link" style="border:none; padding:15px 40px; background:linear-gradient(135deg, #10b981, #059669); font-size:1.1rem; cursor:pointer;" onclick="finishDay()">
-                        <i class="fa-solid fa-check-circle"></i> 学習完了を記録してHomeへ
+                
+                <!-- Quiz Area -->
+                <div class="glass-card" style="margin-top:3rem; background:#fff; border-color:#cbd5e1; box-shadow:none;">
+                    <h2 style="font-size:1.6rem; margin:0 0 0.5rem; color:var(--text-main);"><i class="fa-solid fa-pen-nib" style="color:#0ea5e9;"></i> 📝 理解度チェック</h2>
+                    <p style="color:var(--text-sub); margin-bottom:1.5rem;">Day 4 で学んだ知識を確認しましょう</p>
+                    <div id="quiz-vol02-2" style="text-align:left;">
+                        <div style="text-align:center; color:var(--text-sub); font-style:italic;">クイズを読み込み中...</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:3rem; text-align:center;">
+                    <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:50px; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);" onclick="window.location.href='index.html'">
+                        <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
                     </button>
+                    <!-- Dev Notes Link -->
+                    <div style="margin-top: 2rem;">
+                        <a href="index_dev_notes.html" style="color:#94a3b8; text-decoration:none; font-size:0.85rem;"><i class="fa-solid fa-code"></i> 制作の裏側・開発者ノートはこちら</a>
+                    </div>
                 </div>
             </div>
-        </section>
-
+        </div>
     </div>
-    
+
     <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
 
+    <!-- Scripts -->
     <script>
-        // Scroll Animation
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    const sections = ['sec-goal', 'sec-first', 'sec-second', 'sec-summary'];
-                    const idx = sections.indexOf(entry.target.id);
-                    if(idx !== -1) {
-                        const pct = ((idx + 1) / 4) * 100;
-                        document.getElementById('progress-bar').style.width = pct + '%';
-                        document.getElementById('progress-percent').innerText = Math.round(pct) + '%';
+        // Tab Nav
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            for(let i=0; i<buttons.length; i++){
+                if(buttons[i].getAttribute('onclick').includes(tabId)){
+                    buttons[i].classList.add('active');
+                }
+            }
+        }
+
+        // Copy
+        function copyCode(elementId, btn) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                btn.style.color = '#10b981';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+            });
+        }
+
+        // Checklist Logic
+        const missionGroups = {
+            1: ['t1_1', 't1_2'],
+            2: ['t2_1', 't2_2']
+        };
+        const allTasks = [...missionGroups[1], ...missionGroups[2]];
+        let state = {};
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('day4_premium_prog');
+            if (saved) {
+                state = JSON.parse(saved);
+                for (const taskId of allTasks) {
+                    if (state[taskId]) {
+                        const el = document.getElementById('check_' + taskId);
+                        if (el) el.parentElement.classList.add('completed');
                     }
                 }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.course-section').forEach((sec) => {
-            observer.observe(sec);
+            }
+            checkGroups();
+            updateProgress();
         });
 
-        // Sidebar Navigation highlighting
-        function updateNav(el) {
-            document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
-            el.classList.add('active');
+        function toggleTask(taskId, element, groupId) {
+            const done = element.classList.toggle('completed');
+            state[taskId] = done;
+            localStorage.setItem('day4_premium_prog', JSON.stringify(state));
+            
+            updateProgress();
+            checkGroups(groupId);
         }
 
-        // Mission Logic
-        function completeMission(el, misId) {
-            if(el.classList.contains('completed')) return;
-            el.classList.add('completed');
-            try {
-                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-                audio.volume = 0.4; audio.play();
-            } catch(e) {}
+        function checkGroups(triggerGroupId = null) {
+            for(let groupId in missionGroups) {
+                const groupTasks = missionGroups[groupId];
+                const allDone = groupTasks.every(t => state[t]);
+                const groupArea = document.getElementById('mission-group-' + groupId);
+                
+                if (groupArea) {
+                    if (allDone && !groupArea.classList.contains('completed')) {
+                        groupArea.classList.add('completed');
+                        if(groupId == triggerGroupId) {
+                            if(groupId == 2) fireConfetti(); 
+                        }
+                    } else if (!allDone) {
+                        groupArea.classList.remove('completed');
+                    }
+                }
+            }
+        }
+
+        function updateProgress() {
+            const count = allTasks.filter(t => state[t]).length;
+            const pct = Math.round((count / allTasks.length) * 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-percent').innerText = pct + '%';
+        }
+
+        // Drag & Drop
+        let itemsInCauldron = 0;
+        let pText = "";
+        
+        // Use a simpler approach for events.
+        function allowDrop(ev) {
+            ev.preventDefault();
+            document.getElementById('cauldron-state').classList.add('drag-over');
+        }
+        function dragLeave(ev) {
+            document.getElementById('cauldron-state').classList.remove('drag-over');
         }
         
-        // Roulette Logic
-        const subs = ["空飛ぶ車", "魔法使いの少女", "未来の東京", "巨大なドラゴン", "コーヒーカップ", "AIロボット"];
-        const lits = ["シネマティック", "自然光", "ネオンライト", "スタジオ照明", "逆光", "ゴールデンアワー"];
-        const styles = ["写実的", "アニメ風", "水彩画", "サイバーパンク", "油絵", "3Dレンダリング"];
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.dataTransfer.effectAllowed = "move";
+        }
+        
+        function drop(ev) {
+            ev.preventDefault();
+            document.getElementById('cauldron-state').classList.remove('drag-over');
 
-        function spinRoulette() {
-            const slots = [document.getElementById('slot1'), document.getElementById('slot2'), document.getElementById('slot3')];
-            slots.forEach(s => s.classList.add('spinning'));
-            
-            setTimeout(() => {
-                slots[0].innerText = subs[Math.floor(Math.random()*subs.length)];
-                slots[1].innerText = lits[Math.floor(Math.random()*lits.length)];
-                slots[2].innerText = styles[Math.floor(Math.random()*styles.length)];
-                slots.forEach(s => s.classList.remove('spinning'));
-            }, 800);
+            var id = ev.dataTransfer.getData("text");
+            var draggedItem = document.getElementById(id);
+
+            if (draggedItem && !draggedItem.classList.contains('used')) {
+                draggedItem.classList.add('used');
+                itemsInCauldron++;
+                document.getElementById('ing-count').innerText = itemsInCauldron;
+                
+                let text = draggedItem.getAttribute('data-text');
+                pText += text + " ";
+                document.getElementById('cauldron-out-text').innerText = pText;
+                
+                let clone = draggedItem.cloneNode(true);
+                clone.removeAttribute('draggable');
+                clone.classList.remove('used');
+                document.getElementById('cauldron-out-chips').appendChild(clone);
+
+                if (itemsInCauldron >= 4) {
+                    document.getElementById('cauldron-result').style.display = 'block';
+                    document.getElementById('cauldron-msg').innerText = "完了！擬似生成してください";
+                }
+            }
+        }
+        
+        function simImages() {
+           document.getElementById('sim-result').style.display = "block";
         }
 
-        function finishDay() {
-            window.location.href = "index.html";
+        // Confetti Function
+        function fireConfetti() {
+            const c = document.getElementById('confetti');
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
+            for (let i = 0; i < 150; i++) {
+                pieces.push({
+                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
+                    w: Math.random() * 8 + 6, h: Math.random() * 8 + 6,
+                    vx: Math.random() * 6 - 3, vy: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360, rs: Math.random() * 10 - 5
+                });
+            }
+            let aid;
+            function upd() {
+                ctx.clearRect(0, 0, c.width, c.height);
+                let active = false;
+                pieces.forEach(p => {
+                    p.y += p.vy; p.x += p.vx; p.rot += p.rs;
+                    if (p.y < c.height) active = true;
+                    ctx.save(); ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                if (active) aid = requestAnimationFrame(upd);
+                else ctx.clearRect(0, 0, c.width, c.height);
+            }
+            upd();
+            setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 6000);
         }
     </script>
 </body>
 </html>
+"""
+
+with open("vol04-1_nano_banana.html", "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print("Generated vol04-1_nano_banana.html")
+
