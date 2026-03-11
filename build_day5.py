@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 import os
 
 html_content = """<!DOCTYPE html>
@@ -338,15 +337,7 @@ html_content = """<!DOCTYPE html>
                 </button>
             </div>
         </div>
-"""
 
-with open("vol05-1_text_to_video.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
-
-print("Generated vol05-1_text_to_video.html")
-import os
-
-html_content = """
         <!-- ==========================================
              TAB 3: SECOND HALF
         ========================================== -->
