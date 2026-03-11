@@ -18,6 +18,22 @@
                     </a>
                 </div>
 
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">Nano Banana Pro ＆ Imagen 3(Google) の実践活用術と裏技です。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-user-ninja" style="color:#10b981;"></i> 1. Imagen 3のテキスト再現</h4>
+                        <p>Geminiの裏側で動く画像AIは、イラスト内に「看板の文字」などを正確に出力できる機能に優れており、ポスターやバナー素材の作成に威力を発揮します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-face-smile-wink" style="color:#f43f5e;"></i> 2. 表情とライティングの徹底</h4>
+                        <p>プロンプトに「シネマティックライティング」「ボケみ（DOF）」「逆光」などの写真用語を盛り込むことで、出力画像のプロっぽさが劇的向上します。</p>
+                    </div>
+                </div>
+
+
                 <h3 style="color:#0369a1; margin-top:3rem; font-size:1.5rem;"><i class="fa-solid fa-toolbox"></i> Nano Banana Pro 活用術 抜粋</h3>
                 
                 <!-- Accordions -->

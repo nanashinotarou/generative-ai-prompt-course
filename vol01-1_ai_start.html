@@ -114,6 +114,18 @@
         .btn-outline { background: #fff; color: var(--accent); border: 2px solid var(--accent); box-shadow: none; }
         .btn-outline:hover { background: var(--accent-bg); border-color: #4338ca; color:#4338ca; transform: none; box-shadow:none;}
 
+        
+        /* Highlight box */
+        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+
+        /* Content List Grid */
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
+
         /* Video Grid */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin: 2rem 0;}
         .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 4px solid #fff; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #000;}
@@ -254,6 +266,26 @@
                 </div>
             </div>
 
+                <div class="highlight-box">
+                    <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">時間がない方はここをチェック！AIの歴史から将来の影響、そしてGoogleのGeminiの使い方まで、前半4本の動画のエッセンスをまとめました。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-robot" style="color:#3b82f6;"></i> 1. AI（人工知能）とは？</h4>
+                        <p>人間のように学習・推論するプログラムです。特化型AIから汎用AIへ進化し、現在はディープラーニング（深層学習）が第3次AIブームを牽引しています。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-user-tie" style="color:#f59e0b;"></i> 2. 今後の仕事への影響</h4>
+                        <p>手順が決まっている定型業務はAIに代替されやすく、コミュニケーション・創造性・柔軟な課題解決が求められる仕事は生き残るとされています。</p>
+                    </div>
+                    <div class="bento-item" style="grid-column: 1 / -1;">
+                        <h4><i class="fa-solid fa-sparkles" style="color:#10b981;"></i> 3. Google Geminiの使い方</h4>
+                        <p>文章作成、要約、翻訳、アイデア出しから画像生成までできる無料アシスタント。的確な「プロンプト（指示文）」による対話が精度を高める鍵になります。</p>
+                    </div>
+                </div>
+
+
             <div class="glass-card">
                 <div class="card-header"><i class="fa-solid fa-laptop-code" style="color:#10b981; background:#f0fdf4;"></i><h2>前半：実習（Geminiを使ってみよう）</h2></div>
                 <p style="font-size:1.1rem;">Geminiの多彩な機能を体験し、プロンプトの基礎を学びます。</p>
@@ -345,6 +377,22 @@
                     </a>
                 </div>
 
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-triangle-exclamation"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">生成AIの「弱点」と各画像生成AIの「特徴」を把握することが後半のテーマです。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-mask" style="color:#ef4444;"></i> 1. AIの弱点（ハルシネーション）</h4>
+                        <p>AIはもっともらしい嘘をつくことがあります。特に日付や事実関係についてはAIの回答を鵜呑みにせず、必ず一次情報でファクトチェックを行うことが実務における必須スキルです。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-image" style="color:#8b5cf6;"></i> 2. 画像生成AIの適材適所</h4>
+                        <p>機能や得意分野はAIごとに異なります。「NanoBananaPro」はリアル系、「Seedream4.0」はテキスト再現、「Midjourney」はアート性、「Adobe Firefly」は商用利用など、目的に応じたツール選択が重要です。</p>
+                    </div>
+                </div>
+
+
                 <div class="info-box" style="border-left-color: #ef4444; background: #fef2f2;">
                     <h4 style="color:#b91c1c;"><i class="fa-solid fa-triangle-exclamation"></i> ハルシネーションとファクトチェック（動画⑤）</h4>
                     <p style="color:#7f1d1d;">生成AIは「もっともらしい嘘（ハルシネーション）」をつくことがあります。特に、数字、日付、人名には要注意です。AIの出力は必ず公式サイト等の一次情報で裏付け（ファクトチェック）を取る習慣をつけましょう。</p>
@@ -386,6 +434,22 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-triangle-exclamation"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">生成AIの「弱点」と各画像生成AIの「特徴」を把握することが後半のテーマです。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-mask" style="color:#ef4444;"></i> 1. AIの弱点（ハルシネーション）</h4>
+                        <p>AIはもっともらしい嘘をつくことがあります。特に日付や事実関係についてはAIの回答を鵜呑みにせず、必ず一次情報でファクトチェックを行うことが実務における必須スキルです。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-image" style="color:#8b5cf6;"></i> 2. 画像生成AIの適材適所</h4>
+                        <p>機能や得意分野はAIごとに異なります。「NanoBananaPro」はリアル系、「Seedream4.0」はテキスト再現、「Midjourney」はアート性、「Adobe Firefly」は商用利用など、目的に応じたツール選択が重要です。</p>
+                    </div>
+                </div>
+
             </div>
 
             <!-- GAMIFIED MISSION -->

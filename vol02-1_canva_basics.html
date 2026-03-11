@@ -103,6 +103,18 @@
         .btn-outline { background: #fff; color: var(--accent); border: 2px solid var(--accent); box-shadow: none; }
         .btn-outline:hover { background: var(--accent-bg); border-color: #4338ca; color:#4338ca; transform: none; box-shadow:none;}
 
+        
+        /* Highlight box */
+        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+
+        /* Content List Grid */
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
+
         /* Video Grid */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin: 2rem 0;}
         .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 4px solid #fff; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #000;}
@@ -235,6 +247,22 @@
                 </div>
             </div>
 
+                <div class="highlight-box">
+                    <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">デザインツール「Canva」の基本とAI機能をマスターし、誰でもプロ級のデザインを作れるようになるためのエッセンスです。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-wand-magic-sparkles" style="color:#a855f7;"></i> 1. CanvaのAI活用</h4>
+                        <p>Magic Studio機能を活用すれば、テキストから画像生成、デザインの自動リサイズ、被写体の切り抜きなどがワンクリックで行えます。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-layer-group" style="color:#0ea5e9;"></i> 2. テンプレートの効率的利用</h4>
+                        <p>ゼロから作るのではなく、数百万点のテンプレートから目的に合ったものを検索しカスタマイズすることで、制作時間を大幅に短縮できます。</p>
+                    </div>
+                </div>
+
+
             <div class="glass-card">
                 <div class="card-header"><i class="fa-solid fa-laptop-code" style="color:#10b981; background:#f0fdf4;"></i><h2>前半：実習（Canvaの使い方を覚えよう）</h2></div>
                 <p style="font-size:1.1rem;">実際にCanvaにログインし、投稿の作成からAI機能を試すところまで実践します。</p>
@@ -333,11 +361,43 @@
                     </a>
                 </div>
 
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">Affinity by CanvaやNano Banana等のツールの実践的な画像生成・編集プロンプトのテクニックをまとめました。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 1. プロンプト生成術</h4>
+                        <p>被写体、背景、照明、カメラアングルの4要素を具体的に言語化することで、生成される画像の精度が圧倒的に上がります。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-crop-simple" style="color:#10b981;"></i> 2. AIツール間の連携</h4>
+                        <p>Nano Bananaでリアルな人物画像を生成し、Canvaで文字入れとレイアウトを行うなど、複数ツールの組み合わせで高クオリティな制作が可能です。</p>
+                    </div>
+                </div>
+
+
                 <div class="info-box" style="border-left-color: #8b5cf6; background: #f5f3ff;">
                     <h4 style="color:#6d28d9;"><i class="fa-solid fa-wand-magic-sparkles"></i> プロンプトによる画像編集・加工</h4>
                     <p style="color:#4c1d95;">ゼロから画像を生成するだけでなく、すでに存在している写真の「背景だけを変える」「いらない看板だけを消す」など、部分的なプロンプト補正技術も習得しましょう。</p>
                 </div>
             </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">Affinity by CanvaやNano Banana等のツールの実践的な画像生成・編集プロンプトのテクニックをまとめました。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 1. プロンプト生成術</h4>
+                        <p>被写体、背景、照明、カメラアングルの4要素を具体的に言語化することで、生成される画像の精度が圧倒的に上がります。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-crop-simple" style="color:#10b981;"></i> 2. AIツール間の連携</h4>
+                        <p>Nano Bananaでリアルな人物画像を生成し、Canvaで文字入れとレイアウトを行うなど、複数ツールの組み合わせで高クオリティな制作が可能です。</p>
+                    </div>
+                </div>
+
 
             <!-- GAMIFIED MISSION -->
             <div class="glass-card">
