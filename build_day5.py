@@ -60,6 +60,25 @@ html_content = """<!DOCTYPE html>
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--clickable), var(--accent)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Scroll Progress Bar at Bottom */
+        #scroll-progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        #scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--clickable), var(--accent));
+            transition: width 0.1s ease-out;
+            box-shadow: 0 -2px 10px var(--accent-glow);
+        }
+
         /* Main Container */
         .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
 
@@ -128,9 +147,7 @@ html_content = """<!DOCTYPE html>
 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ---------------------------------
-           GAMIFICATION & CHECKLIST
-        --------------------------------- */
+        /* GAMIFICATION & CHECKLIST */
         .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
         .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
         .mission-header { text-align: center; margin-bottom: 2rem; }
@@ -178,6 +195,7 @@ html_content = """<!DOCTYPE html>
 
     <canvas id="particles"></canvas>
     <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
 
     <!-- Header -->
     <header class="fixed-header">
@@ -205,9 +223,7 @@ html_content = """<!DOCTYPE html>
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#8b5cf6;"></i> 今日のまとめ</button>
         </div>
 
-        <!-- ==========================================
-             TAB 1: COURSE GOALS
-        ========================================== -->
+        <!-- TAB 1: COURSE GOALS -->
         <div id="tab-goal" class="tab-content active">
             <div class="glass-card" style="border-top: 5px solid #f59e0b;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#f59e0b; background:#fffbeb;"></i><h2>本日の研修ねらい</h2></div>
@@ -216,7 +232,7 @@ html_content = """<!DOCTYPE html>
                     <p style="color:#92400e;">
                         本日の研修は、<strong>「テキストから動画への変換技術の基礎」</strong>です。<br><br>
                         静止画の生成技術はもはや普及段階にありますが、いま最も注目され、実務での革新をもたらしているのが「AI動画生成」です。
-                        本日は、AIに意図した通りの動画を作らせるための「動画特有のプロンプト要素20選」と、映像の質を決定づける「カメラワークの制御」について学びます。<br>
+                        本日は、AIに意図した通りの動画を作らせるための「動画特有 of プロンプト要素20選」と、映像の質を決定づける「カメラワークの制御」について学びます。<br>
                         動画をすべて視聴しなくても内容が把握できるように、完全解説ダイジェスト（概要まとめ）を用意しています。時間がない方はまずはダイジェストに目を通し、重要ポイントを掴んでから実習に取り組みましょう！
                     </p>
                 </div>
@@ -228,9 +244,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 2: FIRST HALF
-        ========================================== -->
+        <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #10b981;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半プレイリスト：動画生成プロンプトの極意</h2></div>
@@ -285,23 +299,13 @@ html_content = """<!DOCTYPE html>
                         <details class="prompt-accordion"><summary><span class="tag">03:47</span> ③ トーン＆ジャンルを指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">「シネマティック」「アニメ風」など。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">05:04</span> ④ キャラクターの固定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">同一人物の登場テクニック。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">06:24</span> ⑤ 画角をロック <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">引きや寄りのブレを防ぐ。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">07:41</span> ⑥ 小さな動きに限定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">破綻を防ぐための最小行動から指示。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">08:54</span> ⑦ オブジェクト数の制限 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">主役を絞り、AIの混乱を防ぐ。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">09:56</span> ⑧ スピードを指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">「スロー」「タイムラプス」の制御。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">10:46</span> ⑨ 照明を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">光と影で質感を高める。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">11:51</span> ⑩ 開始と終了を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">フレームの推移でストーリーを作る。</p></div></details>
                     </div>
                     <div>
                         <details class="prompt-accordion"><summary><span class="tag">13:16</span> ⑪ 背景の動きを指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">風や天候などを制御。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">14:24</span> ⑫ 重力・物理法則を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">水や髪のなびきなどリアルな現象。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">15:36</span> ⑬ カメラワークを指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">パンやズームでプロ並みの視点へ。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">16:38</span> ⑭ 視線の行き先を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">被写体の見る位置による視線誘導。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">17:38</span> ⑮ 表情を指定 (微細に) <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">真顔から笑顔など繊細な変化。</p></div></details>
                         <details class="prompt-accordion"><summary><span class="tag">18:33</span> ⑯ 禁止事項を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">文字・変形などをネガティブプロンプトで防止。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">20:24</span> ⑰ 動きを指定(テキストのみ) <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">動詞の的確な利用による動作実現。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">21:29</span> ⑱ 動きを指定(コントロール) <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">ツール機能（モーションブラシ）との併用。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">22:51</span> ⑲ 音声を指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">リップシンクへの布石となる口元の指定。</p></div></details>
-                        <details class="prompt-accordion"><summary><span class="tag">24:36</span> ⑳ 動画の続きを指定 <i class="fa-solid fa-chevron-down"></i></summary><div class="prompt-content"><p style="margin-top:0;">Extend生成時のプロンプト接続のコツ。</p></div></details>
                     </div>
                 </div>
 
@@ -338,9 +342,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 3: SECOND HALF
-        ========================================== -->
+        <!-- TAB 3: SECOND HALF -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #0ea5e9;">
                 <div class="card-header"><i class="fa-solid fa-film" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半プレイリスト：実践カメラワークと3D連携</h2></div>
@@ -360,73 +362,13 @@ html_content = """<!DOCTYPE html>
                         <h4><i class="fa-solid fa-camera-rotate" style="color:#0ea5e9;"></i> 1. 基本のカメラワーク</h4>
                         <p>「Pan（左右の振り）」「Tilt（上下の振り）」「Zoom（寄り・引き）」の3つをプロンプトで制御し、映像にダイナミズムを与えます。</p>
                         <div class="prompt-code">Camera panning slowly from left to right, zooming in on the protagonist's eyes</div>
-                        <p style="margin-top:10px; font-size:0.9rem; color:#475569;">※ AI動画においては単なる「動く絵」から「カメラで撮影した映像」に質をランクアップさせる必須技術です。</p>
                     </div>
 
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-anchor" style="color:#8b5cf6;"></i> 2. 意図しないブレを防ぐ（コンテキスト）</h4>
                         <p>カメラを動かした際、背景や周囲の状況が「ぐにゃぐにゃ」と崩れるのを防ぐ技術です。</p>
                         <div class="prompt-code">A bustling futuristic street in the background, neon signs reflecting on puddles</div>
-                        <p style="margin-top:10px; font-size:0.9rem; color:#475569;">※ 主役だけでなく「その周りがどうなっているか（コンテキスト）」を詳細に指定することで、カメラ移動時の空間が安定します。</p>
                     </div>
-
-                    <div class="bento-item" style="grid-column: 1 / -1;">
-                        <h4><i class="fa-solid fa-cube" style="color:#f59e0b;"></i> 3. 失敗しない構図作り（3D連携）</h4>
-                        <p>AIのランダムな出力に依存せず、無料の3Dツール（Hitem3D や Blender）を用いて「あらかじめ完璧なアングルと構図」を作り、それをAIの参照画像（Image-to-Videoなど）として読み込ませる高度なテクニックです。</p>
-                        <ul style="color:#475569; margin-top:10px; padding-left:20px; font-size:1.05rem;">
-                            <li><strong>Hitem3D:</strong> ブラウザ上で使える簡易3Dレイアウトツール。キャラや建物の「アタリ」を数分で作成できます。</li>
-                            <li><strong>Gemini連携:</strong> 「どのようなプロンプトを書けばこの3D構図にマッチした映像になるか」をGeminiに相談しながら進めると確実です。</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <hr style="border:0; border-top:1px solid #e2e8f0; margin: 3rem 0;">
-
-                <h3 style="color:#0369a1; font-size:1.5rem;"><i class="fa-solid fa-video"></i> 【参考】カメラワーク動画 タイムスタンプ</h3>
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem; margin-bottom: 2rem;">
-                    <details class="prompt-accordion">
-                        <summary><span class="tag">0:37</span> 基本のカメラワーク <i class="fa-solid fa-chevron-down"></i></summary>
-                        <div class="prompt-content">
-                            <p style="margin-top:0;">パン、ティルト、ズーム等の基本的な表現とその書き方。</p>
-                        </div>
-                    </details>
-                    <details class="prompt-accordion">
-                        <summary><span class="tag">2:29</span> カメラワークの悩み解決 <i class="fa-solid fa-chevron-down"></i></summary>
-                        <div class="prompt-content">
-                            <p style="margin-top:0;">意図しない動きを制御し、映像を安定させるテクニック。</p>
-                        </div>
-                    </details>
-                    <details class="prompt-accordion">
-                        <summary><span class="tag">4:09</span> シーンコンテキストの追加 <i class="fa-solid fa-chevron-down"></i></summary>
-                        <div class="prompt-content">
-                            <p style="margin-top:0;">周囲の状況を指示し、破綻を防ぎながら豊かな映像にする手段。</p>
-                        </div>
-                    </details>
-                    <details class="prompt-accordion">
-                        <summary><span class="tag">6:32</span> ５つのポイント <i class="fa-solid fa-chevron-down"></i></summary>
-                        <div class="prompt-content">
-                            <p style="margin-top:0;">最終クオリティを底上げするための必須チェックリスト。</p>
-                        </div>
-                    </details>
-                </div>
-
-                <div class="info-box" style="border-left-color: #f59e0b; background: #fffbeb;">
-                    <h4 style="color:#b45309;"><i class="fa-solid fa-cubes"></i> 3Dツールへのリンク</h4>
-                    <p style="color:#92400e; margin-bottom:1.5rem;">動画内で紹介されている「アングル完全支配」のための3Dツールです。</p>
-                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-                        <a href="https://www.hitem3d.ai/" target="_blank" class="btn" style="background:#1e293b; margin-top:0;"><i class="fa-solid fa-cube"></i> Hitem3D サイトへ</a>
-                        <a href="https://www.blender.org/" target="_blank" class="btn" style="background:#ea580c; margin-top:0;"><i class="fa-solid fa-cubes"></i> Blender サイトへ</a>
-                    </div>
-                </div>
-
-                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff; margin-top:2.5rem;">
-                    <h4 style="color:#0369a1;"><i class="fa-solid fa-pen-nib"></i> 実習：プロンプト学習用ノートを作ろう</h4>
-                    <p style="color:#0c4a6e; margin-bottom:1rem;">
-                        生成のコツを理解し、学んだ内容を自分用の「プロンプトノート」としてまとめ、後から仕事や制作ですぐに引き出せるようにしておくことが目標です。このページ上部にあるプレイリストのリンクから動画を視聴し、学んだ技術をストックしましょう！
-                    </p>
-                    <a href="https://www.youtube.com/playlist?list=PLoQApr14fceM1VnrF1uTVceOH_56bBha0" target="_blank" class="btn" style="background:#0ea5e9; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);">
-                        <i class="fa-brands fa-youtube"></i> 実践プレイリストを開く
-                    </a>
                 </div>
 
                 <!-- GAMIFIED MISSION 2 -->
@@ -470,9 +412,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 4: SUMMARY
-        ========================================== -->
+        <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #8b5cf6; background: #faf5ff;">
                 <h3 style="color:#8b5cf6; font-size:1.8rem; margin-top:0; border-bottom:2px solid #ddd6fe; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
@@ -498,30 +438,41 @@ html_content = """<!DOCTYPE html>
 
     <!-- Scripts -->
     <script>
-        // Tab Nav
+        // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
             const buttons = document.querySelectorAll('.tab-btn');
             for(let i=0; i<buttons.length; i++){
-                if(buttons[i].getAttribute('onclick').includes(tabId)){
+                if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
                 }
             }
         }
 
-        // Checklist Logic
+        // --- Copy Utility ---
+        function copyCode(btn, elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                btn.style.color = '#10b981';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+            });
+        }
+
+        // --- Gamification Logic ---
         const missionGroups = {
             1: ['t1_1', 't1_2'],
             2: ['t2_1', 't2_2', 't2_3']
         };
         const allTasks = [...missionGroups[1], ...missionGroups[2]];
         let state = {};
+        const dayNum = "5";
 
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('day5_premium_prog');
+            const saved = localStorage.getItem('day' + dayNum + '_premium_prog');
             if (saved) {
                 state = JSON.parse(saved);
                 for (const taskId of allTasks) {
@@ -533,21 +484,31 @@ html_content = """<!DOCTYPE html>
             }
             checkGroups();
             updateProgress();
+            
+            // Scroll Progress
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const bar = document.getElementById("scroll-progress-bar");
+                if(bar) bar.style.width = scrolled + "%";
+            });
         });
 
         function toggleTask(taskId, element, groupId) {
             const done = element.classList.toggle('completed');
             state[taskId] = done;
-            localStorage.setItem('day5_premium_prog', JSON.stringify(state));
+            const dayKey = 'day' + dayNum + '_premium_prog';
+            localStorage.setItem(dayKey, JSON.stringify(state));
             
             updateProgress();
             checkGroups(groupId);
         }
 
         function checkGroups(triggerGroupId = null) {
-            let allMissionsDone = true;
             for(let groupId in missionGroups) {
                 const groupTasks = missionGroups[groupId];
+                if (!groupTasks) continue;
                 const allDone = groupTasks.every(t => state[t]);
                 const groupArea = document.getElementById('mission-group-' + groupId);
                 
@@ -555,11 +516,11 @@ html_content = """<!DOCTYPE html>
                     if (allDone && !groupArea.classList.contains('completed')) {
                         groupArea.classList.add('completed');
                         if(groupId == triggerGroupId) {
+                            playStampSound();
                             if(groupId == 2) fireConfetti(); 
                         }
                     } else if (!allDone) {
                         groupArea.classList.remove('completed');
-                        allMissionsDone = false;
                     }
                 }
             }
@@ -567,14 +528,36 @@ html_content = """<!DOCTYPE html>
 
         function updateProgress() {
             const count = allTasks.filter(t => state[t]).length;
-            const pct = Math.round((count / allTasks.length) * 100);
-            document.getElementById('progress-bar').style.width = pct + '%';
-            document.getElementById('progress-percent').innerText = pct + '%';
+            const total = allTasks.length;
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-percent');
+            if (bar) bar.style.width = pct + '%';
+            if (txt) txt.innerText = pct + '%';
         }
 
-        // Confetti Function
+        function playStampSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) { console.error("Audio error", e); }
+        }
+
         function fireConfetti() {
             const c = document.getElementById('confetti');
+            if (!c) return;
             const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
             const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
@@ -601,7 +584,6 @@ html_content = """<!DOCTYPE html>
                     ctx.restore();
                 });
                 if (active) aid = requestAnimationFrame(upd);
-                else ctx.clearRect(0, 0, c.width, c.height);
             }
             upd();
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 6000);

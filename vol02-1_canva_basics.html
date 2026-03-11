@@ -59,6 +59,25 @@
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-light), var(--accent)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Scroll Progress Bar at Bottom */
+        #scroll-progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        #scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
+            transition: width 0.1s ease-out;
+            box-shadow: 0 -2px 10px var(--accent-glow);
+        }
+
         /* Main Container */
         .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
 
@@ -102,7 +121,6 @@
         .btn:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
         .btn-outline { background: #fff; color: var(--accent); border: 2px solid var(--accent); box-shadow: none; }
         .btn-outline:hover { background: var(--accent-bg); border-color: #4338ca; color:#4338ca; transform: none; box-shadow:none;}
-
         
         /* Highlight box */
         .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
@@ -178,6 +196,7 @@
 <body>
 
     <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
 
     <!-- Header -->
     <header class="fixed-header">
@@ -205,9 +224,7 @@
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#10b981;"></i> 今日のまとめ</button>
         </div>
 
-        <!-- ==========================================
-             TAB 1: COURSE GOALS
-        ========================================== -->
+        <!-- TAB 1: COURSE GOALS -->
         <div id="tab-goal" class="tab-content active">
             <div class="glass-card" style="border-top: 5px solid #f59e0b;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#f59e0b; background:#fffbeb;"></i><h2>本日の研修ねらい</h2></div>
@@ -227,9 +244,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 2: FIRST HALF
-        ========================================== -->
+        <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #3b82f6;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#3b82f6; background:#eff6ff;"></i><h2>前半：説明と解説（動画）</h2></div>
@@ -245,7 +260,6 @@
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                 </div>
-            </div>
 
                 <div class="highlight-box">
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
@@ -262,42 +276,10 @@
                     </div>
                 </div>
 
-
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-laptop-code" style="color:#10b981; background:#f0fdf4;"></i><h2>前半：実習（Canvaの使い方を覚えよう）</h2></div>
-                <p style="font-size:1.1rem;">実際にCanvaにログインし、投稿の作成からAI機能を試すところまで実践します。</p>
-                
-                <div class="info-box">
-                    <h4><i class="fa-solid fa-star"></i> おすすめの使い方 3ステップ</h4>
-                    <p>①テンプレートを選ぶ → ②テキスト・色を変える → ③AI機能（マジック生成やマジック消しゴム）で画像を加工する！</p>
-                </div>
-
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-                    <div class="box canva">
-                        <h4>Canva基本操作おさらい</h4>
-                        <ul style="padding-left:20px; line-height:2.2;">
-                            <li>「デザインを作成」からサイズを選択</li>
-                            <li>Ctrl+C / Ctrl+V でコピペ</li>
-                            <li>Ctrl+D で要素の複製</li>
-                            <li>重なり順の調整（前面・背面）</li>
-                        </ul>
-                    </div>
-                    <div class="box canva">
-                        <h4>マジックスタジオ（AI機能）</h4>
-                        <ul style="padding-left:20px; line-height:2.2;">
-                            <li>マジック生成（テキスト→画像）</li>
-                            <li>マジック消しゴム・背景リムーバ</li>
-                            <li>マジック拡張（AIで描きたし）</li>
-                            <li>Dream Lab（超高品質なAIスタジオ）</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- GAMIFIED MISSION -->
-                <div class="mission-area" id="mission-group-1">
-                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #60a5fa, #3b82f6, #1d4ed8); border-color:#1e3a8a;"><i class="fa-solid fa-check"></i></div>
+                <div class="mission-area" id="mission-group-1" style="border-color: #3b82f6;">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #bfdbfe, #3b82f6, #1e3a8a); border-color:#1e3a8a;"><i class="fa-solid fa-check"></i></div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-clipboard-list"></i> MILESTONE 1: Canvaデビュー</h3>
+                        <h3 style="color:#3b82f6;"><i class="fa-solid fa-clipboard-list"></i> MILESTONE 1: Canvaデビュー</h3>
                         <p>すべてのチェックを入れるとクリア報酬が発動します！</p>
                     </div>
                     
@@ -324,17 +306,10 @@
                                 <p>Canvaの「マジック生成」で好きなプロンプトを入力し、画像を生成する。</p>
                             </div>
                         </li>
-                        <li class="task-item" onclick="toggleTask('t1_4', this, 1)">
-                            <div class="custom-checkbox" id="check_t1_4"><i class="fa-solid fa-check"></i></div>
-                            <div class="task-content">
-                                <h4>デザインの保存</h4>
-                                <p>作ったデザインのファイル名に自分の名前をつけて保存・提出する。</p>
-                            </div>
-                        </li>
                     </ul>
                 </div>
-
             </div>
+
             <div style="text-align:center; padding: 2rem 0;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
                     後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
@@ -342,9 +317,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 3: SECOND HALF
-        ========================================== -->
+        <!-- TAB 3: SECOND HALF -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #8b5cf6;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#8b5cf6; background:#f5f3ff;"></i><h2>後半：動画解説（Affinity ＆ Nano Banana）</h2></div>
@@ -363,76 +336,41 @@
 
                 <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
                     <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">Affinity by CanvaやNano Banana等のツールの実践的な画像生成・編集プロンプトのテクニックをまとめました。</p>
+                    <p style="margin-bottom:0; line-height:1.7;">プロンプトの4要素（被写体、背景、照明、カメラアングル）と言語化の重要性についてまとめました。</p>
                 </div>
                 <div class="bento-grid">
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 1. プロンプト生成術</h4>
-                        <p>被写体、背景、照明、カメラアングルの4要素を具体的に言語化することで、生成される画像の精度が圧倒的に上がります。</p>
+                        <p>具体的なキーワードを指定することで、AIが生成する画像の精度が格段に上がります。</p>
                     </div>
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-crop-simple" style="color:#10b981;"></i> 2. AIツール間の連携</h4>
-                        <p>Nano Bananaでリアルな人物画像を生成し、Canvaで文字入れとレイアウトを行うなど、複数ツールの組み合わせで高クオリティな制作が可能です。</p>
+                        <p>Nano Bananaで生成し、Canvaで仕上げる。これが最短で高品質な作品を作るコツです。</p>
                     </div>
                 </div>
 
-
-                <div class="info-box" style="border-left-color: #8b5cf6; background: #f5f3ff;">
-                    <h4 style="color:#6d28d9;"><i class="fa-solid fa-wand-magic-sparkles"></i> プロンプトによる画像編集・加工</h4>
-                    <p style="color:#4c1d95;">ゼロから画像を生成するだけでなく、すでに存在している写真の「背景だけを変える」「いらない看板だけを消す」など、部分的なプロンプト補正技術も習得しましょう。</p>
-                </div>
-            </div>
-
-                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
-                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">Affinity by CanvaやNano Banana等のツールの実践的な画像生成・編集プロンプトのテクニックをまとめました。</p>
-                </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-palette" style="color:#f59e0b;"></i> 1. プロンプト生成術</h4>
-                        <p>被写体、背景、照明、カメラアングルの4要素を具体的に言語化することで、生成される画像の精度が圧倒的に上がります。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-crop-simple" style="color:#10b981;"></i> 2. AIツール間の連携</h4>
-                        <p>Nano Bananaでリアルな人物画像を生成し、Canvaで文字入れとレイアウトを行うなど、複数ツールの組み合わせで高クオリティな制作が可能です。</p>
-                    </div>
-                </div>
-
-
-            <!-- GAMIFIED MISSION -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-pen-ruler" style="color:#10b981; background:#f0fdf4;"></i><h2>後半：実習（プロンプトノート作成）</h2></div>
-                <p style="font-size:1.1rem;">画像生成のコツを自分のものにするために、プロンプトの一覧をノートにまとめます。</p>
-
-                <div class="mission-area" id="mission-group-2">
+                <div class="mission-area" id="mission-group-2" style="border-color: #8b5cf6;">
                     <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #c4b5fd, #8b5cf6, #5b21b6); border-color:#4c1d95;"><i class="fa-solid fa-stamp"></i></div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: プロンプト武具庫</h3>
-                        <p>知識を文字に起こし、定着させよう！</p>
+                        <h3 style="color:#8b5cf6;"><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: プロンプト武具庫</h3>
+                        <p>お気に入りのプロンプトをストックしよう！</p>
                     </div>
                     
                     <ul class="task-list">
                         <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>Nano Banana用プロンプトまとめ</h4>
-                                <p>専用シートから気に入ったプロンプトをピックアップし、自分のドキュメントに保存する。</p>
-                                <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing" target="_blank" class="btn btn-sm btn-outline" onclick="event.stopPropagation();"><i class="fa-solid fa-table"></i> プロンプト一覧表を開く</a>
+                                <h4>Nano Banana用プロンプト保存</h4>
+                                <p>専用シートから気になるプロンプトをピックアップして自分の控えに残す。</p>
+                                <a href="https://docs.google.com/spreadsheets/d/1bRG2ciyDl2DHQLjIY4k8bJrUzuvD0orX1UFA0yqY1xU/edit?usp=sharing" target="_blank" class="btn btn-sm btn-outline" onclick="event.stopPropagation();"><i class="fa-solid fa-table"></i> プロンプトシート</a>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
                             <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>画像素材のダウンロードと加工</h4>
-                                <p>加工用の画像素材をダウンロードし、Nano Bananaなどで背景変更や不要物消去などを試す。</p>
-                                <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing" target="_blank" class="btn btn-sm" onclick="event.stopPropagation();"><i class="fa-brands fa-google-drive"></i> 素材フォルダを開く</a>
-                            </div>
-                        </li>
-                        <li class="task-item" onclick="toggleTask('t2_3', this, 2)">
-                            <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
-                            <div class="task-content">
-                                <h4>【発展】追加ツールを触ってみる</h4>
-                                <p>時間が余った場合は、AffinityやAIEASEといった特化型ツールにも少しだけ触れておく。</p>
+                                <h4>画像素材の加工体験</h4>
+                                <p>素材フォルダの画像を使って、背景変更や不要物消去などを実際に試す。</p>
+                                <a href="https://drive.google.com/drive/folders/1lcq-8fEZLzjv0fs9EdYg3AuKvm_aGQF3?usp=sharing" target="_blank" class="btn btn-sm" onclick="event.stopPropagation();"><i class="fa-brands fa-google-drive"></i> 素材フォルダ</a>
                             </div>
                         </li>
                     </ul>
@@ -446,9 +384,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 4: SUMMARY
-        ========================================== -->
+        <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #10b981; background: #f0fdf4;">
                 <h3 style="color:#10b981; font-size:1.8rem; margin-top:0; border-bottom:2px solid #a7f3d0; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
@@ -456,9 +392,8 @@
                 </h3>
                 <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
                     お疲れ様でした！本日は<strong>「Canva」と「AIの連携」</strong>をテーマに学びました。<br>
-                    優れたプロンプトだけがあっても、それを表現できるプラットフォームがなければ人の心は動きません。<br><br>
                     Canvaの強力なテンプレートとAIの魔法をかき混ぜて、<br>
-                    誰もが驚くような美しいデジタル作品・動画を作り上げていきましょう！
+                    誰もが驚くような美しいデジタル作品を作り上げていきましょう！
                 </p>
                 
                 <div style="margin-top:3rem; text-align:center;">
@@ -474,29 +409,41 @@
 
     <!-- Scripts -->
     <script>
+        // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
-            
             const buttons = document.querySelectorAll('.tab-btn');
             for(let i=0; i<buttons.length; i++){
-                if(buttons[i].getAttribute('onclick').includes(tabId)){
+                if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
                 }
             }
         }
 
+        // --- Copy Utility ---
+        function copyPrompt(btn) {
+            const pre = btn.nextElementSibling.innerText;
+            navigator.clipboard.writeText(pre).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                btn.style.background = '#059669'; btn.style.color = '#fff'; btn.style.borderColor = '#059669';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 2000);
+            });
+        }
+
+        // --- Gamification Logic ---
         const missionGroups = {
-            1: ['t1_1', 't1_2', 't1_3', 't1_4'],
-            2: ['t2_1', 't2_2', 't2_3']
+            1: ['t1_1', 't1_2', 't1_3'],
+            2: ['t2_1', 't2_2']
         };
         const allTasks = [...missionGroups[1], ...missionGroups[2]];
         let state = {};
+        const dayNum = "2";
 
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('day2_premium_prog');
+            const saved = localStorage.getItem('day' + dayNum + '_premium_prog');
             if (saved) {
                 state = JSON.parse(saved);
                 for (const taskId of allTasks) {
@@ -508,22 +455,110 @@
             }
             checkGroups();
             updateProgress();
+            
+            // Scroll Progress
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const bar = document.getElementById("scroll-progress-bar");
+                if(bar) bar.style.width = scrolled + "%";
+            });
         });
 
-        
-        // --- Standardized Checklist & Progress Logic ---
-        
-                            } else if (!allDone) {
+        function toggleTask(taskId, element, groupId) {
+            const done = element.classList.toggle('completed');
+            state[taskId] = done;
+            const dayKey = 'day' + dayNum + '_premium_prog';
+            localStorage.setItem(dayKey, JSON.stringify(state));
+            
+            updateProgress();
+            checkGroups(groupId);
+        }
+
+        function checkGroups(triggerGroupId = null) {
+            for(let groupId in missionGroups) {
+                const groupTasks = missionGroups[groupId];
+                if (!groupTasks) continue;
+                const allDone = groupTasks.every(t => state[t]);
+                const groupArea = document.getElementById('mission-group-' + groupId);
+                
+                if (groupArea) {
+                    if (allDone && !groupArea.classList.contains('completed')) {
+                        groupArea.classList.add('completed');
+                        if(groupId == triggerGroupId) {
+                            playStampSound();
+                            if(groupId == 2) fireConfetti(); 
+                        }
+                    } else if (!allDone) {
                         groupArea.classList.remove('completed');
                     }
                 }
             }
         }
 
-        
-         catch(e) { console.error("Audio error", e); }
+        function updateProgress() {
+            const count = allTasks.filter(t => state[t]).length;
+            const total = allTasks.length;
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-percent');
+            if (bar) bar.style.width = pct + '%';
+            if (txt) txt.innerText = pct + '%';
         }
 
-        </script>
+        function playStampSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) { console.error("Audio error", e); }
+        }
+
+        function fireConfetti() {
+            const c = document.getElementById('confetti');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
+            for (let i = 0; i < 150; i++) {
+                pieces.push({
+                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
+                    w: Math.random() * 8 + 6, h: Math.random() * 8 + 6,
+                    vx: Math.random() * 6 - 3, vy: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360, rs: Math.random() * 10 - 5
+                });
+            }
+            let aid;
+            function upd() {
+                ctx.clearRect(0, 0, c.width, c.height);
+                let active = false;
+                pieces.forEach(p => {
+                    p.y += p.vy; p.x += p.vx; p.rot += p.rs;
+                    if (p.y < c.height) active = true;
+                    ctx.save(); ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+                });
+                if (active) aid = requestAnimationFrame(upd);
+            }
+            upd();
+            setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 6000);
+        }
+    </script>
 </body>
 </html>

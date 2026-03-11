@@ -58,6 +58,25 @@
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--clickable), var(--accent)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Scroll Progress Bar at Bottom */
+        #scroll-progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        #scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
+            transition: width 0.1s ease-out;
+            box-shadow: 0 -2px 10px var(--accent-glow);
+        }
+
         /* Main Container */
         .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
 
@@ -88,11 +107,6 @@
         .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
         .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
 
-        
-        /* Highlight box */
-        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
-        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
-
         /* Video Grid */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin: 2rem 0;}
         .video-thumb { position: relative; border-radius: 16px; overflow: hidden; display: block; border: 4px solid #fff; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: #000;}
@@ -107,14 +121,12 @@
         /* ---------------------------------
            BENTO GRID & CUSTOM UI
         --------------------------------- */
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
         .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
         .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
         .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--clickable); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
         .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0; }
 
-        /* Browser Mockup / Code Box */
-        .mockup-container { margin: 2.5rem 0; display: flex; justify-content: center; perspective: 1000px; }
         .browser-mockup { width: 100%; background: #1e293b; border-radius: 12px; overflow: hidden; margin: 1.5rem 0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155; }
         .browser-header { background: #0f172a; padding: 12px 16px; display: flex; gap: 8px; border-bottom: 1px solid #334155; align-items:center;}
         .browser-dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -138,20 +150,9 @@
         .prompt-accordion[open] summary { border-bottom: 1px solid #e2e8f0; background: #fff; color:var(--clickable);}
         .prompt-content { padding: 1.5rem; animation: slideDown 0.3s ease; }
         .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
-        .yt-time-btn { display: inline-flex; align-items: center; gap: 6px; background: #fee2e2; color: #b91c1c; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; border: 1px solid #fca5a5; white-space: nowrap; margin-bottom: 10px;}
-        .yt-time-btn:hover { background: #fca5a5; color: #7f1d1d; }
 
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Workflow */
-        .workflow { display: flex; flex-direction:column; gap: 1.5rem; position: relative; margin: 3.5rem 0 3.5rem 2rem; }
-        .workflow::before { content: ""; position: absolute; top: 10px; bottom: 10px; left: 24px; width: 4px; background: #e2e8f0; z-index: 0; }
-        .flow-step { display: flex; align-items: flex-start; gap: 2rem; position: relative; z-index: 1; }
-        .step-icon { width: 52px; height: 52px; background: #fff; border: 4px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.05); flex-shrink:0;}
-        .flow-step:hover .step-icon { background: var(--accent); color: #fff; transform: scale(1.15); box-shadow: 0 10px 25px var(--accent-glow); }
-        .step-content { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:1.5rem; flex-grow:1; box-shadow: 0 4px 10px rgba(0,0,0,0.02);}
-        .step-content h4 { font-weight: 800; display: block; margin: 0 0 0.5rem; font-size: 1.1rem; color:var(--text-main);}
-        
         /* ---------------------------------
            GAMIFICATION & CHECKLIST
         --------------------------------- */
@@ -219,6 +220,7 @@
 
     <canvas id="particles"></canvas>
     <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
 
     <!-- Header -->
     <header class="fixed-header">
@@ -235,7 +237,7 @@
         <div class="hero">
             <div class="day-badge">DAY 04</div>
             <h1>Nano Banana Pro 教科書</h1>
-            <p>本日の目標：テキストから画像への変換技術の基礎をマスターする。<br>プロンプトによる画像生成のキホンから、実務で使える高度な編集テクニックまでを網羅します。</p>
+            <p>本日の目標：画像生成の基礎をマスターする。<br>プロンプトによる画像生成のキホンから、実務で使える高度な編集テクニックまでを網羅します。</p>
         </div>
 
         <!-- Premium Tab Navigation -->
@@ -246,9 +248,7 @@
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#8b5cf6;"></i> 今日のまとめ</button>
         </div>
 
-        <!-- ==========================================
-             TAB 1: COURSE GOALS
-        ========================================== -->
+        <!-- TAB 1: COURSE GOALS -->
         <div id="tab-goal" class="tab-content active">
             <div class="glass-card" style="border-top: 5px solid #f59e0b;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#f59e0b; background:#fffbeb;"></i><h2>本日の研修ねらい</h2></div>
@@ -256,7 +256,7 @@
                     <h4 style="color:#b45309;"><i class="fa-solid fa-wand-magic-sparkles"></i> 思い通りのビジュアルを生み出す力</h4>
                     <p style="color:#92400e;">
                         本日は「画像生成AI」の基礎と実践的な活用方法を学びます。<br><br>
-                        テキストから画像を生成する際の「プロンプトの型」を理解し、さらに生成された画像を思い通りに「加工・修正」するテクニックを習得します。動画編集やデザイン実務において、もはや他人の素材を探す時間は不要になります。自分の頭の中のビジュアルを最速で具現化できる人材になりましょう！
+                        テキストから画像を生成する際の「プロンプトの型」を理解し、さらに生成された画像を思い通りに「加工・修正」するテクニックを習得します。自分の頭の中のビジュアルを最速で具現化できる人材になりましょう！
                     </p>
                 </div>
             </div>
@@ -267,9 +267,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 2: FIRST HALF
-        ========================================== -->
+        <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #10b981;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：AI画像生成の基礎・応用</h2></div>
@@ -293,14 +291,13 @@
                 <div class="bento-grid">
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-camera-retro" style="color:#0ea5e9;"></i> 1. Midjourneyの実力</h4>
-                        <p>写真と見紛うレベルの写実性や、絵画のような表現力において他を圧倒しています。英語プロンプトのコツ（--ar, --v などのパラメータ）を学ぶ必要があります。</p>
+                        <p>写真と見紛うレベルの写実性や、絵画のような表現力において他を圧倒しています。英語プロンプトのコツを学ぶ必要があります。</p>
                     </div>
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-people-group" style="color:#f59e0b;"></i> 2. 国産AIの強み</h4>
-                        <p>海外製AIでは再現が難しい「日本らしい風景」や「自然な日本人の顔」を生成する際は、国内向けに調整されたNanoBanana等が最適です。</p>
+                        <p>海外製AIでは再現が難しい「日本らしい風景」や「自然な日本人の顔」を生成する際は、NanoBanana等が最適です。</p>
                     </div>
                 </div>
-
 
                 <div class="bento-grid">
                     <div class="bento-item" style="border-top:4px solid #f59e0b;">
@@ -319,11 +316,16 @@
 
                 <div class="code-box">
                     <span class="code-label">Markdown プロンプト例</span>
-                    # 被写体<br>- 年齢・性別: 20代の女性<br>- 服装: モダンなスーツ<br><br>
-                    # 環境・光<br>- 場所: オフィスのカフェスペース<br><br>
-                    # スタイル<br>- 写真調, 高画質, 8k
+                    <div id="prompt-ex1"># 被写体
+- 年齢・性別: 20代の女性
+- 服装: モダンなスーツ
+
+# 環境・光
+- 場所: オフィスのカフェスペース
+
+# スタイル
+- 写真調, 高画質, 8k</div>
                     <button class="btn-copy" onclick="copyCode('prompt-ex1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                    <div id="prompt-ex1" style="display:none;"># 被写体\n- 年齢・性別: 20代の女性\n- 服装: モダンなスーツ\n\n# 環境・光\n- 場所: オフィスのカフェスペース\n\n# スタイル\n- 写真調, 高画質, 8k</div>
                 </div>
 
                 <!-- Interactive Cauldron -->
@@ -331,10 +333,10 @@
                 <p>要素（チップ）を下の「魔法の釜（ドロップゾーン）」にドラッグ＆ドロップして完成させましょう！</p>
                 <div class="cauldron-container" id="cauldron-drop-area">
                     <div class="cauldron-ingredients" id="ingredients-list">
-                        <div class="drag-chip chip-sub" draggable="true" data-text="サイバーパンクな街並み," id="c_ing1"><i class="fa-solid fa-city"></i> サイバーパンク街 (Subject)</div>
-                        <div class="drag-chip chip-style" draggable="true" data-text="水彩画タッチ, 淡い色合い," id="c_ing2"><i class="fa-solid fa-palette"></i> 水彩画タッチ (Style)</div>
-                        <div class="drag-chip chip-style" draggable="true" data-text="シネマティックライティング, 8k," id="c_ing3"><i class="fa-solid fa-video"></i> シネマティック (Lighting)</div>
-                        <div class="drag-chip chip-param" draggable="true" data-text="--ar 16:9" id="c_ing4"><i class="fa-solid fa-expand"></i> 横長 (--ar)</div>
+                        <div class="drag-chip chip-sub" draggable="true" data-text="サイバーパンクな街並み," id="c_ing1" ondragstart="drag(event)"><i class="fa-solid fa-city"></i> サイバーパンク街 (Subject)</div>
+                        <div class="drag-chip chip-style" draggable="true" data-text="水彩画タッチ, 淡い色合い," id="c_ing2" ondragstart="drag(event)"><i class="fa-solid fa-palette"></i> 水彩画タッチ (Style)</div>
+                        <div class="drag-chip chip-style" draggable="true" data-text="シネマティックライティング, 8k," id="c_ing3" ondragstart="drag(event)"><i class="fa-solid fa-video"></i> シネマティック (Lighting)</div>
+                        <div class="drag-chip chip-param" draggable="true" data-text="--ar 16:9" id="c_ing4" ondragstart="drag(event)"><i class="fa-solid fa-expand"></i> 横長 (--ar)</div>
                     </div>
                     <div class="cauldron-pot-area" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                         <div class="cauldron-dropzone" id="cauldron-state">
@@ -376,7 +378,6 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
             <div style="text-align:center; padding: 2rem 0;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px; background:#10b981;" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
@@ -385,24 +386,7 @@
             </div>
         </div>
 
-        <!-- ==========================================
-             
-                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:2.5rem;">
-                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">Nano Banana Pro & Imagen 3(Google) の実践活用術と裏技です。</p>
-                </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-user-ninja" style="color:#10b981;"></i> 1. Imagen 3のテキスト再現</h4>
-                        <p>Geminiの裏側で動く画像AIは、イラスト内に「看板の文字」などを正確に出力できる機能に優れており、ポスターやバナー素材の作成に威力を発揮します。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-face-smile-wink" style="color:#f43f5e;"></i> 2. 表情とライティングの徹底</h4>
-                        <p>プロンプトに「シネマティックライティング」「ボケみ（DOF）」「逆光」などの写真用語を盛り込むことで、出力画像のプロっぽさが劇的向上します。</p>
-                    </div>
-                </div>
-TAB 3: SECOND HALF
-        ========================================== -->
+        <!-- TAB 3: SECOND HALF -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #0ea5e9;">
                 <div class="card-header"><i class="fa-solid fa-layer-group" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半：実践・画像編集テクニック</h2></div>
@@ -419,13 +403,27 @@ TAB 3: SECOND HALF
                     </a>
                 </div>
 
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-bolt"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">Nano Banana Pro ＆ Imagen 3(Google) の実践活用術と裏技です。</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-user-ninja" style="color:#10b981;"></i> 1. Imagen 3のテキスト再現</h4>
+                        <p>イラスト内に「看板の文字」などを正確に出力できる機能に優れており、ポスターやバナー作成に威力を発揮します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-face-smile-wink" style="color:#f43f5e;"></i> 2. 表情とライティング</h4>
+                        <p>「シネマティックライティング」「ボケみ（DOF）」等の用語を盛り込むことで、出力のプロっぽさが向上します。</p>
+                    </div>
+                </div>
+
                 <h3 style="color:#0369a1; margin-top:3rem; font-size:1.5rem;"><i class="fa-solid fa-toolbox"></i> Nano Banana Pro 活用術 抜粋</h3>
                 
-                <!-- Accordions -->
                 <details class="prompt-accordion">
                     <summary><span class="tag">Tip</span> ① キャラクターの一貫性 (Character Reference) <i class="fa-solid fa-chevron-down"></i></summary>
                     <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 同じ人物を違うポーズや服装で生成。「--cref」パラメータを使います。</p>
+                        <p style="margin-top:0;"><strong>解説:</strong> 同じ人物を違うポーズで生成。「--cref」パラメータを使います。</p>
                         <div class="browser-mockup">
                             <div class="browser-header">
                                 <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
@@ -441,7 +439,7 @@ TAB 3: SECOND HALF
                 <details class="prompt-accordion">
                     <summary><span class="tag">Tip</span> ② 高度な部分修正 (Inpaint) <i class="fa-solid fa-chevron-down"></i></summary>
                     <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 既存画像の「一部だけ」を指定して別のものに書き換える技術。服を変えたり、不要なものを消したりできます。</p>
+                        <p style="margin-top:0;"><strong>解説:</strong> 既存画像の「一部だけ」を指定して書き換える技術。</p>
                         <div class="browser-mockup">
                             <div class="browser-header">
                                 <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
@@ -455,32 +453,16 @@ TAB 3: SECOND HALF
                 </details>
 
                 <details class="prompt-accordion">
-                    <summary><span class="tag">Tip</span> ③ 構図・スタイルのコピー (Style Reference) <i class="fa-solid fa-chevron-down"></i></summary>
+                    <summary><span class="tag">Tip</span> ③ 構図・スタイルのコピー <i class="fa-solid fa-chevron-down"></i></summary>
                     <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 手持ちの画像の「雰囲気や画風」だけを借りて新しい画像を作ります。「--sref」パラメータを使います。</p>
+                        <p style="margin-top:0;"><strong>解説:</strong> 手持ちの画像の雰囲気を借りる「--sref」パラメータ。</p>
                         <div class="browser-mockup">
                             <div class="browser-header">
                                 <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
                             </div>
                             <div class="browser-content">
                                 <button class="btn-copy" onclick="copyCode('p-3', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                                <div id="p-3">サイバーパンクな街並み --sref [水彩画の画像URL]</div>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="prompt-accordion">
-                    <summary><span class="tag">Tip</span> ④ 画像の拡張 (Outpaint / Zoom) <i class="fa-solid fa-chevron-down"></i></summary>
-                    <div class="prompt-content">
-                        <p style="margin-top:0;"><strong>解説:</strong> 縦長で作ってしまった画像をアップスケールせずに横の背景をAIに描き足させ、16:9に変えることができます。</p>
-                        <div class="browser-mockup">
-                            <div class="browser-header">
-                                <div class="browser-dot" style="background:#ef4444"></div><div class="browser-dot" style="background:#f59e0b"></div><div class="browser-dot" style="background:#10b981"></div>
-                            </div>
-                            <div class="browser-content">
-                                <button class="btn-copy" onclick="copyCode('p-4', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                                <div id="p-4">(Pan ➡️ ボタンをクリック)</div>
+                                <div id="p-3">サイバーパンクな街並み --sref [水彩画のURL]</div>
                             </div>
                         </div>
                     </div>
@@ -493,7 +475,6 @@ TAB 3: SECOND HALF
                         <h3 style="color:#0ea5e9;"><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: 応用と実践</h3>
                         <p>高度な技術で実務プロンプトを完成させよう！</p>
                     </div>
-                    
                     <ul class="task-list">
                         <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
@@ -506,7 +487,7 @@ TAB 3: SECOND HALF
                             <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
                                 <h4>プロンプトのストック</h4>
-                                <p>上の活用術アコーディオンから、自分が使いそうなテクニックをクリップボードにコピー（またはメモ）する。</p>
+                                <p>活用術から、自分が使いそうなテクニックをメモする。</p>
                             </div>
                         </li>
                     </ul>
@@ -520,9 +501,7 @@ TAB 3: SECOND HALF
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 4: SUMMARY
-        ========================================== -->
+        <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #8b5cf6; background: #faf5ff;">
                 <h3 style="color:#8b5cf6; font-size:1.8rem; margin-top:0; border-bottom:2px solid #ddd6fe; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
@@ -530,27 +509,13 @@ TAB 3: SECOND HALF
                 </h3>
                 <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
                     お疲れ様でした！本日は<strong>「画像生成と高度加工」</strong>について学びました。<br>
-                    1枚の画像をゼロから生み出すだけでなく、リファレンス（参照）機能やInpaint（部分修正）を駆使することで、完全にコントロールされた素材を手に入れることができます。<br><br>
+                    1枚の画像をゼロから生み出すだけでなく、リファレンス機能を駆使することで、完全にコントロールされた素材を手に入れることができます。<br><br>
                     次回はいよいよ、生成した画像に命を吹き込む「動画生成」の世界へ入ります！
                 </p>
-                
-                <!-- Quiz Area -->
-                <div class="glass-card" style="margin-top:3rem; background:#fff; border-color:#cbd5e1; box-shadow:none;">
-                    <h2 style="font-size:1.6rem; margin:0 0 0.5rem; color:var(--text-main);"><i class="fa-solid fa-pen-nib" style="color:#0ea5e9;"></i> 📝 理解度チェック</h2>
-                    <p style="color:var(--text-sub); margin-bottom:1.5rem;">Day 4 で学んだ知識を確認しましょう</p>
-                    <div id="quiz-vol02-2" style="text-align:left;">
-                        <div style="text-align:center; color:var(--text-sub); font-style:italic;">クイズを読み込み中...</div>
-                    </div>
-                </div>
-
                 <div style="margin-top:3rem; text-align:center;">
-                    <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:50px; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);" onclick="window.location.href='index.html'">
+                    <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:50px;" onclick="window.location.href='index.html'">
                         <i class="fa-solid fa-house"></i> 学習完了を記録してHomeへ戻る
                     </button>
-                    <!-- Dev Notes Link -->
-                    <div style="margin-top: 2rem;">
-                        <a href="index_dev_notes.html" style="color:#94a3b8; text-decoration:none; font-size:0.85rem;"><i class="fa-solid fa-code"></i> 制作の裏側・開発者ノートはこちら</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -560,21 +525,20 @@ TAB 3: SECOND HALF
 
     <!-- Scripts -->
     <script>
-        // Tab Nav
+        // --- Tab Switching Navigation ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
             const buttons = document.querySelectorAll('.tab-btn');
             for(let i=0; i<buttons.length; i++){
-                if(buttons[i].getAttribute('onclick').includes(tabId)){
+                if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
                 }
             }
         }
 
-        // Copy
+        // --- Copy Utility ---
         function copyCode(elementId, btn) {
             const text = document.getElementById(elementId).innerText;
             navigator.clipboard.writeText(text).then(() => {
@@ -585,16 +549,17 @@ TAB 3: SECOND HALF
             });
         }
 
-        // Checklist Logic
+        // --- Gamification Logic ---
         const missionGroups = {
             1: ['t1_1', 't1_2'],
             2: ['t2_1', 't2_2']
         };
         const allTasks = [...missionGroups[1], ...missionGroups[2]];
         let state = {};
+        const dayNum = "4";
 
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('day4_premium_prog');
+            const saved = localStorage.getItem('day' + dayNum + '_premium_prog');
             if (saved) {
                 state = JSON.parse(saved);
                 for (const taskId of allTasks) {
@@ -606,74 +571,88 @@ TAB 3: SECOND HALF
             }
             checkGroups();
             updateProgress();
+
+            // Scroll Progress
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const bar = document.getElementById("scroll-progress-bar");
+                if(bar) bar.style.width = scrolled + "%";
+            });
         });
 
-        
-        // --- Standardized Checklist & Progress Logic ---
-        
-                            } else if (!allDone) {
+        function toggleTask(taskId, element, groupId) {
+            const done = element.classList.toggle('completed');
+            state[taskId] = done;
+            localStorage.setItem('day' + dayNum + '_premium_prog', JSON.stringify(state));
+            updateProgress();
+            checkGroups(groupId);
+        }
+
+        function checkGroups(triggerGroupId = null) {
+            for(let groupId in missionGroups) {
+                const groupTasks = missionGroups[groupId];
+                if (!groupTasks) continue;
+                const allDone = groupTasks.every(t => state[t]);
+                const groupArea = document.getElementById('mission-group-' + groupId);
+                if (groupArea) {
+                    if (allDone && !groupArea.classList.contains('completed')) {
+                        groupArea.classList.add('completed');
+                        if(groupId == triggerGroupId) {
+                            playStampSound();
+                            if(groupId == 2) fireConfetti(); 
+                        }
+                    } else if (!allDone) {
                         groupArea.classList.remove('completed');
                     }
                 }
             }
         }
 
-        
-         catch(e) { console.error("Audio error", e); }
+        function updateProgress() {
+            const count = allTasks.filter(t => state[t]).length;
+            const total = allTasks.length;
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-percent');
+            if (bar) bar.style.width = pct + '%';
+            if (txt) txt.innerText = pct + '%';
         }
 
-        // Drag & Drop
-        let itemsInCauldron = 0;
-        let pText = "";
-        
-        // Use a simpler approach for events.
-        function allowDrop(ev) {
-            ev.preventDefault();
-            document.getElementById('cauldron-state').classList.add('drag-over');
-        }
-        function dragLeave(ev) {
-            document.getElementById('cauldron-state').classList.remove('drag-over');
-        }
-        
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-            ev.dataTransfer.effectAllowed = "move";
-        }
-        
-        function drop(ev) {
-            ev.preventDefault();
-            document.getElementById('cauldron-state').classList.remove('drag-over');
-
-            var id = ev.dataTransfer.getData("text");
-            var draggedItem = document.getElementById(id);
-
-            if (draggedItem && !draggedItem.classList.contains('used')) {
-                draggedItem.classList.add('used');
-                itemsInCauldron++;
-                document.getElementById('ing-count').innerText = itemsInCauldron;
-                
-                let text = draggedItem.getAttribute('data-text');
-                pText += text + " ";
-                document.getElementById('cauldron-out-text').innerText = pText;
-                
-                let clone = draggedItem.cloneNode(true);
-                clone.removeAttribute('draggable');
-                clone.classList.remove('used');
-                document.getElementById('cauldron-out-chips').appendChild(clone);
-
-                if (itemsInCauldron >= 4) {
-                    document.getElementById('cauldron-result').style.display = 'block';
-                    document.getElementById('cauldron-msg').innerText = "完了！擬似生成してください";
-                }
-            }
-        }
-        
-        function simImages() {
-           document.getElementById('sim-result').style.display = "block";
+        function playStampSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) {}
         }
 
-        // Confetti Function
-        );
+        function fireConfetti() {
+            const c = document.getElementById('confetti');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            c.width = window.innerWidth; c.height = window.innerHeight;
+            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
+            for (let i = 0; i < 150; i++) {
+                pieces.push({
+                    x: Math.random() * c.width, y: Math.random() * c.height - c.height,
+                    w: Math.random() * 8 + 6, h: Math.random() * 8 + 6,
+                    vx: Math.random() * 6 - 3, vy: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360, rs: Math.random() * 10 - 5
+                });
             }
             let aid;
             function upd() {
@@ -694,6 +673,35 @@ TAB 3: SECOND HALF
             upd();
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 6000);
         }
+
+        // --- Day 4 Specific: Cauldron ---
+        let itemsInCauldron = 0;
+        let pText = "";
+        function allowDrop(ev) { ev.preventDefault(); document.getElementById('cauldron-state').classList.add('drag-over'); }
+        function dragLeave(ev) { document.getElementById('cauldron-state').classList.remove('drag-over'); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev) {
+            ev.preventDefault();
+            document.getElementById('cauldron-state').classList.remove('drag-over');
+            var id = ev.dataTransfer.getData("text");
+            var draggedItem = document.getElementById(id);
+            if (draggedItem && !draggedItem.classList.contains('used')) {
+                draggedItem.classList.add('used');
+                itemsInCauldron++;
+                document.getElementById('ing-count').innerText = itemsInCauldron;
+                pText += draggedItem.getAttribute('data-text') + " ";
+                document.getElementById('cauldron-out-text').innerText = pText;
+                let clone = draggedItem.cloneNode(true);
+                clone.removeAttribute('draggable');
+                clone.classList.remove('used');
+                document.getElementById('cauldron-out-chips').appendChild(clone);
+                if (itemsInCauldron >= 4) {
+                    document.getElementById('cauldron-result').style.display = 'block';
+                    document.getElementById('cauldron-msg').innerText = "完了！擬似生成してください";
+                }
+            }
+        }
+        function simImages() { document.getElementById('sim-result').style.display = "block"; }
     </script>
 </body>
 </html>

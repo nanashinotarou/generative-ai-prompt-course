@@ -61,6 +61,25 @@ html_content = """<!DOCTYPE html>
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-light), var(--accent)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
 
+        /* Scroll Progress Bar at Bottom */
+        #scroll-progress-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        #scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
+            transition: width 0.1s ease-out;
+            box-shadow: 0 -2px 10px var(--accent-glow);
+        }
+
         /* Main Container */
         .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
 
@@ -115,7 +134,6 @@ html_content = """<!DOCTYPE html>
         .btn:hover { background: #4338ca; transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
         .btn-outline { background: #fff; color: var(--accent); border: 2px solid var(--accent); box-shadow: none; }
         .btn-outline:hover { background: var(--accent-bg); border-color: #4338ca; color:#4338ca; transform: none; box-shadow:none;}
-
         
         /* Highlight box */
         .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
@@ -191,6 +209,7 @@ html_content = """<!DOCTYPE html>
 <body>
 
     <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
 
     <!-- Header -->
     <header class="fixed-header">
@@ -218,9 +237,7 @@ html_content = """<!DOCTYPE html>
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#10b981;"></i> 今日のまとめ</button>
         </div>
 
-        <!-- ==========================================
-             TAB 1: COURSE GOALS
-        ========================================== -->
+        <!-- TAB 1: COURSE GOALS -->
         <div id="tab-goal" class="tab-content active">
             <div class="glass-card" style="border-top: 5px solid #f59e0b;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#f59e0b; background:#fffbeb;"></i><h2>本日の研修ねらい</h2></div>
@@ -240,9 +257,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 2: FIRST HALF
-        ========================================== -->
+        <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #3b82f6;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#3b82f6; background:#eff6ff;"></i><h2>前半：説明と解説（動画）</h2></div>
@@ -266,7 +281,6 @@ html_content = """<!DOCTYPE html>
                         <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                     </a>
                 </div>
-            </div>
 
                 <div class="highlight-box">
                     <h3><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
@@ -287,36 +301,10 @@ html_content = """<!DOCTYPE html>
                     </div>
                 </div>
 
-
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-laptop-code" style="color:#10b981; background:#f0fdf4;"></i><h2>前半：実習（Geminiを使ってみよう）</h2></div>
-                <p style="font-size:1.1rem;">Geminiの多彩な機能を体験し、プロンプトの基礎を学びます。</p>
-                
-                <div class="box gemini">
-                    <h4>Gemini（テキスト生成AI）にできること</h4>
-                    <ul style="padding-left:20px; line-height:2.2;">
-                        <li><strong>アイデア出し：</strong>「〇〇についての斬新なアイデアを10個出して」</li>
-                        <li><strong>文章作成・要約：</strong>「この長文を重要なポイント3つに絞って箇条書きにして」</li>
-                        <li><strong>画像生成：</strong>「未来都市を飛ぶ車の画像を生成して（※具体的な指示がカギ）」</li>
-                    </ul>
-                </div>
-
-                <div class="code-box">
-                    <span class="code-label">プロンプト例（コピーして使ってみよう）</span>
-                    <button class="copy-btn" onclick="copyPrompt(this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                    <div class="code-text">
-<span style="color:#7dd3fc;"># 役割</span>
-あなたはプロのAIアシスタントです。
-
-<span style="color:#7dd3fc;"># 命令</span>
-「生成AIがもたらす未来」について、小学生でもわかる言葉で300文字程度で説明してください。</div>
-                </div>
-
-                <!-- GAMIFIED MISSION -->
-                <div class="mission-area" id="mission-group-1">
-                    <div class="wax-seal"><i class="fa-solid fa-check"></i></div>
+                <div class="mission-area" id="mission-group-1" style="border-color: #3b82f6;">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #bfdbfe, #3b82f6, #1e3a8a); border-color:#1e3a8a;"><i class="fa-solid fa-check"></i></div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-clipboard-list"></i> MILESTONE 1: アカウント設定と体感</h3>
+                        <h3 style="color:#3b82f6;"><i class="fa-solid fa-clipboard-list"></i> MILESTONE 1: アカウント設定と体感</h3>
                         <p>すべてのチェックを入れるとクリア報酬が発動します！</p>
                     </div>
                     
@@ -347,8 +335,8 @@ html_content = """<!DOCTYPE html>
                         </li>
                     </ul>
                 </div>
-
             </div>
+
             <div style="text-align:center; padding: 2rem 0;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
                     後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
@@ -356,9 +344,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 3: SECOND HALF
-        ========================================== -->
+        <!-- TAB 3: SECOND HALF -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #8b5cf6;">
                 <div class="card-header"><i class="fa-brands fa-youtube" style="color:#8b5cf6; background:#f5f3ff;"></i><h2>後半：動画解説（ファクトチェック＆比較）</h2></div>
@@ -390,79 +376,14 @@ html_content = """<!DOCTYPE html>
                     </div>
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-image" style="color:#8b5cf6;"></i> 2. 画像生成AIの適材適所</h4>
-                        <p>機能や得意分野はAIごとに異なります。「NanoBananaPro」はリアル系、「Seedream4.0」はテキスト再現、「Midjourney」はアート性、「Adobe Firefly」は商用利用など、目的に応じたツール選択が重要です。</p>
+                        <p>「NanoBananaPro」「Seedream4.0」「Midjourney」「Adobe Firefly」など、目的に応じたツール選択が重要です。</p>
                     </div>
                 </div>
 
-
-                <div class="info-box" style="border-left-color: #ef4444; background: #fef2f2;">
-                    <h4 style="color:#b91c1c;"><i class="fa-solid fa-triangle-exclamation"></i> ハルシネーションとファクトチェック（動画⑤）</h4>
-                    <p style="color:#7f1d1d;">生成AIは「もっともらしい嘘（ハルシネーション）」をつくことがあります。特に、数字、日付、人名には要注意です。AIの出力は必ず公式サイト等の一次情報で裏付け（ファクトチェック）を取る習慣をつけましょう。</p>
-                </div>
-
-                <h3 style="font-size: 1.5rem; margin-top:3rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;"><i class="fa-solid fa-images" style="color:#8b5cf6;"></i> 4つの画像生成AI 徹底比較</h3>
-                
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
-                    <div class="box canva">
-                        <h4>① NanoBanana Pro</h4>
-                        <ul style="padding-left:20px; line-height:2;">
-                            <li>日本語プロンプトに対応</li>
-                            <li>日本人の顔や日本的なシーンが得意</li>
-                            <li>リアル系の画像生成に圧倒的に強い</li>
-                        </ul>
-                    </div>
-                    <div class="box canva">
-                        <h4>② Seedream 4.0</h4>
-                        <ul style="padding-left:20px; line-height:2;">
-                            <li>Google開発の高品質生成モデル(Gemini等に搭載)</li>
-                            <li>テキストの正確な埋め込み（看板の文字等）が得意</li>
-                            <li>プロンプトの意図を正確に反映する力が強い</li>
-                        </ul>
-                    </div>
-                    <div class="box canva">
-                        <h4>③ Midjourney</h4>
-                        <ul style="padding-left:20px; line-height:2;">
-                            <li>アート性・美しさはトップクラス</li>
-                            <li>幻想的・映画的な美しいライティングが得意</li>
-                            <li>Discord/Webから利用。有料のみ</li>
-                        </ul>
-                    </div>
-                    <div class="box canva">
-                        <h4>④ Adobe Firefly</h4>
-                        <ul style="padding-left:20px; line-height:2;">
-                            <li>商用利用に最も安全（クリーンな学習データ）</li>
-                            <li>Photoshopとの連携による部分修正・拡張に強い</li>
-                            <li>合成や被写体の摘出が最も得意</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1; margin-top:3rem;">
-                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-triangle-exclamation"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
-                    <p style="margin-bottom:0; line-height:1.7;">生成AIの「弱点」と各画像生成AIの「特徴」を把握することが後半のテーマです。</p>
-                </div>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-mask" style="color:#ef4444;"></i> 1. AIの弱点（ハルシネーション）</h4>
-                        <p>AIはもっともらしい嘘をつくことがあります。特に日付や事実関係についてはAIの回答を鵜呑みにせず、必ず一次情報でファクトチェックを行うことが実務における必須スキルです。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-image" style="color:#8b5cf6;"></i> 2. 画像生成AIの適材適所</h4>
-                        <p>機能や得意分野はAIごとに異なります。「NanoBananaPro」はリアル系、「Seedream4.0」はテキスト再現、「Midjourney」はアート性、「Adobe Firefly」は商用利用など、目的に応じたツール選択が重要です。</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- GAMIFIED MISSION -->
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-pen-ruler" style="color:#10b981; background:#f0fdf4;"></i><h2>後半：実習（プロンプトノート作成）</h2></div>
-                <p style="font-size:1.1rem;">各AIの特徴を自分なりにまとめ、すぐに武器として使える「魔法の書」を作ります。</p>
-
-                <div class="mission-area" id="mission-group-2">
+                <div class="mission-area" id="mission-group-2" style="border-color: #8b5cf6;">
                     <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #c4b5fd, #8b5cf6, #5b21b6); border-color:#4c1d95;"><i class="fa-solid fa-stamp"></i></div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: 学習ノート完成</h3>
+                        <h3 style="color:#8b5cf6;"><i class="fa-solid fa-book-open-reader"></i> MILESTONE 2: 学習ノート完成</h3>
                         <p>知識を文字に起こし、定着させよう！</p>
                     </div>
                     
@@ -471,14 +392,14 @@ html_content = """<!DOCTYPE html>
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
                                 <h4>各AIの特徴ノート作成</h4>
-                                <p>指定のドキュメントからテキストをコピーし、1つのプロンプトごとに4つのAIの特徴をまとめる（Canva, スライド等を使用可）。</p>
+                                <p>指定のドキュメント等からテキストを整理し、各AIの特徴をまとめる。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
                             <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>得意分野の評価まとめ</h4>
-                                <p>①商品紹介 ②資料作成 ③実写広告 ④煽り画角 ⑤MV原型 ⑥大量生成 ⑦合成・摘出<br>の7項目について、どのAIがオススメか1ページにまとめる。</p>
+                                <h4>評価まとめの完了</h4>
+                                <p>どのAIがどの目的に適しているか、自分なりの判断基準を確立する。</p>
                             </div>
                         </li>
                     </ul>
@@ -492,9 +413,7 @@ html_content = """<!DOCTYPE html>
             </div>
         </div>
 
-        <!-- ==========================================
-             TAB 4: SUMMARY
-        ========================================== -->
+        <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
             <div class="glass-card" style="border: 2px solid #10b981; background: #f0fdf4;">
                 <h3 style="color:#10b981; font-size:1.8rem; margin-top:0; border-bottom:2px solid #a7f3d0; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
@@ -503,7 +422,6 @@ html_content = """<!DOCTYPE html>
                 <p style="font-size: 1.25rem; line-height: 2; color: #064e3b; margin-top:2rem; text-align:center; padding: 0 2rem;">
                     お疲れ様でした！本日は<strong>「テキスト生成AI（Gemini）」</strong>による思考の拡張と、<br>
                     <strong>「画像生成AI 4天王」</strong>それぞれの得意分野の違いについて学びました。<br><br>
-                    プロンプトは、AIという強力な魔法使いを動かすための<strong>「呪文」</strong>です。<br>
                     今日作成したノートをもとに、明日以降も様々な魔法を実践して使いこなしていきましょう！
                 </p>
                 
@@ -524,13 +442,10 @@ html_content = """<!DOCTYPE html>
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
             document.getElementById(tabId).classList.add('active');
-            
-            // Find the button that corresponds to the tabId and activate it
             const buttons = document.querySelectorAll('.tab-btn');
             for(let i=0; i<buttons.length; i++){
-                if(buttons[i].getAttribute('onclick').includes(tabId)){
+                if(buttons[i].getAttribute('onclick') && buttons[i].getAttribute('onclick').includes(tabId)){
                     buttons[i].classList.add('active');
                 }
             }
@@ -548,16 +463,16 @@ html_content = """<!DOCTYPE html>
         }
 
         // --- Gamification Logic ---
-        // Group tracking
         const missionGroups = {
             1: ['t1_1', 't1_2', 't1_3'],
             2: ['t2_1', 't2_2']
         };
         const allTasks = [...missionGroups[1], ...missionGroups[2]];
         let state = {};
+        const dayNum = "1";
 
         window.addEventListener('DOMContentLoaded', () => {
-            const saved = localStorage.getItem('day1_premium_prog');
+            const saved = localStorage.getItem('day' + dayNum + '_premium_prog');
             if (saved) {
                 state = JSON.parse(saved);
                 for (const taskId of allTasks) {
@@ -569,12 +484,22 @@ html_content = """<!DOCTYPE html>
             }
             checkGroups();
             updateProgress();
+            
+            // Scroll Progress
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                const bar = document.getElementById("scroll-progress-bar");
+                if(bar) bar.style.width = scrolled + "%";
+            });
         });
 
         function toggleTask(taskId, element, groupId) {
             const done = element.classList.toggle('completed');
             state[taskId] = done;
-            localStorage.setItem('day1_premium_prog', JSON.stringify(state));
+            const dayKey = 'day' + dayNum + '_premium_prog';
+            localStorage.setItem(dayKey, JSON.stringify(state));
             
             updateProgress();
             checkGroups(groupId);
@@ -583,13 +508,13 @@ html_content = """<!DOCTYPE html>
         function checkGroups(triggerGroupId = null) {
             for(let groupId in missionGroups) {
                 const groupTasks = missionGroups[groupId];
+                if (!groupTasks) continue;
                 const allDone = groupTasks.every(t => state[t]);
                 const groupArea = document.getElementById('mission-group-' + groupId);
                 
                 if (groupArea) {
                     if (allDone && !groupArea.classList.contains('completed')) {
                         groupArea.classList.add('completed');
-                        // Play sound and explode confetti only if triggered actively by click
                         if(groupId == triggerGroupId) {
                             playStampSound();
                             if(groupId == 2) fireConfetti(); 
@@ -603,24 +528,39 @@ html_content = """<!DOCTYPE html>
 
         function updateProgress() {
             const count = allTasks.filter(t => state[t]).length;
-            const pct = Math.round((count / allTasks.length) * 100);
-            document.getElementById('progress-bar').style.width = pct + '%';
-            document.getElementById('progress-percent').innerText = pct + '%';
+            const total = allTasks.length;
+            const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-percent');
+            if (bar) bar.style.width = pct + '%';
+            if (txt) txt.innerText = pct + '%';
         }
 
         function playStampSound() {
             try {
-                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-                audio.volume = 0.5; audio.play();
-            } catch(e) {}
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const audioCtx = new AudioContext();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) { console.error("Audio error", e); }
         }
 
-        // --- Confetti Engine ---
         function fireConfetti() {
             const c = document.getElementById('confetti');
+            if (!c) return;
             const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
-            const pieces = [], colors = ['#818cf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#38bdf8'];
+            const pieces = [], colors = ['#38bdf8', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#2dd4bf'];
             for (let i = 0; i < 150; i++) {
                 pieces.push({
                     x: Math.random() * c.width, y: Math.random() * c.height - c.height,
@@ -644,7 +584,6 @@ html_content = """<!DOCTYPE html>
                     ctx.restore();
                 });
                 if (active) aid = requestAnimationFrame(upd);
-                else ctx.clearRect(0, 0, c.width, c.height);
             }
             upd();
             setTimeout(() => { cancelAnimationFrame(aid); ctx.clearRect(0, 0, c.width, c.height); }, 6000);
