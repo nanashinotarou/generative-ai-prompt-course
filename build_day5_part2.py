@@ -6,66 +6,86 @@ html_content = """
         ========================================== -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #0ea5e9;">
-                <div class="card-header"><i class="fa-solid fa-film" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半：カメラワーク＆3D連携・実践プレイリスト</h2></div>
-                <p style="font-size:1.1rem; margin-bottom:1.5rem;">AI動画の“動きの質”を激変させる実践編です。</p>
+                <div class="card-header"><i class="fa-solid fa-film" style="color:#0ea5e9; background:#e0f2fe;"></i><h2>後半プレイリスト：実践カメラワークと3D連携</h2></div>
+                <p style="font-size:1.1rem; margin-bottom:1.5rem;">AI動画の“動きの質”を激変させる実践編と、構図を完璧にコントロールする3Dツール連携を学びます。</p>
                 
-                <h3 style="color:#0369a1; margin-top:2rem; font-size:1.4rem;"><i class="fa-solid fa-video"></i> カメラワークと動きの制御</h3>
-                <div class="video-grid" style="grid-template-columns: 1fr; max-width:800px; margin: 0 auto 3rem auto;">
-                    <a href="https://youtu.be/stgEbOmqL1A" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/stgEbOmqL1A/maxresdefault.jpg" alt="カメラワーク動画" onerror="this.src='https://img.youtube.com/vi/stgEbOmqL1A/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
+                <div style="text-align:center; margin-bottom: 3rem;">
+                    <a href="https://www.youtube.com/playlist?list=PLoQApr14fceM1VnrF1uTVceOH_56bBha0" target="_blank" class="btn" style="background:#0ea5e9; padding:0.8rem 2.5rem;"><i class="fa-brands fa-youtube"></i> 後半の再生リストを開く</a>
                 </div>
 
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
+                <div class="highlight-box" style="background: linear-gradient(135deg, #e0f2fe, #bae6fd); border-color: #7dd3fc; color: #0369a1;">
+                    <h3 style="color:#0284c7; border-bottom-color:#38bdf8;"><i class="fa-solid fa-book-open"></i> 読むだけでわかる！完全解説ダイジェスト</h3>
+                    <p style="margin-bottom:0; line-height:1.7;">このプレイリストを通して<strong>「AI動画をプロ水準に引き上げるカメラ表現と構図作成の極意」</strong>を習得できます。3つの重要ポイントを押さえるだけで、映像の説得力は段違いに跳ね上がります。</p>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-camera-rotate" style="color:#0ea5e9;"></i> 1. 基本のカメラワーク</h4>
+                        <p>「Pan（左右の振り）」「Tilt（上下の振り）」「Zoom（寄り・引き）」の3つをプロンプトで制御し、映像にダイナミズムを与えます。</p>
+                        <div class="prompt-code">Camera panning slowly from left to right, zooming in on the protagonist's eyes</div>
+                        <p style="margin-top:10px; font-size:0.9rem; color:#475569;">※ AI動画においては単なる「動く絵」から「カメラで撮影した映像」に質をランクアップさせる必須技術です。</p>
+                    </div>
+
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-anchor" style="color:#8b5cf6;"></i> 2. 意図しないブレを防ぐ（コンテキスト）</h4>
+                        <p>カメラを動かした際、背景や周囲の状況が「ぐにゃぐにゃ」と崩れるのを防ぐ技術です。</p>
+                        <div class="prompt-code">A bustling futuristic street in the background, neon signs reflecting on puddles</div>
+                        <p style="margin-top:10px; font-size:0.9rem; color:#475569;">※ 主役だけでなく「その周りがどうなっているか（コンテキスト）」を詳細に指定することで、カメラ移動時の空間が安定します。</p>
+                    </div>
+
+                    <div class="bento-item" style="grid-column: 1 / -1;">
+                        <h4><i class="fa-solid fa-cube" style="color:#f59e0b;"></i> 3. 失敗しない構図作り（3D連携）</h4>
+                        <p>AIのランダムな出力に依存せず、無料の3Dツール（Hitem3D や Blender）を用いて「あらかじめ完璧なアングルと構図」を作り、それをAIの参照画像（Image-to-Videoなど）として読み込ませる高度なテクニックです。</p>
+                        <ul style="color:#475569; margin-top:10px; padding-left:20px; font-size:1.05rem;">
+                            <li><strong>Hitem3D:</strong> ブラウザ上で使える簡易3Dレイアウトツール。キャラや建物の「アタリ」を数分で作成できます。</li>
+                            <li><strong>Gemini連携:</strong> 「どのようなプロンプトを書けばこの3D構図にマッチした映像になるか」をGeminiに相談しながら進めると確実です。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid #e2e8f0; margin: 3rem 0;">
+
+                <h3 style="color:#0369a1; font-size:1.5rem;"><i class="fa-solid fa-video"></i> 【参考】カメラワーク動画 タイムスタンプ</h3>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem; margin-bottom: 2rem;">
                     <details class="prompt-accordion">
                         <summary><span class="tag">0:37</span> 基本のカメラワーク <i class="fa-solid fa-chevron-down"></i></summary>
                         <div class="prompt-content">
-                            <p style="margin-top:0;">Kling AI等で使える基本的なカメラ表現（パン、ティルト、ズーム等）。</p>
-                            <a href="https://www.youtube.com/watch?v=stgEbOmqL1A&t=37s" target="_blank" class="yt-time-btn"><i class="fa-brands fa-youtube"></i> 0:37 から見る</a>
+                            <p style="margin-top:0;">パン、ティルト、ズーム等の基本的な表現とその書き方。</p>
                         </div>
                     </details>
                     <details class="prompt-accordion">
-                        <summary><span class="tag">2:29</span> カメラワークの悩み全解決 <i class="fa-solid fa-chevron-down"></i></summary>
+                        <summary><span class="tag">2:29</span> カメラワークの悩み解決 <i class="fa-solid fa-chevron-down"></i></summary>
                         <div class="prompt-content">
-                            <p style="margin-top:0;">よくある「意図しない動き」を制御し、安定させるテクニック。</p>
-                            <a href="https://www.youtube.com/watch?v=stgEbOmqL1A&t=149s" target="_blank" class="yt-time-btn"><i class="fa-brands fa-youtube"></i> 2:29 から見る</a>
+                            <p style="margin-top:0;">意図しない動きを制御し、映像を安定させるテクニック。</p>
                         </div>
                     </details>
                     <details class="prompt-accordion">
                         <summary><span class="tag">4:09</span> シーンコンテキストの追加 <i class="fa-solid fa-chevron-down"></i></summary>
                         <div class="prompt-content">
-                            <p style="margin-top:0;">画面の周囲の状況や文脈を指示し、より豊かな映像にする。</p>
-                            <a href="https://www.youtube.com/watch?v=stgEbOmqL1A&t=249s" target="_blank" class="yt-time-btn"><i class="fa-brands fa-youtube"></i> 4:09 から見る</a>
+                            <p style="margin-top:0;">周囲の状況を指示し、破綻を防ぎながら豊かな映像にする手段。</p>
                         </div>
                     </details>
                     <details class="prompt-accordion">
                         <summary><span class="tag">6:32</span> ５つのポイント <i class="fa-solid fa-chevron-down"></i></summary>
                         <div class="prompt-content">
-                            <p style="margin-top:0;">最終的なクオリティを底上げするための必須チェックリスト。</p>
-                            <a href="https://www.youtube.com/watch?v=stgEbOmqL1A&t=392s" target="_blank" class="yt-time-btn"><i class="fa-brands fa-youtube"></i> 6:32 から見る</a>
+                            <p style="margin-top:0;">最終クオリティを底上げするための必須チェックリスト。</p>
                         </div>
                     </details>
                 </div>
 
-                <hr style="border:0; border-top:1px solid #e2e8f0; margin: 3rem 0;">
-
-                <h3 style="color:#0369a1; font-size:1.4rem;"><i class="fa-solid fa-cube"></i> 背景もアングルも“3D”で完全支配。３D生成連携</h3>
-                <div class="video-grid" style="grid-template-columns: 1fr; max-width:800px; margin: 0 auto 1.5rem auto;">
-                    <a href="https://youtu.be/NfM2x5RqmUI" target="_blank" class="video-thumb">
-                        <img src="https://img.youtube.com/vi/NfM2x5RqmUI/maxresdefault.jpg" alt="3D生成×Gemini連携" onerror="this.src='https://img.youtube.com/vi/NfM2x5RqmUI/hqdefault.jpg'">
-                        <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                    </a>
-                </div>
-                <div style="display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-bottom: 3rem;">
-                    <a href="https://www.hitem3d.ai/" target="_blank" class="btn" style="background:#1e293b;"><i class="fa-solid fa-cube"></i> Hitem3D サイトへ</a>
-                    <a href="https://www.blender.org/" target="_blank" class="btn" style="background:#ea580c;"><i class="fa-solid fa-cubes"></i> Blender サイトへ</a>
+                <div class="info-box" style="border-left-color: #f59e0b; background: #fffbeb;">
+                    <h4 style="color:#b45309;"><i class="fa-solid fa-cubes"></i> 3Dツールへのリンク</h4>
+                    <p style="color:#92400e; margin-bottom:1.5rem;">動画内で紹介されている「アングル完全支配」のための3Dツールです。</p>
+                    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+                        <a href="https://www.hitem3d.ai/" target="_blank" class="btn" style="background:#1e293b; margin-top:0;"><i class="fa-solid fa-cube"></i> Hitem3D サイトへ</a>
+                        <a href="https://www.blender.org/" target="_blank" class="btn" style="background:#ea580c; margin-top:0;"><i class="fa-solid fa-cubes"></i> Blender サイトへ</a>
+                    </div>
                 </div>
 
-                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff; margin-top:2rem;">
-                    <h4 style="color:#0369a1;"><i class="fa-solid fa-list-ol"></i> プロンプト学習用・実践プレイリスト</h4>
+                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff; margin-top:2.5rem;">
+                    <h4 style="color:#0369a1;"><i class="fa-solid fa-pen-nib"></i> 実習：プロンプト学習用ノートを作ろう</h4>
                     <p style="color:#0c4a6e; margin-bottom:1rem;">
-                        生成のコツを理解し、学んだ内容を自分用の「プロンプトノート」としてまとめ、後から仕事や制作ですぐに引き出せるようにしておくことが目標です。以下の再生リストを視聴しながら、学んだ技術をストックしましょう。
+                        生成のコツを理解し、学んだ内容を自分用の「プロンプトノート」としてまとめ、後から仕事や制作ですぐに引き出せるようにしておくことが目標です。このページ上部にあるプレイリストのリンクから動画を視聴し、学んだ技術をストックしましょう！
                     </p>
                     <a href="https://www.youtube.com/playlist?list=PLoQApr14fceM1VnrF1uTVceOH_56bBha0" target="_blank" class="btn" style="background:#0ea5e9; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);">
                         <i class="fa-brands fa-youtube"></i> 実践プレイリストを開く
@@ -77,7 +97,7 @@ html_content = """
                     <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #7dd3fc, #0ea5e9, #0369a1); border-color:#0284c7;"><i class="fa-solid fa-stamp"></i></div>
                     <div class="mission-header">
                         <h3 style="color:#0ea5e9;"><i class="fa-solid fa-clapperboard"></i> MILESTONE 2: 動画のディレクション</h3>
-                        <p>カメラワークと実践的なアプローチを習得しよう。</p>
+                        <p>ダイジェストを活用し、実務で使えるプロンプト設計を完了させよう。</p>
                     </div>
                     
                     <ul class="task-list">
@@ -85,7 +105,7 @@ html_content = """
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
                                 <h4>カメラワークの学習</h4>
-                                <p>動画を視聴し、パン、ティルト、ズームなどの基本的なカメラ制御を理解する。</p>
+                                <p>ダイジェストを読み、パン・ティルト・ズームやコンテキスト制御について理解する。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
@@ -98,8 +118,8 @@ html_content = """
                         <li class="task-item" onclick="toggleTask('t2_3', this, 2)">
                             <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>実践プレイリストの視聴</h4>
-                                <p>プレイリストから興味のある作例を選び、プロンプトの組み立て方を自分なりにメモする。</p>
+                                <h4>ノートの作成（実習）</h4>
+                                <p>プレイリストを視聴またはダイジェストを参照し、プロンプトの組み立て方を自分なりにメモする。</p>
                             </div>
                         </li>
                     </ul>
@@ -153,19 +173,6 @@ html_content = """
                     buttons[i].classList.add('active');
                 }
             }
-        }
-
-        // Copy
-        function copyPrompt(btn) {
-            const pre = btn.nextElementSibling;
-            if(!pre) return;
-            const text = pre.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const originalHtml = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-                btn.style.color = '#10b981';
-                setTimeout(() => { btn.innerHTML = originalHtml; btn.style.color = ''; }, 2000);
-            });
         }
 
         // Checklist Logic
