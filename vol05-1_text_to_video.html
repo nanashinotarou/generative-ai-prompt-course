@@ -668,30 +668,72 @@
                         </li>
                     </ul>
                 </div>
-
-                        <p>「Pan（左右の振り）」「Tilt（上下の振り）」「Zoom（寄り・引き）」の3つをプロンプトで制御し、映像にダイナミズムを与えます。</p>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #0ea5e9, #8b5cf6); border-radius:30px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
                     本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
                 </button>
             </div>
         </div>
 
-        <!-- TAB 4: SUMMARY -->
+        <!-- TAB 4: SUMMARY (Graduation Style) -->
         <div id="tab-summary" class="tab-content">
-            <div class="glass-card" style="border: 2px solid #8b5cf6; background: #faf5ff;">
-                <h3 style="color:#8b5cf6; font-size:1.8rem; margin-top:0; border-bottom:2px solid #ddd6fe; padding-bottom:1.5rem; display:flex; align-items:center; justify-content:center; gap:15px; font-weight:900;">
-                    <i class="fa-solid fa-medal" style="font-size:2.5rem;"></i> Day 5 全行程コンプリート！
-                </h3>
-                <p style="font-size: 1.25rem; line-height: 2; color: #4c1d95; margin-top:2rem; text-align:center; padding: 0 2rem;">
-                    お疲れ様でした！本日は<strong>「テキストから動画への変換技術の基礎とカメラワーク」</strong>について学びました。<br>
-                    世界観の設定から、微細な表情の制御、プロの映像作家のようなカメラワークまで、AIを活用して頭の中の映像を具現化するためのディレクション術を習得できたはずです。<br><br>
-                    <strong>これで、Day1からDay5まで続いた「生成AIとプロンプト基礎研修」はすべて修了となります。</strong><br>
-                    ここからは、学んだ技術を自分自身の業務や制作活動で存分に発揮してください！
-                </p>
+            <div class="glass-card" style="border: 2px solid #8b5cf6; background: linear-gradient(to bottom, #ffffff, #f5f3ff); overflow: hidden; padding: 0;">
+                
+                <!-- Hero Graduation Section -->
+                <div style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-award"></i></div>
+                    <div style="position: absolute; bottom: -30px; left: -20px; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-10deg);"><i class="fa-solid fa-graduation-cap"></i></div>
+                    
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">COURSE COMPLETED!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">全5日間の「生成AIとプロンプト基礎研修」をすべて修了しました</p>
+                </div>
 
-                <div style="margin-top:4rem; text-align:center;">
-                    <button class="btn" style="padding: 1.2rem 4rem; font-size:1.3rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:50px; box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);" onclick="window.location.href='index.html'">
-                        <i class="fa-solid fa-award"></i> 全コース修了を記録してHomeへ戻る
-                    </button>
+                <div style="padding: 3rem 2rem;">
+                    <h3 style="text-align: center; color: #4c1d95; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-clock-rotate-left" style="color:#8b5cf6;"></i> 5日間の学びの軌跡</h3>
+                    
+                    <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0;">
+                            <span class="tag" style="background: #94a3b8; margin-bottom: 0.5rem;">Day 1</span>
+                            <h4 style="margin: 0.5rem 0;">AIの基本と対話術</h4>
+                            <p style="font-size: 0.85rem; color:#64748b;">ハルシネーションの正体と、意図を正確に伝える構造化プロンプトの基本。</p>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0;">
+                            <span class="tag" style="background: #10b981; margin-bottom: 0.5rem;">Day 2</span>
+                            <h4 style="margin: 0.5rem 0;">データ分析・業務効率化</h4>
+                            <p style="font-size: 0.85rem; color:#64748b;">ArtifactsやPythonを活用した複雑な課題解決とデータ処理。 </p>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0;">
+                            <span class="tag" style="background: #f59e0b; margin-bottom: 0.5rem;">Day 3</span>
+                            <h4 style="margin: 0.5rem 0;">創造的ディレクション</h4>
+                            <p style="font-size: 0.85rem; color:#64748b;">Geminiを壁打ち相手にしたアイデア発散と企画構成の具体化。</p>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0;">
+                            <span class="tag" style="background: #ec4899; margin-bottom: 0.5rem;">Day 4</span>
+                            <h4 style="margin: 0.5rem 0;">画像生成の極意</h4>
+                            <p style="font-size: 0.85rem; color:#64748b;">Midjourney等で思い通りのビジュアルを生み出す呪文とパラメータ制御。</p>
+                        </div>
+                        <div class="bento-item" style="background: #f5f3ff; border: 2px solid #8b5cf6;">
+                            <span class="tag" style="background: #8b5cf6; margin-bottom: 0.5rem;">Day 5</span>
+                            <h4 style="margin: 0.5rem 0;">動画生成と3D連携</h4>
+                            <p style="font-size: 0.85rem; color:#4c1d95; font-weight: bold;">時間軸の制御とカメラワーク、そして3D構図によるアングル支配。</p>
+                        </div>
+                    </div>
+
+                    <div style="background: #fdf2f8; border-radius: 20px; padding: 2.5rem; margin-top: 3rem; border: 1px dashed #f472b6; text-align: center;">
+                        <h4 style="color: #be185d; font-size: 1.4rem; margin-top: 0;"><i class="fa-solid fa-quote-left"></i> Congratulations!</h4>
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #831843; margin-bottom: 0;">
+                            プロンプトを「単なる命令」ではなく、「AIとの共創のための言語」として捉えることができるようになりました。<br>
+                            本日の動画生成スキルを加え、あなたの手元には<strong>「言葉から形を生み出し、動かす力」</strong>が備わっています。<br>
+                            このスキルを武器に、新たな領域へと踏み出しましょう！
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 4rem; text-align: center;">
+                        <button class="btn" style="padding: 1.5rem 5rem; font-size: 1.4rem; background: linear-gradient(135deg, #8b5cf6, #d946ef); border-radius: 50px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4); font-weight: 900;" onclick="window.location.href='index.html'">
+                            <i class="fa-solid fa-certificate"></i> 全行程修了を記録してHomeへ戻る
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
