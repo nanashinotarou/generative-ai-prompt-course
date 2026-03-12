@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 6 | AI Audio & Music Generation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --accent: #f97316;
+            --accent-light: #fb923c;
+            --accent-bg: #fff7ed;
+            --accent-glow: rgba(249, 115, 22, 0.25);
+            --clickable: #8b5cf6;
+            --clickable-bg: #f5f3ff;
+            --danger: #ef4444;
+            --glass-blur: blur(16px);
+            --radius: 20px;
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(ellipse at 10% 20%, rgba(249, 115, 22, 0.08), transparent 40%),
+                radial-gradient(ellipse at 90% 80%, rgba(139, 92, 246, 0.08), transparent 40%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        .fixed-header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .back-link { color: var(--text-sub); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--clickable); }
+        .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--clickable)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; background: transparent; z-index: 1001; pointer-events: none; }
+        #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s ease-out; box-shadow: 0 -2px 10px var(--accent-glow); }
+        .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
+        .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
+        .day-badge { background: var(--accent); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.2rem; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
+        .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: var(--text-sub); padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
+        .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform 0.3s, box-shadow 0.3s; }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0,0,0,0.06); }
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 1.2rem; }
+        .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
+        .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
+        .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
+        .prompt-code { font-family: 'Fira Code', monospace; background: #1e293b; color: #a5b4fc; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.9rem; word-break: break-all; border-left: 4px solid #6366f1;}
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
+        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid #f1f5f9; }
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .video-section-header .thumb-wrap a { display: block; position: relative; }
+        .video-section-header .thumb-wrap img { width: 100%; display: block; }
+        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(249,115,22,0.3); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
+        @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
+        .quiz-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .q-badge { background: linear-gradient(135deg, var(--accent), #ea580c); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 1.05rem; }
+        .quiz-opt:hover { border-color: #fdba74; background: #fff7ed; transform: translateX(5px); }
+        .quiz-opt.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .quiz-explain { display: none; margin-top: 1.2rem; padding: 1.5rem; background: #fff7ed; border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.7; animation: slideDown 0.3s ease; }
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 1000px; height: 200px; cursor: pointer; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; border-radius: 16px; }
+        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+        .flip-front { background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 2px solid #fdba74; color: #9a3412; }
+        .flip-front i { font-size: 2.5rem; margin-bottom: 0.8rem; }
+        .flip-front h4 { margin: 0; font-size: 1.1rem; }
+        .flip-back { background: linear-gradient(135deg, #1e293b, #334155); color: #e2e8f0; transform: rotateY(180deg); font-size: 0.95rem; line-height: 1.6; border: 2px solid #475569; }
+        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; }
+        .code-label { position: absolute; top: -12px; left: 16px; background: var(--accent); color: #fff; padding: 3px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; font-family: 'Noto Sans JP', sans-serif; }
+        .btn-copy { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #94a3b8; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .btn-copy:hover { background: rgba(255,255,255,0.2); color: #fff; }
+        .diagram-box { background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 2px solid #fdba74; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .diagram-row { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+        .diagram-node { background: #fff; border: 2px solid var(--accent); border-radius: 12px; padding: 1rem 1.5rem; font-weight: 700; text-align: center; min-width: 120px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+        .diagram-arrow { color: var(--accent); font-size: 1.5rem; font-weight: 900; }
+        .accordion { display: flex; flex-direction: column; gap: 0.8rem; }
+        .accordion details { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; transition: box-shadow 0.3s; }
+        .accordion details:hover { box-shadow: 0 6px 15px rgba(0,0,0,0.04); }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 0.8rem; font-size: 1.05rem; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion summary i.fa-chevron-down { margin-left: auto; transition: transform 0.3s; color: #94a3b8; }
+        .accordion details[open] summary i.fa-chevron-down { transform: rotate(180deg); }
+        .accordion .content { padding: 1.5rem; }
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .mission-header { text-align: center; margin-bottom: 2rem; }
+        .mission-header h3 { font-size: 1.6rem; color: var(--text-main); margin:0 0 0.5rem; font-weight:800; display:flex; justify-content:center; align-items:center; gap:10px;}
+        .mission-header p { color: var(--text-sub); margin:0; font-size:1.05rem;}
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0; transition: all 0.3s; cursor: pointer; position: relative; z-index: 2;}
+        .task-item:hover { border-color: var(--accent-light); background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.04); transform: translateX(5px);}
+        .task-item.completed { background: #ffedd5; border-color: #fdba74; }
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; margin-top: 2px; background: #fff; }
+        .task-item.completed .custom-checkbox { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox i { color: #fff; font-size: 16px; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; transform: scale(1); }
+        .task-content { flex: 1; }
+        .task-content h4 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
+        .task-item.completed .task-content h4 { color: #c2410c; }
+        .task-content p { margin: 0; font-size: 1rem; color: var(--text-sub); line-height: 1.6; }
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #fdba74, #f97316, #9a3412); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #c2410c; z-index: 10;}
+        .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #ea580c); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(249,115,22,0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(249,115,22,0.6); color: white; }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; transition: all 0.2s; cursor: pointer; margin-top: 1rem; box-shadow: 0 6px 15px rgba(249,115,22,0.3); }
+        .btn:hover { background: #ea580c; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(249,115,22,0.4); }
+        /* Column card */
+        .column-card { background: linear-gradient(135deg, #fdf2f8, #fce7f3); border: 2px solid #f9a8d4; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .column-card h3 { color: #be185d; font-size: 1.3rem; font-weight: 900; margin-top: 0; display: flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
+
+    <header class="fixed-header">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
+        <div class="progress-container">
+            <div class="progress-text"><span>Day 6 Progress</span><span id="progress-percent">0%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+        </div>
+        <div style="width:100px;"></div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="day-badge">DAY 06</div>
+            <h1>AI音楽・音声生成とプロンプト技術</h1>
+            <p>本日の目標：テキストから音楽・音声への変換技術の基礎をマスターする。<br>AI音楽生成ツール（Suno / Lyria 3）と音声合成ツール（Gemini TTS / ElevenLabs / MiniMax）を学びます。</p>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> コース目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-music" style="color:#f97316;"></i> 前半：音楽生成</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-microphone-lines" style="color:#8b5cf6;"></i> 後半：音声合成</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#ec4899;"></i> 今日のまとめ</button>
+        </div>
+
+        <!-- TAB 1: COURSE GOALS -->
+        <div id="tab-goal" class="tab-content active">
+            <div class="glass-card" style="border-top: 5px solid #f97316;">
+                <div class="card-header"><i class="fa-solid fa-compass" style="color:#f97316; background:#fff7ed;"></i><h2>本日の研修ねらい</h2></div>
+                <div class="info-box" style="border-left-color: #f97316; background: #fff7ed;">
+                    <h4 style="color:#c2410c;"><i class="fa-solid fa-headphones"></i> テキストベースのサウンドディレクターになる</h4>
+                    <p style="color:#9a3412;">
+                        本日の研修は、<strong>「テキストから音楽・音声への変換技術の基礎」</strong>です。<br><br>
+                        前半は<strong>AI音楽生成</strong>を学びます。世界No.1の音楽生成AI「Suno」と、Geminiに搭載された「Lyria 3」を使い、テキストだけで本格的な楽曲を作る方法を習得します。<br>
+                        後半は<strong>AI音声合成（TTS）</strong>を学びます。Geminiの革命的な音声AI、超流暢な日本語のElevenLabs、感情表現に優れたMiniMax Audioを比較しながら、最適なツール選びとプロンプト設計を身につけましょう！
+                    </p>
+                </div>
+
+                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff; margin-top: 1.5rem;">
+                    <h4 style="color:#0369a1;"><i class="fa-solid fa-bullhorn"></i> 主催者からのお知らせ</h4>
+                    <p style="color:#0c4a6e;">
+                        Google AI Studioの音声生成機能の名前が変更されました。<br>
+                        <strong>旧名称:</strong> <span style="text-decoration: line-through;">Turn text into audio with Gemini</span><br>
+                        <strong>新名称:</strong> <span style="background:#dbeafe; padding:2px 8px; border-radius:6px; font-weight:800;">Text to Speech (TTS)</span>
+                    </p>
+                </div>
+
+                <div class="column-card">
+                    <h3><i class="fa-solid fa-star"></i> 受講生コラム：バイブコーディングによるニュース動画制作</h3>
+                    <p style="color:#831843; line-height:1.7;">受講生の方から完成度の高いまとめが共有されました！<strong>バイブコーディング</strong>を用いた動画編集の実践例です。ぜひ参考にしてみてください。</p>
+                    <a href="https://www.canva.com/design/DAHDbDndegg/bFXvt5RdZY3JheoyELVMZw/edit" target="_blank" class="btn" style="background: linear-gradient(135deg, #ec4899, #be185d); box-shadow: 0 6px 15px rgba(236,72,153,0.3); margin-top: 0.5rem;">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Canvaで資料を見る
+                    </a>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-first'); window.scrollTo(0,0);">
+                    前半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: FIRST HALF - Music Generation -->
+        <div id="tab-first" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #f97316;">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：AI音楽生成の世界</h2></div>
+
+                <!-- VIDEO 1: Suno -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=BP5MKB2vPd0" target="_blank">
+                                <img src="https://img.youtube.com/vi/BP5MKB2vPd0/hqdefault.jpg" alt="Suno徹底解説">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画①：No.1音楽生成AI『Suno』の魅力を徹底解説</h3>
+                            <p>世界No.1の音楽生成AI「Suno」について詳しく解説。プロンプト入力だけで本格的な音楽を生成でき、<strong>バージョン5</strong>で品質が大幅に向上しています。</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box">
+                        <h3><i class="fa-solid fa-wand-magic-sparkles"></i> Sunoの主な特徴</h3>
+                        <p>Sunoはテキストプロンプトだけで<strong>歌詞付きの楽曲</strong>を丸ごと生成できるAI。ジャンル・楽器・歌声・テンポまで自在に指定可能で、BGM制作からSNS用ジングルまで幅広く活用できます。</p>
+                    </div>
+
+                    <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-grid-2" style="color:#f97316;"></i> Sunoの活用シーン</h4>
+                    <div class="bento-grid">
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-film" style="color:#f97316;"></i> BGM制作</h4>
+                            <p>動画・ポッドキャスト・プレゼンのBGMをプロンプト一発で生成。著作権フリーで安心。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-hashtag" style="color:#ec4899;"></i> SNS用ジングル</h4>
+                            <p>TikTokやInstagramリール用の短い楽曲を量産。ブランドに合ったサウンドを瞬時に作成。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-pen-nib" style="color:#8b5cf6;"></i> 歌詞付き楽曲</h4>
+                            <p>オリジナルソングをまるごと生成。歌詞を自分で書いてメロディに載せることも可能。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-lightbulb" style="color:#eab308;"></i> プロトタイピング</h4>
+                            <p>楽曲のアイデア出しや方向性の確認を素早く検証。アレンジの比較検討にも最適。</p>
+                        </div>
+                    </div>
+
+                    <div class="code-box" style="margin-top: 2rem;">
+                        <span class="code-label">🎵 Sunoプロンプト例</span>
+                        <button class="btn-copy" onclick="copyCode('suno-prompt1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <div id="suno-prompt1">ジャンル: Lo-fi Hip Hop
+楽器: ピアノ, アコースティックギター, ドラムマシン
+ムード: 落ち着いた, ノスタルジック, 温かい
+テンポ: 80 BPM
+歌詞: なし（インストゥルメンタル）
+用途: 深夜の作業用BGM</div>
+                    </div>
+
+                    <div class="code-box">
+                        <span class="code-label">🎤 歌詞付きプロンプト例</span>
+                        <button class="btn-copy" onclick="copyCode('suno-prompt2', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <div id="suno-prompt2">ジャンル: J-Pop, シティポップ
+ムード: 爽やか, 夏の朝
+テンポ: 120 BPM
+歌声: 女性ボーカル, 透明感のある声
+歌詞:
+[Verse]
+朝焼けの光が 窓から差し込んで
+新しい一日が 始まる予感
+[Chorus]
+走り出そう 風を切って
+この街が教えてくれた melody</div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 2: Lyria 3 -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=QVAW2oFIaIs" target="_blank">
+                                <img src="https://img.youtube.com/vi/QVAW2oFIaIs/hqdefault.jpg" alt="Gemini Lyria 3">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画②：Gemini「Lyria 3」音楽生成を徹底検証</h3>
+                            <p>GeminiにAI音楽生成機能「Lyria 3」が追加。Google純正ならではの<strong>手軽さ</strong>と品質を検証します。</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion">
+                        <details>
+                            <summary><i class="fa-solid fa-gem" style="color:#8b5cf6;"></i> Lyria 3の特徴 <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content">
+                                <p><strong>Gemini内蔵の手軽さ:</strong> 追加のサインアップ不要。Geminiの会話画面から直接「音楽を作って」と依頼するだけで楽曲を生成。</p>
+                                <p style="margin-top:1rem;"><strong>Google品質:</strong> DeepMindが開発したLyriaモデルのv3。楽曲のクオリティが大幅に向上。</p>
+                                <p style="margin-top:1rem;"><strong>注意点:</strong> Sunoほど細かいパラメータ制御（歌詞入力や歌声指定）はまだ限定的。BGMや効果音の生成向き。</p>
+                            </div>
+                        </details>
+                        <details>
+                            <summary><i class="fa-solid fa-scale-balanced" style="color:#f97316;"></i> Suno vs Lyria 3 どう選ぶ？ <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content">
+                                <div class="bento-grid" style="grid-template-columns: 1fr 1fr;">
+                                    <div class="bento-item" style="border: 2px solid #f97316; background: #fff7ed;">
+                                        <h4 style="color:#c2410c;">🎵 Suno がおすすめ</h4>
+                                        <p>✅ 歌詞付き楽曲を作りたい<br>✅ ジャンル・テンポを細かく指定<br>✅ リミックスやExtend機能を使いたい<br>✅ プロ品質の楽曲が必要</p>
+                                    </div>
+                                    <div class="bento-item" style="border: 2px solid #8b5cf6; background: #f5f3ff;">
+                                        <h4 style="color:#6d28d9;">🎶 Lyria 3 がおすすめ</h4>
+                                        <p>✅ 手軽にBGMを作りたい<br>✅ Geminiの会話の流れで生成<br>✅ 追加アカウント不要で気軽に<br>✅ Googleエコシステムに統一</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="diagram-box" style="margin-top: 2rem;">
+                        <h4 style="text-align:center; margin-top:0; color:#9a3412; font-weight:900;"><i class="fa-solid fa-sitemap"></i> AI音楽生成のプロンプト構造</h4>
+                        <div class="diagram-row">
+                            <div class="diagram-node">🎸 ジャンル<br><small>Pop / Jazz / Lo-fi</small></div>
+                            <span class="diagram-arrow">＋</span>
+                            <div class="diagram-node">🎹 楽器<br><small>Piano / Guitar</small></div>
+                            <span class="diagram-arrow">＋</span>
+                            <div class="diagram-node">💫 ムード<br><small>Happy / Calm</small></div>
+                        </div>
+                        <div class="diagram-row">
+                            <span class="diagram-arrow">↓</span>
+                        </div>
+                        <div class="diagram-row">
+                            <div class="diagram-node">⏱ テンポ<br><small>BPM指定</small></div>
+                            <span class="diagram-arrow">＋</span>
+                            <div class="diagram-node">🎤 歌声<br><small>男女 / 年齢</small></div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-node" style="border-color:#ea580c; background:#fff7ed; font-size:1.1rem;">🎵 楽曲生成</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUIZ Q1 -->
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Q1</span>
+                        <strong style="font-size:1.15rem;">AI音楽生成で「歌詞付き楽曲」を最も得意とするツールは？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz1">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">A. Gemini Lyria 3 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">B. MiniMax Audio <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, true)">C. Suno <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz1-explain">
+                        <strong>💡 解説：</strong>Sunoは歌詞入力・歌声指定・ジャンル制御など、楽曲生成に特化した機能が最も充実しています。Lyria 3はBGM向きで、MiniMax Audioは音声合成（TTS）ツールです。
+                    </div>
+                </div>
+
+                <!-- MILESTONE 1 -->
+                <div class="mission-area" id="mission-group-1">
+                    <div class="wax-seal"><i class="fa-solid fa-music"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-trophy" style="color:#f97316;"></i> MILESTONE 1：音楽生成の基礎</h3>
+                        <p>前半の学習チェックリスト</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画①の確認</h4>
+                                <p>Sunoの基本機能と活用シーンを理解する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画②の確認</h4>
+                                <p>Lyria 3の特徴とSunoとの使い分けを把握する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_3', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>プロンプト設計メモ（実習）</h4>
+                                <p>音楽生成のプロンプト構造を理解し、自分なりのプロンプトを作成する。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #f97316, #8b5cf6); border-radius:30px; box-shadow: 0 5px 15px rgba(249,115,22,0.3);" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
+                    後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 3: SECOND HALF - Voice Synthesis -->
+        <div id="tab-second" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #8b5cf6;">
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>後半：AI音声合成（TTS）の実践</h2></div>
+
+                <!-- VIDEO 3: Gemini TTS -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=HpgB65kF8jg" target="_blank">
+                                <img src="https://img.youtube.com/vi/HpgB65kF8jg/hqdefault.jpg" alt="Gemini音声AI">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画③：Gemini音声AI完全攻略 — 「読む」から「演じる」へ</h3>
+                            <p>Gemini 2.5 Pro TTSの特徴から実際の使い方まで。<strong>緊張した声、冷たい声、覚悟を決めた声</strong>——感情豊かな音声をAIが「演じる」時代へ。</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #f5f3ff, #ede9fe); border-color: #c4b5fd; color: #4c1d95;">
+                        <h3 style="color:#6d28d9; border-color:#a78bfa;"><i class="fa-solid fa-bolt"></i> Gemini TTSの革新ポイント</h3>
+                        <p style="color:#4c1d95;">
+                            <strong>「読む」→「演じる」への進化:</strong> 従来の棒読みTTSとは次元が違う。文脈を理解し、感情を込めて「演じる」音声合成を実現。<br><br>
+                            <strong>完全無料:</strong> Google AI Studio上で無料利用可能。Gemini 2.5 Proの最新モデルで高品質な日本語音声を生成。<br><br>
+                            <strong>冒頭の声、全部AI:</strong> 動画冒頭のナレーションはすべてAI生成。言われなければAIだと気づかないレベル。
+                        </p>
+                    </div>
+
+                    <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-sliders" style="color:#8b5cf6;"></i> TTS音声パラメータ（タップで裏面を確認）</h4>
+                    <div class="flip-grid">
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-volume-high"></i><h4>声のトーン</h4></div>
+                                <div class="flip-back">暖かい / 冷たい / 落ち着いた / 力強いなど。プロンプトで「落ち着いたニュースキャスターのように」と指定。</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-gauge-high"></i><h4>話速</h4></div>
+                                <div class="flip-back">ゆっくり / 普通 / 速めを指定可能。「間を取りながらゆっくり読んで」のような自然言語で制御。</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-face-smile"></i><h4>感情表現</h4></div>
+                                <div class="flip-back">喜び / 悲しみ / 怒り / 驚きなど。Gemini TTSは文脈から自動で感情を推定する能力もあり。</div>
+                            </div>
+                        </div>
+                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-ellipsis"></i><h4>間（ポーズ）</h4></div>
+                                <div class="flip-back">句読点や改行で間を制御。「ここで2秒の間をとって」と指示すると、自然なポーズを挿入。</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="code-box" style="margin-top:2rem;">
+                        <span class="code-label">🎙️ Gemini TTS プロンプト例</span>
+                        <button class="btn-copy" onclick="copyCode('tts-prompt1', this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                        <div id="tts-prompt1">以下のテキストを、落ち着いた声のニュースキャスターのトーンで読み上げてください。
+句読点のところでは自然な間を入れ、重要なキーワードは少しゆっくり強調して。
+
+「2026年、生成AIの進化は私たちの働き方を根本から変えようとしています。
+特に注目すべきは、テキストから音声・音楽を生成する技術の飛躍的な向上です。」</div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 4: ElevenLabs -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=aW7HKndRhyI" target="_blank">
+                                <img src="https://img.youtube.com/vi/aW7HKndRhyI/hqdefault.jpg" alt="ElevenLabs完全ガイド">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画④：ElevenLabs完全ガイド — 超流暢な日本語AI</h3>
+                            <p>圧倒的クオリティの音声生成AI「ElevenLabs」。最新モデル<strong>v3</strong>の日本語は、言われなければAIだと気づかないほど流暢です。</p>
+                        </div>
+                    </div>
+
+                    <div class="accordion">
+                        <details>
+                            <summary><i class="fa-solid fa-language" style="color:#0ea5e9;"></i> 超流暢な日本語品質 <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content"><p>最新のv3モデルにより、日本語の自然さが劇的に向上。抑揚、アクセント、イントネーションすべてにおいて人間に限りなく近い品質を実現しています。</p></div>
+                        </details>
+                        <details>
+                            <summary><i class="fa-solid fa-clone" style="color:#8b5cf6;"></i> Voice Cloning（声のクローン） <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content"><p>自分の声をアップロードして、AIに学習させることが可能。一度クローンすれば、どんなテキストでも自分の声で読み上げてくれます。ナレーション動画の量産に最適。</p></div>
+                        </details>
+                        <details>
+                            <summary><i class="fa-solid fa-globe" style="color:#10b981;"></i> 多言語対応 <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content"><p>29言語以上に対応。1つの声で複数言語を自然に話せるクロスリンガル機能も。グローバルコンテンツ制作に威力を発揮します。</p></div>
+                        </details>
+                        <details>
+                            <summary><i class="fa-solid fa-code" style="color:#f97316;"></i> API連携 <i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="content"><p>強力なAPIでアプリケーションに音声合成を組み込み可能。Webアプリ、チャットボット、ゲームなど様々なプロダクトに統合できます。</p></div>
+                        </details>
+                    </div>
+
+                    <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-lightbulb" style="color:#f97316;"></i> ElevenLabsの活用シーン</h4>
+                    <div class="bento-grid">
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-podcast" style="color:#8b5cf6;"></i> ポッドキャスト</h4>
+                            <p>原稿を入力するだけでプロ品質のポッドキャストを自動生成。複数の声を使い分けも可能。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-gamepad" style="color:#10b981;"></i> キャラクターボイス</h4>
+                            <p>ゲームやアニメのキャラクターごとに異なる声を設定。感情の使い分けも自在。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-earth-americas" style="color:#0ea5e9;"></i> 多言語展開</h4>
+                            <p>1つの動画を複数言語に展開。元の声質を維持したまま、他言語に吹き替え可能。</p>
+                        </div>
+                        <div class="bento-item">
+                            <h4><i class="fa-solid fa-book-open" style="color:#f59e0b;"></i> ナレーション</h4>
+                            <p>マニュアル動画、教育コンテンツ、YouTube動画のナレーションを効率的に生成。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 5: MiniMax Audio -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=3yOTfQfqR3c" target="_blank">
+                                <img src="https://img.youtube.com/vi/3yOTfQfqR3c/hqdefault.jpg" alt="MiniMax Audio Speech 2.8">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画⑤：MiniMax Audio「Speech 2.8」感情表現が劇的向上</h3>
+                            <p><strong>サウンドタグ</strong>と<strong>間の制御</strong>が追加され、感情表現が劇的に進化。HDモデルとTurboモデルを用途に応じて選択可能。</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #6ee7b7; color: #064e3b;">
+                        <h3 style="color:#047857; border-color:#34d399;"><i class="fa-solid fa-star"></i> Speech 2.8の進化ポイント</h3>
+                        <p style="color:#064e3b;">
+                            <strong>サウンドタグ:</strong> 笑い声、ため息、咳などの効果音を<code>&lt;laugh&gt;</code>のようなタグで挿入可能。音声に豊かな表現力を付加。<br><br>
+                            <strong>間の制御:</strong> 文中の任意の位置にポーズを挿入し、より自然で聞きやすいスピーチを実現。<br><br>
+                            <strong>2つのモデル:</strong> HD（高品質・低速）とTurbo（高速・リアルタイム向け）を用途に応じて使い分け。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- TTS Tool Comparison -->
+                <h3 style="text-align:center; font-size:1.5rem; font-weight:900; margin-top:3rem;"><i class="fa-solid fa-scale-balanced" style="color:#8b5cf6;"></i> TTS 3ツール徹底比較</h3>
+                <div class="bento-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="bento-item" style="border-top: 4px solid #8b5cf6; text-align:center;">
+                        <span class="tag" style="background:#f5f3ff; margin-bottom:0.5rem;">Gemini TTS</span>
+                        <h4 style="justify-content:center;"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Gemini TTS</h4>
+                        <p style="font-size:0.9rem;">💰 <strong>無料</strong><br>🇯🇵 日本語 ◎<br>😊 感情 ◎<br>🎭 Voice Clone ×<br>🔌 API ◎</p>
+                    </div>
+                    <div class="bento-item" style="border-top: 4px solid #f97316; text-align:center;">
+                        <span class="tag" style="background:#fff7ed; color:#c2410c; margin-bottom:0.5rem;">ElevenLabs</span>
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-microphone" style="color:#f97316;"></i> ElevenLabs</h4>
+                        <p style="font-size:0.9rem;">💰 <strong>基本無料 / 有料</strong><br>🇯🇵 日本語 ◎<br>😊 感情 ◎<br>🎭 Voice Clone ◎<br>🔌 API ◎</p>
+                    </div>
+                    <div class="bento-item" style="border-top: 4px solid #10b981; text-align:center;">
+                        <span class="tag" style="background:#ecfdf5; color:#059669; margin-bottom:0.5rem;">MiniMax</span>
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-waveform-lines" style="color:#10b981;"></i> MiniMax Audio</h4>
+                        <p style="font-size:0.9rem;">💰 <strong>基本無料</strong><br>🇯🇵 日本語 ○<br>😊 感情 ◎<br>🎭 Voice Clone ○<br>🔌 API ○</p>
+                    </div>
+                </div>
+
+                <!-- QUIZ Q2 & Q3 -->
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Q2</span>
+                        <strong style="font-size:1.15rem;">「Voice Cloning（声のクローン）」機能が最も充実しているツールは？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz2">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">A. Gemini TTS <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, true)">B. ElevenLabs <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">C. MiniMax Audio <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz2-explain">
+                        <strong>💡 解説：</strong>ElevenLabsはVoice Cloningのパイオニアで、わずか数分の音声サンプルから高品質なクローンボイスを生成できます。ナレーション動画の量産や、自分の声での多言語展開に最適です。
+                    </div>
+                </div>
+
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Q3</span>
+                        <strong style="font-size:1.15rem;">Google AI StudioのTTS機能、以前の名称は？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz3">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, true)">A. Turn text into audio with Gemini <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">B. Gemini Voice Lab <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">C. Audio Generator <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz3-explain">
+                        <strong>💡 解説：</strong>Google AI StudioのTTS機能は、以前「Turn text into audio with Gemini」という名称でしたが、現在は「Text to Speech（TTS）」にリニューアルされています。
+                    </div>
+                </div>
+
+                <!-- Tool Links -->
+                <h3 style="text-align:center; font-size:1.5rem; font-weight:900; margin-top:3rem;"><i class="fa-solid fa-toolbox" style="color:#f97316;"></i> 関連ツールリンク集</h3>
+                <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-brands fa-google" style="color:#4285f4;"></i> Google AI Studio</h4>
+                        <p style="font-size:0.9rem;">TTS / Lyria 3など</p>
+                        <a href="https://aistudio.google.com/" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:#4285f4;">無料で開く</a>
+                    </div>
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-microphone" style="color:#f97316;"></i> ElevenLabs</h4>
+                        <p style="font-size:0.9rem;">招待リンク（無料枠あり）</p>
+                        <a href="https://try.elevenlabs.io/dx-biome" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem;">招待リンクで登録</a>
+                    </div>
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-music" style="color:#10b981;"></i> MiniMax Audio</h4>
+                        <p style="font-size:0.9rem;">Speech & Music生成</p>
+                        <a href="https://www.minimax.io/audio" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:#10b981;">サイトを開く</a>
+                    </div>
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-video" style="color:#ec4899;"></i> HeyGen</h4>
+                        <p style="font-size:0.9rem;">リップシンク動画（月3本/3分）</p>
+                        <a href="https://app.heygen.com/home" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:#ec4899;">サイトを開く</a>
+                    </div>
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-image" style="color:#eab308;"></i> Google Whisk</h4>
+                        <p style="font-size:0.9rem;">画像生成（2026/4/30まで無料）</p>
+                        <a href="https://labs.google/fx/tools/whisk" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:#eab308;">サイトを開く</a>
+                    </div>
+                    <div class="bento-item" style="text-align:center;">
+                        <h4 style="justify-content:center;"><i class="fa-solid fa-clapperboard" style="color:#7c3aed;"></i> Hailuo AI</h4>
+                        <p style="font-size:0.9rem;">MiniMax社の動画生成AI</p>
+                        <a href="https://hailuoai.video/" target="_blank" class="btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:#7c3aed;">サイトを開く</a>
+                    </div>
+                </div>
+
+                <!-- MILESTONE 2 -->
+                <div class="mission-area" id="mission-group-2">
+                    <div class="wax-seal"><i class="fa-solid fa-microphone-lines"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-trophy" style="color:#8b5cf6;"></i> MILESTONE 2：音声合成の実践</h3>
+                        <p>後半の学習チェックリスト</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
+                            <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画③の確認</h4>
+                                <p>Gemini TTSの「演じる」音声合成の仕組みを理解する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
+                            <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画④の確認</h4>
+                                <p>ElevenLabsのVoice Cloningと多言語対応を把握する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t2_3', this, 2)">
+                            <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画⑤の確認</h4>
+                                <p>MiniMax Audioのサウンドタグと感情制御を試す。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #8b5cf6, #ec4899); border-radius:30px; box-shadow: 0 5px 15px rgba(139,92,246,0.3);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
+                    本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 4: SUMMARY -->
+        <div id="tab-summary" class="tab-content">
+            <div class="glass-card" style="border: 2px solid #ec4899; background: linear-gradient(to bottom, #ffffff, #fdf2f8); overflow: hidden; padding: 0;">
+                <div style="background: linear-gradient(135deg, #ec4899, #be185d); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-headphones"></i></div>
+                    <div style="position: absolute; bottom: -30px; left: -20px; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-10deg);"><i class="fa-solid fa-music"></i></div>
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none; opacity:1; transform:none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 6 COMPLETE!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">AI音楽生成＆音声合成の基礎をマスターしました</p>
+                </div>
+                <div style="padding: 3rem 2rem;">
+                    <h3 style="text-align: center; color: #831843; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-clock-rotate-left" style="color:#ec4899;"></i> 6日間の学びの軌跡</h3>
+                    <div class="bento-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
+                            <span class="tag" style="background: #94a3b8; margin-bottom: 0.5rem;">Day 1</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">AIの基本と対話術</h4>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
+                            <span class="tag" style="background: #10b981; margin-bottom: 0.5rem;">Day 2</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">データ分析・業務効率化</h4>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
+                            <span class="tag" style="background: #f59e0b; margin-bottom: 0.5rem;">Day 3</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">創造的ディレクション</h4>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
+                            <span class="tag" style="background: #ec4899; margin-bottom: 0.5rem;">Day 4</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">画像生成の極意</h4>
+                        </div>
+                        <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
+                            <span class="tag" style="background: #8b5cf6; margin-bottom: 0.5rem;">Day 5</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">動画生成と3D連携</h4>
+                        </div>
+                        <div class="bento-item" style="background: #fff7ed; border: 2px solid #f97316; padding:1.5rem;">
+                            <span class="tag" style="background: #f97316; margin-bottom: 0.5rem;">Day 6</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0; color:#c2410c; font-weight:900;">音楽・音声生成</h4>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="border-left-color: #ec4899; background: #fdf2f8; margin-top: 2rem;">
+                        <h4 style="color:#be185d;"><i class="fa-solid fa-paper-plane"></i> 課題提出のご案内</h4>
+                        <p style="color:#831843;">
+                            プロンプトを中心に作成した動画作品を<strong>3本以上</strong>作成し、Padletで提出しましょう。<br>
+                            <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" style="color:#be185d; font-weight:800;">📋 課題提出用Padletを開く</a>
+                        </p>
+                    </div>
+
+                    <div style="background: #fff7ed; border-radius: 20px; padding: 2.5rem; margin-top: 2rem; border: 1px dashed #fdba74; text-align: center;">
+                        <h4 style="color: #c2410c; font-size: 1.4rem; margin-top: 0;"><i class="fa-solid fa-quote-left"></i> Keep Going!</h4>
+                        <p style="font-size: 1.1rem; line-height: 1.8; color: #9a3412; margin-bottom: 0;">
+                            テキスト→画像→動画→音楽・音声と、プロンプトで制御できるメディアの幅が一気に広がりました。<br>
+                            これらを<strong>組み合わせる</strong>ことで、あなたのクリエイティブの可能性は無限大です！
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 3rem; text-align: center;">
+                        <button class="btn" style="padding: 1.5rem 5rem; font-size: 1.4rem; background: linear-gradient(135deg, #f97316, #ec4899); border-radius: 50px; box-shadow: 0 10px 30px rgba(249,115,22,0.4); font-weight: 900;" onclick="window.location.href='index.html'">
+                            <i class="fa-solid fa-house"></i> Homeへ戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-second': 2, 'tab-summary': 3};
+            document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active');
+            updateProgress();
+        }
+        function copyCode(elementId, btn) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                btn.style.color = '#10b981';
+                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+            });
+        }
+        function checkQuiz(quizId, el, isCorrect) {
+            const container = document.getElementById(quizId);
+            if (container.dataset.answered) return;
+            container.dataset.answered = 'true';
+            if (isCorrect) {
+                el.classList.add('correct');
+                el.querySelector('i').style.display = 'inline';
+            } else {
+                el.classList.add('wrong');
+                el.querySelector('i').style.display = 'inline';
+                container.querySelectorAll('.quiz-opt').forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; }
+                });
+            }
+            document.getElementById(quizId + '-explain').style.display = 'block';
+        }
+        const taskState = {};
+        function toggleTask(id, el, group) {
+            taskState[id] = !taskState[id];
+            el.classList.toggle('completed');
+            updateProgress();
+            const groupId = 'mission-group-' + group;
+            const groupEl = document.getElementById(groupId);
+            const items = groupEl.querySelectorAll('.task-item');
+            const done = groupEl.querySelectorAll('.task-item.completed').length;
+            if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); }
+            else { groupEl.classList.remove('completed'); }
+        }
+        function updateProgress() {
+            const total = document.querySelectorAll('.task-item').length;
+            const done = document.querySelectorAll('.task-item.completed').length;
+            let pct = total === 0 ? 0 : Math.round(done / total * 100);
+            const activeTab = document.querySelector('.tab-content.active');
+            if (activeTab) {
+                const tabMap = {'tab-goal': 10, 'tab-first': 30, 'tab-second': 60, 'tab-summary': 90};
+                const tabBonus = tabMap[activeTab.id] || 0;
+                pct = Math.min(100, Math.max(pct, tabBonus));
+            }
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-percent').textContent = pct + '%';
+        }
+        function launchConfetti() {
+            const canvas = document.getElementById('confetti');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const pieces = []; const colors = ['#f97316','#8b5cf6','#ec4899','#10b981','#f59e0b','#0ea5e9'];
+            for (let i = 0; i < 150; i++) { pieces.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height-canvas.height, w: Math.random()*10+5, h: Math.random()*6+3, color: colors[Math.floor(Math.random()*colors.length)], vy: Math.random()*3+2, vx: Math.random()*4-2, rot: Math.random()*360, vr: Math.random()*10-5 }); }
+            let frame = 0;
+            function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); pieces.forEach(p => { p.y += p.vy; p.x += p.vx; p.rot += p.vr; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180); ctx.fillStyle = p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore(); }); frame++; if(frame<180) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height); }
+            animate();
+        }
+        // Particles
+        (function(){const c=document.getElementById('particles');const x=c.getContext('2d');function r(){c.width=window.innerWidth;c.height=window.innerHeight;}r();window.addEventListener('resize',r);const p=[];for(let i=0;i<40;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*3+1,vx:Math.random()*0.5-0.25,vy:Math.random()*0.5-0.25,a:Math.random()*0.3+0.1});}function d(){x.clearRect(0,0,c.width,c.height);p.forEach(pt=>{x.beginPath();x.arc(pt.x,pt.y,pt.s,0,Math.PI*2);x.fillStyle=`rgba(249,115,22,${pt.a})`;x.fill();pt.x+=pt.vx;pt.y+=pt.vy;if(pt.x<0)pt.x=c.width;if(pt.x>c.width)pt.x=0;if(pt.y<0)pt.y=c.height;if(pt.y>c.height)pt.y=0;});requestAnimationFrame(d);}d();})();
+        // Scroll Progress
+        window.addEventListener('scroll', () => { const h = document.documentElement; const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100; document.getElementById('scroll-progress-bar').style.width = pct + '%'; });
+        updateProgress();
+    </script>
+</body>
+</html>
