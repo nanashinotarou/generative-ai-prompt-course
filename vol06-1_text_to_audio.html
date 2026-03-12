@@ -801,9 +801,8 @@
             let pct = total === 0 ? 0 : Math.round(done / total * 100);
             const activeTab = document.querySelector('.tab-content.active');
             if (activeTab) {
-                const tabMap = {'tab-goal': 10, 'tab-first': 30, 'tab-second': 60, 'tab-summary': 90};
-                const tabBonus = tabMap[activeTab.id] || 0;
-                pct = Math.min(100, Math.max(pct, tabBonus));
+                // タブ移動によるボーナス加算を削除。純粋にタスクの比率のみを表示する。
+                // pct = Math.min(100, Math.max(pct, tabBonus));
             }
             document.getElementById('progress-bar').style.width = pct + '%';
             document.getElementById('progress-percent').textContent = pct + '%';
