@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 7 | Advanced Image Generation Techniques</title>
+    <title>Day 7 | Advanced Image Generation & Design AI</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-body: #f1f5f9;
+            --bg-body: #f8fafc;
             --bg-card: rgba(255, 255, 255, 0.95);
-            --text-main: #1e293b;
+            --text-main: #0f172a;
             --text-sub: #475569;
             --accent: #2563eb;
             --accent-light: #3b82f6;
@@ -56,63 +56,74 @@
         .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: transform 0.3s, box-shadow 0.3s; }
         .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #f1f5f9; padding-bottom: 1.2rem; }
         .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
-        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
         .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
         .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
-        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; border: 1px solid #fcd34d; }
-        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; display:flex; align-items:center; gap:8px;}
+        .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+        .highlight-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #92400e; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15); border: 1px solid #fcd34d; }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #f59e0b; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
-        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: all 0.3s;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
         .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.06); border-color: var(--accent-light);}
-        .bento-item h4 { margin: 0 0 1rem; font-size: 1.1rem; font-weight:800; display: flex; align-items: center; gap: 0.5rem; }
-        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid #e2e8f0; }
-        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
-        .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; }
-        .thumb-wrap img { width: 100%; display: block; }
-        .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-        .thumb-wrap:hover .play-overlay { background: rgba(37, 99, 235, 0.3); }
-        .play-overlay i { color: #fff; font-size: 2.5rem; }
-        .meta h3 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 800; }
-        .meta p { margin: 0; color: var(--text-sub); font-size: 0.95rem; line-height: 1.6; }
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0; }
+        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid #f1f5f9; }
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .video-section-header .thumb-wrap a { display: block; position: relative; }
+        .video-section-header .thumb-wrap img { width: 100%; display: block; }
+        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(37, 99, 235, 0.3); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
+        .prompt-code { font-family: 'Fira Code', monospace; background: #1e293b; color: #a5b4fc; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.9rem; word-break: break-all; border-left: 4px solid #6366f1; margin-top: 10px; display: block;}
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
         .quiz-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 2rem; margin: 2rem 0; }
-        .q-badge { background: var(--accent); color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; margin-bottom: 1rem; display: inline-block; }
-        .quiz-opt { padding: 1rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.3s; margin-bottom: 0.8rem; font-weight: 600; }
-        .quiz-opt:hover { border-color: var(--accent-light); background: var(--accent-bg); }
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
+        .quiz-opt { padding: 1.2rem 1.5rem; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 1.05rem; margin-bottom: 0.8rem; }
+        .quiz-opt:hover { border-color: var(--accent-light); background: var(--accent-bg); transform: translateX(5px); }
         .quiz-opt.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
         .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
-        .quiz-explain { display: none; margin-top: 1rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid var(--accent); }
-        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; }
-        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); }
-        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.2rem; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; }
-        .task-item:hover { transform: translateX(5px); border-color: var(--accent-light); }
+        .quiz-explain { display: none; margin-top: 1.2rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.7; animation: slideDown 0.3s ease; }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.8rem; list-style: none; transition: all 0.2s; }
+        .accordion summary:hover { background: #f8fafc; border-color: var(--accent-light); }
+        .accordion details[open] summary { background: var(--accent-bg); border-color: var(--accent); border-radius: 12px 12px 0 0; margin-bottom: 0; }
+        .accordion .content { padding: 1.5rem; border: 1px solid var(--accent); border-top: none; border-radius: 0 0 12px 12px; margin-bottom: 1rem; background: #fff; }
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #cbd5e1; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: #f8fafc; border: 1px solid #e2e8f0; transition: all 0.3s; cursor: pointer; }
+        .task-item:hover { border-color: var(--accent-light); transform: translateX(5px); background: #fff; }
         .task-item.completed { background: #dcfce7; border-color: #86efac; }
-        .custom-checkbox { width: 28px; height: 28px; border: 2px solid #cbd5e1; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; }
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; background: #fff; }
         .task-item.completed .custom-checkbox { background: #22c55e; border-color: #22c55e; }
-        .custom-checkbox i { color: #fff; font-size: 14px; display: none; }
-        .task-item.completed .custom-checkbox i { display: block; }
-        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #3b82f6, #1d4ed8); border-radius: 50%; opacity: 0; transform: scale(3); pointer-events: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 3rem; border: 4px solid #1e40af; z-index: 10; font-family: 'Teko', sans-serif; }
-        .mission-area.completed .wax-seal { animation: stampIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes stampIn { 0% { opacity: 0; transform: scale(3); } 100% { opacity: 0.9; transform: scale(1) rotate(-15deg); } }
-        .home-btn { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 15px var(--accent-glow); text-decoration: none; z-index: 1000; transition: transform 0.3s; }
-        .home-btn:hover { transform: scale(1.1); }
-        .btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent); color: #fff; padding: 0.8rem 1.5rem; border-radius: 12px; text-decoration: none; font-weight: 700; transition: all 0.2s; border: none; cursor: pointer; }
-        .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
-        .btn-outline { background: transparent; border: 2px solid var(--accent); color: var(--accent); }
-        .btn-outline:hover { background: var(--accent-bg); }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .custom-checkbox i { color: #fff; font-size: 16px; opacity: 0; transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; }
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #3b82f6, #1d4ed8); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 3.5rem; border: 4px solid #1e40af; z-index: 10;}
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) rotate(-30deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 1rem 2rem; border-radius: 14px; text-decoration: none; font-weight: 800; transition: all 0.3s; cursor: pointer; box-shadow: 0 4px 12px var(--accent-glow); }
+        .btn:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 20px var(--accent-glow); }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px var(--accent-glow); text-decoration: none; z-index: 1000; transition: all 0.3s; }
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); }
+        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; color: #e2e8f0; }
+        .code-label { position: absolute; top: -12px; left: 16px; background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; }
+        #scroll-progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 5px; background: transparent; z-index: 1001; }
+        #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .code-box { background: #1e293b; color: #e2e8f0; padding: 1.5rem; border-radius: 12px; font-family: 'Fira Code', monospace; font-size: 0.9rem; margin: 1.5rem 0; position: relative; }
-        .code-label { position: absolute; top: -10px; left: 15px; background: var(--accent); color: #fff; padding: 2px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-        #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
     <header class="fixed-header">
         <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
         <div class="progress-container">
             <div class="progress-text"><span>Day 7 Progress</span><span id="progress-percent">0%</span></div>
-            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar-top"></div></div>
         </div>
         <div style="width:100px;"></div>
     </header>
@@ -120,169 +131,212 @@
     <div class="container">
         <div class="hero">
             <div class="day-badge">DAY 07</div>
-            <h1>高度な画像生成テクニック</h1>
-            <p>本日の目標：基礎スキルを応用し、高度でクリエイティブな画像制作能力を養う。<br>Nano Banana Proの新機能活用から、情報の構造化（NotebookLM）までを網羅します。</p>
+            <h1>高度な画像生成とデザインAIの応用</h1>
+            <p>本日の目標：基礎スキルを応用し、文字入れ・図解を含む高度でクリエイティブなビジュアル制作能力を養う。<br>Nano Banana Proの新機能から、構造化プロンプト、そしてPadletによるポートフォリオ構築までを網羅します。</p>
         </div>
 
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-star"></i> 今日のねらい</button>
-            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-wand-magic-sparkles"></i> 前半：デザインAI</button>
-            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-clipboard-check"></i> 後半：実践・Padlet</button>
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye"></i> コース目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-palette"></i> 前半：デザインAI</button>
+            <button class="tab-btn" onclick="switchTab('tab-pencil')"><i class="fa-solid fa-laptop-code"></i> 後半：実践実習</button>
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered"></i> まとめ</button>
         </div>
 
-        <!-- TAB 1: GOAL -->
+        <!-- TAB 1: GOALS -->
         <div id="tab-goal" class="tab-content active">
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-lightbulb"></i><h2>本日の研修のねらい</h2></div>
+            <div class="glass-card" style="border-top: 5px solid var(--accent);">
+                <div class="card-header"><i class="fa-solid fa-star"></i><h2>本日の研修ねらい</h2></div>
                 <div class="info-box">
-                    <h4><i class="fa-solid fa-rocket"></i> 「生成」の先にある「制作」へ</h4>
-                    <p>Day 7では、単に画像を出すだけでなく、**具体的かつ高度なプロンプト設計**を学びます。<br>Googleの最新モデル「Nano Banana Pro」の特徴を最大限に活かし、文字や図解を含めた意図通りのビジュアルを作り出す技術を習得しましょう。<br>また、作成したプロセスをPadletで共有し、再現性のあるナレッジとして蓄積する方法も学びます。</p>
+                    <h4>生成AIをデザインツールとして使いこなす</h4>
+                    <p>Day 7では、単に「綺麗な画像」を出す段階を超え、プロのディレクターとして意図通りのビジュアルを構築するテクニックを学びます。Google最新の画像生成モデル「Nano Banana Pro」のポテンシャルを引き出し、実務に耐えうるクオリティを目指しましょう。</p>
                 </div>
                 <div class="bento-grid">
                     <div class="bento-item">
-                        <h4><i class="fa-solid fa-pen-nib"></i> デザインAIの教科書</h4>
-                        <p>AI×デザイン制作の最前線を学び、実務に活かせるビジュアル作成のコツを掴みます。</p>
+                        <h4><i class="fa-solid fa-font"></i> 精密な文字入れ</h4>
+                        <p>画像内に狙い通りのテキストを配置するデザインプロンプト技術の習得。</p>
                     </div>
                     <div class="bento-item">
-                        <h4><i class="fa-solid fa-microchip"></i> Nano Banana Pro</h4>
-                        <p>文字入れや精密な構成が可能な最新モデルを使いこなし、クオリティを一段階引き上げます。</p>
+                        <h4><i class="fa-solid fa-sitemap"></i> 構造化プロンプト</h4>
+                        <p>NotebookLMを活用した情報の整理と、再現性の高いプロンプト設計。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-folder-open"></i> Padlet活用</h4>
+                        <p>作品とプロンプトを体系的に管理し、共有・振り返りができる仕組み作り。</p>
                     </div>
                 </div>
             </div>
-            <div style="text-align:center;"><button class="btn" onclick="switchTab('tab-first')">前半へ進む <i class="fa-solid fa-arrow-right"></i></button></div>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" onclick="switchTab('tab-first')">前半：デザインAIの教科書へ <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
         </div>
 
         <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-video"></i><h2>前半：デザインAIと高度なプロンプト</h2></div>
+            <div class="glass-card" style="border-top: 5px solid var(--accent);">
+                <div class="card-header"><i class="fa-solid fa-clapperboard"></i><h2>前半：高度な画像生成テクニック</h2></div>
                 
+                <!-- VIDEO PLAYLIST 1 -->
                 <div class="video-section">
                     <div class="video-section-header">
                         <div class="thumb-wrap">
                             <a href="https://www.youtube.com/playlist?list=PLoQApr14fceMM5F-s8u7aEhayNe3NHYYS" target="_blank">
-                                <img src="https://img.youtube.com/vi/BP5MKB2vPd0/hqdefault.jpg" alt="Playlist">
+                                <img src="https://img.youtube.com/vi/BP5MKB2vPd0/hqdefault.jpg" alt="Playlist 1">
                                 <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                             </a>
                         </div>
                         <div class="meta">
-                            <h3><i class="fa-solid fa-list-check"></i> 前半再生リスト：高度な生成テクニック</h3>
-                            <p>デザイン制作へのAI活用と、具体的なプロンプト集。Gemini（Nano Banana Pro）のポテンシャルを引き出す方法を学びます。</p>
+                            <h3><i class="fa-solid fa-list-ul" style="color:#ef4444;"></i> 前半動画リスト：画像生成の極意</h3>
+                            <p>Nano Banana Proを活用したプロ級のデザイン制作フローと、Geminiを活用したプロンプト構築術を徹底解説。情報の構造化が鍵となります。</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="highlight-box">
-                    <h3><i class="fa-solid fa-link"></i> 必須チェック・リソース</h3>
-                    <ul style="margin: 1rem 0; line-height: 2;">
-                        <li><a href="https://showy-politician-f4d.notion.site/YouTube-AI-AI-2d380b19aa4a802eb5e2e7d4dcc3ec01" target="_blank" style="color:inherit; font-weight:700;">【AI×デザイン制作のすすめ】デザインAIの教科書</a></li>
-                        <li><a href="https://note.com/google_gemini/n/n064d03afe2c0" target="_blank" style="color:inherit; font-weight:700;">Google公式：Nano Banana Proの特徴と活用術</a></li>
-                        <li><a href="https://remind-review.com/nano-banana-pro_100_prompt/" target="_blank" style="color:inherit; font-weight:700;">Nano-Banana Pro 100のプロンプト集</a></li>
+                    <h3><i class="fa-solid fa-rocket"></i> 今日から使えるプロンプト・リソース</h3>
+                    <p>動画内で紹介された重要なNotion資料とプロンプト集です。これらを活用して実習に挑みましょう。</p>
+                    <div class="bento-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+                        <div class="bento-item" style="padding: 1.2rem;">
+                            <h4><i class="fa-solid fa-book-bookmark"></i> デザインAIの教科書</h4>
+                            <a href="https://showy-politician-f4d.notion.site/YouTube-AI-AI-2d380b19aa4a802eb5e2e7d4dcc3ec01" target="_blank" class="tag" style="margin-top:10px;">資料を開く</a>
+                        </div>
+                        <div class="bento-item" style="padding: 1.2rem;">
+                            <h4><i class="fa-solid fa-terminal"></i> 動画内プロンプト集</h4>
+                            <a href="https://showy-politician-f4d.notion.site/Gemini3-0-10-2dc80b19aa4a801aa7dacb69d92dc3e3?source=copy_link" target="_blank" class="tag" style="margin-top:10px;">プロンプト集を開く</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff;">
+                    <h4><i class="fa-solid fa-mobile-screen-button"></i> AIのスマホ活用術</h4>
+                    <p>外部記憶装置としてのNotebookLM活用。情報は「ただ置く」のではなく「AIに食べさせる」ことでその真価を発揮します。</p>
+                    <a href="https://showy-politician-f4d.notion.site/NotebookLM-7-2e580b19aa4a8004b4c5cfe9441680a9" target="_blank" class="prompt-code" style="color: #0ea5e9; background: #fff; text-decoration: underline;">
+                        NotebookLMスマホ活用術7選 プロンプト集
+                    </a>
+                </div>
+
+                <div class="glass-card" style="background:#f8fafc; border:none; margin-top:2rem;">
+                    <h4><i class="fa-brands fa-google"></i> Google公式 & Nano Banana Pro 特集</h4>
+                    <p>最新モデルのポテンシャルを最大限に活かすための必読資料です。</p>
+                    <ul style="line-height:2.2; font-weight:700;">
+                        <li><a href="https://note.com/google_gemini/n/n064d03afe2c0" target="_blank">文字も図解も思いのまま！Nano Banana Pro 特徴と活用術</a></li>
+                        <li><a href="https://remind-review.com/nano-banana-pro_100_prompt/" target="_blank">Nano-Banana Pro 画像生成100のプロンプト</a></li>
                     </ul>
                 </div>
 
-                <div class="code-box">
-                    <span class="code-label">💡 NotebookLM スマホ活用プロンプト集</span>
-                    情報を構造化し、AIに正しく理解させるための「入力の型」を確認しましょう。<br>
-                    <a href="https://showy-politician-f4d.notion.site/NotebookLM-7-2e580b19aa4a8004b4c5cfe9441680a9" target="_blank" class="btn btn-outline" style="margin-top:1rem; font-size:0.8rem;">Notionでプロンプト集を見る</a>
-                </div>
-
+                <!-- QUIZ -->
                 <div class="quiz-box">
-                    <div class="q-badge">Practice Quiz</div>
-                    <p style="font-weight:700; margin-bottom:1rem;">Nano Banana Proの最大の特徴として正しいものはどれ？</p>
-                    <div class="quiz-opt" onclick="checkQuiz(this, true)">A. 画像内への正確なテキスト（文字）挿入が可能になった</div>
-                    <div class="quiz-opt" onclick="checkQuiz(this, false)">B. 動画生成のみに特化したモデルである</div>
-                    <div class="quiz-opt" onclick="checkQuiz(this, false)">C. プロンプトに日本語を使うことができない</div>
-                    <div class="quiz-explain">その通り！最新のNano Banana Proは、画像の中に指定した文字を正確に描き出す能力が飛躍的に向上しています。</div>
+                    <div class="quiz-header"><span class="q-badge">Q1</span><strong>Nano Banana Proの最大の特徴は？</strong></div>
+                    <div class="quiz-options" id="quiz1">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, true)">A. 画像内に正確な文字を入れる能力の飛躍的向上 <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">B. 動画生成のみに特化している <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">C. 日本語プロンプトが使えない <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz1-explain">正解はAです！最新モデルでは、ポスターやバナー作成において重要な「特定の文字を背景に馴染ませる・配置する」精度が非常に高まっています。</div>
                 </div>
             </div>
-            <div style="text-align:center;"><button class="btn" onclick="switchTab('tab-second')">後半（実習）へ進む <i class="fa-solid fa-arrow-right"></i></button></div>
+            <div style="text-align:center;"><button class="btn" onclick="switchTab('tab-pencil')">後半：Padlet実習プロトコルへ <i class="fa-solid fa-arrow-right"></i></button></div>
         </div>
 
         <!-- TAB 3: SECOND HALF -->
-        <div id="tab-second" class="tab-content">
-            <div class="glass-card">
-                <div class="card-header"><i class="fa-solid fa-vial"></i><h2>後半：Padletによるポートフォリオ制作</h2></div>
+        <div id="tab-pencil" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid var(--accent);">
+                <div class="card-header"><i class="fa-solid fa-file-pen"></i><h2>後半：Padletによる作品管理と提出準備</h2></div>
                 
                 <div class="info-box">
-                    <h4>🎯 実習の目的</h4>
-                    <p>・Padlet（パドレット）への個人ボード作成と投稿方法をマスターする。<br>・自分が生成した高品質な画像と、その「レシピ（プロンプト）」をセットで管理する。</p>
+                    <h4>実習のゴール</h4>
+                    <p>Padlet（パドレット）をポートフォリオとして活用し、自分が生成した作品をプロンプトと共に体系的に管理できるようにします。これは課題提出の準備でもあります。</p>
                 </div>
 
-                <h4 style="font-weight:800; margin-top:2.5rem;"><i class="fa-solid fa-stairs"></i> 実習：Padlet投稿・課題準備の流れ</h4>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4>① Padletのセットアップ</h4>
-                        <p><a href="https://padlet.com/" target="_blank" style="color:var(--accent);">Padlet</a>に登録。「マイボード」から「ウォール」形式で新規作成。タイトルを「2026年3月課題」に設定します。</p>
+                <!-- VIDEO 2 -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=Tef0vJPK-Jw" target="_blank">
+                                <img src="https://img.youtube.com/vi/Tef0vJPK-Jw/hqdefault.jpg" alt="Padlet Video">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-info-circle"></i> 実習参考：Padletへの投稿方法</h3>
+                            <p>Padletの基本的な操作と、美しいポートフォリオを作るための投稿フローを動画で確認しましょう。</p>
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceNGvl0Yd9XpU9kjVtecEfNz" target="_blank" class="tag"><i class="fa-solid fa-layer-group"></i> 後半再生リスト</a>
+                        </div>
                     </div>
-                    <div class="bento-item">
-                        <h4>② 画像の生成 (Nano Banana)</h4>
-                        <p>これまでのノートからプロンプトを選び、Geminiで生成。**「他人が見ても再現できるか」**を意識してブラッシュアップしましょう。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4>③ ポートフォリオへの追加</h4>
-                        <p>タイトル、リンク、画像、プロンプト本文を記入して公開。右上「編集」からいつでも調整可能です。</p>
-                    </div>
+                </div>
+
+                <div class="accordion">
+                    <details>
+                        <summary><i class="fa-solid fa-list-ol"></i> Step 1：Padletの個人ボード作成フロー</summary>
+                        <div class="content">
+                            <ol style="line-height:2;">
+                                <li><strong>Padletに登録:</strong> <a href="https://padlet.com/" target="_blank">https://padlet.com/</a> へアクセスし、自分の名前でログイン。</li>
+                                <li><strong>ボード作成:</strong> 「Padletを作成」→<strong>「ウォール」</strong>を選択。</li>
+                                <li><strong>タイトルの設定:</strong> タイトルに<strong>「2026年3月課題」</strong>と記入し完了。</li>
+                                <li><strong>投稿の作成:</strong> 右下「＋」ボタンから、タイトル・リンク・本文を入力して公開。</li>
+                            </ol>
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-wand-magic-sparkles"></i> Step 2：Nano Banana Proによる実作</summary>
+                        <div class="content">
+                            <p>これまでまとめたノートや、本日共有されたプロンプト集から1つ選び、Geminiで画像を生成します。</p>
+                            <p style="margin-top:10px;"><strong>ポイント:</strong> 他人がそのプロンプトを使っても同じような結果が再現できる、構造化された指示を意識しましょう。</p>
+                        </div>
+                    </details>
                 </div>
 
                 <div class="highlight-box" style="background:var(--accent-bg); border-color:var(--accent);">
-                    <h3 style="color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-eye"></i> 投稿のお手本を確認</h3>
-                    <p>受講生共有のPadletボードを見て、どのような構成で投稿されているか参考にしましょう。</p>
-                    <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="margin-top:1rem;">投稿例（Padlet）を見る</a>
+                    <h3 style="color:var(--accent); border-color:var(--accent);"><i class="fa-solid fa-check-circle"></i> 投稿のお手本（参考リンク）</h3>
+                    <p>以下のリンクから、他の方がどのような形式で投稿しているか確認し、自分の投稿の参考にしましょう。</p>
+                    <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="margin-top:1rem;">個人Padlet 投稿例を確認</a>
                 </div>
 
                 <div class="mission-area" id="mission-area">
-                    <div class="wax-seal">DONE</div>
-                    <div style="text-align:center; margin-bottom:2rem;">
-                        <h3><i class="fa-solid fa-check-double"></i> Day 7 Mission Checklist</h3>
-                        <p>完了した項目をチェックしてください</p>
+                    <div class="wax-seal">COMPLETED</div>
+                    <div style="text-align:center; padding-bottom:1.5rem;">
+                        <h3><i class="fa-solid fa-trophy"></i> DAY 07 ミッションチェックリスト</h3>
+                        <p>本日のタスクが完了したらチェックしてください</p>
                     </div>
-                    <div class="task-item" onclick="toggleTask(this)">
-                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
-                        <div>
-                            <h4>前半の再生リスト・Notion資料を確認した</h4>
-                            <p>Nano Banana Proの特徴とデザイン制作への応用を理解する。</p>
-                        </div>
-                    </div>
-                    <div class="task-item" onclick="toggleTask(this)">
-                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
-                        <div>
-                            <h4>Padletに個人ボードを作成した</h4>
-                            <p>「2026年3月課題」というタイトルで準備を完了する。</p>
-                        </div>
-                    </div>
-                    <div class="task-item" onclick="toggleTask(this)">
-                        <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
-                        <div>
-                            <h4>プロンプト付きの画像を1件以上投稿した</h4>
-                            <p>Geminiで生成した自慢の1枚と、そのプロンプトをシェアする。</p>
-                        </div>
-                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask(this)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>前半の動画・Notion資料の読破</h4>
+                                <p>デザインAIの教科書とプロンプト集の内容を理解した。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask(this)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>「2026年3月課題」ボードの作成</h4>
+                                <p>Padletに自分の個人用ボードを正しく構築した。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask(this)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>自慢の作品をプロンプト付きで投稿</h4>
+                                <p>Nano Banana Proで生成した画像と、そのレシピをPadletにアップした。</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div style="text-align:center;"><button class="btn" onclick="switchTab('tab-summary')">まとめへ進む <i class="fa-solid fa-flag-checkered"></i></button></div>
+            <div style="text-align:center;"><button class="btn" onclick="switchTab('tab-summary')">最後のまとめへ <i class="fa-solid fa-flag-checkered"></i></button></div>
         </div>
 
         <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
-            <div class="glass-card" style="text-align:center; padding: 4rem 3rem;">
-                <div style="font-size: 4rem; color: var(--accent); margin-bottom: 1.5rem;"><i class="fa-solid fa-award"></i></div>
-                <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">Day 7 修了！</h2>
-                <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-sub); max-width: 700px; margin: 0 auto;">
-                    画像生成は「楽しい遊び」から「強力な制作ツール」へと進化しました。<br>
-                    Nano Banana Proの能力を引き出し、自らの力で情報を構造化する（NotebookLM）ことで、あなたのクリエイティビティはより強固なものになります。<br>
-                    Padletに溜まった一枚一枚が、あなたのスキルの証明です。
+            <div class="glass-card" style="text-align:center; padding: 5rem 2rem;">
+                <div style="font-size: 5rem; color: var(--accent); margin-bottom: 2rem;"><i class="fa-solid fa-circle-check"></i></div>
+                <h2 style="font-size: 2.5rem; font-weight: 900;">Congrats! Day 7 修了</h2>
+                <p style="font-size: 1.25rem; color: var(--text-sub); line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                    本日は画像生成の「応用編」でした。AIを単なるジェネレーターとしてではなく、<br>自らの意図を視覚化するための「共創パートナー」として定義できましたか？<br>Padletに刻まれたプロンプトの記録が、あなたのスキルの足跡です。
                 </p>
-                <div style="margin-top:3rem;">
-                    <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="padding:1rem 2.5rem; font-size:1.1rem;">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> 作品の提出状況を確認
-                    </a>
-                </div>
-                <div style="margin-top:2rem;">
-                    <a href="index.html" class="btn btn-outline" style="padding:1rem 2.5rem; font-size:1.1rem;">
-                        <i class="fa-solid fa-house"></i> ホームに戻る
-                    </a>
+                <div style="margin-top: 4rem;">
+                    <button class="btn" style="padding: 1.5rem 4rem; font-size: 1.3rem; border-radius: 50px;" onclick="window.location.href='index.html'">
+                        <i class="fa-solid fa-house"></i> ホームに戻って進捗を保存
+                    </button>
                 </div>
             </div>
         </div>
@@ -297,55 +351,50 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             const btns = document.querySelectorAll('.tab-btn');
-            if(tabId === 'tab-goal') btns[0].classList.add('active');
-            if(tabId === 'tab-first') btns[1].classList.add('active');
-            if(tabId === 'tab-second') btns[2].classList.add('active');
-            if(tabId === 'tab-summary') btns[3].classList.add('active');
+            const map = {'tab-goal':0, 'tab-first':1, 'tab-pencil':2, 'tab-summary':3};
+            btns[map[tabId]].classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function checkQuiz(el, isCorrect) {
-            const parent = el.parentElement;
-            if(parent.dataset.answered) return;
-            parent.dataset.answered = 'true';
+        function checkQuiz(quizId, el, isCorrect) {
+            const container = document.getElementById(quizId);
+            if(container.dataset.answered) return;
+            container.dataset.answered = 'true';
             if(isCorrect) {
                 el.classList.add('correct');
-                el.innerHTML += ' <i class="fa-solid fa-check"></i>';
+                el.querySelector('i').style.display = 'inline';
             } else {
                 el.classList.add('wrong');
-                el.innerHTML += ' <i class="fa-solid fa-xmark"></i>';
-                parent.querySelectorAll('.quiz-opt').forEach(opt => {
-                    if(opt.innerText.includes('A.')) opt.classList.add('correct');
+                el.querySelector('i').style.display = 'inline';
+                container.querySelectorAll('.quiz-opt').forEach(opt => {
+                    if(opt.innerText.includes('A.')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; }
                 });
             }
-            parent.querySelector('.quiz-explain').style.display = 'block';
+            document.getElementById(quizId + '-explain').style.display = 'block';
         }
 
         function toggleTask(el) {
             el.classList.toggle('completed');
-            updateProgress();
             const total = document.querySelectorAll('.task-item').length;
             const done = document.querySelectorAll('.task-item.completed').length;
-            if(total === done) {
+            const percent = Math.round((done / total) * 100);
+            document.getElementById('progress-bar-top').style.width = percent + '%';
+            document.getElementById('progress-percent').innerText = percent + '%';
+            
+            if(done === total) {
                 document.getElementById('mission-area').classList.add('completed');
-                confetti({
-                    particleCount: 150,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#2563eb', '#8b5cf6', '#3b82f6']
-                });
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
             } else {
                 document.getElementById('mission-area').classList.remove('completed');
             }
         }
 
-        function updateProgress() {
-            const total = document.querySelectorAll('.task-item').length;
-            const done = document.querySelectorAll('.task-item.completed').length;
-            const percent = Math.round((done / total) * 100);
-            document.getElementById('progress-bar').style.width = percent + '%';
-            document.getElementById('progress-percent').innerText = percent + '%';
-        }
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress-bar").style.width = scrolled + "%";
+        };
     </script>
 </body>
 </html>
