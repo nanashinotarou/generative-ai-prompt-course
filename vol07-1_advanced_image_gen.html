@@ -168,7 +168,7 @@
 
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> コース目標</button>
-            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-wand-magic-sparkles" style="color:#3b82f6;"></i> 前半：先端技術</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-wand-magic-sparkles" style="color:#3b82f6;"></i> 前半：基礎・準備</button>
             <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-laptop-code" style="color:#10b981;"></i> 後半：実践実習</button>
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#ec4899;"></i> 今日のまとめ</button>
         </div>
@@ -181,80 +181,101 @@
                     <h4 style="color:#92400e;"><i class="fa-solid fa-chess-knight"></i> デザインAIの極意をマスターする</h4>
                     <p style="color:#78350f;">
                         本日の研修は、<strong>「応用的なテクニックによる高度な画像生成」</strong>です。<br><br>
-                        前半は<strong>先端技術の解説</strong>です。Google最新の「Nano Banana Pro」が可能にした正確な文字入れと、NotebookLMを用いた「情報の構造化」によるディレクション手法を学びます。また、Padletのセットアップも行います。<br>
-                        後半は<strong>実践実習</strong>です。これまでにまとめたプロンプトノートから最適なレシピを選び、実際にNano Bananaで生成してPadletに投稿。自分の成果を「資産」として形にするフローを体得しましょう。
+                        前半は<strong>基礎技術と準備</strong>です。AI活用の核となる「プロンプト100選」や、Geminiを得意とする「図解プロンプト」、さらに情報の整理を劇的に変える「NotebookLM」の活用術を学び、アウトプットの土台となるPadletをセットアップします。<br>
+                        後半は<strong>実践実習</strong>です。Google最新の画像生成モデル「Nano Banana Pro」のビジネス活用法を深く学び、実際に自分の手で珠玉の1枚を生成、Padletへ公開する資産化プロセスを体得します。
                     </p>
                 </div>
 
                 <div class="column-card">
                     <h3><i class="fa-solid fa-star"></i> デザインディレクターとしての視点</h3>
-                    <p style="color:#0369a1; line-height:1.7;">「綺麗な絵」を作るのはAIですが、そこに「意味」と「機能」を持たせるのは人間です。文字をどこに入れるか、どんな構造で情報を伝えるか——本日はその戦略的なディレクションを学びます。</p>
+                    <p style="color:#0369a1; line-height:1.7;">単なる生成ではなく、「目的に合わせた情報の再構成」が重要です。前半で情報の整理術を学び、後半でそれをビジュアルへと昇華させる一気通貫のディレクションを身につけましょう。</p>
                 </div>
             </div>
             <div style="text-align:center; margin-top:3rem;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-first'); window.scrollTo(0,0);">
-                    前半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                    前半の基礎から始める <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
-        <!-- TAB 2: FIRST HALF - Advanced Tech -->
+        <!-- TAB 2: FIRST HALF - Basics & Preparation -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #3b82f6;">
-                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：Nano Banana Pro と構造化の魔法</h2></div>
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>前半：画像生成の基礎と情報の構造化</h2></div>
 
-                <!-- VIDEO SECTION 1 -->
+                <!-- VIDEO 1: 100 Prompts -->
                 <div class="video-section">
                     <div class="video-section-header">
                         <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=FPS3IM4ZQY4" target="_blank">
-                                <img src="https://i.ytimg.com/vi/FPS3IM4ZQY4/hqdefault.jpg" alt="Video 1">
+                            <a href="https://www.youtube.com/watch?v=Tef0vJPK-Jw" target="_blank">
+                                <img src="https://i.ytimg.com/vi/Tef0vJPK-Jw/hqdefault.jpg" alt="100 Prompts">
                                 <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                             </a>
                         </div>
                         <div class="meta">
-                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画①：Nano Banana Pro／usutaku AI道場</h3>
-                            <p>従来のAIが苦手とした「正確な文字入れ」を克服。ポスターやSNS、資料作成で即戦力となるテクニックを解説します。</p>
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画①：公式おすすめ！すぐ使える100個のプロンプト集</h3>
+                            <p>AI画像生成の幅を一気に広げる。実用的で多種多様なプロンプトの型（レシピ）を学び、引き出しを増やします。</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="highlight-box" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #3b82f6; color: #1e3a8a;">
-                        <h3 style="color:#1d4ed8; border-color:#3b82f6;"><i class="fa-solid fa-wand-magic-sparkles"></i> 文字入れ革命の鍵</h3>
-                        <p style="color:#1e3a8a;">
-                            引用符 <code>" "</code> で囲むだけで、画像内に文字を配置可能。さらに「看板に」「ネオンで」といった文脈指定で、背景に完璧に馴染ませることができます。
-                        </p>
-                    </div>
-
-                    <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-sliders" style="color:#3b82f6;"></i> Nano Banana パラメータ（タップで確認）</h4>
-                    <div class="flip-grid">
-                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                            <div class="flip-inner">
-                                <div class="flip-front"><i class="fa-solid fa-quote-left"></i><h4>引用符の指定</h4></div>
-                                <div class="flip-back">プロンプト内で "TEXT" と記述。AIはこれを文字として認識し、正確なスペルで書き込みます。</div>
-                            </div>
+                <!-- VIDEO 2: Diagram Prompts -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=EZjxYPEayq0" target="_blank">
+                                <img src="https://i.ytimg.com/vi/EZjxYPEayq0/hqdefault.jpg" alt="Diagram Prompts">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
                         </div>
-                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                            <div class="flip-inner">
-                                <div class="flip-front"><i class="fa-solid fa-object-group"></i><h4>レイアウト制御</h4></div>
-                                <div class="flip-back">「中央に大きく」「左下に脚注として」など、文字の位置関係を自然言語で正確に指定可能です。</div>
-                            </div>
-                        </div>
-                        <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                            <div class="flip-inner">
-                                <div class="flip-front"><i class="fa-solid fa-brain"></i><h4>構造化の連携</h4></div>
-                                <div class="flip-back">NotebookLMで情報を整理し、その「見出し」をNano Bananaに指示することで、論理的な図解が生成されます。</div>
-                            </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画②：Geminiのビジネス向け図解プロンプト10選</h3>
+                            <p>「文字入れ」や「フローチャート」など、ビジネス資料に欠かせない要素をAIで効率的に生成するプロンプト術を解説。</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="diagram-box">
-                        <h4 style="text-align:center; margin-top:0; color:#1e3a8a; font-weight:900;"><i class="fa-solid fa-sitemap"></i> 高度なディレクション・フロー</h4>
-                        <div class="diagram-row">
-                            <div class="diagram-node">生情報の収集<br><small>Notion / 資料</small></div>
-                            <span class="diagram-arrow">→</span>
-                            <div class="diagram-node" style="border-color:#3b82f6;">NotebookLM<br><small>情報の構造化</small></div>
-                            <span class="diagram-arrow">→</span>
-                            <div class="diagram-node" style="border-color:#10b981;">Nano Banana<br><small>精密な画像生成</small></div>
+                <!-- VIDEO 3: NotebookLM -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=t047Pe0Wda8" target="_blank">
+                                <img src="https://i.ytimg.com/vi/t047Pe0Wda8/hqdefault.jpg" alt="NotebookLM">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画③：NotebookLMスマホ版活用術7選</h3>
+                            <p>膨大な情報を整理し、構造化する。画像生成の「指示（ディレクション）」を、より論理的で正確なものにするための最強ツール活用法。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #3b82f6; color: #1e3a8a;">
+                    <h3 style="color:#1d4ed8; border-color:#3b82f6;"><i class="fa-solid fa-wand-magic-sparkles"></i> 構造化ディレクションの鍵</h3>
+                    <p style="color:#1e3a8a;">
+                        情報を NotebookLM で整理し、Gemini で図解用プロンプトを作成。それを画像生成AIへ投げる。この「情報の整理・再構成」こそが、後半で学ぶ Nano Banana Pro を使いこなすための最重要スキルです。
+                    </p>
+                </div>
+
+                <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-sliders" style="color:#3b82f6;"></i> 基礎技術のポイント（タップで詳細）</h4>
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-book"></i><h4>プロンプト・レシピ</h4></div>
+                            <div class="flip-back">100個のプロンプト例は、そのまま使うだけでなく「要素の組み合わせ」を学ぶための教科書です。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-diagram-project"></i><h4>図解の自動化</h4></div>
+                            <div class="flip-back">特定の型に情報を当てはめることで、複雑な仕組みも一瞬で視覚化できます。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-brain"></i><h4>NotebookLM連携</h4></div>
+                            <div class="flip-back">生データから構造を抽出。AIへの指示に「論理性」と「一貫性」をもたせることができます。</div>
                         </div>
                     </div>
                 </div>
@@ -270,8 +291,8 @@
                                     <a href="https://showy-politician-f4d.notion.site/YouTube-AI-AI-2d380b19aa4a802eb5e2e7d4dcc3ec01" target="_blank" class="btn">Notionを開く</a>
                                 </div>
                                 <div class="bento-item">
-                                    <h4><i class="fa-solid fa-bolt"></i> 動画内プロンプト集</h4>
-                                    <p>すぐに使える実演プロンプト。</p>
+                                    <h4><i class="fa-solid fa-bolt"></i> 学習プロンプト集</h4>
+                                    <p>すぐに使える実習用プロンプト。</p>
                                     <a href="https://showy-politician-f4d.notion.site/Gemini3-0-10-2dc80b19aa4a801aa7dacb69d92dc3e3" target="_blank" class="btn">Notionを開く</a>
                                 </div>
                             </div>
@@ -283,15 +304,15 @@
                 <div class="quiz-box">
                     <div class="quiz-header">
                         <span class="q-badge">Q1</span>
-                        <strong style="font-size:1.15rem;">Nano Banana Proで「文字」を正確に出力させるための記法は？</strong>
+                        <strong style="font-size:1.15rem;">情報をAIに画像化させる前に、NotebookLM等で行うべき「最重要工程」は？</strong>
                     </div>
                     <div class="quiz-options" id="quiz1">
-                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">A. [ ] (角括弧) で囲む <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, true)">B. " " (二重引用符) で囲む <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">C. 太字にする <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">A. 背景色を決める <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, true)">B. 情報の構造化（整理・再構成） <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz1', this, false)">C. 画像を保存する <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
                     </div>
                     <div class="quiz-explain" id="quiz1-explain">
-                        <strong>💡 解説：</strong>プロンプト内で <code>"TEXT"</code> のように二重引用符で囲むことで、AIはそれを「書き込むべきテキスト」として最優先で処理します。
+                        <strong>💡 解説：</strong>精度の高い画像（特に図解）を作るには、指示を出す前に元データを論理的に整理する「構造化」が欠かせません。
                     </div>
                 </div>
 
@@ -299,29 +320,29 @@
                 <div class="mission-area" id="mission-group-1">
                     <div class="wax-seal">READY</div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-trophy" style="color:#3b82f6;"></i> MILESTONE 1：先端技術と準備</h3>
+                        <h3><i class="fa-solid fa-trophy" style="color:#3b82f6;"></i> MILESTONE 1：基礎とセットアップ</h3>
                         <p>前半の学習チェックリスト</p>
                     </div>
                     <ul class="task-list">
                         <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
                             <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>技術理解の確認</h4>
-                                <p>Nano Banana Proでの文字入れと、NotebookLMによる構造化の重要性を理解した。</p>
+                                <h4>3つの動画の確認</h4>
+                                <p>100プロンプト、図解テクニック、NotebookLMの役割を理解した。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
                             <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
                                 <h4>Padlet ボードの作成</h4>
-                                <p>自分の名前で「2026年3月課題」という新規ウォールを作成した。</p>
+                                <p>自分の名前で「2026年3月課題」という新規ウォールを作成（セットアップ）した。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_3', this, 1)">
                             <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>投稿内容の企画</h4>
-                                <p>どのプロンプトを使って画像を生成するか、Padletに載せる案を考えた。</p>
+                                <h4>内容の企画（ドラフト）</h4>
+                                <p>どんなプロンプトを後半で実践し、何を公開するか、企画を練った。</p>
                             </div>
                         </li>
                     </ul>
@@ -330,79 +351,64 @@
 
             <div style="text-align:center; padding: 2rem 0;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #3b82f6, #10b981); border-radius:30px;" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
-                    後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                    後半：Nano Banana Pro 実習へ進む <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
-        <!-- TAB 3: SECOND HALF - Practical -->
+        <!-- TAB 3: SECOND HALF - Practical Deep Dive -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #10b981;">
-                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>後半：実践・生成、そして資産化</h2></div>
+                <div class="card-header"><i class="fa-brands fa-youtube" style="color:#ef4444; background:#fef2f2;"></i><h2>後半：Nano Banana Pro による究極の生成</h2></div>
 
                 <!-- VIDEO SECTION 2 -->
                 <div class="video-section">
                     <div class="video-section-header">
                         <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=evWbqZyCunk" target="_blank">
-                                <img src="https://i.ytimg.com/vi/evWbqZyCunk/hqdefault.jpg" alt="Video 2">
+                            <a href="https://www.youtube.com/watch?v=FPS3IM4ZQY4" target="_blank">
+                                <img src="https://i.ytimg.com/vi/FPS3IM4ZQY4/hqdefault.jpg" alt="Nano Banana Pro">
                                 <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                             </a>
                         </div>
                         <div class="meta">
-                            <h3><i class="fa-solid fa-circle-play" style="color:#ef4444;"></i> 動画②：Genspark上でのNano Banana Pro活用</h3>
-                            <p>リサーチ、構造化、生成までを一つのプラットフォームで。より高度な成果物を生み出すフローを体感します。</p>
+                            <h3><i class="fa-solid fa-star" style="color:#eab308;"></i> 動画④：Nano Banana Pro ビジネス活用法</h3>
+                            <p>usutaku氏による決定版解説。文字入れ、商品PR、SNS運用に。デザイナーとの意思疎通すら変える最先端モデルを使いこなしましょう。</p>
                         </div>
                     </div>
 
-                    <div class="video-section">
-                        <div class="video-section-header">
-                            <div class="thumb-wrap">
-                                <a href="https://www.youtube.com/watch?v=Tef0vJPK-Jw" target="_blank">
-                                    <img src="https://i.ytimg.com/vi/Tef0vJPK-Jw/hqdefault.jpg" alt="Bonus Video">
-                                    <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                                </a>
-                            </div>
-                            <div class="meta">
-                                <h3><i class="fa-solid fa-star" style="color:#eab308;"></i> 応用：さらに詳細なディレクション例</h3>
-                                <p>動画内でプロが実践している「修正の追い込み」や「微調整」のコツを盗みましょう。</p>
-                            </div>
+                    <div class="highlight-box" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #10b981; color: #064e3b;">
+                        <h3 style="color:#059669; border-color:#10b981;"><i class="fa-solid fa-laptop-code"></i> 本日のメイン実習</h3>
+                        <p style="color:#064e3b;">
+                            1. **モデルの選択**: Gemini にて Nano Banana Pro (または最新の画質優先モデル) を選択。<br>
+                            2. **プロンプトの実行**: 前半で企画した、またはプロンプトノートから選んだレシピに、自分の「構造化情報」を加えて生成。<br>
+                            3. **ブラッシュアップ**: 文字の位置、画の質感などを微調整し、究極の1枚を仕上げます。
+                        </p>
+                    </div>
+
+                    <div class="diagram-box">
+                        <h4 style="text-align:center; margin-top:0; color:#065f46; font-weight:900;"><i class="fa-solid fa-upload"></i> アウトプットの義務化（資産化）</h4>
+                        <div class="diagram-row">
+                            <div class="diagram-node">珠玉の画像をダウンロード<br><small>端末に保存</small></div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-node" style="border-color:#10b981;">Padletへアップロード<br><small>公開設定</small></div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-node" style="border-color:#ec4899;">プロンプトを追記<br><small>再現性の確保</small></div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="highlight-box" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-color: #10b981; color: #064e3b;">
-                    <h3 style="color:#059669; border-color:#10b981;"><i class="fa-solid fa-laptop-code"></i> 実習ステップ</h3>
-                    <p style="color:#064e3b;">
-                        1. **Geminiを開く**: [gemini.google.com](https://gemini.google.com/)<br>
-                        2. **生成**: プロンプトノートから1つ選び、Nano Banana Proで画像を作成。右上のアイコンから保存。<br>
-                        3. **投稿**: Padletに画像と、そのレシピとなるプロンプトをセットで投稿。
-                    </p>
-                </div>
-
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-quote-left" style="color:#10b981;"></i> プロンプトを公開する理由</h4>
-                        <p>「自分以外でも再現できる」ことが重要。あなたのプロンプトは、チームやあなたの将来にとって貴重な資産になります。</p>
-                    </div>
-                    <div class="bento-item">
-                        <h4><i class="fa-solid fa-images" style="color:#10b981;"></i> ベストな1枚を選ぶ</h4>
-                        <p>AIは複数枚生成します。その中からあなたの「意図」が最も反映されたものを選別しましょう。</p>
                     </div>
                 </div>
 
                 <div class="quiz-box">
                     <div class="quiz-header">
                         <span class="q-badge">Q2</span>
-                        <strong style="font-size:1.15rem;">生成した画像をPadletへ投稿する際、セットで載せるべき「資産」とは？</strong>
+                        <strong style="font-size:1.15rem;">Nano Banana Pro で特に強化されている、「従来AIが最も苦手とした機能」は？</strong>
                     </div>
                     <div class="quiz-options" id="quiz2">
-                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, true)">A. 生成に使用した具体的なプロンプト <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">B. AIツールのロゴ画像 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">C. 今日の昼食のメニュー <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, true)">A. 正確な文字の書き込み（綴り） <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">B. 画像の「保存」 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz2', this, false)">C. 画面のバグ <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
                     </div>
                     <div class="quiz-explain" id="quiz2-explain">
-                        <strong>💡 解説：</strong>「再現性」こそがスキルの証明です。どのような指示（プロンプト）でその画像が生まれたかを記録することが、真の資産化です。
+                        <strong>💡 解説：</strong>Nano Banana Pro は、引用符 <code>" "</code> で指定した文字を正確に描画する能力が飛躍的に向上し、資料作成に即戦力となります。
                     </div>
                 </div>
 
@@ -417,22 +423,22 @@
                         <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>画像生成の実践</h4>
-                                <p>Nano Banana Proを使用し、プロンプトから珠玉の1枚を生成した。</p>
+                                <h4>Nano Banana Pro 生成</h4>
+                                <p>動画④のテクニックを使い、納得のいく精度で画像を生成した。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
                             <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>Padletへの最終投稿</h4>
-                                <p>画像とプロンプトをセットでPadletに公開投稿した。</p>
+                                <h4>成果物の公開投稿</h4>
+                                <p>生成した画像と、そのレシピ（プロンプト）をセットでPadletに投稿した。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_3', this, 2)">
                             <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>相互学習</h4>
-                                <p>他の受講生のPadlet投稿を1つ以上参照し、学びを得た。</p>
+                                <h4>投稿のセルフレビュー</h4>
+                                <p>投稿内容が他の受講生にとっても学びになる（再現性がある）かを確認した。</p>
                             </div>
                         </li>
                     </ul>
@@ -441,7 +447,7 @@
 
             <div style="text-align:center; padding: 2rem 0;">
                 <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #10b981, #ec4899); border-radius:30px;" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
-                    本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
+                    今日の完成形を確認する <i class="fa-solid fa-flag-checkered"></i>
                 </button>
             </div>
         </div>
@@ -453,29 +459,29 @@
                     <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                     <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none; opacity:1; transform:none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
                     <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 7 Mastered!</h2>
-                    <p style="font-size: 1.2rem; opacity: 0.9;">高度な画像生成とディレクション術を習得しました</p>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">構造化と最新生成AIを組み合わせる能力を証明しました</p>
                 </div>
                 <div style="padding: 3rem 2rem;">
-                    <h3 style="text-align: center; color: #1e3a8a; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-clock-rotate-left" style="color:#3b82f6;"></i> 軌跡と次へのステップ</h3>
+                    <h3 style="text-align: center; color: #1e3a8a; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-clock-rotate-left" style="color:#3b82f6;"></i> コースも後半戦へ</h3>
                     <div class="bento-grid" style="grid-template-columns: repeat(3, 1fr);">
                         <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
-                            <span class="tag" style="background: #e2e8f0; color:#64748b;">Day 5</span>
-                            <h4 style="font-size:1rem; margin: 0.5rem 0;">動画生成と3D</h4>
+                            <span class="tag" style="background: #e2e8f0; color:#64748b;">Progress</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">AI生成の全メディア</h4>
                         </div>
                         <div class="bento-item" style="background: white; border: 1px solid #e2e8f0; padding:1.5rem;">
-                            <span class="tag" style="background: #e2e8f0; color:#64748b;">Day 6</span>
-                            <h4 style="font-size:1rem; margin: 0.5rem 0;">音楽・音声生成</h4>
+                            <span class="tag" style="background: #e2e8f0; color:#64748b;">Mission</span>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0;">作品3本以上の公開</h4>
                         </div>
                         <div class="bento-item" style="background: #f0f9ff; border: 2px solid #3b82f6; padding:1.5rem;">
                             <span class="tag" style="background: #3b82f6; color:#fff;">Day 7</span>
-                            <h4 style="font-size:1rem; margin: 0.5rem 0; color:#1e40af; font-weight:900;">高度な画像生成</h4>
+                            <h4 style="font-size:1rem; margin: 0.5rem 0; color:#1e40af; font-weight:900;">高度な画像と資産化</h4>
                         </div>
                     </div>
 
                     <div class="info-box" style="border-left-color: #ec4899; background: #fdf2f8; margin-top: 2rem;">
                         <h4 style="color:#be185d;"><i class="fa-solid fa-paper-plane"></i> 課題提出の最終確認</h4>
                         <p style="color:#831843;">
-                            プロンプトを中心に作成した動画作品を<strong>3本以上</strong>作成し、Padletで提出しましょう。<br>
+                            プロンプトを中心に作成した動画作品を<strong>3本以上</strong>作成し、Padletで提出しましょう。本日の生成画像もその貴重な一歩です。<br>
                             <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" style="color:#be185d; font-weight:800;">📋 課題提出用Padletを開く</a>
                         </p>
                     </div>
