@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 8 | 最新の高度な動画生成AIテクニック</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-body: #020617;
+            --bg-card: rgba(255, 255, 255, 0.02);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --accent-blue: #3b82f6;
+            --radius-lg: 28px;
+            --radius-md: 18px;
+            --glass-blur: blur(25px);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            background-image: 
+                radial-gradient(circle at 5% 10%, rgba(168, 85, 247, 0.12), transparent 40%),
+                radial-gradient(circle at 95% 90%, rgba(6, 182, 212, 0.12), transparent 40%);
+            background-attachment: fixed;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .fixed-header {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-glass);
+            z-index: 1000; padding: 0.9rem 2.5rem;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .back-link {
+            color: var(--text-main); text-decoration: none; font-weight: 800;
+            display: flex; align-items: center; gap: 0.6rem; transition: all 0.3s;
+        }
+        .back-link:hover { color: var(--accent-purple); transform: translateX(-3px); }
+        .progress-container { flex-grow: 1; max-width: 450px; margin: 0 3rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; margin-bottom: 5px; color: var(--accent-purple); letter-spacing: 1px; }
+        .progress-bar-bg { height: 10px; background: rgba(255,255,255,0.08); border-radius: 20px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan)); width: 0%; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        .container { max-width: 1200px; margin: 130px auto 100px; padding: 0 30px; }
+
+        /* Hero */
+        .hero { text-align: center; margin-bottom: 5rem; animation: slideIn 1.2s ease-out; }
+        .hero-badge {
+            display: inline-block; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white; padding: 0.5rem 1.8rem; border-radius: 40px;
+            font-weight: 900; font-size: 0.85rem; margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin: 0; font-weight: 900; letter-spacing: -3px; line-height: 1.05; }
+        .hero p { color: var(--text-sub); margin-top: 1.8rem; font-size: 1.2rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Navigation Tabs */
+        .tab-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 4rem; flex-wrap: wrap; }
+        .tab-btn {
+            background: var(--bg-glass); border: 1px solid var(--border-glass);
+            color: var(--text-sub); padding: 1.1rem 2rem; border-radius: 40px;
+            cursor: pointer; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; gap: 10px; backdrop-filter: var(--glass-blur);
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.12); color: white; transform: translateY(-4px); border-color: var(--accent-purple); }
+        .tab-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5); transform: translateY(-4px); }
+
+        .tab-content { display: none; animation: fadeIn 0.6s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-glass); backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
+            padding: 3.5rem; margin-bottom: 3rem; position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .glass-card h2 { margin-top: 0; font-size: 2.4rem; font-weight: 900; display: flex; align-items: center; gap: 15px; letter-spacing: -1px; }
+        .glass-card h2 i { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Bento Grid */
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-top: 2.5rem; }
+        .bento-item {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md); padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative;
+        }
+        .bento-item:hover { background: rgba(255,255,255,0.07); transform: translateY(-8px); border-color: var(--accent-purple); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
+        .bento-item h4 { margin: 0 0 1.2rem; font-size: 1.4rem; font-weight: 900; color: var(--accent-purple); display: flex; align-items: center; gap: 12px; }
+        .bento-item p { margin: 0; font-size: 1rem; line-height: 1.8; color: var(--text-sub); }
+        .tool-tag { font-size: 0.75rem; font-weight: 900; background: var(--accent-purple); color: white; padding: 3px 10px; border-radius: 5px; position: absolute; top: 15px; right: 15px; }
+
+        /* Video Card */
+        .video-card { display: flex; gap: 2.5rem; margin-bottom: 3rem; background: rgba(255,255,255,0.02); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); transition: all 0.3s; }
+        .video-card:hover { border-color: var(--accent-cyan); background: rgba(255,255,255,0.04); }
+        .video-thumb { width: 380px; flex-shrink: 0; border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .video-thumb img { width: 100%; display: block; filter: brightness(0.85); transition: filter 0.3s; }
+        .video-thumb:hover img { filter: brightness(1); }
+        .video-thumb::after {
+            content: "\f144"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.3); color: white; font-size: 3.5rem; opacity: 0.7; transition: all 0.3s;
+        }
+        .video-thumb:hover::after { transform: scale(1.1); opacity: 1; color: var(--accent-cyan); }
+        .video-info { flex: 1; }
+        .video-info h3 { margin: 0 0 1rem; font-size: 1.6rem; font-weight: 900; color: white; line-height: 1.3; }
+        .video-info p { margin: 0; color: var(--text-sub); font-size: 1.05rem; line-height: 1.7; }
+
+        @media (max-width: 992px) { .video-card { flex-direction: column; } .video-thumb { width: 100%; } }
+
+        /* Specialized Info Boxes */
+        .info-box {
+            background: rgba(168, 85, 247, 0.08); border-left: 6px solid var(--accent-purple);
+            padding: 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0;
+        }
+        .info-box h5 { margin: 0 0 0.8rem; font-size: 1.25rem; color: var(--accent-purple); font-weight: 900; display: flex; align-items: center; gap: 10px; }
+        .tip-box {
+            background: rgba(6, 182, 212, 0.08); border-left: 6px solid var(--accent-cyan);
+            padding: 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0;
+        }
+        .tip-box h5 { margin: 0 0 0.8rem; font-size: 1.25rem; color: var(--accent-cyan); font-weight: 900; display: flex; align-items: center; gap: 10px; }
+
+        /* Interactive Elements */
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
+        .flip-card { perspective: 1000px; height: 180px; cursor: pointer; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back {
+            position: absolute; inset: 0; backface-visibility: hidden;
+            border-radius: var(--radius-md); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 2rem; text-align: center; border: 1px solid var(--border-glass);
+        }
+        .flip-front { background: rgba(168, 85, 247, 0.05); color: white; }
+        .flip-front i { font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-purple); }
+        .flip-back { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: white; transform: rotateY(180deg); font-size: 0.95rem; font-weight: 700; line-height: 1.5; }
+
+        /* Quiz */
+        .quiz-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 3rem; margin-top: 3rem; border-top: 6px solid var(--accent-cyan); }
+        .quiz-badge { border: 2px solid var(--accent-cyan); color: var(--accent-cyan); padding: 4px 15px; border-radius: 30px; font-weight: 900; font-size: 0.8rem; display: inline-block; margin-bottom: 1.5rem; }
+        .quiz-question { font-size: 1.4rem; font-weight: 900; margin-bottom: 2rem; color: white; }
+        .quiz-options { display: grid; gap: 12px; }
+        .quiz-opt {
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass);
+            padding: 1.2rem 2rem; border-radius: 15px; cursor: pointer; transition: all 0.3s;
+            font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 15px;
+        }
+        .quiz-opt:hover { background: rgba(168, 85, 247, 0.1); border-color: var(--accent-purple); transform: translateX(10px); }
+        .quiz-opt.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; }
+        .quiz-opt.wrong { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444; }
+        .quiz-feedback { display: none; margin-top: 2rem; padding: 2rem; background: rgba(6, 182, 212, 0.1); border-radius: 15px; border-left: 5px solid var(--accent-cyan); animation: fadeIn 0.4s ease; }
+
+        /* Checklist & Wax Seal */
+        .mission-panel { position: relative; margin-top: 4rem; }
+        .checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.2rem; }
+        .check-item {
+            background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass);
+            padding: 1.8rem 2.5rem; border-radius: var(--radius-lg); cursor: pointer;
+            display: flex; align-items: center; gap: 2rem; transition: all 0.4s;
+        }
+        .check-item:hover { background: rgba(255,255,255,0.06); transform: translateX(10px); border-color: var(--accent-cyan); }
+        .check-item.active { background: rgba(6, 182, 212, 0.08); border-color: var(--accent-cyan); }
+        .check-box {
+            width: 36px; height: 36px; border-radius: 12px; border: 3px solid var(--border-glass);
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: transparent; transition: all 0.3s;
+        }
+        .check-item.active .check-box { background: var(--accent-cyan); border-color: var(--accent-cyan); color: white; }
+        .check-text h4 { margin: 0 0 5px; font-size: 1.3rem; font-weight: 900; color: white; }
+        .check-text p { margin: 0; font-size: 1rem; color: var(--text-sub); }
+
+        .wax-seal {
+            position: absolute; top: 10px; right: 40px; width: 180px; height: 180px;
+            background: radial-gradient(circle at 30% 30%, #ec4899, #be185d 80%, #831843);
+            border-radius: 50%; opacity: 0; pointer-events: none; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.4);
+            border: 5px solid #701a3d; transform: scale(3) rotate(-40deg);
+        }
+        .wax-seal::before {
+            content: "VIDEO\nMASTER"; white-space: pre-wrap; text-align: center;
+            color: rgba(255,255,255,0.75); font-weight: 950; font-size: 1.8rem;
+            border: 3px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 12px;
+            line-height: 0.9;
+        }
+        .mission-panel.complete .wax-seal {
+            animation: stampIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes stampIn {
+            0% { opacity: 0; transform: scale(3) rotate(-40deg); }
+            60% { opacity: 1; transform: scale(0.95) rotate(5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        /* Home Button */
+        .home-btn {
+            position: fixed; bottom: 40px; right: 40px;
+            width: 70px; height: 70px; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
+            text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
+        }
+        .home-btn:hover { transform: translateY(-10px) scale(1.1); box-shadow: 0 20px 50px rgba(168, 85, 247, 0.6); }
+
+        /* Code & Prompt Styling */
+        .code-box {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-glass);
+            margin: 1.5rem 0; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: var(--accent-cyan);
+            position: relative; overflow-x: auto;
+        }
+        .code-label { position: absolute; top: -12px; left: 20px; background: var(--accent-cyan); color: white; padding: 2px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; }
+
+        strong { color: #fff; font-weight: 800; }
+        .accent-p { color: var(--accent-purple); font-weight: 800; }
+        .accent-c { color: var(--accent-cyan); font-weight: 800; }
+    </style>
+</head>
+<body>
+    <header class="fixed-header">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-house-chimney"></i> Course Home</a>
+        <div class="progress-container">
+            <div class="progress-text"><span>Learning Milestone</span><span id="progress-val">0%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+        </div>
+        <div style="width: 120px;"></div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="hero-badge">Advanced Course | Day 08</div>
+            <h1>究極の高度な動画生成AI<br>マスターディレクション</h1>
+            <p>
+                Day 5の基礎を土台に、映画クオリティを実現する <strong>Kling 3.0</strong> や、
+                リップシンクを極める <strong>Domo AI</strong>、そしてGoogleエコシステムの頂点 <strong>Flow</strong> を駆使し、
+                プロフェッショナルな映像制作ワークフローを完遂します。
+            </p>
+        </div>
+
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('goal')"><i class="fa-solid fa-compass"></i> セッション目標</button>
+            <button class="tab-btn" onclick="switchTab('first')"><i class="fa-solid fa-bolt"></i> 前半：次世代モデルの衝撃</button>
+            <button class="tab-btn" onclick="switchTab('second')"><i class="fa-solid fa-microphone-lines"></i> 後半：リップシンクと一貫性</button>
+            <button class="tab-btn" onclick="switchTab('summary')"><i class="fa-solid fa-award"></i> 修了まとめ</button>
+        </nav>
+
+        <!-- TAB: GOAL -->
+        <main id="tab-goal" class="tab-content active">
+            <div class="glass-card">
+                <h2><i class="fa-solid fa-star"></i> 本日の研修ねらい</h2>
+                <p>
+                    動画生成AIは「ただ作るだけ」のフェーズから、<strong>「プロンプトで演出を制御し、一貫性を担保する」</strong>プロフェッショナルのフェーズへと進化しました。本日は以下の3点を軸に進めます。
+                </p>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <div class="tool-tag">Advanced</div>
+                        <h4>マルチショット演出</h4>
+                        <p>Kling 3.0を使い、1つのプロンプトで複数のカット（場面転換）を破錠なく生成し、映画的なルックを作り上げます。</p>
+                    </div>
+                    <div class="bento-item">
+                        <div class="tool-tag">Professional</div>
+                        <h4>統合ワークフロー</h4>
+                        <p>Googleの「Flow」を中心に、Geminiでのリサーチから Veo 3.1 での生成、SunoでのBGMまで、一気通貫の制作フローを体得します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <div class="tool-tag">Expertise</div>
+                        <h4>高精度リップシンク</h4>
+                        <p>Domo AI や Heygen を比較し、人物の喋りやMV制作における「声と動き」の完全な同期をマスターします。</p>
+                    </div>
+                </div>
+                <div style="margin-top: 4rem; text-align: center;">
+                    <button class="tab-btn active" style="padding: 1.5rem 4rem; font-size: 1.2rem;" onclick="switchTab('first'); window.scrollTo(0,0);">
+                        高度なセッションを開始する <i class="fa-solid fa-circle-play"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- TAB: FIRST HALF -->
+        <main id="tab-first" class="tab-content">
+            <div class="glass-card">
+                <h2><i class="fa-solid fa-film"></i> 前半：次世代モデルの衝撃</h2>
+                <p>
+                    2026年、動画生成AIは物理演算とディレクションの精度が劇的に向上しました。主要ツールの個別の強みを深掘りします。
+                </p>
+
+                <!-- VIDEO 1: Kling 3.0 -->
+                <section class="video-card">
+                    <div class="video-thumb">
+                        <a href="https://www.youtube.com/watch?v=DFFjWcYnjYE" target="_blank">
+                            <img src="https://i.ytimg.com/vi/DFFjWcYnjYE/hqdefault.jpg" alt="Kling 3.0">
+                        </a>
+                    </div>
+                    <div class="video-info">
+                        <h3>動画①：Soraを超えた!? Kling 3.0の実力</h3>
+                        <p>
+                            中国発の最強モデル <strong>Kling 3.0</strong> の解説。最大の特徴である「マルチショット機能」により、カメラの切り替えを1本の動画内で実現。日本語リップシンクの精度も驚異的です。
+                        </p>
+                    </div>
+                </section>
+
+                <div class="info-box">
+                    <h5><i class="fa-solid fa-clapperboard"></i> 知識の定着：Kling 3.0の核心</h5>
+                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-sub);">
+                        <li><strong>マルチショット生成</strong>: 構成、カメラワーク、カット割りをAIが自動、または個別プロンプトで判断。</li>
+                        <li><strong>Elements機能</strong>: キャラクター固有のIDを振り、異なるシーンでも人物の一貫性を100%保持。</li>
+                        <li><strong>生成可能時間</strong>: 最大10〜15秒の高品質クリップを生成可能。</li>
+                    </ul>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
+
+                <!-- VIDEO 2: Hailuo AI -->
+                <section class="video-card">
+                    <div class="video-thumb">
+                        <a href="https://www.youtube.com/watch?v=FmpuetJh6HE" target="_blank">
+                            <img src="https://i.ytimg.com/vi/FmpuetJh6HE/hqdefault.jpg" alt="Hailuo AI">
+                        </a>
+                    </div>
+                    <div class="video-info">
+                        <h3>動画②：Hailuo AI — 物理演算と表情の極み</h3>
+                        <p>
+                            <strong>「動きが自然すぎて怖い」</strong>と言わしめる Hailuo AI。Nano Banana Pro で生成した静止画をソースに、実写と見紛う物理挙動を付与する方法を紹介。
+                        </p>
+                    </div>
+                </section>
+
+                <div class="tip-box">
+                    <h5><i class="fa-solid fa-bolt"></i> プロのディレクション術</h5>
+                    <p>
+                        静止画（Image to Video）で使用する場合、<strong>Nano Banana Pro</strong> で「高解像度かつ構造が明確な画像」を用意することが重要。Hailuoは「人物の関節の動き」や「液体の挙動」において他を圧倒します。
+                    </p>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
+
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <div class="tool-tag">Google Ecosystem</div>
+                        <h4>動画③：Flow (Veo 3.1) <small>ID: fnn3qyM9wmg</small></h4>
+                        <p>Googleの最強動画モデル <strong>Veo 3.1</strong> を搭載した統合ツール。リサーチから企画、最終レンダリングまで、ビジネス動画制作のエンドツーエンドなワークフローを提供。</p>
+                    </div>
+                    <div class="bento-item">
+                        <div class="tool-tag">AI Agent</div>
+                        <h4>動画④：Flova.ai <small>ID: PwSNOFgxqNg</small></h4>
+                        <p>プロンプトを書くのではなく、<strong>「AIと会話しながら」</strong>修正を繰り返して完成させる対話型ツール。「カメラをもっと寄せて」という一言で再生成が可能です。</p>
+                    </div>
+                </div>
+
+                <div class="code-box">
+                    <div class="code-label">💡 制作エリートの統合フロー (Flow例)</div>
+                    1. Gemini 2.1 で企画リサーチ
+                    2. Gems でストーリーボード作成
+                    3. Nano Banana Pro でシーン画像を生成
+                    4. <strong>Flow (Veo 3.1)</strong> で動画化
+                    5. Suno / ElevenLabs で音入れ
+                </div>
+
+                <!-- MISSION 1 -->
+                <section class="mission-panel" id="mission-1">
+                    <div class="wax-seal"></div>
+                    <ul class="checklist">
+                        <li class="check-item" onclick="toggleTask(this, 'mission-1')">
+                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
+                            <div class="check-text">
+                                <h4>次世代モデルの特性理解</h4>
+                                <p>Kling 3.0 のマルチショットや Flova の対話型生成のメリットを理解した。</p>
+                            </div>
+                        </li>
+                        <li class="check-item" onclick="toggleTask(this, 'mission-1')">
+                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
+                            <div class="check-text">
+                                <h4>クレジット体系の把握</h4>
+                                <p>Kling（毎月66クレジット）、Flova（毎週200クレジット）等の利用プランを確認した。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+
+        <!-- TAB: SECOND HALF -->
+        <main id="tab-second" class="tab-content">
+            <div class="glass-card">
+                <h2><i class="fa-solid fa-microphone-lines"></i> 後半：リップシンクと一貫性</h2>
+                <p>
+                    人物が喋る、歌う、演技する。視聴者が最も違和感を覚えやすい「リップシンク」と「MV制作」のテクニックを網羅します。
+                </p>
+
+                <!-- VIDEO 5: Domo AI -->
+                <section class="video-card">
+                    <div class="video-thumb">
+                        <a href="https://www.youtube.com/watch?v=D3lQACXarFo" target="_blank">
+                            <img src="https://i.ytimg.com/vi/D3lQACXarFo/hqdefault.jpg" alt="Domo AI">
+                        </a>
+                    </div>
+                    <div class="video-info">
+                        <h3>動画⑤：Domo AI で作る究極のミュージックビデオ</h3>
+                        <p>
+                            <strong>「AIアバター」</strong>機能による最高精度のリップシンク解説。横顔や激しいBGMの中でも人物が自然に喋る/歌うMVの制作手順を紹介します。4Kアップスケーラーも非常に強力。
+                        </p>
+                    </div>
+                </section>
+
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-face-laugh"></i><h4>AIアバター</h4></div>
+                            <div class="flip-back">音声/音楽のみで、静止画を完全に同期したトーキング動画へ。最長60秒の生成に対応。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-wand-magic"></i><h4>Detail Anime</h4></div>
+                            <div class="flip-back">Vid2Vid（動画から動画）で最も人気のスタイル。実写を繊細なアニメ風に崩さず置換。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-expand"></i><h4>4K Upscale</h4></div>
+                            <div class="flip-back">他ツールで生成したジャギーのある動画も、Domo AIで一括高画質化が可能。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
+
+                <!-- VIDEO 6: Review -->
+                <section class="video-card">
+                    <div class="video-thumb">
+                        <a href="https://www.youtube.com/watch?v=BFanXl4nIsA" target="_blank">
+                            <img src="https://i.ytimg.com/vi/BFanXl4nIsA/hqdefault.jpg" alt="Review">
+                        </a>
+                    </div>
+                    <div class="video-info">
+                        <h3>動画⑥：リップシンク2026年完全版 徹底比較</h3>
+                        <p>
+                            <strong>HeyGen vs Domo AI vs Kling vs Veo 3.1</strong>。用途別にどれが最強か？プレゼン動画、アニメMV、ドラマ制作の観点から徹底比較。
+                        </p>
+                    </div>
+                </section>
+
+                <div class="quiz-card">
+                    <div class="quiz-badge">KNOWLEDGE TEST</div>
+                    <p class="quiz-question">Q. ビジネス系の「プレゼン・解説動画」で、人物の喋りが最も安定している現役最強ツールは？</p>
+                    <div class="quiz-options">
+                        <div class="quiz-opt" onclick="checkQuiz(this, false)">A. Kling 3.0</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, true)">B. HeyGen</div>
+                        <div class="quiz-opt" onclick="checkQuiz(this, false)">C. DOMO AI</div>
+                    </div>
+                    <div class="quiz-feedback">
+                        正解！多機能化が進む中、ビジネス用途（アバターが静かに喋る）での安定性と多言語吹き替え精度においては、HeyGen が依然として業界標準です。一方、アーティスティックな動きは DOMO、映画的演技は Kling が得意です。
+                    </div>
+                </div>
+
+                <!-- MISSION 2 -->
+                <section class="mission-panel" id="mission-2">
+                    <div class="wax-seal"></div>
+                    <div class="info-box" style="background: rgba(16, 185, 129, 0.08); border-left-color: #10b981;">
+                        <h5 style="color: #10b981;"><i class="fa-solid fa-rocket"></i> 【メイン実習】Padletへの珠玉の作品投稿</h5>
+                        <p>
+                            本日の解説をもとに、<strong>「Kling / Hailuo / Flow / Flova / DomoAI」</strong>のいずれかを使い、独自の高度動画を1本生成してください。プロンプトと生成動画をPadletの自分のスレッドに投稿して修了です。
+                        </p>
+                    </div>
+                    <ul class="checklist">
+                        <li class="check-item" onclick="toggleTask(this, 'mission-2')">
+                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
+                            <div class="check-text">
+                                <h4>高度な動画生成の実践</h4>
+                                <p>いずれかの高度なツールを使用し、意図通りの動き/演出を含む動画を生成した。</p>
+                            </div>
+                        </li>
+                        <li class="check-item" onclick="toggleTask(this, 'mission-2')">
+                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
+                            <div class="check-text">
+                                <h4>Padletへの提出</h4>
+                                <p>動画と、使用したツール・プロンプトのレシピを添えてPadletに投稿した。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </main>
+
+        <!-- TAB: SUMMARY -->
+        <main id="tab-summary" class="tab-content">
+            <div class="glass-card" style="text-align: center; border: 2px solid var(--accent-purple); background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.1));">
+                <i class="fa-solid fa-crown" style="font-size: 5rem; color: var(--accent-purple); margin-bottom: 2rem;"></i>
+                <h2 style="justify-content: center;">DAY 08 CONGRATULATIONS!</h2>
+                <p style="font-size: 1.3rem;">
+                    お疲れ様でした！Day 5の基礎から始まり、ついに<strong>「高度な動画生成ディレクター」</strong>への階段を登りきりました。<br>
+                    プロンプトでカメラを操り、AIと対話し、一貫性を保ちながら映像を紡ぐスキルは、今後のクリエイティブにおいて最強の武器となります。
+                </p>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4 style="color: white;">Next Milestone</h4>
+                        <p>明日の Day 09 では、いよいよ本コースの集大成に向け、これらのマルチメディア素材を「意味のあるストーリー」や「大規模プロジェクト」へと昇華させる戦略を学びます。</p>
+                    </div>
+                </div>
+                <div style="margin-top: 4rem;">
+                    <a href="index.html" class="tab-btn active" style="display: inline-flex; padding: 1.5rem 5rem; text-decoration: none; font-size: 1.3rem;">
+                        ホームへ戻る <i class="fa-solid fa-house-user"></i>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house-chimney"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        function switchTab(name) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + name).classList.add('active');
+            event.currentTarget.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTask(el, missionId) {
+            el.classList.toggle('active');
+            updateProgress();
+            
+            const m = document.getElementById(missionId);
+            const total = m.querySelectorAll('.check-item').length;
+            const active = m.querySelectorAll('.check-item.active').length;
+            
+            if (total === active) {
+                m.classList.add('complete');
+                confetti({
+                    particleCount: 150, spread: 70, origin: { y: 0.6 },
+                    colors: ['#a855f7', '#06b6d4', '#ec4899']
+                });
+            } else { m.classList.remove('complete'); }
+        }
+
+        function checkQuiz(el, isCorrect) {
+            const card = el.closest('.quiz-card');
+            if (card.dataset.solved) return;
+            card.dataset.solved = "true";
+            
+            if (isCorrect) {
+                el.classList.add('correct');
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
+            } else {
+                el.classList.add('wrong');
+                card.querySelectorAll('.quiz-opt').forEach(o => {
+                    if (o.innerText.includes('B.')) o.classList.add('correct');
+                });
+            }
+            card.querySelector('.quiz-feedback').style.display = "block";
+        }
+
+        const cards = document.querySelectorAll('.flip-card');
+        cards.forEach(c => c.onclick = () => c.classList.toggle('flipped'));
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.check-item').length;
+            const active = document.querySelectorAll('.check-item.active').length;
+            const percent = Math.round((active / total) * 100);
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-val').innerText = percent + '%';
+        }
+    </script>
+</body>
+</html>
