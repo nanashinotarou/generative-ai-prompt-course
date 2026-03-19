@@ -7,33 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-body: #fdf4ff; /* Fuchsia tint for Day 9 */
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --text-main: #1e1b4b; /* Deep Indigo text for readability */
-            --text-sub: #4f46e5;
-            --accent: #d946ef; /* Fuchsia */
-            --accent-light: #e879f9;
-            --accent-bg: #fdf4ff;
-            --accent-glow: rgba(217, 70, 239, 0.25);
-            --clickable: #6366f1; /* Indigo */
-            --clickable-bg: #eef2ff;
-            --glass-blur: blur(20px);
-            --radius: 20px;
-        }
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Noto Sans JP', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-main);
-            background-image: 
-                radial-gradient(ellipse at 10% 20%, rgba(217, 70, 239, 0.08), transparent 40%),
-                radial-gradient(ellipse at 90% 80%, rgba(99, 102, 241, 0.08), transparent 40%);
-            background-attachment: fixed;
-            min-height: 100vh;
-        }
+        :root { --bg-body: #fdf4ff; --bg-card: rgba(255, 255, 255, 0.95); --text-main: #1e1b4b; --text-sub: #4f46e5; --accent: #d946ef; --accent-light: #e879f9; --accent-bg: #fdf4ff; --accent-glow: rgba(217, 70, 239, 0.25); --clickable: #6366f1; --clickable-bg: #eef2ff; --danger: #f43f5e; --glass-blur: blur(20px); --radius: 20px; }
+        * { box-sizing: border-box; } html { scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg-body); color: var(--text-main); background-image: radial-gradient(ellipse at 10% 20%, rgba(217, 70, 239, 0.08), transparent 40%), radial-gradient(ellipse at 90% 80%, rgba(99, 102, 241, 0.08), transparent 40%); background-attachment: fixed; min-height: 100vh; }
         .fixed-header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         .back-link { color: var(--text-sub); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
         .back-link:hover { color: var(--accent); }
@@ -41,54 +17,45 @@
         .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
         .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
         .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--clickable)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; background: transparent; z-index: 1001; pointer-events: none; }
+        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; z-index: 1001; }
         #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s ease-out; box-shadow: 0 -2px 10px var(--accent-glow); }
-        
         .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
         .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
         .day-badge { background: var(--accent); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.2rem; }
         .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
         .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
-        
         .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
         .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: var(--text-sub); padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
         .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
         .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
         .tab-content { display: none; animation: fadeIn 0.5s ease; }
         .tab-content.active { display: block; }
-        
-        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(217, 70, 239, 0.05); transition: transform 0.3s, box-shadow 0.3s; }
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(217, 70, 239, 0.05); transition: transform 0.3s; }
         .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(217, 70, 239, 0.1); }
         .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #fdf4ff; padding-bottom: 1.2rem; }
         .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
         .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
-        
         .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
         .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
         .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
-        
         .highlight-box { background: linear-gradient(135deg, #fae8ff, #f3e8ff); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #4c1d95; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.15); border: 1px solid #e879f9; }
         .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed #d946ef; padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
-        
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
-        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s, box-shadow 0.3s;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s;}
         .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(217, 70, 239, 0.1); border-color: var(--accent-light);}
         .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
         .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
-        
         .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
-        
         .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid #fdf4ff; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.05); }
         .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid #fdf4ff; }
-        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background: linear-gradient(135deg, #d946ef, #6366f1); display:flex; align-items:center; justify-content:center; height:157px; position:relative; }
-        .video-section-header .thumb-wrap a { display: flex; align-items:center; justify-content:center; width:100%; height:100%; position: relative; text-decoration:none; color:#fff;}
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative;}
+        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block;}
         .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
         .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(217,70,239,0.3); }
-        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 3rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
-        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
         .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
         @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
-        
         .quiz-box { background: #fff; border: 2px solid #e879f9; border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(217, 70, 239, 0.05);}
         .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
         .q-badge { background: linear-gradient(135deg, var(--accent), #e879f9); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
@@ -98,17 +65,15 @@
         .quiz-opt.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
         .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
         .quiz-explain { display: none; margin-top: 1.2rem; padding: 1.5rem; background: #fae8ff; border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.7; animation: slideDown 0.3s ease; }
-        
         .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
         .flip-card { perspective: 1000px; height: 230px; cursor: pointer; }
         .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; border-radius: 16px; }
-        .flip-card.flipped .flip-inner, .flip-card:hover .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+        .flip-card.flipped .flip-inner, .flip-card:active .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset:0; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
         .flip-front { background: linear-gradient(135deg, #fae8ff, #fdf4ff); border: 2px solid #e879f9; color: #86198f; }
         .flip-front i { font-size: 3rem; margin-bottom: 0.8rem; }
         .flip-front h4 { margin: 0; font-size: 1.2rem; font-weight: 900; }
-        .flip-back { background: linear-gradient(135deg, #312e81, #4338ca); color: #e0e7ff; transform: rotateY(180deg); font-size: 1rem; line-height: 1.6; border: 2px solid #4f46e5; padding: 20px;}
-        
+        .flip-back { background: linear-gradient(135deg, #312e81, #4338ca); color: #e0e7ff; transform: rotateY(180deg); font-size: 0.95rem; line-height: 1.6; border: 2px solid #4f46e5; padding: 20px;}
         .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #a5b4fc; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
         .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
         .mission-header { text-align: center; margin-bottom: 2rem; }
@@ -126,29 +91,34 @@
         .task-content h4 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
         .task-item.completed .task-content h4 { color: #86198f; }
         .task-content p { margin: 0; font-size: 1rem; color: var(--text-sub); line-height: 1.6; }
-        
         .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #e879f9, #d946ef, #a21caf); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #86198f; z-index: 10;}
         .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
         .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        
         @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
         #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
         .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #a21caf); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(217,70,239,0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
         .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(217,70,239,0.6); color: white; }
         .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; transition: all 0.2s; cursor: pointer; margin-top: 1rem; box-shadow: 0 6px 15px rgba(217,70,239,0.3); }
         .btn:hover { background: #c026d3; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(217,70,239,0.4); }
-        
-        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; font-size: 0.9rem; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; }
+        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; border-left:4px solid var(--accent); }
         .code-label { position: absolute; top: -12px; left: 16px; background: var(--accent); color: #fff; padding: 3px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; font-family: 'Noto Sans JP', sans-serif; }
+        /* Diagram styling for visual explanations */
+        .diagram-box { background: linear-gradient(to right, #f8fafc, #f1f5f9); border: 2px solid #e2e8f0; border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center; }
+        .diagram-flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 1.5rem; }
+        .d-node { background: #fff; border: 2px solid var(--clickable); border-radius: 8px; padding: 12px 20px; font-weight: 700; color: var(--text-main); position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(99,102,241,0.1); }
+        .d-node.highlight { background: var(--clickable); color: #fff; border-color: var(--clickable); }
+        .d-arrow { color: #94a3b8; font-size: 1.5rem; font-weight: 900; }
+        .accordion details { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 0.8rem; background:#fff; }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; font-size: 1.05rem; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion .content { padding: 1.5rem; border-top: 1px solid #f1f5f9; background:#fafafa; font-size: 0.95rem; line-height: 1.6; }
     </style>
 </head>
 <body>
-    <canvas id="particles"></canvas>
-    <canvas id="confetti"></canvas>
+    <canvas id="particles"></canvas><canvas id="confetti"></canvas>
     <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
 
     <header class="fixed-header">
@@ -164,13 +134,13 @@
         <div class="hero">
             <div class="day-badge">DAY 09</div>
             <h1>応用的なテクニックによる高度な音楽生成</h1>
-            <p>本日の目標：プロンプトを中心に作成した動画作品を3本以上作成し、SNSで公開するための<strong>最高峰の音源</strong>を作り出す。<br>基礎スキルを応用し、高度でクリエイティブな「音楽」の錬金術をマスターします。</p>
+            <p>本日の目標：SNSで公開するための<strong>最高峰の音源</strong>を作り出す。<br>基本の「ジャンル指定」からステップアップし、構造指示やメタタグを駆使して「音楽の構成展開」までコントロールする“音の錬金術”をマスターしましょう。</p>
         </div>
 
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#d946ef;"></i> コース目標</button>
-            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-music" style="color:#6366f1;"></i> 前半：Suno & Tunee</button>
-            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-headphones-simple" style="color:#a21caf;"></i> 後半：Tunee応用</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-music" style="color:#6366f1;"></i> 前半：Suno高度プロンプト</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-headphones-simple" style="color:#a21caf;"></i> 後半：Tunee実践</button>
             <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#f43f5e;"></i> 今日のまとめ</button>
         </div>
 
@@ -179,22 +149,22 @@
             <div class="glass-card" style="border-top: 5px solid #d946ef;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#d946ef; background:#fae8ff;"></i><h2>本日の研修ねらい</h2></div>
                 <div class="info-box" style="border-left-color: #d946ef; background: #fae8ff;">
-                    <h4 style="color:#a21caf;"><i class="fa-solid fa-sliders"></i> 高度なクリエイティブの実装</h4>
+                    <h4 style="color:#a21caf;"><i class="fa-solid fa-sliders"></i> 「ただAIに任せる」からの卒業</h4>
                     <p style="color:#86198f;">
-                        Day 6で学んだ基礎からさらに一歩踏み込み、<strong>「狙った通りの音楽をピンポイントで生成する」</strong>実践的かつ応用的なテクニックを習得します。<br><br>
-                        高品質サウンドを量産できる<strong>Suno</strong>の真の力と、新時代の音楽生成<strong>Tunee</strong>を組み合わせ、SNSや課題動画で使える最高のクオリティサウンドを作り上げましょう。
+                        AIに「かっこいい曲を作って」と指示するだけでは、運任せの生成になってしまいます。<br><br>
+                        本日は<strong>Suno</strong>と<strong>Tunee</strong>を使用し、メタタグ（[Intro], [Chorus]など）を使って楽曲の「起承転結」を指示する設計図（プロンプト）の書き方を習得します。これにより、動画の尺やシーン展開にぴったり合わせた「動画BGM・主題歌」を作れるようになります。
                     </p>
                 </div>
 
                 <div class="bento-grid">
                     <div class="bento-item">
-                        <h4><i class="fa-solid fa-compact-disc" style="color:#d946ef;"></i> Suno の応用</h4>
-                        <p>Day 6の基礎を超えて、ジャンルやテンポの精密な制御、アレンジの追加、Extend（拡張機能）を駆使した楽曲の完成度向上を学びます。</p>
-                        <a href="https://suno.com/invite/@dxbiome" target="_blank" class="btn" style="background:var(--clickable); padding:6px 12px; font-size:0.9rem;"><i class="fa-solid fa-gift"></i> 招待リンク (10曲作成で+250pt)</a>
+                        <h4><i class="fa-solid fa-compact-disc" style="color:#d946ef;"></i> Suno の応用テクニック</h4>
+                        <p>楽曲のフェーズごとの指定や、ジャンルのハイブリッド（例: Cyberpunk x Orchestral）など、Sunoの理解度を深めるプロンプトメソッドを学びます。</p>
+                        <a href="https://suno.com/invite/@dxbiome" target="_blank" class="btn" style="background:var(--clickable); padding:6px 12px; font-size:0.9rem;"><i class="fa-solid fa-gift"></i> Suno招待リンク (+250pt)</a>
                     </div>
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-wave-square" style="color:#6366f1;"></i> Tunee の活用</h4>
-                        <p>毎日150クレジットが得られる「Tunee」を活用。プロフェッショナルなサウンドスケープを生成するアプローチを探究します。</p>
+                        <p>毎日150クレジット得られる強力なサブウェポン。Sunoとは異なる質感のサウンドスケープやBGM生成のアプローチを探究します。</p>
                         <a href="https://www.tunee.ai/" target="_blank" class="btn" style="background:#a21caf; padding:6px 12px; font-size:0.9rem;"><i class="fa-solid fa-arrow-up-right-from-square"></i> Tuneeを開く</a>
                     </div>
                 </div>
@@ -209,57 +179,117 @@
         <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #6366f1;">
-                <div class="card-header"><i class="fa-solid fa-guitar" style="color:#6366f1; background:#eef2ff;"></i><h2>前半：Suno & Tuneeで作り込む</h2></div>
+                <div class="card-header"><i class="fa-solid fa-guitar" style="color:#6366f1; background:#eef2ff;"></i><h2>前半：Suno 高度化プロンプト</h2></div>
 
+                <!-- 動画① -->
                 <div class="video-section">
                     <div class="video-section-header">
                         <div class="thumb-wrap">
                             <a href="https://www.youtube.com/playlist?list=PLoQApr14fceNSi5B4CLSRleWSjo5Kk07p" target="_blank">
-                                <div class="play-overlay"><i class="fa-brands fa-youtube" style="font-size: 4rem;"></i></div>
-                                <h3 style="color:#fff; z-index:1; font-family:'Teko'; font-size:2rem; letter-spacing:1px; margin:0;">DAY 9 前半 動画リスト</h3>
+                                <img src="https://img.youtube.com/vi/BP5MKB2vPd0/hqdefault.jpg" alt="Suno徹底解説">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                             </a>
                         </div>
                         <div class="meta">
-                            <h3><i class="fa-solid fa-list-ul" style="color:#d946ef;"></i> プレイリスト：Suno & Tuneeの実践</h3>
-                            <p>動画を見ながら、ノートにプロンプトをまとめましょう。その後、プロンプトを選んで実際に生成してみます。</p>
-                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceNSi5B4CLSRleWSjo5Kk07p" target="_blank" class="btn" style="margin-top:10px; background:#ef4444;"><i class="fa-brands fa-youtube"></i> 動画リストを開く</a>
+                            <span class="tag">動画①</span>
+                            <h3>Suno 楽曲構造コントロール（メタタグの活用）</h3>
+                            <p>Sunoに「どこから歌い始めるか」「どこで盛り上がるか」を指示するための、ブラケットを使った設計図の書き方を学びます。</p>
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceNSi5B4CLSRleWSjo5Kk07p" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
                         </div>
                     </div>
 
-                    <div class="highlight-box">
-                        <h3><i class="fa-solid fa-bolt"></i> 学習のポイント</h3>
-                        <p>単純な「曲を作って」から脱却し、<strong>構造的</strong>に曲の構成（Intro, Verse, Chorus, Bridge, Outro）を指定するプロンプトテクニックに注目してください。<br>SunoやTuneeを使って、ジャンルを掛け合わせる（例: "Cyberpunk" + "Jazz" + "Orchestral"）などの高度な掛け算を学びます。</p>
+                    <div class="diagram-box">
+                        <h4 style="margin:0 0 1rem; color:#1e293b;"><i class="fa-solid fa-sitemap" style="color:#d946ef;"></i> メタタグによる楽曲の「起承転結」</h4>
+                        <p style="font-size:0.9rem; color:#64748b; margin-bottom:1.5rem;"><code>[ ]</code> で囲んだタグを歌詞の前に配置することで、AIに曲の展開を指示します。これを<b>メタダイレクション</b>と呼びます。</p>
+                        <div class="diagram-flow">
+                            <div class="d-node">[Intro]<br><small>静かな立ち上がり</small></div>
+                            <span class="d-arrow">→</span>
+                            <div class="d-node">[Verse]<br><small>Aメロ・状況説明</small></div>
+                            <span class="d-arrow">→</span>
+                            <div class="d-node highlight">[Chorus]<br><small>サビ・最大の盛り上がり</small></div>
+                            <span class="d-arrow">→</span>
+                            <div class="d-node">[Bridge]<br><small>Cメロ・展開の変化</small></div>
+                            <span class="d-arrow">→</span>
+                            <div class="d-node">[Outro]<br><small>フェードアウト</small></div>
+                        </div>
                     </div>
 
-                    <h4 style="font-size:1.2rem; font-weight:800; margin-top:2rem;"><i class="fa-solid fa-book-open" style="color:#a21caf;"></i> ツール情報とクレジット</h4>
-                    <div class="flip-grid">
-                        <div class="flip-card">
-                            <div class="flip-inner">
-                                <div class="flip-front"><i class="fa-solid fa-record-vinyl" style="color:#d946ef;"></i><h4>Suno</h4><p style="font-size:0.9rem; margin-top:5px;">毎日50クレジット付与</p></div>
-                                <div class="flip-back">招待リンクから登録後、10曲作成すると<strong>250クレジット</strong>のボーナスが付与されます。一気に高度な生成を回すチャンス！</div>
-                            </div>
-                        </div>
-                        <div class="flip-card">
-                            <div class="flip-inner">
-                                <div class="flip-front"><i class="fa-solid fa-sliders" style="color:#6366f1;"></i><h4>Tunee</h4><p style="font-size:0.9rem; margin-top:5px;">毎日150クレジット付与</p></div>
-                                <div class="flip-back">Sunoとは異なるオーディオモデルを楽しむための強力なサブウェポン。UIや生成ロジックの違いを体感してください。</div>
-                            </div>
-                        </div>
+                    <div class="accordion">
+                        <details>
+                            <summary><i class="fa-solid fa-music"></i> スタイル（ジャンル）タグの工夫 <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                            <div class="content">Sunoの "Style of Music" での指示は、ただジャンルを入れるだけでなく「時代」「BPM」「性別」などを盛り込むと精度が上がります。<br><br>
+                            良い例：<code>90s J-POP, Female Vocal, 120 BPM, Uplifting piano, Upbeat, energetic</code></div>
+                        </details>
+                        <details>
+                            <summary><i class="fa-solid fa-bolt"></i> ボーカルスタイルを変化させるメタタグ <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                            <div class="content">歌詞の中にカッコ書きを含めると歌い方や表現を指定できます。<br>
+                            <code>[Whispered Verse]</code> （囁くように）<br>
+                            <code>[Belting Chorus]</code> （力強く歌い上げる）<br>
+                            <code>(Echo)</code> （その直前のフレーズをエコーさせる）</div>
+                        </details>
+                    </div>
+
+                    <div class="code-box">
+                        <span class="code-label">🎵 実践：メタタグフル活用のプロンプト例</span>
+                        <div id="prompt-suno-meta">
+[Soft Piano Intro]
+
+[Whispered Verse 1]
+静かな夜の底で
+見つけた小さな光
+
+[Build Up]
+（次第にドラムが力強く）
+
+[Epic Chorus]
+空へ向かって羽ばたくんだ！
+この声が届くまで！ (届くまで！)
+
+[Guitar Solo]
+
+[Outro]
+[Fade out]</div>
                     </div>
                 </div>
 
+                <!-- 動画② -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceNSi5B4CLSRleWSjo5Kk07p" target="_blank">
+                                <img src="https://img.youtube.com/vi/QVAW2oFIaIs/hqdefault.jpg" alt="Suno Extend">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画②</span>
+                            <h3>Suno Extend（楽曲拡張）の極意</h3>
+                            <p>「途中で終わってしまった曲の続きを作る」「気に入ったフレーズから違う展開を作る」ために必須のExtend機能の使い方。</p>
+                        </div>
+                    </div>
+
+                    <div class="highlight-box" style="background: #fffbeb; border-color: #fde047; color: #854d0e;">
+                        <h3 style="color:#a16207; border-bottom-color:#eab308;"><i class="fa-solid fa-scissors"></i> Extend（拡張）のコツ</h3>
+                        <p>
+                            <strong>1. 切るタイミング：</strong> 曲の「キリが良いところ」よりも、<b>「次の展開に移る直前のビート（小節の終わり）」</b>で時間を指定（例：1:24）すると不自然なクロスフェードを防げます。<br><br>
+                            <strong>2. スタイルプロンプトの変更：</strong> Extendする際、スタイル欄のプロンプトを変更可能です。前半は「Acoustic」で設定し、Extend時に「Heavy Rock」に変更することで、途中で劇的にジャンルが変わる曲も作成できます。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- QUIZ Q1 -->
                 <div class="quiz-box">
                     <div class="quiz-header">
                         <span class="q-badge" style="background:var(--clickable);">Q1</span>
-                        <strong style="font-size:1.15rem;">Sunoでよりボーカルを強調し、伴奏を抑える際に有効なプロンプトは？</strong>
+                        <strong style="font-size:1.15rem;">Sunoで「間奏としてギターソロ」を入れてほしい時、最も適切なプロンプトは？</strong>
                     </div>
                     <div class="quiz-options" id="quiz-day9-1">
-                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, false)">A. [Instruments Off] を入れる <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, true)">B. "Acapella, clear vocals, minimal instrumentation" を指定する <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
-                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, false)">C. BPMを極端に遅くする <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, false)">A. "\n\nギターソロを弾いてください\n\n" と歌詞に書く <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, true)">B. "[Guitar Solo]" というメタタグを独立した行に配置する <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day9-1', this, false)">C. 該当箇所の歌詞を空欄にする <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
                     </div>
                     <div class="quiz-explain" id="quiz-day9-1-explain">
-                        <strong>💡 解説：</strong>Sunoなどの音楽AIには「アカペラ（Acapella）」や「ミニマル（minimal instrumentation）」などのスタイル指定タグが有効です。完全にオフにするコマンドより、ジャンルやスタイルで指定する方が意図が伝わります。
+                        <strong>💡 解説：</strong>Sunoは `[Instrumental Solo]` や `[Guitar Solo]` といった角カッコを使ったメタタグを解釈し、その部分に合わせてボーカルを消し、指定された楽器のソロパートを生成しようとします。
                     </div>
                 </div>
 
@@ -268,28 +298,28 @@
                     <div class="wax-seal"><i class="fa-solid fa-pen-nib"></i></div>
                     <div class="mission-header">
                         <h3><i class="fa-solid fa-trophy" style="color:#d946ef;"></i> MILESTONE 1：前半の実習完了</h3>
-                        <p>実践とパドレット投稿</p>
+                        <p>高度プロンプトで生成し、パドレットへ</p>
                     </div>
                     <ul class="task-list">
                         <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
                             <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>動画を見てプロンプトを理解</h4>
-                                <p>動画内で紹介されたSunoとTuneeの高度なプロンプトをノートにまとめる。</p>
+                                <h4>動画確認・プロンプト設計まとめ</h4>
+                                <p>動画①・②の内容を確認し、メタタグを活用した緻密な楽曲プロンプトをノートに構成する。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
                             <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>実際に生成する</h4>
-                                <p>ノートの中からプロンプトを選び、SunoまたはTuneeで音楽を生成する。</p>
+                                <h4>Sunoでの実践生成</h4>
+                                <p>作成したプロンプトでSunoに指示を出し、狙った展開（[Intro]→[Chorus]等）になっているか確認する。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t1_3', this, 1)">
                             <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>Padletに投稿</h4>
-                                <p>生成した音楽と使用したプロンプトのセットをPadletに提出する。</p>
+                                <h4>Padletへ中間投稿</h4>
+                                <p>前半の練習の成果（プロンプト解説と音声）をPadletに提出する。</p>
                             </div>
                         </li>
                     </ul>
@@ -305,41 +335,69 @@
         <!-- TAB 3: SECOND HALF -->
         <div id="tab-second" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #a21caf;">
-                <div class="card-header"><i class="fa-solid fa-ranking-star" style="color:#a21caf; background:#fae8ff;"></i><h2>後半：Tuneeの深掘り</h2></div>
+                <div class="card-header"><i class="fa-solid fa-wave-square" style="color:#a21caf; background:#fae8ff;"></i><h2>後半：Tuneeの実践応用</h2></div>
 
+                <!-- 動画③ -->
                 <div class="video-section">
                     <div class="video-section-header">
                         <div class="thumb-wrap">
                             <a href="https://www.youtube.com/playlist?list=PLoQApr14fceOSUml4nVTW70m9GRnPX_h1" target="_blank">
-                                <div class="play-overlay"><i class="fa-brands fa-youtube" style="font-size: 4rem;"></i></div>
-                                <h3 style="color:#fff; z-index:1; font-family:'Teko'; font-size:2rem; letter-spacing:1px; margin:0;">DAY 9 後半 動画リスト</h3>
+                                <img src="https://img.youtube.com/vi/HpgB65kF8jg/hqdefault.jpg" alt="Tunee基礎">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
                             </a>
                         </div>
                         <div class="meta">
-                            <h3><i class="fa-solid fa-layer-group" style="color:#a21caf;"></i> プレイリスト：高度な音楽生成の極意</h3>
-                            <p>後半ではさらに踏み込んだ応用テクニックと、楽曲の最適化方法について紹介します。</p>
-                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceOSUml4nVTW70m9GRnPX_h1" target="_blank" class="btn" style="margin-top:10px; background:#ef4444;"><i class="fa-brands fa-youtube"></i> 動画リストを開く</a>
+                            <span class="tag">動画③</span>
+                            <h3>Tuneeの基礎とUIの特徴</h3>
+                            <p>毎日150クレジットが得られるもう一つの強力なAI「Tunee」。Sunoとは異なる音の質感や、日本語ボーカルの表現力について学びます。</p>
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceOSUml4nVTW70m9GRnPX_h1" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 後半再生リストを開く</a>
                         </div>
                     </div>
 
-                    <div class="code-box" style="margin-top: 2rem;">
-                        <span class="code-label">🎵 曲構成を指定するプロンプト例</span>
-                        <button class="btn-copy" onclick="copyCode('structure-prompt', this)"><i class="fa-regular fa-copy"></i> Copy</button>
-                        <div id="structure-prompt">[Intro]
-Soft piano and atmospheric ambient pads, building tension slowly
-[Verse]
-Acoustic guitar joins with a gentle rhythm, emotional but contained
-[Chorus]
-Full orchestral swell, heavy cinematic drums, soaring strings, epic and majestic
-[Outro]
-Fading back to single soft piano notes, resolving the melody</div>
+                    <div class="flip-grid">
+                        <div class="flip-card">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-coins" style="color:#ec4899;"></i><h4>毎日150クレジット</h4></div>
+                                <div class="flip-back">Sunoの50/日に対して、Tuneeは150クレジット/日。試行回数を多く確保できるため、微調整を続ける場合に非常に有利です。</div>
+                            </div>
+                        </div>
+                        <div class="flip-card">
+                            <div class="flip-inner">
+                                <div class="flip-front"><i class="fa-solid fa-microphone-lines" style="color:#8b5cf6;"></i><h4>ボーカルの質感</h4></div>
+                                <div class="flip-back">Tuneeは特にクリアなJ-POPやアコースティックボーカルに独特の透明感があります。Sunoのボーカルが割れやすい・機械っぽすぎる時の有力なオルタナティブとなります。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 動画④ -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceOSUml4nVTW70m9GRnPX_h1" target="_blank">
+                                <img src="https://img.youtube.com/vi/3yOTfQfqR3c/hqdefault.jpg" alt="統合へのアプローチ">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画④</span>
+                            <h3>映像と音楽の統合アプローチ（トラブル対応）</h3>
+                            <p>作成した音楽が映像と合わない、または伴奏・ボーカルがうまくいかない時の解決策の実践Tips。</p>
+                        </div>
                     </div>
 
                     <div class="bento-grid">
-                        <div class="bento-item" style="border-top: 4px solid #a21caf;">
-                            <h4><i class="fa-solid fa-square-check" style="color:#a21caf;"></i> Padletの個人ページ</h4>
-                            <p>他受講生からも見られる自分の作品集です。クオリティを上げたDay 9の作品をアップロードしましょう。</p>
-                            <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="background:#a21caf; font-size:0.9rem; padding:0.5rem 1rem;"><i class="fa-solid fa-up-right-from-square"></i> 提出用Padletを見る</a>
+                        <div class="bento-item" style="border-left: 4px solid #ef4444;">
+                            <h4><i class="fa-solid fa-triangle-exclamation" style="color:#ef4444;"></i> 声が機械っぽくなる時</h4>
+                            <p><b>解決策:</b> "High Quality Vocal" "Clear Pronunciation" をスタイルタグに追加し、歌詞の中の漢字をひらがなで細かくルビ振りするか、全てひらがな/カタカナで入力すると発音が改善します。</p>
+                        </div>
+                        <div class="bento-item" style="border-left: 4px solid #f59e0b;">
+                            <h4><i class="fa-solid fa-volume-low" style="color:#f59e0b;"></i> 声だけで伴奏がない時</h4>
+                            <p><b>解決策:</b> <code>[Intro]</code> を長くとるか、<code>[Heavy Bass and Drum intro]</code> など、歌い出し前の楽器プロンプトを具体的に指示しましょう。</p>
+                        </div>
+                        <div class="bento-item" style="border-left: 4px solid #8b5cf6;">
+                            <h4><i class="fa-solid fa-film" style="color:#8b5cf6;"></i> 動画編集に流用する時</h4>
+                            <p>動画に載せる場合は、意図的にテンポ（BPM）を固定して生成することで、後からPremiere等でビートマッチしやすくなります。</p>
                         </div>
                     </div>
                 </div>
@@ -348,29 +406,30 @@ Fading back to single soft piano notes, resolving the melody</div>
                 <div class="mission-area" id="mission-group-2">
                     <div class="wax-seal"><i class="fa-solid fa-star"></i></div>
                     <div class="mission-header">
-                        <h3><i class="fa-solid fa-trophy" style="color:#a21caf;"></i> MILESTONE 2：後半の実習完了</h3>
-                        <p>最終のアウトプットをPadletへ</p>
+                        <h3><i class="fa-solid fa-trophy" style="color:#a21caf;"></i> MILESTONE 2：最終アウトプットの提出</h3>
+                        <p>Tuneeも活用し、最高の音源を完成させる</p>
                     </div>
                     <ul class="task-list">
                         <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
                             <div class="custom-checkbox" id="check_t2_1"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>後半動画の確認</h4>
-                                <p>動画を見て、前半とは異なる生成結果や指定方法のコツをまとめる。</p>
+                                <h4>Tuneeでの実践生成</h4>
+                                <p>動画③・④の解説を踏まえ、Tuneeを使って音楽を生成し、Sunoとの音質の違いを確認する。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
                             <div class="custom-checkbox" id="check_t2_2"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
-                                <h4>最良のプロンプトで生成</h4>
-                                <p>まとめたノウハウをフル活用し、渾身のプロンプトで音楽を生成する。</p>
+                                <h4>最良のプロンプトで渾身の1曲を作る</h4>
+                                <p>メタタグ、ジャンル掛け合わせ、ルビ振りのテクニックをすべてつぎ込み、SNS動画のBGM/主題歌となる最高の一曲を完成させる。</p>
                             </div>
                         </li>
                         <li class="task-item" onclick="toggleTask('t2_3', this, 2)">
                             <div class="custom-checkbox" id="check_t2_3"><i class="fa-solid fa-check"></i></div>
                             <div class="task-content">
                                 <h4>最終Padlet投稿</h4>
-                                <p>プロンプトと生成した音楽を投稿し、他受講生の作品・プロンプトも確認する。</p>
+                                <p>SunoまたはTuneeで生成した最高傑作のプロンプトと音楽をPadletに提出する。</p>
+                                <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="background:#a21caf; padding:6px 12px; font-size:0.85rem; margin-top:8px;" onclick="event.stopPropagation();"><i class="fa-solid fa-up-right-from-square"></i> Padletへ移動</a>
                             </div>
                         </li>
                     </ul>
@@ -417,98 +476,14 @@ Fading back to single soft piano notes, resolving the melody</div>
     <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
 
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-second': 2, 'tab-summary': 3};
-            document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active');
-            updateProgress();
-        }
-        function copyCode(elementId, btn) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                const orig = btn.innerHTML;
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                btn.style.color = '#10b981';
-                setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
-            });
-        }
-        function checkQuiz(quizId, el, isCorrect) {
-            const container = document.getElementById(quizId);
-            if (container.dataset.answered) return;
-            container.dataset.answered = 'true';
-            if (isCorrect) {
-                el.classList.add('correct');
-                el.querySelector('i').style.display = 'inline';
-            } else {
-                el.classList.add('wrong');
-                el.querySelector('i').style.display = 'inline';
-                container.querySelectorAll('.quiz-opt').forEach(opt => {
-                    if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; }
-                });
-            }
-            document.getElementById(quizId + '-explain').style.display = 'block';
-        }
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-second': 2, 'tab-summary': 3}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
+        function copyCode(elementId, btn) { const text = document.getElementById(elementId).innerText; navigator.clipboard.writeText(text).then(() => { const orig = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!'; btn.style.color = '#10b981'; setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000); }); }
+        function checkQuiz(quizId, el, isCorrect) { const container = document.getElementById(quizId); if (container.dataset.answered) return; container.dataset.answered = 'true'; if (isCorrect) { el.classList.add('correct'); el.querySelector('i').style.display = 'inline'; } else { el.classList.add('wrong'); el.querySelector('i').style.display = 'inline'; container.querySelectorAll('.quiz-opt').forEach(opt => { if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; } }); } document.getElementById(quizId + '-explain').style.display = 'block'; }
         const taskState = {};
-        function toggleTask(id, el, group) {
-            taskState[id] = !taskState[id];
-            el.classList.toggle('completed');
-            updateProgress();
-            const groupId = 'mission-group-' + group;
-            const groupEl = document.getElementById(groupId);
-            const items = groupEl.querySelectorAll('.task-item');
-            const done = groupEl.querySelectorAll('.task-item.completed').length;
-            if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); }
-            else { groupEl.classList.remove('completed'); }
-        }
-        function updateProgress() {
-            const total = document.querySelectorAll('.task-item').length;
-            const done = document.querySelectorAll('.task-item.completed').length;
-            const pct = total === 0 ? 0 : Math.round((done / total) * 100);
-            document.getElementById('progress-percent').innerText = pct + '%';
-            document.getElementById('progress-bar').style.width = pct + '%';
-        }
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById('scroll-progress-bar').style.width = scrolled + '%';
-        });
-
-        // Simple confetti function
-        function launchConfetti() {
-            const canvas = document.getElementById('confetti');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            const particles = [];
-            for(let i=0; i<100; i++) {
-                particles.push({
-                    x: canvas.width/2, y: canvas.height/2,
-                    r: Math.random()*6+2,
-                    dx: Math.random()*10-5, dy: Math.random()*-10-5,
-                    color: ['#d946ef','#6366f1','#a21caf','#f43f5e','#fbbf24'][Math.floor(Math.random()*5)]
-                });
-            }
-            function animate() {
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                let active = false;
-                particles.forEach(p => {
-                    if(p.y < canvas.height) {
-                        active = true;
-                        p.x += p.dx; p.y += p.dy; p.dy += 0.2; // gravity
-                        ctx.beginPath();
-                        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                        ctx.fillStyle = p.color;
-                        ctx.fill();
-                    }
-                });
-                if(active) requestAnimationFrame(animate);
-                else ctx.clearRect(0,0,canvas.width,canvas.height);
-            }
-            animate();
-        }
+        function toggleTask(id, el, group) { taskState[id] = !taskState[id]; el.classList.toggle('completed'); updateProgress(); const groupId = 'mission-group-' + group; const groupEl = document.getElementById(groupId); const items = groupEl.querySelectorAll('.task-item'); const done = groupEl.querySelectorAll('.task-item.completed').length; if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); } else { groupEl.classList.remove('completed'); } }
+        function updateProgress() { const total = document.querySelectorAll('.task-item').length; const done = document.querySelectorAll('.task-item.completed').length; const pct = total === 0 ? 0 : Math.round((done / total) * 100); document.getElementById('progress-percent').innerText = pct + '%'; document.getElementById('progress-bar').style.width = pct + '%'; }
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; document.getElementById('scroll-progress-bar').style.width = scrolled + '%'; });
+        function launchConfetti() { const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for(let i=0; i<100; i++) { particles.push({ x: canvas.width/2, y: canvas.height/2, r: Math.random()*6+2, dx: Math.random()*10-5, dy: Math.random()*-10-5, color: ['#d946ef','#6366f1','#a21caf','#f43f5e','#fbbf24'][Math.floor(Math.random()*5)] }); } function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); let active = false; particles.forEach(p => { if(p.y < canvas.height) { active = true; p.x += p.dx; p.y += p.dy; p.dy += 0.2; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = p.color; ctx.fill(); } }); if(active) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height); } animate(); }
     </script>
 </body>
 </html>
