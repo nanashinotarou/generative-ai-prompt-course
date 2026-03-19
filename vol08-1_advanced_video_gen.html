@@ -3,593 +3,340 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day 8 | 最新の高度な動画生成AIテクニック</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Noto+Sans+JP:wght@400;700;900&family=Fira+Code&display=swap" rel="stylesheet">
+    <title>Day 8 | Advanced AI Video Generation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-body: #020617;
-            --bg-card: rgba(255, 255, 255, 0.02);
-            --bg-glass: rgba(255, 255, 255, 0.04);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --accent-purple: #a855f7;
-            --accent-pink: #ec4899;
-            --accent-cyan: #06b6d4;
-            --accent-blue: #3b82f6;
-            --radius-lg: 28px;
-            --radius-md: 18px;
-            --glass-blur: blur(25px);
-        }
-
-        * { box-sizing: border-box; }
-        body {
-            margin: 0; padding: 0;
-            font-family: 'Noto Sans JP', 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-body);
-            color: var(--text-main);
-            background-image: 
-                radial-gradient(circle at 5% 10%, rgba(168, 85, 247, 0.12), transparent 40%),
-                radial-gradient(circle at 95% 90%, rgba(6, 182, 212, 0.12), transparent 40%);
-            background-attachment: fixed;
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Header */
-        .fixed-header {
-            position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(2, 6, 23, 0.85);
-            backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--border-glass);
-            z-index: 1000; padding: 0.9rem 2.5rem;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .back-link {
-            color: var(--text-main); text-decoration: none; font-weight: 800;
-            display: flex; align-items: center; gap: 0.6rem; transition: all 0.3s;
-        }
-        .back-link:hover { color: var(--accent-purple); transform: translateX(-3px); }
-        .progress-container { flex-grow: 1; max-width: 450px; margin: 0 3rem; }
-        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 800; margin-bottom: 5px; color: var(--accent-purple); letter-spacing: 1px; }
-        .progress-bar-bg { height: 10px; background: rgba(255,255,255,0.08); border-radius: 20px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan)); width: 0%; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-
-        .container { max-width: 1200px; margin: 130px auto 100px; padding: 0 30px; }
-
-        /* Hero */
-        .hero { text-align: center; margin-bottom: 5rem; animation: slideIn 1.2s ease-out; }
-        .hero-badge {
-            display: inline-block; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white; padding: 0.5rem 1.8rem; border-radius: 40px;
-            font-weight: 900; font-size: 0.85rem; margin-bottom: 1.5rem;
-            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.4);
-            text-transform: uppercase; letter-spacing: 2px;
-        }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin: 0; font-weight: 900; letter-spacing: -3px; line-height: 1.05; }
-        .hero p { color: var(--text-sub); margin-top: 1.8rem; font-size: 1.2rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Navigation Tabs */
-        .tab-nav { display: flex; justify-content: center; gap: 12px; margin-bottom: 4rem; flex-wrap: wrap; }
-        .tab-btn {
-            background: var(--bg-glass); border: 1px solid var(--border-glass);
-            color: var(--text-sub); padding: 1.1rem 2rem; border-radius: 40px;
-            cursor: pointer; font-weight: 800; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; gap: 10px; backdrop-filter: var(--glass-blur);
-        }
-        .tab-btn:hover { background: rgba(255,255,255,0.12); color: white; transform: translateY(-4px); border-color: var(--accent-purple); }
-        .tab-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5); transform: translateY(-4px); }
-
-        .tab-content { display: none; animation: fadeIn 0.6s ease; }
+        :root { --bg-body: #fff7ed; --bg-card: rgba(255, 255, 255, 0.95); --text-main: #431407; --text-sub: #c2410c; --accent: #f97316; --accent-light: #fdba74; --accent-bg: #fff7ed; --accent-glow: rgba(249, 115, 22, 0.25); --clickable: #f43f5e; --clickable-bg: #ffe4e6; --glass-blur: blur(20px); --radius: 20px; }
+        * { box-sizing: border-box; } html { scroll-behavior: smooth; }
+        body { margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg-body); color: var(--text-main); background-image: radial-gradient(ellipse at 10% 20%, rgba(249, 115, 22, 0.08), transparent 40%), radial-gradient(ellipse at 90% 80%, rgba(244, 63, 94, 0.08), transparent 40%); background-attachment: fixed; min-height: 100vh; }
+        .fixed-header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .back-link { color: var(--text-sub); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--accent); }
+        .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--clickable)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; z-index: 1001; }
+        #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s ease-out; box-shadow: 0 -2px 10px var(--accent-glow); }
+        .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
+        .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
+        .day-badge { background: linear-gradient(135deg, #f97316, #ea580c); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Oswald', sans-serif; font-size: 1.6rem; font-weight:700; display: inline-block; margin-bottom: 1.2rem; box-shadow: 0 4px 15px rgba(249,115,22,0.3);}
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
+        .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: #78350f; padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
+        .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
         .tab-content.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-        /* Glass Cards */
-        .glass-card {
-            background: var(--bg-glass); backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
-            padding: 3.5rem; margin-bottom: 3rem; position: relative; overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-        }
-        .glass-card h2 { margin-top: 0; font-size: 2.4rem; font-weight: 900; display: flex; align-items: center; gap: 15px; letter-spacing: -1px; }
-        .glass-card h2 i { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* Bento Grid */
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-top: 2.5rem; }
-        .bento-item {
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass);
-            border-radius: var(--radius-md); padding: 2rem;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative;
-        }
-        .bento-item:hover { background: rgba(255,255,255,0.07); transform: translateY(-8px); border-color: var(--accent-purple); box-shadow: 0 15px 35px rgba(0,0,0,0.3); }
-        .bento-item h4 { margin: 0 0 1.2rem; font-size: 1.4rem; font-weight: 900; color: var(--accent-purple); display: flex; align-items: center; gap: 12px; }
-        .bento-item p { margin: 0; font-size: 1rem; line-height: 1.8; color: var(--text-sub); }
-        .tool-tag { font-size: 0.75rem; font-weight: 900; background: var(--accent-purple); color: white; padding: 3px 10px; border-radius: 5px; position: absolute; top: 15px; right: 15px; }
-
-        /* Video Card */
-        .video-card { display: flex; gap: 2.5rem; margin-bottom: 3rem; background: rgba(255,255,255,0.02); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-glass); transition: all 0.3s; }
-        .video-card:hover { border-color: var(--accent-cyan); background: rgba(255,255,255,0.04); }
-        .video-thumb { width: 380px; flex-shrink: 0; border-radius: 20px; overflow: hidden; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
-        .video-thumb img { width: 100%; display: block; filter: brightness(0.85); transition: filter 0.3s; }
-        .video-thumb:hover img { filter: brightness(1); }
-        .video-thumb::after {
-            content: "\f144"; font-family: "Font Awesome 6 Free"; font-weight: 900;
-            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.3); color: white; font-size: 3.5rem; opacity: 0.7; transition: all 0.3s;
-        }
-        .video-thumb:hover::after { transform: scale(1.1); opacity: 1; color: var(--accent-cyan); }
-        .video-info { flex: 1; }
-        .video-info h3 { margin: 0 0 1rem; font-size: 1.6rem; font-weight: 900; color: white; line-height: 1.3; }
-        .video-info p { margin: 0; color: var(--text-sub); font-size: 1.05rem; line-height: 1.7; }
-
-        @media (max-width: 992px) { .video-card { flex-direction: column; } .video-thumb { width: 100%; } }
-
-        /* Specialized Info Boxes */
-        .info-box {
-            background: rgba(168, 85, 247, 0.08); border-left: 6px solid var(--accent-purple);
-            padding: 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0;
-        }
-        .info-box h5 { margin: 0 0 0.8rem; font-size: 1.25rem; color: var(--accent-purple); font-weight: 900; display: flex; align-items: center; gap: 10px; }
-        .tip-box {
-            background: rgba(6, 182, 212, 0.08); border-left: 6px solid var(--accent-cyan);
-            padding: 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0;
-        }
-        .tip-box h5 { margin: 0 0 0.8rem; font-size: 1.25rem; color: var(--accent-cyan); font-weight: 900; display: flex; align-items: center; gap: 10px; }
-
-        /* Interactive Elements */
-        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
-        .flip-card { perspective: 1000px; height: 180px; cursor: pointer; }
-        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
-        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back {
-            position: absolute; inset: 0; backface-visibility: hidden;
-            border-radius: var(--radius-md); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; padding: 2rem; text-align: center; border: 1px solid var(--border-glass);
-        }
-        .flip-front { background: rgba(168, 85, 247, 0.05); color: white; }
-        .flip-front i { font-size: 2.5rem; margin-bottom: 0.8rem; color: var(--accent-purple); }
-        .flip-back { background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); color: white; transform: rotateY(180deg); font-size: 0.95rem; font-weight: 700; line-height: 1.5; }
-
-        /* Quiz */
-        .quiz-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 3rem; margin-top: 3rem; border-top: 6px solid var(--accent-cyan); }
-        .quiz-badge { border: 2px solid var(--accent-cyan); color: var(--accent-cyan); padding: 4px 15px; border-radius: 30px; font-weight: 900; font-size: 0.8rem; display: inline-block; margin-bottom: 1.5rem; }
-        .quiz-question { font-size: 1.4rem; font-weight: 900; margin-bottom: 2rem; color: white; }
-        .quiz-options { display: grid; gap: 12px; }
-        .quiz-opt {
-            background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass);
-            padding: 1.2rem 2rem; border-radius: 15px; cursor: pointer; transition: all 0.3s;
-            font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 15px;
-        }
-        .quiz-opt:hover { background: rgba(168, 85, 247, 0.1); border-color: var(--accent-purple); transform: translateX(10px); }
-        .quiz-opt.correct { background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #10b981; }
-        .quiz-opt.wrong { background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444; }
-        .quiz-feedback { display: none; margin-top: 2rem; padding: 2rem; background: rgba(6, 182, 212, 0.1); border-radius: 15px; border-left: 5px solid var(--accent-cyan); animation: fadeIn 0.4s ease; }
-
-        /* Checklist & Wax Seal */
-        .mission-panel { position: relative; margin-top: 4rem; }
-        .checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.2rem; }
-        .check-item {
-            background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass);
-            padding: 1.8rem 2.5rem; border-radius: var(--radius-lg); cursor: pointer;
-            display: flex; align-items: center; gap: 2rem; transition: all 0.4s;
-        }
-        .check-item:hover { background: rgba(255,255,255,0.06); transform: translateX(10px); border-color: var(--accent-cyan); }
-        .check-item.active { background: rgba(6, 182, 212, 0.08); border-color: var(--accent-cyan); }
-        .check-box {
-            width: 36px; height: 36px; border-radius: 12px; border: 3px solid var(--border-glass);
-            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: transparent; transition: all 0.3s;
-        }
-        .check-item.active .check-box { background: var(--accent-cyan); border-color: var(--accent-cyan); color: white; }
-        .check-text h4 { margin: 0 0 5px; font-size: 1.3rem; font-weight: 900; color: white; }
-        .check-text p { margin: 0; font-size: 1rem; color: var(--text-sub); }
-
-        .wax-seal {
-            position: absolute; top: 10px; right: 40px; width: 180px; height: 180px;
-            background: radial-gradient(circle at 30% 30%, #ec4899, #be185d 80%, #831843);
-            border-radius: 50%; opacity: 0; pointer-events: none; z-index: 10;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6), inset 0 0 25px rgba(0,0,0,0.4);
-            border: 5px solid #701a3d; transform: scale(3) rotate(-40deg);
-        }
-        .wax-seal::before {
-            content: "VIDEO\nMASTER"; white-space: pre-wrap; text-align: center;
-            color: rgba(255,255,255,0.75); font-weight: 950; font-size: 1.8rem;
-            border: 3px solid rgba(255,255,255,0.3); padding: 10px 20px; border-radius: 12px;
-            line-height: 0.9;
-        }
-        .mission-panel.complete .wax-seal {
-            animation: stampIn 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes stampIn {
-            0% { opacity: 0; transform: scale(3) rotate(-40deg); }
-            60% { opacity: 1; transform: scale(0.95) rotate(5deg); }
-            100% { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-
-        /* Home Button */
-        .home-btn {
-            position: fixed; bottom: 40px; right: 40px;
-            width: 70px; height: 70px; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; box-shadow: 0 15px 40px rgba(168, 85, 247, 0.4);
-            text-decoration: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
-        }
-        .home-btn:hover { transform: translateY(-10px) scale(1.1); box-shadow: 0 20px 50px rgba(168, 85, 247, 0.6); }
-
-        /* Code & Prompt Styling */
-        .code-box {
-            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-glass);
-            margin: 1.5rem 0; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: var(--accent-cyan);
-            position: relative; overflow-x: auto;
-        }
-        .code-label { position: absolute; top: -12px; left: 20px; background: var(--accent-cyan); color: white; padding: 2px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; }
-
-        strong { color: #fff; font-weight: 800; }
-        .accent-p { color: var(--accent-purple); font-weight: 800; }
-        .accent-c { color: var(--accent-cyan); font-weight: 800; }
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(249, 115, 22, 0.05); transition: transform 0.3s; }
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid #fff7ed; padding-bottom: 1.2rem; }
+        .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(249, 115, 22, 0.1); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        
+        .camera-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .camera-card { background: #fafaf9; border-radius: 16px; border: 2px solid #ffedd5; padding: 1.5rem; text-align: center; position: relative; overflow: hidden; transition:all 0.3s; cursor:pointer;}
+        .camera-card:hover { border-color: var(--accent); transform:scale(1.02); background:#fff;}
+        .camera-card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 1rem; }
+        .camera-card h4 { margin: 0 0 0.5rem; font-weight: 800; color: #9a3412; }
+        .camera-card p { margin: 0; font-size: 0.9rem; color: #78350f; }
+        .anim-element { transition: transform 2s ease-in-out; }
+        .camera-card:hover[data-anim="pan"] .anim-element { transform: translateX(30px); }
+        .camera-card:hover[data-anim="zoom"] .anim-element { transform: scale(1.3); }
+        .camera-card:hover[data-anim="tilt"] .anim-element { transform: translateY(-20px); }
+        
+        .code-block { background: #1c1917; color: #fdba74; padding: 1.5rem; border-radius: 12px; margin: 1.5rem 0; font-family: monospace; border-left: 4px solid var(--accent); line-height:1.6; position:relative;}
+        .code-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-weight:bold; margin:0 4px;}
+        .tag-subject { background: #7f1d1d; color:#fca5a5; }
+        .tag-action { background: #1e3a8a; color:#93c5fd; }
+        .tag-camera { background: #14532d; color:#86efac; }
+        
+        .quiz-box { background: #fff; border: 2px solid var(--accent-light); border-radius: 16px; padding: 2rem; margin: 2rem 0;}
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { padding: 1.2rem 1.5rem; border: 2px solid #fff7ed; border-radius: 14px; cursor: pointer; transition: all 0.3s; font-weight: 600; display:flex; justify-content:space-between;}
+        .quiz-opt:hover { border-color: var(--accent); background: #fff7ed; transform: translateX(5px); }
+        .quiz-opt.correct { background: #dcfce7; border-color: #22c55e; color: #14532d; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #fca5a5; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: #fff7ed; border: 1px solid #ffedd5; transition: all 0.3s; cursor: pointer; }
+        .task-item.completed { background: #fff1f2; border-color: #f43f5e; }
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid var(--accent-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .task-item.completed .custom-checkbox { background: var(--clickable); border-color: var(--clickable); }
+        .custom-checkbox i { color: #fff; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; transform: scale(1); }
+        .task-content h4 { margin: 0 0 0.5rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #fb923c, #ea580c, #9a3412); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #431407;}
+        .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 6px 15px rgba(249,115,22,0.3); transition:all 0.3s;}
+        .btn:hover { background: #c2410c; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(249,115,22,0.4); }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #9a3412); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(249,115,22,0.4); text-decoration: none; z-index: 1000; transition:all 0.3s;}
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); }
+        #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid #fff7ed; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.05); }
+        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid #fff7ed; }
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative; background:#1c1917;}
+        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block; opacity:0.8;}
+        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(249,115,22,0.4); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
+        .comparison-grid { display:grid; grid-template-columns: 1fr 1fr; gap:2rem; margin:2rem 0; }
+        .comp-card { background:#fff; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
+        .comp-header { padding:1.5rem; text-align:center; font-weight:800; font-size:1.2rem; color:#fff;}
     </style>
 </head>
 <body>
+    <canvas id="particles"></canvas><canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
     <header class="fixed-header">
-        <a href="index.html" class="back-link"><i class="fa-solid fa-house-chimney"></i> Course Home</a>
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
         <div class="progress-container">
-            <div class="progress-text"><span>Learning Milestone</span><span id="progress-val">0%</span></div>
+            <div class="progress-text"><span>Day 8 Progress</span><span id="progress-percent">0%</span></div>
             <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
         </div>
-        <div style="width: 120px;"></div>
+        <div style="width:100px;"></div>
     </header>
-
     <div class="container">
         <div class="hero">
-            <div class="hero-badge">Advanced Course | Day 08</div>
-            <h1>究極の高度な動画生成AI<br>マスターディレクション</h1>
-            <p>
-                Day 5の基礎を土台に、映画クオリティを実現する <strong>Kling 3.0</strong> や、
-                リップシンクを極める <strong>Domo AI</strong>、そしてGoogleエコシステムの頂点 <strong>Flow</strong> を駆使し、
-                プロフェッショナルな映像制作ワークフローを完遂します。
-            </p>
+            <div class="day-badge">DAY 08</div>
+            <h1>高度な動画生成とカメラワーク指示</h1>
+            <p>本日の目標：静止画やテキストに「映画的な動き」を与える。<br>Runway Gen-3 Alpha と Luma Dream Machine を使い、物理的かつシネマティックなカメラワークや被写体のモーションをコントロールします。</p>
+        </div>
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:var(--accent);"></i> 目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-video" style="color:var(--clickable);"></i> 前半：カメラワークの極意</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-layer-group" style="color:#8b5cf6;"></i> 後半：モデル比較と実践</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#f43f5e;"></i> まとめ</button>
         </div>
 
-        <nav class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('goal')"><i class="fa-solid fa-compass"></i> セッション目標</button>
-            <button class="tab-btn" onclick="switchTab('first')"><i class="fa-solid fa-bolt"></i> 前半：次世代モデルの衝撃</button>
-            <button class="tab-btn" onclick="switchTab('second')"><i class="fa-solid fa-microphone-lines"></i> 後半：リップシンクと一貫性</button>
-            <button class="tab-btn" onclick="switchTab('summary')"><i class="fa-solid fa-award"></i> 修了まとめ</button>
-        </nav>
-
-        <!-- TAB: GOAL -->
-        <main id="tab-goal" class="tab-content active">
-            <div class="glass-card">
-                <h2><i class="fa-solid fa-star"></i> 本日の研修ねらい</h2>
-                <p>
-                    動画生成AIは「ただ作るだけ」のフェーズから、<strong>「プロンプトで演出を制御し、一貫性を担保する」</strong>プロフェッショナルのフェーズへと進化しました。本日は以下の3点を軸に進めます。
-                </p>
+        <!-- TAB 1: COURSE GOALS -->
+        <div id="tab-goal" class="tab-content active">
+            <div class="glass-card" style="border-top: 5px solid var(--accent);">
+                <div class="card-header"><i class="fa-solid fa-compass"></i><h2>本日の研修ねらい</h2></div>
                 <div class="bento-grid">
                     <div class="bento-item">
-                        <div class="tool-tag">Advanced</div>
-                        <h4>マルチショット演出</h4>
-                        <p>Kling 3.0を使い、1つのプロンプトで複数のカット（場面転換）を破錠なく生成し、映画的なルックを作り上げます。</p>
+                        <h4><i class="fa-solid fa-camera-retro" style="color:var(--accent);"></i> 「動き」を言語化する</h4>
+                        <p>単に「動かして」ではなく、カメラマンへの指示（PAN, TILT, ZOOM, TRACKING等）を使いこなすことで、予測不可能な変形エラーを防ぎ、意図した映像を作ります。</p>
                     </div>
                     <div class="bento-item">
-                        <div class="tool-tag">Professional</div>
-                        <h4>統合ワークフロー</h4>
-                        <p>Googleの「Flow」を中心に、Geminiでのリサーチから Veo 3.1 での生成、SunoでのBGMまで、一気通貫の制作フローを体得します。</p>
+                        <h4><i class="fa-solid fa-code-compare" style="color:var(--clickable);"></i> Runway vs Luma</h4>
+                        <p>現状の世界最高峰モデルである Runway Gen-3 Alpha と Luma Dream Machine の特性の違いを理解し、目的（実写系・アニメ系・スピード感）に応じて使い分けます。</p>
                     </div>
-                    <div class="bento-item">
-                        <div class="tool-tag">Expertise</div>
-                        <h4>高精度リップシンク</h4>
-                        <p>Domo AI や Heygen を比較し、人物の喋りやMV制作における「声と動き」の完全な同期をマスターします。</p>
-                    </div>
-                </div>
-                <div style="margin-top: 4rem; text-align: center;">
-                    <button class="tab-btn active" style="padding: 1.5rem 4rem; font-size: 1.2rem;" onclick="switchTab('first'); window.scrollTo(0,0);">
-                        高度なセッションを開始する <i class="fa-solid fa-circle-play"></i>
-                    </button>
                 </div>
             </div>
-        </main>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-first'); window.scrollTo(0, 0);">
+                    前半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
 
-        <!-- TAB: FIRST HALF -->
-        <main id="tab-first" class="tab-content">
-            <div class="glass-card">
-                <h2><i class="fa-solid fa-film"></i> 前半：次世代モデルの衝撃</h2>
-                <p>
-                    2026年、動画生成AIは物理演算とディレクションの精度が劇的に向上しました。主要ツールの個別の強みを深掘りします。
-                </p>
-
-                <!-- VIDEO 1: Kling 3.0 -->
-                <section class="video-card">
-                    <div class="video-thumb">
-                        <a href="https://www.youtube.com/watch?v=DFFjWcYnjYE" target="_blank">
-                            <img src="https://i.ytimg.com/vi/DFFjWcYnjYE/hqdefault.jpg" alt="Kling 3.0">
-                        </a>
+        <!-- TAB 2: FIRST HALF -->
+        <div id="tab-first" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid var(--clickable);">
+                <div class="card-header"><i class="fa-solid fa-video" style="color:var(--clickable); background:var(--clickable-bg);"></i><h2>前半：シネマティック・カメラワーク</h2></div>
+                
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="#" onclick="return false;">
+                                <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=500" alt="Cinematic Video">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画①</span>
+                            <h3>カメラムーブメントの基礎理論</h3>
+                            <p>映像制作のプロが使う「カメラの実機名」と「動きの言葉」を動画AIに伝えることで、ハイクオリティな映画風ショットを手に入れます。</p>
+                        </div>
                     </div>
-                    <div class="video-info">
-                        <h3>動画①：Soraを超えた!? Kling 3.0の実力</h3>
-                        <p>
-                            中国発の最強モデル <strong>Kling 3.0</strong> の解説。最大の特徴である「マルチショット機能」により、カメラの切り替えを1本の動画内で実現。日本語リップシンクの精度も驚異的です。
-                        </p>
+
+                    <h4 style="margin-top:2rem; font-size:1.2rem;"><i class="fa-solid fa-maximize" style="color:var(--clickable);"></i> 魔法のカメラワーク・プロンプト</h4>
+                    <p style="font-size:0.95rem; color:#64748b;">各カードに<b>マウスホバー</b>して、カメラの動きのイメージを確認してください。</p>
+                    
+                    <div class="camera-grid">
+                        <div class="camera-card" data-anim="pan">
+                            <i class="fa-solid fa-arrows-left-right anim-element"></i>
+                            <h4>Pan shot</h4>
+                            <p>カメラを固定したまま左右に振る。広い景色を見渡す時に使う。</p>
+                        </div>
+                        <div class="camera-card" data-anim="zoom">
+                            <i class="fa-solid fa-magnifying-glass anim-element"></i>
+                            <h4>Zoom in / out</h4>
+                            <p>被写体に寄る、または引く。人物の感情の起伏などを表現。</p>
+                        </div>
+                        <div class="camera-card" data-anim="tilt">
+                            <i class="fa-solid fa-arrows-up-down anim-element"></i>
+                            <h4>Tilt up / down</h4>
+                            <p>カメラを固定して上下に振る。巨大な建築物を見上げる時に使う。</p>
+                        </div>
+                        <div class="camera-card" data-anim="zoom" style="border-color:var(--clickable);">
+                            <i class="fa-solid fa-truck-fast anim-element" style="color:var(--clickable);"></i>
+                            <h4>FPV Drone shot</h4>
+                            <p>ドローン視点で猛スピードで駆け抜ける。Gen-3などで超強力。</p>
+                        </div>
                     </div>
-                </section>
 
-                <div class="info-box">
-                    <h5><i class="fa-solid fa-clapperboard"></i> 知識の定着：Kling 3.0の核心</h5>
-                    <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-sub);">
-                        <li><strong>マルチショット生成</strong>: 構成、カメラワーク、カット割りをAIが自動、または個別プロンプトで判断。</li>
-                        <li><strong>Elements機能</strong>: キャラクター固有のIDを振り、異なるシーンでも人物の一貫性を100%保持。</li>
-                        <li><strong>生成可能時間</strong>: 最大10〜15秒の高品質クリップを生成可能。</li>
-                    </ul>
-                </div>
-
-                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
-
-                <!-- VIDEO 2: Hailuo AI -->
-                <section class="video-card">
-                    <div class="video-thumb">
-                        <a href="https://www.youtube.com/watch?v=FmpuetJh6HE" target="_blank">
-                            <img src="https://i.ytimg.com/vi/FmpuetJh6HE/hqdefault.jpg" alt="Hailuo AI">
-                        </a>
-                    </div>
-                    <div class="video-info">
-                        <h3>動画②：Hailuo AI — 物理演算と表情の極み</h3>
-                        <p>
-                            <strong>「動きが自然すぎて怖い」</strong>と言わしめる Hailuo AI。Nano Banana Pro で生成した静止画をソースに、実写と見紛う物理挙動を付与する方法を紹介。
-                        </p>
-                    </div>
-                </section>
-
-                <div class="tip-box">
-                    <h5><i class="fa-solid fa-bolt"></i> プロのディレクション術</h5>
-                    <p>
-                        静止画（Image to Video）で使用する場合、<strong>Nano Banana Pro</strong> で「高解像度かつ構造が明確な画像」を用意することが重要。Hailuoは「人物の関節の動き」や「液体の挙動」において他を圧倒します。
-                    </p>
-                </div>
-
-                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
-
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <div class="tool-tag">Google Ecosystem</div>
-                        <h4>動画③：Flow (Veo 3.1) <small>ID: fnn3qyM9wmg</small></h4>
-                        <p>Googleの最強動画モデル <strong>Veo 3.1</strong> を搭載した統合ツール。リサーチから企画、最終レンダリングまで、ビジネス動画制作のエンドツーエンドなワークフローを提供。</p>
-                    </div>
-                    <div class="bento-item">
-                        <div class="tool-tag">AI Agent</div>
-                        <h4>動画④：Flova.ai <small>ID: PwSNOFgxqNg</small></h4>
-                        <p>プロンプトを書くのではなく、<strong>「AIと会話しながら」</strong>修正を繰り返して完成させる対話型ツール。「カメラをもっと寄せて」という一言で再生成が可能です。</p>
+                    <div class="code-block">
+                        <p>💡 <b>I2V (Image to Video) でのプロンプト構成例:</b></p>
+                        <span class="code-tag tag-subject">A sports car</span>
+                        <span class="code-tag tag-action">drifting through neon streets</span>,
+                        <span class="code-tag tag-camera">FPV drone shot, fast tracking, motion blur</span>
                     </div>
                 </div>
 
-                <div class="code-box">
-                    <div class="code-label">💡 制作エリートの統合フロー (Flow例)</div>
-                    1. Gemini 2.1 で企画リサーチ
-                    2. Gems でストーリーボード作成
-                    3. Nano Banana Pro でシーン画像を生成
-                    4. <strong>Flow (Veo 3.1)</strong> で動画化
-                    5. Suno / ElevenLabs で音入れ
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Quiz 1</span>
+                        <strong style="font-size:1.15rem;">被写体を一定距離で追いかける「トラックショット」を指定する英単語は？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz-d8-1">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-d8-1', this, false)">A. Panning <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-d8-1', this, false)">B. Zooming <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-d8-1', this, true)">C. Tracking shot <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz-d8-1-explain" style="display:none; margin-top:1rem; padding:1rem; background:#ecfdf5; border-left:4px solid #10b981;">
+                        <strong>💡 解説：</strong> 被写体が移動するのと同じ速度でカメラも移動する技術をトラッキング・ショット（Tracking shot）またはドリー（Dolly shot）と呼びます。
+                    </div>
                 </div>
 
-                <!-- MISSION 1 -->
-                <section class="mission-panel" id="mission-1">
-                    <div class="wax-seal"></div>
-                    <ul class="checklist">
-                        <li class="check-item" onclick="toggleTask(this, 'mission-1')">
-                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
-                            <div class="check-text">
-                                <h4>次世代モデルの特性理解</h4>
-                                <p>Kling 3.0 のマルチショットや Flova の対話型生成のメリットを理解した。</p>
-                            </div>
+                <div class="mission-area" id="mission-group-1">
+                    <div class="wax-seal"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-trophy" style="color:var(--accent);"></i> MILESTONE 1：前半の実習</h3>
+                        <p>カメラワークプロンプトの設計</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content"><h4>素材画像の準備</h4><p>Day 7で作成した最高品質の静止画（16:9推奨）を準備する。</p></div>
                         </li>
-                        <li class="check-item" onclick="toggleTask(this, 'mission-1')">
-                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
-                            <div class="check-text">
-                                <h4>クレジット体系の把握</h4>
-                                <p>Kling（毎月66クレジット）、Flova（毎週200クレジット）等の利用プランを確認した。</p>
-                            </div>
+                        <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content"><h4>プロンプトの設計</h4><p>画像に合わせて、「Zoom in」か「Pan right」か「Tracking」か、カメラの動きを一つ決める。</p></div>
                         </li>
                     </ul>
-                </section>
-                <div style="margin-top: 4rem; text-align: center;">
-                    <button class="tab-btn active" style="padding: 1.5rem 4rem; font-size: 1.2rem;" onclick="switchTab('second'); window.scrollTo(0,0);">
-                        後半：リップシンクと一貫性へ <i class="fa-solid fa-circle-chevron-right"></i>
-                    </button>
                 </div>
             </div>
-        </main>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, var(--clickable), #8b5cf6);" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
+                    後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
 
-        <!-- TAB: SECOND HALF -->
-        <main id="tab-second" class="tab-content">
-            <div class="glass-card">
-                <h2><i class="fa-solid fa-microphone-lines"></i> 後半：リップシンクと一貫性</h2>
-                <p>
-                    人物が喋る、歌う、演技する。視聴者が最も違和感を覚えやすい「リップシンク」と「MV制作」のテクニックを網羅します。
-                </p>
+        <!-- TAB 3: SECOND HALF -->
+        <div id="tab-second" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #8b5cf6;">
+                <div class="card-header"><i class="fa-solid fa-layer-group" style="color:#8b5cf6; background:#f3e8ff;"></i><h2>後半：Runway vs Luma 実践</h2></div>
 
-                <!-- VIDEO 5: Domo AI -->
-                <section class="video-card">
-                    <div class="video-thumb">
-                        <a href="https://www.youtube.com/watch?v=D3lQACXarFo" target="_blank">
-                            <img src="https://i.ytimg.com/vi/D3lQACXarFo/hqdefault.jpg" alt="Domo AI">
-                        </a>
-                    </div>
-                    <div class="video-info">
-                        <h3>動画⑤：Domo AI で作る究極のミュージックビデオ</h3>
-                        <p>
-                            <strong>「AIアバター」</strong>機能による最高精度のリップシンク解説。横顔や激しいBGMの中でも人物が自然に喋る/歌うMVの制作手順を紹介します。4Kアップスケーラーも非常に強力。
-                        </p>
-                    </div>
-                </section>
-
-                <div class="flip-grid">
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-inner">
-                            <div class="flip-front"><i class="fa-solid fa-face-laugh"></i><h4>AIアバター</h4></div>
-                            <div class="flip-back">音声/音楽のみで、静止画を完全に同期したトーキング動画へ。最長60秒の生成に対応。</div>
+                <div class="video-section" style="border-color:#f3e8ff;">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="#" onclick="return false;">
+                                <img src="https://images.unsplash.com/photo-1587691592099-24045742c181?auto=format&fit=crop&w=500" alt="Runway vs Luma">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag" style="background:#f3e8ff; color:#7e22ce;">動画②</span>
+                            <h3>トップモデル比較と課金/商用利用</h3>
+                            <p>現在最高のクオリティを誇る2大ツールを取り上げ、生成される映像の質とコスト、商用利用規約の違いを解説します。</p>
                         </div>
                     </div>
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-inner">
-                            <div class="flip-front"><i class="fa-solid fa-wand-magic"></i><h4>Detail Anime</h4></div>
-                            <div class="flip-back">Vid2Vid（動画から動画）で最も人気のスタイル。実写を繊細なアニメ風に崩さず置換。</div>
+
+                    <div class="comparison-grid">
+                        <div class="comp-card">
+                            <div class="comp-header" style="background:linear-gradient(135deg, #18181b, #3f3f46);">Runway Gen-3 Alpha</div>
+                            <div style="padding:1.5rem;">
+                                <p><strong><i class="fa-solid fa-bolt" style="color:#eab308;"></i> 特徴:</strong> 圧倒的な物理法則の理解、一貫性の高さ、シネマティックな実写に最強。</p>
+                                <p><strong><i class="fa-solid fa-money-bill" style="color:#22c55e;"></i> コスト:</strong> サブスク必須 (Standard $15/月〜)。</p>
+                                <p><strong><i class="fa-solid fa-copyright" style="color:#3b82f6;"></i> 権利:</strong> 有料プランであれば商用利用可能。</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-inner">
-                            <div class="flip-front"><i class="fa-solid fa-expand"></i><h4>4K Upscale</h4></div>
-                            <div class="flip-back">他ツールで生成したジャギーのある動画も、Domo AIで一括高画質化が可能。</div>
+                        <div class="comp-card">
+                            <div class="comp-header" style="background:linear-gradient(135deg, #4c1d95, #6d28d9);">Luma Dream Machine</div>
+                            <div style="padding:1.5rem;">
+                                <p><strong><i class="fa-solid fa-bolt" style="color:#eab308;"></i> 特徴:</strong> 無料で月30回生成可能。アニメやイラスト系の躍動感を出すのが得意。たまに変形するが爆発力あり。</p>
+                                <p><strong><i class="fa-solid fa-money-bill" style="color:#22c55e;"></i> コスト:</strong> 無料枠あり。有料プランあり。</p>
+                                <p><strong><i class="fa-solid fa-copyright" style="color:#3b82f6;"></i> 権利:</strong> 商用利用は有料プラン(Standard $29/月〜)必須。</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 3rem 0;">
-
-                <!-- VIDEO 6: Review -->
-                <section class="video-card">
-                    <div class="video-thumb">
-                        <a href="https://www.youtube.com/watch?v=BFanXl4nIsA" target="_blank">
-                            <img src="https://i.ytimg.com/vi/BFanXl4nIsA/hqdefault.jpg" alt="Review">
-                        </a>
+                <div class="mission-area" id="mission-group-2">
+                    <div class="wax-seal"><i class="fa-solid fa-star"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-trophy" style="color:#8b5cf6;"></i> MILESTONE 2：動画生成の実践</h3>
+                        <p>最高の一瞬をアニメーション化する</p>
                     </div>
-                    <div class="video-info">
-                        <h3>動画⑥：リップシンク2026年完全版 徹底比較</h3>
-                        <p>
-                            <strong>HeyGen vs Domo AI vs Kling vs Veo 3.1</strong>。用途別にどれが最強か？プレゼン動画、アニメMV、ドラマ制作の観点から徹底比較。
-                        </p>
-                    </div>
-                </section>
-
-                <div class="quiz-card">
-                    <div class="quiz-badge">KNOWLEDGE TEST</div>
-                    <p class="quiz-question">Q. ビジネス系の「プレゼン・解説動画」で、人物の喋りが最も安定している現役最強ツールは？</p>
-                    <div class="quiz-options">
-                        <div class="quiz-opt" onclick="checkQuiz(this, false)">A. Kling 3.0</div>
-                        <div class="quiz-opt" onclick="checkQuiz(this, true)">B. HeyGen</div>
-                        <div class="quiz-opt" onclick="checkQuiz(this, false)">C. DOMO AI</div>
-                    </div>
-                    <div class="quiz-feedback">
-                        正解！多機能化が進む中、ビジネス用途（アバターが静かに喋る）での安定性と多言語吹き替え精度においては、HeyGen が依然として業界標準です。一方、アーティスティックな動きは DOMO、映画的演技は Kling が得意です。
-                    </div>
-                </div>
-
-                <!-- MISSION 2 -->
-                <section class="mission-panel" id="mission-2">
-                    <div class="wax-seal"></div>
-                    <div class="info-box" style="background: rgba(16, 185, 129, 0.08); border-left-color: #10b981;">
-                        <h5 style="color: #10b981;"><i class="fa-solid fa-rocket"></i> 【メイン実習】Padletへの珠玉の作品投稿</h5>
-                        <p>
-                            本日の解説をもとに、<strong>「Kling / Hailuo / Flow / Flova / DomoAI」</strong>のいずれかを使い、独自の高度動画を1本生成してください。プロンプトと生成動画をPadletの自分のスレッドに投稿して修了です。
-                        </p>
-                    </div>
-                    <ul class="checklist">
-                        <li class="check-item" onclick="toggleTask(this, 'mission-2')">
-                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
-                            <div class="check-text">
-                                <h4>高度な動画生成の実践</h4>
-                                <p>いずれかの高度なツールを使用し、意図通りの動き/演出を含む動画を生成した。</p>
-                            </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t2_1', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content"><h4>Luma Dream Machineでの生成</h4><p>前半の「カメラプロンプト」を使って、Lumaで無料生成を開始する（2〜3分かかります）。</p></div>
                         </li>
-                        <li class="check-item" onclick="toggleTask(this, 'mission-2')">
-                            <div class="check-box"><i class="fa-solid fa-check"></i></div>
-                            <div class="check-text">
-                                <h4>Padletへの提出</h4>
-                                <p>動画と、使用したツール・プロンプトのレシピを添えてPadletに投稿した。</p>
-                            </div>
+                        <li class="task-item" onclick="toggleTask('t2_2', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content"><h4>Padletへ最終提出</h4><p>静止画、プロンプト、そして無事に生成された最高品質の動画をDay 8の課題として提出する。</p></div>
                         </li>
                     </ul>
-                </section>
-                <div style="margin-top: 4rem; text-align: center;">
-                    <button class="tab-btn active" style="padding: 1.5rem 4rem; font-size: 1.2rem;" onclick="switchTab('summary'); window.scrollTo(0,0);">
-                        修了まとめへ <i class="fa-solid fa-circle-chevron-right"></i>
-                    </button>
                 </div>
             </div>
-        </main>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #8b5cf6, #f43f5e);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
+                    本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </div>
 
-        <!-- TAB: SUMMARY -->
-        <main id="tab-summary" class="tab-content">
-            <div class="glass-card" style="text-align: center; border: 2px solid var(--accent-purple); background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(6, 182, 212, 0.1));">
-                <i class="fa-solid fa-crown" style="font-size: 5rem; color: var(--accent-purple); margin-bottom: 2rem;"></i>
-                <h2 style="justify-content: center;">DAY 08 CONGRATULATIONS!</h2>
-                <p style="font-size: 1.3rem;">
-                    お疲れ様でした！Day 5の基礎から始まり、ついに<strong>「高度な動画生成ディレクター」</strong>への階段を登りきりました。<br>
-                    プロンプトでカメラを操り、AIと対話し、一貫性を保ちながら映像を紡ぐスキルは、今後のクリエイティブにおいて最強の武器となります。
-                </p>
-                <div class="bento-grid">
-                    <div class="bento-item">
-                        <h4 style="color: white;">Next Milestone</h4>
-                        <p>明日の Day 09 では、いよいよ本コースの集大成に向け、これらのマルチメディア素材を「意味のあるストーリー」や「大規模プロジェクト」へと昇華させる戦略を学びます。</p>
+        <!-- TAB 4: SUMMARY -->
+        <div id="tab-summary" class="tab-content">
+            <div class="glass-card" style="border: 2px solid #f97316; padding: 0; overflow:hidden;">
+                <div style="background: linear-gradient(135deg, #f97316, #c2410c); color: white; padding: 4rem 2rem; text-align: center;">
+                    <i class="fa-solid fa-film" style="font-size: 4rem; margin-bottom: 1rem; color:#fef08a;"></i>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem;">DAY 8 COMPLETE!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">高度な動画生成とカメラワークを習得しました</p>
+                </div>
+                <div style="padding: 3rem 2rem; text-align: center;">
+                    <p style="font-size:1.2rem; color:var(--text-main); margin-bottom:2rem;">次は、この映像群を彩る「高度な音楽生成（Day 9）」へと進みます！</p>
+                    <button class="btn" style="padding: 1.5rem 5rem; font-size: 1.4rem; background: var(--text-main); border-radius: 50px;" onclick="window.location.href='index.html'">
+                        <i class="fa-solid fa-house"></i> Homeへ戻る
+                    </button>
+                    <!-- NEXT NAVIGATION TO DAY 9 -->
+                    <div style="margin-top:20px;">
+                        <button class="btn" style="padding: 1rem 3rem; font-size: 1.2rem; background: linear-gradient(135deg, #d946ef, #a21caf); border-radius: 30px;" onclick="window.location.href='vol09-1_advanced_audio_gen.html'">
+                            Day 9（Advanced Audio）へ進む <i class="fa-solid fa-forward"></i>
+                        </button>
                     </div>
                 </div>
-                <div style="margin-top: 4rem;">
-                    <a href="index.html" class="tab-btn active" style="display: inline-flex; padding: 1.5rem 5rem; text-decoration: none; font-size: 1.3rem;">
-                        ホームへ戻る <i class="fa-solid fa-house-user"></i>
-                    </a>
-                </div>
             </div>
-        </main>
+        </div>
     </div>
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
 
-    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house-chimney"></i></a>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        function switchTab(name) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + name).classList.add('active');
-            event.currentTarget.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleTask(el, missionId) {
-            el.classList.toggle('active');
-            updateProgress();
-            
-            const m = document.getElementById(missionId);
-            const total = m.querySelectorAll('.check-item').length;
-            const active = m.querySelectorAll('.check-item.active').length;
-            
-            if (total === active) {
-                m.classList.add('complete');
-                confetti({
-                    particleCount: 150, spread: 70, origin: { y: 0.6 },
-                    colors: ['#a855f7', '#06b6d4', '#ec4899']
-                });
-            } else { m.classList.remove('complete'); }
-        }
-
-        function checkQuiz(el, isCorrect) {
-            const card = el.closest('.quiz-card');
-            if (card.dataset.solved) return;
-            card.dataset.solved = "true";
-            
-            if (isCorrect) {
-                el.classList.add('correct');
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 } });
-            } else {
-                el.classList.add('wrong');
-                card.querySelectorAll('.quiz-opt').forEach(o => {
-                    if (o.innerText.includes('B.')) o.classList.add('correct');
-                });
-            }
-            card.querySelector('.quiz-feedback').style.display = "block";
-        }
-
-        const cards = document.querySelectorAll('.flip-card');
-        cards.forEach(c => c.onclick = () => c.classList.toggle('flipped'));
-
-        function updateProgress() {
-            const total = document.querySelectorAll('.check-item').length;
-            const active = document.querySelectorAll('.check-item.active').length;
-            const percent = Math.round((active / total) * 100);
-            document.getElementById('progress-bar').style.width = percent + '%';
-            document.getElementById('progress-val').innerText = percent + '%';
-        }
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-second': 2, 'tab-summary': 3}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
+        function checkQuiz(quizId, el, isCorrect) { const container = document.getElementById(quizId); if (container.dataset.answered) return; container.dataset.answered = 'true'; if (isCorrect) { el.classList.add('correct'); el.querySelector('i').style.display = 'inline'; } else { el.classList.add('wrong'); el.querySelector('i').style.display = 'inline'; container.querySelectorAll('.quiz-opt').forEach(opt => { if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; } }); } document.getElementById(quizId + '-explain').style.display = 'block'; }
+        const taskState = {};
+        function toggleTask(id, el, group) { taskState[id] = !taskState[id]; el.classList.toggle('completed'); updateProgress(); const groupId = 'mission-group-' + group; const groupEl = document.getElementById(groupId); const items = groupEl.querySelectorAll('.task-item'); const done = groupEl.querySelectorAll('.task-item.completed').length; if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); } else { groupEl.classList.remove('completed'); } }
+        function updateProgress() { const total = document.querySelectorAll('.task-item').length; const done = document.querySelectorAll('.task-item.completed').length; const pct = total === 0 ? 0 : Math.round((done / total) * 100); document.getElementById('progress-percent').innerText = pct + '%'; document.getElementById('progress-bar').style.width = pct + '%'; }
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; document.getElementById('scroll-progress-bar').style.width = scrolled + '%'; });
+        function launchConfetti() { const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for(let i=0; i<100; i++) { particles.push({ x: canvas.width/2, y: canvas.height/2, r: Math.random()*6+2, dx: Math.random()*10-5, dy: Math.random()*-10-5, color: ['#f97316','#ea580c','#fcd34d','#f43f5e'][Math.floor(Math.random()*4)] }); } function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); let active = false; particles.forEach(p => { if(p.y < canvas.height) { active = true; p.x += p.dx; p.y += p.dy; p.dy += 0.2; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = p.color; ctx.fill(); } }); if(active) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height); } animate(); }
     </script>
 </body>
 </html>
