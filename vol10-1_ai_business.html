@@ -126,6 +126,12 @@
         .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; font-size: 1.05rem; }
         .accordion summary::-webkit-details-marker { display: none; }
         .accordion .content { padding: 1.5rem; border-top: 1px solid #f1f5f9; background:#fafafa; font-size: 0.95rem; line-height: 1.6; }
+    
+        .diagram-comparison { display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem; align-items: center; }
+        .comparison-row { display: flex; align-items: center; gap: 1rem; width: 100%; max-width: 800px; justify-content: center; background: #fff; padding: 1.2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .c-label { font-weight: 800; color: var(--accent); min-width: 120px; text-align: right; }
+        .c-flow { display: flex; align-items: center; gap: 8px; flex-grow: 1; flex-wrap: wrap; }
+        .d-node.goal { background: #1e293b; color: #fff; border-color: #1e293b; }
     </style>
 </head>
 <body>
@@ -145,13 +151,14 @@
         <div class="hero">
             <div class="day-badge">DAY 10</div>
             <h1>共同作業AIのビジネスへの応用</h1>
-            <p>本日の目標：AIを「なんとなく便利なツール」から<strong>ビジネスの武器</strong>に変える。<br>5つのレベルで自分の現在地を把握し、次のステップに進むための具体的なアクション＆プロンプトを手に入れましょう。</p>
+            <p>本日の目標：AIを「なんとなく便利なツール」から<strong>ビジネスの武器</strong>に変える。<br>5つのレベルで自分の現在地を把握し、ビジネス現場で即使える「Notion AI」などのAIエージェントの具体的なプロセスを手に入れましょう。</p>
         </div>
 
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#10b981;"></i> コース目標</button>
-            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-briefcase" style="color:#0d9488;"></i> 前半：AIビジネス活用</button>
-            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#f43f5e;"></i> 今日のまとめ</button>
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#f59e0b;"></i> コース目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-briefcase" style="color:#10b981;"></i> 前半：AIビジネス活用</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-bolt" style="color:#0ea5e9;"></i> 後半：AIエージェント実戦</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#8b5cf6;"></i> 今日のまとめ</button>
         </div>
 
         <!-- TAB 1: COURSE GOALS -->
@@ -159,21 +166,34 @@
             <div class="glass-card" style="border-top: 5px solid #10b981;">
                 <div class="card-header"><i class="fa-solid fa-compass" style="color:#10b981; background:#ecfdf5;"></i><h2>本日の研修ねらい</h2></div>
                 <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5;">
-                    <h4 style="color:#059669;"><i class="fa-solid fa-stairs"></i> 「なんとなくAIを触る」からの卒業</h4>
+                    <h4 style="color:#059669;"><i class="fa-solid fa-stairs"></i> 【前半】「なんとなくAIを触る」からの卒業</h4>
                     <p style="color:#064e3b;">
-                        AIには5つの活用レベルがあります。検索代わりに使うレベル1から、独自ツールを開発するレベル5まで――今日は「AI活用で成果を出す5階層ロードマップ」を軸に、あなたの現在地を把握し、次のステップで何をすべきかを明確にします。<br><br>
-                        加えて、ビジネスでAIを使う上で <strong>絶対に守るべき3つの鉄の掟</strong> を学び、信頼に足るAI活用者を目指しましょう。
+                        AIには5つの活用レベルがあります。検索代わりに使うレベル1から、独自ツールを開発するレベル5まで――今日は「AI活用で成果を出す5階層ロードマップ」を軸に、あなたの現在地を把握し、ビジネスの鉄則を学びます。
+                    </p>
+                </div>
+                <div class="info-box" style="border-left-color: #0ea5e9; background: #f0f9ff; margin-top:2rem;">
+                    <h4 style="color:#0078d4;"><i class="fa-solid fa-robot"></i> 【後半】5階層ロードマップのその先へ</h4>
+                    <p style="color:#004b87;">
+                        AIが単なる「相談相手」としてではなく、手順を自ら考え目標遂行する<strong>AIエージェント</strong>の世界を体験しましょう。最新の活用事例と <strong>Notion AI</strong> の使いこなし方をマスターします。
                     </p>
                 </div>
 
                 <div class="bento-grid">
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-layer-group" style="color:#10b981;"></i> 5階層ロードマップ</h4>
-                        <p>レベル1（検索・相談）からレベル5（独自ツール開発）まで、段階的にスキルアップする道筋を学びます。自分の現在地と次のアクションが明確になります。</p>
+                        <p>段階的にスキルアップする道筋を学び、自分の現在地と次のアクションが明確になります。</p>
                     </div>
                     <div class="bento-item">
                         <h4><i class="fa-solid fa-shield-halved" style="color:#0d9488;"></i> ビジネスの鉄の掟</h4>
-                        <p>目的の明確化、機密情報の取り扱い、人間による最終確認――AIをビジネスで使う上で絶対に外せない3つの原則を習得します。</p>
+                        <p>目的設定、機密情報の取り扱い、人間による最終確認――絶対に外せない3つの原則を習得します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-robot" style="color:#0ea5e9;"></i> AIエージェント事例</h4>
+                        <p>リサーチ、CS、データ分析からSNS運用まで、AIが自律稼働する8つの事例を紹介します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-notion" style="color:#0078d4;"></i> Notion AI 実践活用</h4>
+                        <p>データベースとの強力な連携（Autofill）や社内情報のハブにAIを組み込む方法を学びます。</p>
                     </div>
                 </div>
             </div>
@@ -183,8 +203,8 @@
                 </button>
             </div>
         </div>
+<!-- TAB 2: FIRST HALF -->
 
-        <!-- TAB 2: FIRST HALF -->
         <div id="tab-first" class="tab-content">
             <div class="glass-card" style="border-top: 5px solid #0d9488;">
                 <div class="card-header"><i class="fa-solid fa-rocket" style="color:#0d9488; background:#f0fdfa;"></i><h2>前半：AIビジネス活用ロードマップ</h2></div>
@@ -489,38 +509,280 @@ date, product, category, amount
                 </div>
             </div>
             <div style="text-align:center; padding: 2rem 0;">
-                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #10b981, #0d9488); border-radius:30px; box-shadow: 0 5px 15px rgba(16,185,129,0.3);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #0ea5e9, #0284c7); border-radius:30px; box-shadow: 0 5px 15px rgba(14,165,233,0.3);" onclick="switchTab('tab-second'); window.scrollTo(0,0);">
+                    後半の実習へ進む <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 3: SECOND HALF -->
+
+        <div id="tab-second" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #0d9488;">
+                <div class="card-header"><i class="fa-solid fa-bolt" style="color:#0d9488; background:#f0fdfa;"></i><h2>後半：AIエージェント事例と実践ツール</h2></div>
+
+                <!-- ===== 動画③ AIエージェント事例 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f0fdfa,#ccfbf1); border-radius:16px; border:2px solid #5eead4;">
+                    <a href="https://youtu.be/fru2vDxy7gs" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/fru2vDxy7gs/hqdefault.jpg" alt="動画③" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#0f766e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画③ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#115e59; line-height:1.4;">AIエージェント最前線！優秀すぎる実践事例8選</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#0f766e;">自律的にタスクを遂行するAIの衝撃的な活用事例を紹介</p>
+                        <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODQEsnzqJ2y_dMGZtY1XL-" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
+                    </div>
+                </div>
+
+                <!-- ===== 動画④ Notion AI解説 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#eff6ff,#dbeafe); border-radius:16px; border:2px solid #bfdbfe;">
+                    <a href="https://youtu.be/mIUDzP0h-jg" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/mIUDzP0h-jg/hqdefault.jpg" alt="動画④" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#1d4ed8; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画④ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#1e3a8a; line-height:1.4;">Notion AI初心者向け徹底解説</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#1d4ed8;">ライティング支援やデータベース連携による自動要約まで、実務に即使える全貌を解説</p>
+                    </div>
+                </div>
+
+                <!-- AIエージェント概念 -->
+                <div class="highlight-box">
+                    <h3><i class="fa-solid fa-brain"></i> AIエージェントとは何か？</h3>
+                    <p>従来のAIは<strong>「1プロンプトに対して1つの回答を返す」</strong>受動的な存在でした。一方、AIエージェントは<strong>「目標（ゴール）を与えれば、手順を自分で考えて何度も試行し、完了まで自発的に動く」</strong>自律的な存在です。</p>
+                    
+                    <div class="diagram-box">
+                        <div class="diagram-comparison">
+                            <div class="comparison-row">
+                                <div class="c-label">従来型 AI</div>
+                                <div class="c-flow">
+                                    <div class="d-node">人間がプロンプト</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node">AIが回答</div>
+                                </div>
+                            </div>
+                            <div class="comparison-row">
+                                <div class="c-label">AIエージェント</div>
+                                <div class="c-flow">
+                                    <div class="d-node goal">人間が目標設定</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node highlight">AIが計画</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node highlight">実行・検証</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node">完了・報告</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 事例8選 -->
+                <h3><i class="fa-solid fa-list-check" style="color:#0d9488;"></i> AIエージェント実践事例 8選</h3>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-magnifying-glass"></i> リサーチ型</h4>
+                        <p>Web上を自律巡回し、情報を比較検証してレポートにまとめる。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-headset"></i> CS自動応答</h4>
+                        <p>社内FAQを学習し、問い合わせの回答下書きを自動作成。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-chart-line"></i> データ分析</h4>
+                        <p>CSVから自律的にコードを書き、クレンジング〜グラフ化を完遂。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-share-nodes"></i> SNS運用</h4>
+                        <p>トレンド取得〜記事執筆〜画像生成を全自動でプロデュース。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-address-book"></i> 営業リスト</h4>
+                        <p>特定条件の企業HPを抽出し、連絡先入りリストを生成。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-code"></i> コードレビュー</h4>
+                        <p>修正案の提示だけでなく、バグ修正やリファクタリングも提案。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-calendar-check"></i> スケ調整</h4>
+                        <p>チャットから日程候補を自動抽出。カレンダーの予定をブロック。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-graduation-cap"></i> 学習伴走</h4>
+                        <p>目標に合わせたカリキュラムを生成し、毎日クイズ形式で並走。</p>
+                    </div>
+                </div>
+
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-user-gear"></i><h4>人間の役割の変化</h4></div>
+                            <div class="flip-back">人間は「作業者」から「マネージャー」へ。AIエージェントの指示出しと最終確認が主な役割になります。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-bullseye"></i><h4>目標設定の重要性</h4></div>
+                            <div class="flip-back">細かい手順を指示する「詳細プロンプト」よりも、何をもって成功とするかの「ゴール（目標）」を定義することが鍵です。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-seedling"></i><h4>小さく始めて育てる</h4></div>
+                            <div class="flip-back">最初から全工程の自律化を目指すのではなく、一部の定型作業（リサーチだけ、要約だけなど）からエージェント化しましょう。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notion AI セクション -->
+                <div class="info-box" style="border-left-color: #3b82f6; background: #eff6ff;">
+                    <h4 style="color:#2563eb;"><i class="fa-solid fa-notion"></i> 実践ツール：Notion AI</h4>
+                    <p>ビジネス現場で最も手軽に、かつ強力に使えるAIエージェント。個人の無料プランでもその威力を十分に体験できます。</p>
+                </div>
+
+                <div class="accordion">
+                    <details>
+                        <summary><i class="fa-solid fa-pen-nib" style="color:#2563eb; margin-right:10px;"></i> ① AIライティング支援</summary>
+                        <div class="content">
+                            スペースキー一つで起動。単なる文章生成だけでなく、既存の議事録のトーン変更や翻訳、誤字脱字チェックを瞬時に行います。
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-message-question" style="color:#2563eb; margin-right:10px;"></i> ② Notion Q&A</summary>
+                        <div class="content">
+                            ワークスペース全体の情報を学習したチャットAI。「先週のA社との打ち合わせでのTODOは？」「社内の備品購入ルールを教えて」といった質問に即答します。
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-wand-magic-sparkles" style="color:#2563eb; margin-right:10px;"></i> ③ データベース Autofill</summary>
+                        <div class="content">
+                            ページが追加された際、その中身をAIが分析し、特定の「プロパティ（列）」を自動で埋める機能。議事録から自動で「要約」や「アクションアイテム」の列を作成できます。
+                        </div>
+                    </details>
+                </div>
+
+                <div class="code-box">
+                    <span class="code-label">🛠️ Notion AI カスタムAIブロックの活用</span>
+# 指示
+このページの議事録内容を分析してください。
+
+# 出力項目
+1. 決定事項（箇条書き）
+2. 次回までの宿題事項（担当者：内容）
+3. 全体の雰囲気の5段階評価
+
+※このブロックをテンプレートに仕込んでおくことで、議事録作成後の振り返りを1秒で完了させます。
+                </div>
+
+                <!-- クイズセクション -->
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Quiz 3</span>
+                        <h4 style="margin:0;">AIエージェントが従来のAIと最も異なる点は？</h4>
+                    </div>
+                    <div class="quiz-options" id="quiz3">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">A: 文章を生成する速度が格段に速い <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, true)">B: 目標を与えれば手順を自分で考えて実行する <i class="fa-solid fa-circle-check" style="color:#10b981; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">C: プログラミング言語を完璧に理解している <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz3-explain">
+                        <strong>正解はBです。</strong><br>
+                        AIエージェントの本質は「自律性」です。1問1答の受動的なツールではなく、目標達成に向けた「計画」と「実行」を自分で繰り返す点が決定的な違いです。
+                    </div>
+                </div>
+
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Quiz 4</span>
+                        <h4 style="margin:0;">Notion AIの「Autofill」機能で実現できることは？</h4>
+                    </div>
+                    <div class="quiz-options" id="quiz4">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, false)">A: カレンダーの予定を自動同期する <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, true)">B: データベース内のページをAIが分析して列を埋める <i class="fa-solid fa-circle-check" style="color:#10b981; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, false)">C: メールの下書きを自動で送信する <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz4-explain">
+                        <strong>正解はBです。</strong><br>
+                        Autofillは、データベース内のページ内容をAIが読み取って、要約やTODOなどのプロパティを自動的に入力する非常に強力な業務効率化機能です。
+                    </div>
+                </div>
+
+                <!-- 実習ミッション -->
+                <div class="mission-area" id="mission-group-2">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #34d399, #10b981, #059669);"><i class="fa-solid fa-check"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-rocket" style="color:#059669;"></i> DAY 10 MISSION: 実践課題2</h3>
+                        <p>AIエージェントの概念を理解し、業務への導入を具体化しましょう。</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('m2-1', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画③④を視聴して概念を理解する</h4>
+                                <p>リサーチレポートを参考に、AIエージェントと従来のAIの違いを理解する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-2', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>自社に導入したいエージェントを1つ選定</h4>
+                                <p>事例8選の中から、自分の業務課題を解決できそうな事例を特定する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-3', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>エージェント導入の「導入イメージ」を言語化</h4>
+                                <p>どの業務に、どんな入力を与え、何を自動化するかを3行程度でまとめる。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-4', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>Padletに投稿する</h4>
+                                <p>選定した事例と導入イメージを、個人Padletにアウトプットする。</p>
+                                <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="background:#059669; padding:6px 12px; font-size:0.85rem; margin-top:8px;" onclick="event.stopPropagation();"><i class="fa-solid fa-up-right-from-square"></i> Padletへ移動</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius:30px; box-shadow: 0 5px 15px rgba(139,92,246,0.3);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
                     本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
                 </button>
             </div>
         </div>
 
-        <!-- TAB 3: SUMMARY -->
+        
+        <!-- TAB 4: SUMMARY -->
         <div id="tab-summary" class="tab-content">
-            <div class="glass-card" style="border: 2px solid #10b981; background: linear-gradient(to bottom, #ffffff, #ecfdf5); overflow: hidden; padding: 0;">
-                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
+            <div class="glass-card" style="border: 2px solid #8b5cf6; background: linear-gradient(to bottom, #ffffff, #f5f3ff); overflow: hidden; padding: 0;">
+                <div style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
                     <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-rocket"></i></div>
                     <div style="position: absolute; bottom: -30px; left: -20px; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-10deg);"><i class="fa-solid fa-briefcase"></i></div>
                     <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none; opacity:1; transform:none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
-                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 10 FIRST HALF COMPLETE!</h2>
-                    <p style="font-size: 1.2rem; opacity: 0.9;">AIビジネス活用の基礎フレームワークを習得しました</p>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 10 ALL COMPLETE!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">AIビジネス活用の理論と実践の全工程を修了しました</p>
                 </div>
                 
                 <div style="padding: 3rem 2rem;">
-                    <h3 style="text-align: center; color: #064e3b; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-rocket" style="color:#10b981;"></i> 次のステップへ</h3>
-                    <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5; margin-top: 2rem;">
-                        <h4 style="color:#059669;"><i class="fa-solid fa-layer-group"></i> 後半：さらに実践を深める</h4>
-                        <p style="color:#064e3b;">
-                            前半で学んだ5階層ロードマップを土台に、後半では課題制作をさらに進めます。<br>
-                            プロンプトを中心に作成した動画作品を3本以上作成し、SNSで公開するというコース目標に向けて、自分のレベルに合った最適なプロンプト戦略を確立しましょう。
+                    <h3 style="text-align: center; color: #4c1d95; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-star" style="color:#8b5cf6;"></i> あなたはAIマネージャーの第一歩を踏み出しました</h3>
+                    <div class="info-box" style="border-left-color: #8b5cf6; background: #f5f3ff; margin-top: 2rem;">
+                        <h4 style="color:#6d28d9;"><i class="fa-solid fa-check-double"></i> 習得したスキル</h4>
+                        <p style="color:#4c1d95;">
+                            ・5階層ロードマップによる自己分析と次の一手<br>
+                            ・機密情報保護とファクトチェックの「鉄の掟」<br>
+                            ・自ら考えて実行する「AIエージェント」の概念と事例<br>
+                            ・Notion AIによるデータベースの自動化と情報活用
                         </p>
                     </div>
 
                     <div style="text-align: center; margin-top: 3rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                        <button class="btn" style="padding: 1.2rem 3rem; font-size: 1.2rem; background: linear-gradient(135deg, #0d9488, #059669); border-radius: 50px; box-shadow: 0 10px 30px rgba(13,148,136,0.3); font-weight: 900;" onclick="window.location.href='vol10-2_ai_business_practice.html'">
-                            後半：実戦編へ進む <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                        <button class="btn" style="padding: 1.2rem 3rem; font-size: 1.2rem; background: #fff; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 800;" onclick="window.location.href='index.html'">
+                        <button class="btn" style="padding: 1.2rem 3rem; font-size: 1.2rem; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50px; box-shadow: 0 10px 30px rgba(16,185,129,0.4); font-weight: 900;" onclick="window.location.href='index.html'">
                             <i class="fa-solid fa-house"></i> Homeへ戻る
                         </button>
                     </div>
@@ -532,7 +794,7 @@ date, product, category, amount
     <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
 
     <script>
-        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-summary': 2}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-second': 2, 'tab-summary': 3}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
         function checkQuiz(quizId, el, isCorrect) { const container = document.getElementById(quizId); if (container.dataset.answered) return; container.dataset.answered = 'true'; if (isCorrect) { el.classList.add('correct'); el.querySelector('i').style.display = 'inline'; } else { el.classList.add('wrong'); el.querySelector('i').style.display = 'inline'; container.querySelectorAll('.quiz-opt').forEach(opt => { if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; } }); } document.getElementById(quizId + '-explain').style.display = 'block'; }
         const taskState = {};
         function toggleTask(id, el, group) { taskState[id] = !taskState[id]; el.classList.toggle('completed'); updateProgress(); const groupId = 'mission-group-' + group; const groupEl = document.getElementById(groupId); const items = groupEl.querySelectorAll('.task-item'); const done = groupEl.querySelectorAll('.task-item.completed').length; if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); } else { groupEl.classList.remove('completed'); } }
