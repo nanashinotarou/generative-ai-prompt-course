@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 10 | AI Business Application & Strategy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-body: #ecfdf5; 
+            --bg-card: rgba(255, 255, 255, 0.95); 
+            --text-main: #022c22; 
+            --text-sub: #047857; 
+            --accent: #10b981; 
+            --accent-light: #34d399; 
+            --accent-bg: #ecfdf5; 
+            --accent-glow: rgba(16, 185, 129, 0.25); 
+            --clickable: #0d9488; 
+            --clickable-bg: #f0fdfa; 
+            --danger: #f43f5e; 
+            --glass-blur: blur(20px); 
+            --radius: 20px; 
+        }
+        * { box-sizing: border-box; } html { scroll-behavior: smooth; }
+        body { 
+            margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg-body); color: var(--text-main); 
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(16, 185, 129, 0.08), transparent 40%), radial-gradient(ellipse at 90% 80%, rgba(13, 148, 136, 0.08), transparent 40%); 
+            background-attachment: fixed; min-height: 100vh; 
+        }
+        .fixed-header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .back-link { color: var(--text-sub); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--accent); }
+        .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--clickable)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; z-index: 1001; }
+        #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s ease-out; box-shadow: 0 -2px 10px var(--accent-glow); }
+        .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
+        .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
+        .day-badge { background: var(--accent); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.2rem; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
+        .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: var(--text-sub); padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
+        .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.05); transition: transform 0.3s; }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.1); }
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--accent-bg); padding-bottom: 1.2rem; }
+        .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
+        .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
+        .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+        .highlight-box { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #064e3b; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-light); }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed var(--accent); padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(16, 185, 129, 0.1); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
+        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--accent-bg); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05); }
+        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid var(--accent-bg); }
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative;}
+        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block;}
+        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(16, 185, 129, 0.3); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
+        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
+        @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
+        .quiz-box { background: #fff; border: 2px solid var(--accent-light); border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);}
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem 1.2rem 3.5rem; border: 2px solid var(--accent-bg); border-radius: 14px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 1.05rem; }
+        .quiz-opt::before { content: ''; position: absolute; left: 1.2rem; width: 20px; height: 20px; border: 2px solid var(--accent-light); border-radius: 50%; background: #fff; transition: all 0.3s; }
+        .quiz-opt:hover { border-color: var(--accent); background: var(--accent-bg); transform: translateX(5px); }
+        .quiz-opt:hover::before { border-color: var(--accent); }
+        .quiz-opt.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
+        .quiz-opt.correct::before { background: #34d399; border-color: #34d399; box-shadow: inset 0 0 0 4px #fff; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .quiz-opt.wrong::before { background: #fca5a5; border-color: #fca5a5; box-shadow: inset 0 0 0 4px #fff; }
+        .quiz-explain { display: none; margin-top: 1.2rem; padding: 1.5rem; background: var(--accent-bg); border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.7; animation: slideDown 0.3s ease; }
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 1000px; height: 230px; cursor: pointer; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; border-radius: 16px; }
+        .flip-card.flipped .flip-inner, .flip-card:active .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset:0; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+        .flip-front { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border: 2px solid var(--accent-light); color: #064e3b; }
+        .flip-front i { font-size: 3rem; margin-bottom: 0.8rem; }
+        .flip-front h4 { margin: 0; font-size: 1.2rem; font-weight: 900; }
+        .flip-back { background: linear-gradient(135deg, #022c22, #065f46); color: #d1fae5; transform: rotateY(180deg); font-size: 0.95rem; line-height: 1.6; border: 2px solid var(--accent); padding: 20px;}
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #059669; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .mission-header { text-align: center; margin-bottom: 2rem; }
+        .mission-header h3 { font-size: 1.6rem; color: var(--text-main); margin:0 0 0.5rem; font-weight:800; display:flex; justify-content:center; align-items:center; gap:10px;}
+        .mission-header p { color: var(--text-sub); margin:0; font-size:1.05rem;}
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: var(--accent-bg); border: 1px solid var(--accent-light); transition: all 0.3s; cursor: pointer; position: relative; z-index: 2;}
+        .task-item:hover { border-color: var(--accent-light); background: #fff; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1); transform: translateX(5px);}
+        .task-item.completed { background: var(--accent-bg); border-color: var(--accent); }
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid var(--accent-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; margin-top: 2px; background: #fff; }
+        .task-item.completed .custom-checkbox { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox i { color: #fff; font-size: 16px; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; transform: scale(1); }
+        .task-content { flex: 1; }
+        .task-content h4 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
+        .task-item.completed .task-content h4 { color: #064e3b; }
+        .task-content p { margin: 0; font-size: 1rem; color: var(--text-sub); line-height: 1.6; }
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #34d399, #10b981, #059669); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #064e3b; z-index: 10;}
+        .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #059669); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(16,185,129,0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(16,185,129,0.6); color: white; }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; transition: all 0.2s; cursor: pointer; margin-top: 1rem; box-shadow: 0 6px 15px rgba(16,185,129,0.3); }
+        .btn:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
+        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; border-left:4px solid var(--accent); }
+        .code-label { position: absolute; top: -12px; left: 16px; background: var(--accent); color: #fff; padding: 3px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; font-family: 'Noto Sans JP', sans-serif; }
+        .diagram-box { background: linear-gradient(to right, #f0fdfa, #fdfdfd); border: 2px solid var(--accent-bg); border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center; }
+        .diagram-flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin-top: 1.5rem; }
+        .d-node { background: #fff; border: 2px solid var(--clickable); border-radius: 8px; padding: 12px 20px; font-weight: 700; color: var(--text-main); position: relative; z-index: 2; box-shadow: 0 4px 10px rgba(13,148,136,0.1); }
+        .d-node.highlight { background: var(--clickable); color: #fff; border-color: var(--clickable); }
+        .d-arrow { color: #94a3b8; font-size: 1.5rem; font-weight: 900; }
+        .accordion details { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 0.8rem; background:#fff; }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; font-size: 1.05rem; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion .content { padding: 1.5rem; border-top: 1px solid #f1f5f9; background:#fafafa; font-size: 0.95rem; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas><canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
+
+    <header class="fixed-header">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
+        <div class="progress-container">
+            <div class="progress-text"><span>Day 10 Progress</span><span id="progress-percent">0%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+        </div>
+        <div style="width:100px;"></div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="day-badge">DAY 10</div>
+            <h1>共同作業AIのビジネスへの応用</h1>
+            <p>本日の目標：AIを「なんとなく便利なツール」から<strong>ビジネスの武器</strong>に変える。<br>5つのレベルで自分の現在地を把握し、次のステップに進むための具体的なアクション＆プロンプトを手に入れましょう。</p>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-goal')"><i class="fa-solid fa-bullseye" style="color:#10b981;"></i> コース目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-first')"><i class="fa-solid fa-briefcase" style="color:#0d9488;"></i> 前半：AIビジネス活用</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary')"><i class="fa-solid fa-flag-checkered" style="color:#f43f5e;"></i> 今日のまとめ</button>
+        </div>
+
+        <!-- TAB 1: COURSE GOALS -->
+        <div id="tab-goal" class="tab-content active">
+            <div class="glass-card" style="border-top: 5px solid #10b981;">
+                <div class="card-header"><i class="fa-solid fa-compass" style="color:#10b981; background:#ecfdf5;"></i><h2>本日の研修ねらい</h2></div>
+                <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5;">
+                    <h4 style="color:#059669;"><i class="fa-solid fa-stairs"></i> 「なんとなくAIを触る」からの卒業</h4>
+                    <p style="color:#064e3b;">
+                        AIには5つの活用レベルがあります。検索代わりに使うレベル1から、独自ツールを開発するレベル5まで――今日は「AI活用で成果を出す5階層ロードマップ」を軸に、あなたの現在地を把握し、次のステップで何をすべきかを明確にします。<br><br>
+                        加えて、ビジネスでAIを使う上で<strong>絶対に守るべき3つの鉄の掟</strong>を学び、信頼に足るAI活用者を目指しましょう。
+                    </p>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-layer-group" style="color:#10b981;"></i> 5階層ロードマップ</h4>
+                        <p>レベル1（検索・相談）からレベル5（独自ツール開発）まで、段階的にスキルアップする道筋を学びます。自分の現在地と次のアクションが明確になります。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-shield-halved" style="color:#0d9488;"></i> ビジネスの鉄の掟</h4>
+                        <p>目的の明確化、機密情報の取り扱い、人間による最終確認――AIをビジネスで使う上で絶対に外せない3つの原則を習得します。</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-first'); window.scrollTo(0, 0);">
+                    前半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: FIRST HALF -->
+        <div id="tab-first" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #0d9488;">
+                <div class="card-header"><i class="fa-solid fa-rocket" style="color:#0d9488; background:#f0fdfa;"></i><h2>前半：AIビジネス活用ロードマップ</h2></div>
+
+                <!-- 動画セクション -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=Tb6Ni8kPafs" target="_blank">
+                                <img src="https://img.youtube.com/vi/Tb6Ni8kPafs/hqdefault.jpg" alt="ロードマップ解説">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画①</span>
+                            <h3>AI活用で成果を出す5階層ロードマップ</h3>
+                            <p>ビジネスにおけるAI活用の「正しい順番」を解説。いきなりレベル5を目指すのではなく、レベル1から着実に積み上げることが成果への最短ルートです。</p>
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODrprhQDPOk8pJFMXhSIuz" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=8lnO2fLs47c" target="_blank">
+                                <img src="https://img.youtube.com/vi/8lnO2fLs47c/hqdefault.jpg" alt="業務活用術">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画②</span>
+                            <h3>Gemini等の生成AIで生産性を劇的に高める業務活用術</h3>
+                            <p>Geminiを軸に、プレゼン作成・ダッシュボード開発・反復改善といった実務でそのまま使えるプロンプトテンプレートを紹介します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 鉄の掟 -->
+                <div class="highlight-box" style="background: linear-gradient(135deg, #fef2f2, #fff1f2); border-color: #fca5a5; color: #7f1d1d;">
+                    <h3 style="color:#991b1b; border-bottom-color:#f87171;">
+                        <i class="fa-solid fa-shield-exclamation"></i> 🔒 絶対に守るべき3つの鉄の掟
+                    </h3>
+                    <div class="bento-grid">
+                        <div class="bento-item" style="border-left: 4px solid #ef4444">
+                            <h4><i class="fa-solid fa-crosshairs" style="color:#ef4444"></i> 鉄則1：目的を明確にする</h4>
+                            <p>AIを使うことを「目的」にしない。「この業務のこの課題を解決するためにAIが最適か？」をまず考えること。ツールに振り回されず、**課題ドリブン**で選択する。</p>
+                        </div>
+                        <div class="bento-item" style="border-left: 4px solid #f59e0b">
+                            <h4><i class="fa-solid fa-lock" style="color:#f59e0b"></i> 鉄則2：機密情報を入力しない</h4>
+                            <p>社外秘データ・個人情報・未発表の顧客情報をプロンプトに入力してはならない。**セキュリティ管理はあなたの責任。** データオプトアウト設定やマスキングを習慣に。</p>
+                        </div>
+                        <div class="bento-item" style="border-left: 4px solid #8b5cf6">
+                            <h4><i class="fa-solid fa-user-check" style="color:#8b5cf6"></i> 鉄則3：最終確認は人間が行う</h4>
+                            <p>AIは「もっともらしい嘘」（ハルシネーション）をつく。数値・事実関係は必ずファクトチェック。**最終責任はAIではなく、あなたが負う。**</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5階層ロードマップ -->
+                <div class="diagram-box">
+                    <h4><i class="fa-solid fa-stairs" style="color:#10b981;"></i> AI活用 5階層ロードマップ</h4>
+                    <p style="font-size:0.9rem; color:#64748b; margin-bottom:1.5rem;">正しい順番＋現在地＋行動——一つ飛ばしではなく、レベル1から着実に登ることが成果への最短ルートです。</p>
+                    <div class="diagram-flow">
+                        <div class="d-node">Lv.1 検索・相談<br><small>AIに聞く</small></div>
+                        <span class="d-arrow">→</span>
+                        <div class="d-node">Lv.2 業務完結<br><small>成果物を作らせる</small></div>
+                        <span class="d-arrow">→</span>
+                        <div class="d-node">Lv.3 設計・選定<br><small>プロセスを設計する</small></div>
+                        <span class="d-arrow">→</span>
+                        <div class="d-node">Lv.4 自動化<br><small>複数ツール連携</small></div>
+                        <span class="d-arrow">→</span>
+                        <div class="d-node highlight">Lv.5 開発<br><small>独自ツール開発</small></div>
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <details>
+                        <summary><i class="fa-solid fa-magnifying-glass"></i> レベル1：AIを検索や相談に使う <span class="tag">Lv.1</span> <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                        <div class="content">
+                            <p><strong>概要：</strong>最も基本的な使い方。Google検索の延長としてAIを使い、アイデア出しや壁打ち相手として活用する。</p>
+                            <p><strong>具体例：</strong>「〇〇について教えて」「このキャッチコピーのアイデアを10個出して」</p>
+                            <p><strong>効果：</strong>作業の初速が上がる。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-file-lines"></i> レベル2：特定業務をAIツールで完結させる <span class="tag">Lv.2</span> <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                        <div class="content">
+                            <p><strong>概要：</strong>単なる相談ではなく、1つの明確な業務タスクの「成果物」をAIに作らせる。</p>
+                            <p><strong>具体例：</strong>「この会議の文字起こしデータから議事録を作って」「このテーマでプレゼン資料の構成案を作って」</p>
+                            <p><strong>効果：</strong>個別タスクの大幅な時間短縮。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-drafting-compass"></i> レベル3：AIに任せる作業を選定・設計する <span class="tag">Lv.3</span> <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                        <div class="content">
+                            <p><strong>概要：</strong>自分の業務プロセス全体を棚卸しし、どの部分をAIに代替させれば最も効率が良いかを「設計」する。プロンプトエンジニアリングのスキルが必要になる段階。</p>
+                            <p><strong>具体例：</strong>マニュアル作成業務において、「目次構成」「文章化」「図の配置指示」のアウトプットを定型化する長文プロンプトを作成する。</p>
+                            <p><strong>効果：</strong>プロセスの標準化・属人化の解消。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-gears"></i> レベル4：複数のアプリを連携させて、定型業務を完全自動化する <span class="tag">Lv.4</span> <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                        <div class="content">
+                            <p><strong>概要：</strong>ChatGPTやGemini単体ではなく、Zapier、Make、Google Apps Scriptなどを使って複数のSaaSをAIと連携させる。</p>
+                            <p><strong>具体例：</strong>「フォームにお問い合わせが入る」→「AIが内容を分析し一次回答案を作成」→「Slackに通知」という一連のフローを無人で回す。</p>
+                            <p><strong>効果：</strong>業務の自動化、工数ゼロ化。</p>
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-code"></i> レベル5：独自ツールを開発する <span class="tag">Lv.5</span> <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i></summary>
+                        <div class="content">
+                            <p><strong>概要：</strong>自社の社内データや特定の業務に特化した、カスタムAIエージェントやダッシュボード、専用ツールをAI自身と一緒に開発する。Cursorなどのエディタを使い、ノーコード/ローコード感覚で社内専用のWebアプリケーションを構築する。</p>
+                            <p><strong>具体例：</strong>売上ダッシュボード、社内FAQ Bot、自動レポート生成ツール</p>
+                            <p><strong>効果：</strong>圧倒的な競争優位、DXの完了。</p>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- フリップカード -->
+                <div class="flip-grid">
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-stairs" style="color:#10b981;"></i><h4>正しい順番が最短距離</h4></div>
+                            <div class="flip-back">いきなりLv.5を目指すと挫折する。Lv.1の「AIに聞く」から始め、成功体験を積み重ねてLv.2→3→4→5と進むのが、実は最速でDXを達成する方法です。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-location-dot" style="color:#0d9488;"></i><h4>現在地を把握する</h4></div>
+                            <div class="flip-back">5階層のどこにいるかを自覚することが重要。Lv.1にいるのにいきなりLv.5の話を聞いても行動に移せません。今日の自分のレベルを正直に認め、次の1段だけを目指しましょう。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-person-running" style="color:#064e3b;"></i><h4>次の1アクションを決める</h4></div>
+                            <div class="flip-back">知識だけではレベルは上がりません。「次に何をやるか」を1つだけ決めて実行すること。この実習では、紹介されたプロンプトテンプレートを自分の業務に置き換える体験がその第一歩です。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- プロンプト実例 -->
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-presentation-screen"></i> プロンプト実例① プレゼン資料作成</h4>
+                    <p>レベル2〜3の代表的な活用法。テーマ・対象者・目的を明示し、スライドの骨子まで一発で出力させます。<code># 役割</code> <code># 指示</code> <code># 出力形式</code> <code># 制約条件</code> の4パートで構造化されたプロンプトテンプレートです。</p>
+                </div>
+                <div class="code-box">
+                    <span class="code-label">📄 プレゼン資料作成プロンプト（Lv.2-3）</span>
+# 役割
+あなたは企画書作成の専門家です。
+
+# 指示
+以下のテーマに基づき、プレゼン資料の構成と各スライドの骨子を作成してください。
+
+テーマ：[ここに入力：例「新入社員向け生成AI活用ガイド」]
+対象者：[ここに入力：例「プロンプトという言葉を聞いたことがある程度の初心者」]
+目的：[ここに入力：例「業務にAIを取り入れる第一歩を踏み出してもらう」]
+
+# 出力形式
+1. プレゼンの流れ（各セクションのタイトルと目的）
+2. 各スライドの骨子（見出し、含めるべき内容、ビジュアルの提案）
+3. 全体で10〜12枚のスライド構成としてください。
+
+# 制約条件
+- 論理的な流れを重視（課題→解決策→効果→実行計画）
+- 経営陣や上司が意思決定しやすい情報の配置を心がける
+- データやグラフで裏付けできる箇所を明示する
+- 見出しは簡潔でインパクトのあるものにする
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-chart-column"></i> プロンプト実例② Webダッシュボード作成</h4>
+                    <p>レベル4〜5の領域。AIに「動くアプリケーション」を作らせるプロンプトです。<code># 技術仕様</code> <code># サンプルデータ構造</code> まで指定することで、コピペでブラウザで動くHTMLが出力されます。</p>
+                </div>
+                <div class="code-box">
+                    <span class="code-label">📊 Webダッシュボード作成プロンプト（Lv.4-5）</span>
+# 役割
+あなたは経験豊富なデータ分析エンジニアです。
+
+# 依頼内容
+売上データを視覚化するWebダッシュボードを作成してください。
+
+# 機能要件
+1. CSVファイルから売上データを読み込む
+2. 以下のグラフを表示する：
+   - 月別売上推移（折れ線グラフ）
+   - 商品カテゴリ別売上（円グラフ）
+   - 上位10商品（棒グラフ）
+3. リアルタイムで数値が更新されるアニメーション効果をつける
+4. スマホでも見やすいレスポンシブデザインにする
+
+# 技術仕様
+- HTML + JavaScript（Chart.jsを使用）
+- 単一ファイル（index.html）で完結させること
+- ブラウザで直接開けること
+- 初心者にもわかる日本語のコメントをコード内に入れること
+
+# サンプルデータ構造
+date, product, category, amount
+2025-01-01, 商品A, 食品, 50000
+2025-01-02, 商品B, 雑貨, 30000
+
+# 出力形式
+1. 完全に動作するHTMLファイルのコード全文
+2. テスト用のサンプルCSVデータ（10行程度）
+3. 使い方の手順（初心者向け）
+
+# 制約条件
+- 外部サーバー不要でローカル動作すること
+- コピー＆ペーストですぐ使える状態であること
+- エラーハンドリング（データ読み込み失敗時など）を含めること
+                </div>
+
+                <div class="info-box">
+                    <h4><i class="fa-solid fa-arrows-rotate"></i> プロンプト実例③ 反復改良プロンプト</h4>
+                    <p>一度作ったものをAIに指示してアップデートさせる「反復型」プロンプト。Lv.5の真髄は「作って終わり」ではなく、改善を繰り返して完成度を高めることにあります。</p>
+                </div>
+                <div class="code-box">
+                    <span class="code-label">🔄 ダッシュボード改良プロンプト（Lv.5 反復）</span>
+# 役割
+あなたは先ほど作成したダッシュボードの改良を担当するエンジニアです。
+
+# 追加機能の依頼
+現在のダッシュボードに以下の機能を追加・修正してください：
+
+1. フィルター機能の実装
+   - 期間を選択できるプルダウン（今月・先月・過去3ヶ月・全期間）
+   - カテゴリを絞り込めるチェックボックス
+2. UIの改善
+   - 全体的なカラースキームを[指定：例「落ち着いたダークモード」]に変更
+   - 各グラフのカードにドロップシャドウをつけて立体感を出す
+3. インサイト表示
+   - 最も売上の高いカテゴリと、先月比の増減率をテキストパネルとして上部に大きく表示する
+
+# 制約条件
+- 既存のグラフ表示機能は壊さないこと
+- 修正を加えるコードのポイントを先に解説し、その後全体コードを出力すること
+                </div>
+
+                <!-- クイズ -->
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Q1</span>
+                        <strong style="font-size:1.15rem;">5階層ロードマップでレベル3にあたる活用法はどれ？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz-day10-1">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-1', this, false)">A. 「ChatGPTで会議の議事録を作らせる」 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-1', this, true)">B. 「自社の業務フロー全体を分析し、AIが代替すべきステップを設計する」 <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-1', this, false)">C. 「Zapierを使ってフォーム→AI→Slack通知を自動化する」 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz-day10-1-explain">
+                        <strong>💡 解説：</strong>Lv.3のポイントは「どの作業をAIに任せるべきか」をメタ視点で設計することです。議事録作成（Lv.2）やツール連携自動化（Lv.4）とは異なり、業務プロセスの棚卸しとプロンプト設計を行う段階です。
+                    </div>
+                </div>
+
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Q2</span>
+                        <strong style="font-size:1.15rem;">「3つの鉄の掟」に含まれないものはどれ？</strong>
+                    </div>
+                    <div class="quiz-options" id="quiz-day10-2">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-2', this, false)">A. 「AIを使うことを目的にせず、解決すべき課題を明確にする」 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-2', this, true)">B. 「AIが生成したコードは必ず自分でテストしてからデプロイする」 <i class="fa-solid fa-check" style="display:none;color:#10b981;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz-day10-2', this, false)">C. 「機密情報をプロンプトに入力しない」 <i class="fa-solid fa-xmark" style="display:none;color:#ef4444;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz-day10-2-explain">
+                        <strong>💡 解説：</strong>鉄の掟は①目的の明確化 ②機密情報の不入力 ③最終確認は人間が行う の3つです。「コードのテスト」は良い習慣ですが、動画で挙げられた3つの掟には含まれません。鉄則3の「最終確認は人間が行う」がより広い概念でこれをカバーしています。
+                    </div>
+                </div>
+
+                <!-- ミッションチェックリスト -->
+                <div class="mission-area" id="mission-group-1">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #34d399, #10b981, #059669); border-color:#064e3b;"><i class="fa-solid fa-briefcase"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-trophy" style="color:#10b981;"></i> MILESTONE：前半の実習完了</h3>
+                        <p>動画で学んだ5階層ロードマップを活用して、課題制作に取り組もう</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('t1_1', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_1"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画①②を視聴し、5階層ロードマップを理解する</h4>
+                                <p>各レベルの定義・具体例・効果をノートにまとめ、自分の「現在地」を特定する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_2', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_2"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>プロンプトテンプレートを自分の業務に置き換える</h4>
+                                <p>プレゼン・ダッシュボード等のテンプレートから1つ選び、自分の業務に合わせてカスタマイズする。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_3', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_3"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>カスタマイズしたプロンプトで画像・動画・音楽を生成する</h4>
+                                <p>生成AIを使って実際にアウトプット（画像・動画・音楽のいずれか）を制作する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('t1_4', this, 1)">
+                            <div class="custom-checkbox" id="check_t1_4"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>Padletに投稿する</h4>
+                                <p>プロンプトと生成物をセットで個人Padletに投稿する。</p>
+                                <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="background:#059669; padding:6px 12px; font-size:0.85rem; margin-top:8px;" onclick="event.stopPropagation();"><i class="fa-solid fa-up-right-from-square"></i> Padletへ移動</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #10b981, #0d9488); border-radius:30px; box-shadow: 0 5px 15px rgba(16,185,129,0.3);" onclick="switchTab('tab-summary'); window.scrollTo(0,0);">
+                    本日のまとめを見る <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 3: SUMMARY -->
+        <div id="tab-summary" class="tab-content">
+            <div class="glass-card" style="border: 2px solid #10b981; background: linear-gradient(to bottom, #ffffff, #ecfdf5); overflow: hidden; padding: 0;">
+                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-rocket"></i></div>
+                    <div style="position: absolute; bottom: -30px; left: -20px; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-10deg);"><i class="fa-solid fa-briefcase"></i></div>
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none; opacity:1; transform:none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 10 FIRST HALF COMPLETE!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">AIビジネス活用の基礎フレームワークを習得しました</p>
+                </div>
+                
+                <div style="padding: 3rem 2rem;">
+                    <h3 style="text-align: center; color: #064e3b; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-rocket" style="color:#10b981;"></i> 次のステップへ</h3>
+                    <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5; margin-top: 2rem;">
+                        <h4 style="color:#059669;"><i class="fa-solid fa-layer-group"></i> 後半：さらに実践を深める</h4>
+                        <p style="color:#064e3b;">
+                            前半で学んだ5階層ロードマップを土台に、後半では課題制作をさらに進めます。<br>
+                            プロンプトを中心に作成した動画作品を3本以上作成し、SNSで公開するというコース目標に向けて、自分のレベルに合った最適なプロンプト戦略を確立しましょう。
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 3rem;">
+                        <button class="btn" style="padding: 1.5rem 5rem; font-size: 1.4rem; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50px; box-shadow: 0 10px 30px rgba(16,185,129,0.4); font-weight: 900;" onclick="window.location.href='index.html'">
+                            <i class="fa-solid fa-house"></i> Homeへ戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
+
+    <script>
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal': 0, 'tab-first': 1, 'tab-summary': 2}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
+        function checkQuiz(quizId, el, isCorrect) { const container = document.getElementById(quizId); if (container.dataset.answered) return; container.dataset.answered = 'true'; if (isCorrect) { el.classList.add('correct'); el.querySelector('i').style.display = 'inline'; } else { el.classList.add('wrong'); el.querySelector('i').style.display = 'inline'; container.querySelectorAll('.quiz-opt').forEach(opt => { if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; } }); } document.getElementById(quizId + '-explain').style.display = 'block'; }
+        const taskState = {};
+        function toggleTask(id, el, group) { taskState[id] = !taskState[id]; el.classList.toggle('completed'); updateProgress(); const groupId = 'mission-group-' + group; const groupEl = document.getElementById(groupId); const items = groupEl.querySelectorAll('.task-item'); const done = groupEl.querySelectorAll('.task-item.completed').length; if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); } else { groupEl.classList.remove('completed'); } }
+        function updateProgress() { const total = document.querySelectorAll('.task-item').length; const done = document.querySelectorAll('.task-item.completed').length; const pct = total === 0 ? 0 : Math.round((done / total) * 100); document.getElementById('progress-percent').innerText = pct + '%'; document.getElementById('progress-bar').style.width = pct + '%'; }
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; document.getElementById('scroll-progress-bar').style.width = scrolled + '%'; });
+        function launchConfetti() { const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for(let i=0; i<100; i++) { particles.push({ x: canvas.width/2, y: canvas.height/2, r: Math.random()*6+2, dx: Math.random()*10-5, dy: Math.random()*-10-5, color: ['#10b981','#0d9488','#059669','#f43f5e','#fbbf24'][Math.floor(Math.random()*5)] }); } function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); let active = false; particles.forEach(p => { if(p.y < canvas.height) { active = true; p.x += p.dx; p.y += p.dy; p.dy += 0.2; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = p.color; ctx.fill(); } }); if(active) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height); } animate(); }
+    </script>
+</body>
+</html>
