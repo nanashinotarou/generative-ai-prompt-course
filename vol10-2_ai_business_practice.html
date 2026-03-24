@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 10-2 | AI Agent & Practical Notion AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Teko:wght@500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg-body: #ecfdf5; 
+            --bg-card: rgba(255, 255, 255, 0.95); 
+            --text-main: #022c22; 
+            --text-sub: #047857; 
+            --accent: #10b981; 
+            --accent-light: #34d399; 
+            --accent-bg: #ecfdf5; 
+            --accent-glow: rgba(16, 185, 129, 0.25); 
+            --clickable: #0d9488; 
+            --clickable-bg: #f0fdfa; 
+            --danger: #f43f5e; 
+            --glass-blur: blur(20px); 
+            --radius: 20px; 
+        }
+        * { box-sizing: border-box; } html { scroll-behavior: smooth; }
+        body { 
+            margin: 0; padding: 0; font-family: 'Noto Sans JP', sans-serif; background: var(--bg-body); color: var(--text-main); 
+            background-image: radial-gradient(ellipse at 10% 20%, rgba(16, 185, 129, 0.08), transparent 40%), radial-gradient(ellipse at 90% 80%, rgba(13, 148, 136, 0.08), transparent 40%); 
+            background-attachment: fixed; min-height: 100vh; 
+        }
+        .fixed-header { position: fixed; top: 0; left: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: var(--glass-blur); border-bottom: 1px solid rgba(0,0,0,0.05); z-index: 1000; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .back-link { color: var(--text-sub); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+        .back-link:hover { color: var(--accent); }
+        .progress-container { flex-grow: 1; max-width: 400px; margin: 0 2rem; }
+        .progress-text { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+        .progress-bar-bg { height: 10px; background: #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--clickable)); width: 0%; border-radius: 12px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        #scroll-progress-container { position: fixed; bottom: 0; left: 0; width: 100%; height: 4px; z-index: 1001; }
+        #scroll-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--clickable)); transition: width 0.1s ease-out; box-shadow: 0 -2px 10px var(--accent-glow); }
+        .container { max-width: 1100px; margin: 100px auto 80px; padding: 0 24px; }
+        .hero { text-align: center; margin-bottom: 3rem; animation: fadeInDown 0.8s ease; }
+        .day-badge { background: var(--accent); color: #fff; padding: 0.4rem 1.7rem; border-radius: 30px; font-family: 'Teko', sans-serif; font-size: 1.6rem; letter-spacing: 2px; display: inline-block; margin-bottom: 1.2rem; }
+        .hero h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0 0 1rem; font-weight: 900; letter-spacing: -1px; }
+        .hero p { color: var(--text-sub); font-size: 1.15rem; max-width: 800px; margin: 0 auto; line-height: 1.8; }
+        .tab-nav { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .tab-btn { background: #fff; border: 2px solid #e2e8f0; color: var(--text-sub); padding: 1.2rem 2.2rem; border-radius: 40px; cursor: pointer; font-weight: 800; font-size: 1.05rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display:flex; align-items:center; gap:8px;}
+        .tab-btn:hover { border-color: var(--accent-light); color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 10px 25px var(--accent-glow); transform: translateY(-3px);}
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        .glass-card { background: var(--bg-card); backdrop-filter: var(--glass-blur); border: 1px solid rgba(255,255,255,0.7); border-radius: var(--radius); padding: 2.5rem 3rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(16, 185, 129, 0.05); transition: transform 0.3s; }
+        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(16, 185, 129, 0.1); }
+        .card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--accent-bg); padding-bottom: 1.2rem; }
+        .card-header i { font-size: 1.6rem; color: var(--accent); background: var(--accent-bg); padding: 1.2rem; border-radius: 14px; }
+        .card-header h2 { margin: 0; font-size: 1.8rem; color: var(--text-main); font-weight:800; letter-spacing: -0.5px;}
+        .info-box { background: var(--clickable-bg); border-left: 5px solid var(--clickable); padding: 1.8rem 2rem; border-radius: 0 16px 16px 0; margin: 2rem 0; }
+        .info-box h4 { margin: 0 0 0.8rem; color: var(--clickable); display: flex; align-items: center; gap: 0.8rem; font-size: 1.2rem; font-weight: 800;}
+        .info-box p { margin: 0; color: var(--text-main); line-height: 1.7; font-size: 1.05rem;}
+        .highlight-box { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: #064e3b; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-light); }
+        .highlight-box h3 { font-size: 1.4rem; font-weight: 900; margin-top: 0; border-bottom: 2px dashed var(--accent); padding-bottom: 10px; margin-bottom: 15px; display:flex; align-items:center; gap:8px;}
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 2.5rem 0;}
+        .bento-item { background: #fff; border-radius: 16px; padding: 2rem; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; transition: transform 0.3s;}
+        .bento-item:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(16, 185, 129, 0.1); border-color: var(--accent-light);}
+        .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
+        .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 0 0; }
+        .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
+        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--accent-bg); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05); }
+        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid var(--accent-bg); }
+        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative;}
+        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block;}
+        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(16, 185, 129, 0.3); }
+        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
+        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
+        @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
+        .quiz-box { background: #fff; border: 2px solid var(--accent-light); border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);}
+        .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
+        .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quiz-opt { position: relative; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem 1.2rem 3.5rem; border: 2px solid var(--accent-bg); border-radius: 14px; cursor: pointer; transition: all 0.3s; font-weight: 600; font-size: 1.05rem; }
+        .quiz-opt::before { content: ''; position: absolute; left: 1.2rem; width: 20px; height: 20px; border: 2px solid var(--accent-light); border-radius: 50%; background: #fff; transition: all 0.3s; }
+        .quiz-opt:hover { border-color: var(--accent); background: var(--accent-bg); transform: translateX(5px); }
+        .quiz-opt:hover::before { border-color: var(--accent); }
+        .quiz-opt.correct { background: #d1fae5; border-color: #34d399; color: #065f46; }
+        .quiz-opt.correct::before { background: #34d399; border-color: #34d399; box-shadow: inset 0 0 0 4px #fff; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .quiz-opt.wrong::before { background: #fca5a5; border-color: #fca5a5; box-shadow: inset 0 0 0 4px #fff; }
+        .quiz-explain { display: none; margin-top: 1.2rem; padding: 1.5rem; background: var(--accent-bg); border-radius: 12px; border-left: 4px solid var(--accent); line-height: 1.7; animation: slideDown 0.3s ease; }
+        .flip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .flip-card { perspective: 1000px; height: 230px; cursor: pointer; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; border-radius: 16px; }
+        .flip-card.flipped .flip-inner, .flip-card:active .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; inset:0; backface-visibility: hidden; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; }
+        .flip-front { background: linear-gradient(135deg, #d1fae5, #ecfdf5); border: 2px solid var(--accent-light); color: #064e3b; }
+        .flip-front i { font-size: 3rem; margin-bottom: 0.8rem; }
+        .flip-front h4 { margin: 0; font-size: 1.2rem; font-weight: 900; }
+        .flip-back { background: linear-gradient(135deg, #022c22, #065f46); color: #d1fae5; transform: rotateY(180deg); font-size: 0.95rem; line-height: 1.6; border: 2px solid var(--accent); padding: 20px;}
+        .mission-area { margin-top: 3rem; background: #fff; border: 2px dashed #059669; border-radius: 20px; padding: 2.5rem; position: relative; overflow: hidden; transition: all 0.4s;}
+        .mission-area.completed { border-color: var(--accent); border-style: solid; background: var(--accent-bg); box-shadow: 0 10px 40px var(--accent-glow);}
+        .mission-header { text-align: center; margin-bottom: 2rem; }
+        .mission-header h3 { font-size: 1.6rem; color: var(--text-main); margin:0 0 0.5rem; font-weight:800; display:flex; justify-content:center; align-items:center; gap:10px;}
+        .mission-header p { color: var(--text-sub); margin:0; font-size:1.05rem;}
+        .task-list { list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:1rem;}
+        .task-item { display: flex; align-items: flex-start; gap: 1.2rem; padding: 1.5rem; border-radius: 16px; background: var(--accent-bg); border: 1px solid var(--accent-light); transition: all 0.3s; cursor: pointer; position: relative; z-index: 2;}
+        .task-item:hover { border-color: var(--accent-light); background: #fff; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1); transform: translateX(5px);}
+        .task-item.completed { background: var(--accent-bg); border-color: var(--accent); }
+        .custom-checkbox { width: 32px; height: 32px; border: 3px solid var(--accent-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; margin-top: 2px; background: #fff; }
+        .task-item.completed .custom-checkbox { background: var(--accent); border-color: var(--accent); }
+        .custom-checkbox i { color: #fff; font-size: 16px; opacity: 0; transform: scale(0.5); transition: all 0.3s; }
+        .task-item.completed .custom-checkbox i { opacity: 1; transform: scale(1); }
+        .task-content { flex: 1; }
+        .task-content h4 { margin: 0 0 0.5rem; font-size: 1.2rem; color: var(--text-main); font-weight:800; transition:color 0.3s;}
+        .task-item.completed .task-content h4 { color: #064e3b; }
+        .task-content p { margin: 0; font-size: 1rem; color: var(--text-sub); line-height: 1.6; }
+        .wax-seal { position: absolute; top: -20px; right: -20px; width: 140px; height: 140px; background: radial-gradient(circle at 30% 30%, #34d399, #10b981, #059669); border-radius: 50%; opacity: 0; transform: scale(3) rotate(-30deg); pointer-events: none; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.9); font-size: 3.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.4); border: 4px solid #064e3b; z-index: 10;}
+        .wax-seal::after { content: ''; position: absolute; inset: 10px; border: 2px dotted rgba(255,255,255,0.4); border-radius: 50%; }
+        .mission-area.completed .wax-seal { animation: stampIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes stampIn { 0% { opacity: 0; transform: scale(3) translateY(-50px) rotate(-30deg); } 60% { opacity: 1; transform: scale(0.9) translateY(0) rotate(5deg); } 80% { transform: scale(1.1) rotate(-2deg); } 100% { opacity: 1; transform: scale(1) rotate(0deg); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        #confetti, #particles { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+        .home-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--accent), #059669); color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(16,185,129,0.4); text-decoration: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000; }
+        .home-btn:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 15px 40px rgba(16,185,129,0.6); color: white; }
+        .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #fff; border: none; padding: 0.8rem 1.8rem; border-radius: 12px; text-decoration: none; font-size: 1.05rem; font-weight: 800; transition: all 0.2s; cursor: pointer; margin-top: 1rem; box-shadow: 0 6px 15px rgba(16,185,129,0.3); }
+        .btn:hover { background: #059669; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
+        .code-box { background: #1e293b; border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; position: relative; font-family: 'Fira Code', monospace; font-size: 0.95rem; color: #e2e8f0; line-height: 1.7; white-space: pre-wrap; word-break: break-all; border-left:4px solid var(--accent); }
+        .code-label { position: absolute; top: -12px; left: 16px; background: var(--accent); color: #fff; padding: 3px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; font-family: 'Noto Sans JP', sans-serif; }
+        .diagram-box { background: linear-gradient(to right, #f0fdfa, #fdfdfd); border: 2px solid var(--accent-bg); border-radius: 16px; padding: 2rem; margin: 2rem 0; text-align: center; }
+        .diagram-comparison { display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem; align-items: center; }
+        .comparison-row { display: flex; align-items: center; gap: 1rem; width: 100%; max-width: 800px; justify-content: center; background: #fff; padding: 1.2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+        .c-label { font-weight: 800; color: var(--accent); min-width: 120px; text-align: right; }
+        .c-flow { display: flex; align-items: center; gap: 8px; flex-grow: 1; flex-wrap: wrap; }
+        .d-node { background: #fff; border: 2px solid var(--clickable); border-radius: 8px; padding: 8px 14px; font-weight: 700; color: var(--text-main); font-size: 0.9rem; box-shadow: 0 4px 10px rgba(13,148,136,0.1); }
+        .d-node.highlight { background: var(--clickable); color: #fff; border-color: var(--clickable); }
+        .d-node.goal { background: #1e293b; color: #fff; border-color: #1e293b; }
+        .d-arrow { color: #94a3b8; font-size: 1rem; font-weight: 900; }
+        .accordion details { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 0.8rem; background:#fff; }
+        .accordion summary { padding: 1.2rem 1.5rem; font-weight: 700; cursor: pointer; list-style: none; display: flex; align-items: center; font-size: 1.05rem; }
+        .accordion summary::-webkit-details-marker { display: none; }
+        .accordion .content { padding: 1.5rem; border-top: 1px solid #f1f5f9; background:#fafafa; font-size: 0.95rem; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas><canvas id="confetti"></canvas>
+    <div id="scroll-progress-container"><div id="scroll-progress-bar"></div></div>
+
+    <header class="fixed-header">
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Course Home</a>
+        <div class="progress-container">
+            <div class="progress-text"><span>Day 10-2 Progress</span><span id="progress-percent">0%</span></div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar"></div></div>
+        </div>
+        <div style="width:100px;"></div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <div class="day-badge">DAY 10-2</div>
+            <h1>AIエージェントの実践とNotion AI</h1>
+            <p>実戦編：自律的に動くAIの可能性を事例から学び、ビジネス現場で即使える「Notion AI」を武器にするための具体的なプロセスを習得します。</p>
+        </div>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-goal2')"><i class="fa-solid fa-bullseye" style="color:#10b981;"></i> 後半の目標</button>
+            <button class="tab-btn" onclick="switchTab('tab-second')"><i class="fa-solid fa-bolt" style="color:#0d9488;"></i> 後半：AIエージェント実戦</button>
+            <button class="tab-btn" onclick="switchTab('tab-summary2')"><i class="fa-solid fa-flag-checkered" style="color:#f43f5e;"></i> 修了報告</button>
+        </div>
+
+        <!-- TAB 1: COURSE GOALS -->
+        <div id="tab-goal2" class="tab-content active">
+            <div class="glass-card" style="border-top: 5px solid #10b981;">
+                <div class="card-header"><i class="fa-solid fa-compass" style="color:#10b981; background:#ecfdf5;"></i><h2>後半の学習ねらい</h2></div>
+                <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5;">
+                    <h4 style="color:#059669;"><i class="fa-solid fa-stairs"></i> 5階層ロードマップのその先へ</h4>
+                    <p style="color:#064e3b;">
+                        前半で学んだ5階層ロードマップのLv.4〜5を深掘りします。AIが単なる「相談相手」としてではなく、手順を自ら考え、タスクを自律的に遂行する<strong>AIエージェント</strong>の世界を体験しましょう。<br><br>
+                        最新の活用事例8選を通じて導入のヒントを得るとともに、ビジネスパーソンにとって最も身近なエージェントツールである <strong>Notion AI</strong> の使いこなし方をマスターします。
+                    </p>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-robot" style="color:#10b981;"></i> AIエージェント事例</h4>
+                        <p>リサーチ、CS、データ分析からSNS運用まで、AIが自律稼働する8つの実践的なユースケースを紹介。自分の業務への応用を具体化します。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-notion" style="color:#0d9488;"></i> Notion AI 実践活用</h4>
+                        <p>ライティング支援だけでなく、データベースとの強力な連携（Autofill）やQ&A機能を活用し、社内情報のハブにAIを組み込む方法を学びます。</p>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center; margin-top:3rem;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; border-radius:30px;" onclick="switchTab('tab-second'); window.scrollTo(0, 0);">
+                    後半の実習へ進む <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 2: SECOND HALF -->
+        <div id="tab-second" class="tab-content">
+            <div class="glass-card" style="border-top: 5px solid #0d9488;">
+                <div class="card-header"><i class="fa-solid fa-bolt" style="color:#0d9488; background:#f0fdfa;"></i><h2>後半：AIエージェント事例と実践ツール</h2></div>
+
+                <!-- 動画セクション -->
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=R3V_K77mZ84" target="_blank">
+                                <img src="https://img.youtube.com/vi/R3V_K77mZ84/hqdefault.jpg" alt="AIエージェント事例">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画③</span>
+                            <h3>AIエージェント最前線！優秀すぎる実践事例8選</h3>
+                            <p>AIが自分で考え、行動する。リサーチから営業リスト作成、CS、SNS自動化まで、自律的にタスクを遂行するエージェントの衝撃的な活用事例を紹介します。</p>
+                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODQEsnzqJ2y_dMGZtY1XL-" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-section">
+                    <div class="video-section-header">
+                        <div class="thumb-wrap">
+                            <a href="https://www.youtube.com/watch?v=Tef0vJPK-Jw" target="_blank">
+                                <img src="https://img.youtube.com/vi/Tef0vJPK-Jw/hqdefault.jpg" alt="Notion AI解説">
+                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
+                            </a>
+                        </div>
+                        <div class="meta">
+                            <span class="tag">動画④</span>
+                            <h3>Notion AI初心者向け徹底解説</h3>
+                            <p>誰でも今日から使えるAIエージェント「Notion AI」。基礎的なライティング支援から、データベースとの強力な連携による自動要約まで、実務フローを効率化する全貌を解説。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AIエージェント概念 -->
+                <div class="highlight-box">
+                    <h3><i class="fa-solid fa-brain"></i> AIエージェントとは何か？</h3>
+                    <p>従来のAIは<strong>「1プロンプトに対して1つの回答を返す」</strong>受動的な存在でした。一方、AIエージェントは<strong>「目標（ゴール）を与えれば、手順を自分で考えて何度も試行し、完了まで自発的に動く」</strong>自律的な存在です。</p>
+                    
+                    <div class="diagram-box">
+                        <div class="diagram-comparison">
+                            <div class="comparison-row">
+                                <div class="c-label">従来型 AI</div>
+                                <div class="c-flow">
+                                    <div class="d-node">人間がプロンプト</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node">AIが回答</div>
+                                </div>
+                            </div>
+                            <div class="comparison-row">
+                                <div class="c-label">AIエージェント</div>
+                                <div class="c-flow">
+                                    <div class="d-node goal">人間が目標設定</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node highlight">AIが計画</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node highlight">実行・検証</div>
+                                    <span class="d-arrow">→</span>
+                                    <div class="d-node">完了・報告</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 事例8選 -->
+                <h3><i class="fa-solid fa-list-check" style="color:#0d9488;"></i> AIエージェント実践事例 8選</h3>
+                <div class="bento-grid">
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-magnifying-glass"></i> リサーチ型</h4>
+                        <p>Web上を自律巡回し、情報を比較検証してレポートにまとめる。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-headset"></i> CS自動応答</h4>
+                        <p>社内FAQを学習し、問い合わせの回答下書きを自動作成。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-chart-line"></i> データ分析</h4>
+                        <p>CSVから自律的にコードを書き、クレンジング〜グラフ化を完遂。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-share-nodes"></i> SNS運用</h4>
+                        <p>トレンド取得〜記事執筆〜画像生成を全自動でプロデュース。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-address-book"></i> 営業リスト</h4>
+                        <p>特定条件の企業HPを抽出し、連絡先入りリストを生成。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-code"></i> コードレビュー</h4>
+                        <p>修正案の提示だけでなく、バグ修正やリファクタリングも提案。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-calendar-check"></i> スケ調整</h4>
+                        <p>チャットから日程候補を自動抽出。カレンダーの予定をブロック。</p>
+                    </div>
+                    <div class="bento-item">
+                        <h4><i class="fa-solid fa-graduation-cap"></i> 学習伴走</h4>
+                        <p>目標に合わせたカリキュラムを生成し、毎日クイズ形式で並走。</p>
+                    </div>
+                </div>
+
+                <div class="flip-grid">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-user-gear"></i><h4>人間の役割の変化</h4></div>
+                            <div class="flip-back">人間は「作業者」から「マネージャー」へ。AIエージェントの指示出しと最終確認が主な役割になります。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-bullseye"></i><h4>目標設定の重要性</h4></div>
+                            <div class="flip-back">細かい手順を指示する「詳細プロンプト」よりも、何をもって成功とするかの「ゴール（目標）」を定義することが鍵です。</div>
+                        </div>
+                    </div>
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-inner">
+                            <div class="flip-front"><i class="fa-solid fa-seedling"></i><h4>小さく始めて育てる</h4></div>
+                            <div class="flip-back">最初から全工程の自律化を目指すのではなく、一部の定型作業（リサーチだけ、要約だけなど）からエージェント化しましょう。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notion AI セクション -->
+                <div class="info-box" style="border-left-color: #3b82f6; background: #eff6ff;">
+                    <h4 style="color:#2563eb;"><i class="fa-solid fa-notion"></i> 実践ツール：Notion AI</h4>
+                    <p>ビジネス現場で最も手軽に、かつ強力に使えるAIエージェント。個人の無料プランでもその威力を十分に体験できます。</p>
+                </div>
+
+                <div class="accordion">
+                    <details>
+                        <summary><i class="fa-solid fa-pen-nib" style="color:#2563eb; margin-right:10px;"></i> ① AIライティング支援</summary>
+                        <div class="content">
+                            スペースキー一つで起動。単なる文章生成だけでなく、既存の議事録のトーン変更や翻訳、誤字脱字チェックを瞬時に行います。
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-message-question" style="color:#2563eb; margin-right:10px;"></i> ② Notion Q&A</summary>
+                        <div class="content">
+                            ワークスペース全体の情報を学習したチャットAI。「先週のA社との打ち合わせでのTODOは？」「社内の備品購入ルールを教えて」といった質問に即答します。
+                        </div>
+                    </details>
+                    <details>
+                        <summary><i class="fa-solid fa-wand-magic-sparkles" style="color:#2563eb; margin-right:10px;"></i> ③ データベース Autofill</summary>
+                        <div class="content">
+                            ページが追加された際、その中身をAIが分析し、特定の「プロパティ（列）」を自動で埋める機能。議事録から自動で「要約」や「アクションアイテム」の列を作成できます。
+                        </div>
+                    </details>
+                </div>
+
+                <div class="code-box">
+                    <span class="code-label">🛠️ Notion AI カスタムAIブロックの活用</span>
+# 指示
+このページの議事録内容を分析してください。
+
+# 出力項目
+1. 決定事項（箇条書き）
+2. 次回までの宿題事項（担当者：内容）
+3. 全体の雰囲気の5段階評価
+
+※このブロックをテンプレートに仕込んでおくことで、議事録作成後の振り返りを1秒で完了させます。
+                </div>
+
+                <!-- クイズセクション -->
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Quiz 3</span>
+                        <h4 style="margin:0;">AIエージェントが従来のAIと最も異なる点は？</h4>
+                    </div>
+                    <div class="quiz-options" id="quiz3">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">A: 文章を生成する速度が格段に速い <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, true)">B: 目標を与えれば手順を自分で考えて実行する <i class="fa-solid fa-circle-check" style="color:#10b981; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz3', this, false)">C: プログラミング言語を完璧に理解している <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz3-explain">
+                        <strong>正解はBです。</strong><br>
+                        AIエージェントの本質は「自律性」です。1問1答の受動的なツールではなく、目標達成に向けた「計画」と「実行」を自分で繰り返す点が決定的な違いです。
+                    </div>
+                </div>
+
+                <div class="quiz-box">
+                    <div class="quiz-header">
+                        <span class="q-badge">Quiz 4</span>
+                        <h4 style="margin:0;">Notion AIの「Autofill」機能で実現できることは？</h4>
+                    </div>
+                    <div class="quiz-options" id="quiz4">
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, false)">A: カレンダーの予定を自動同期する <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, true)">B: データベース内のページをAIが分析して列を埋める <i class="fa-solid fa-circle-check" style="color:#10b981; display:none;"></i></div>
+                        <div class="quiz-opt" onclick="checkQuiz('quiz4', this, false)">C: メールの下書きを自動で送信する <i class="fa-solid fa-circle-xmark" style="color:#f43f5e; display:none;"></i></div>
+                    </div>
+                    <div class="quiz-explain" id="quiz4-explain">
+                        <strong>正解はBです。</strong><br>
+                        Autofillは、データベース内のページ内容をAIが読み取って、要約やTODOなどのプロパティを自動的に入力する非常に強力な業務効率化機能です。
+                    </div>
+                </div>
+
+                <!-- 実習ミッション -->
+                <div class="mission-area" id="mission-group-2">
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #34d399, #10b981, #059669);"><i class="fa-solid fa-check"></i></div>
+                    <div class="mission-header">
+                        <h3><i class="fa-solid fa-rocket" style="color:#059669;"></i> DAY 10 MISSION: 実践課題2</h3>
+                        <p>AIエージェントの概念を理解し、業務への導入を具体化しましょう。</p>
+                    </div>
+                    <ul class="task-list">
+                        <li class="task-item" onclick="toggleTask('m2-1', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>動画③④を視聴して概念を理解する</h4>
+                                <p>リサーチレポートを参考に、AIエージェントと従来のAIの違いを理解する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-2', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>自社に導入したいエージェントを1つ選定</h4>
+                                <p>事例8選の中から、自分の業務課題を解決できそうな事例を特定する。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-3', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>エージェント導入の「導入イメージ」を言語化</h4>
+                                <p>どの業務に、どんな入力を与え、何を自動化するかを3行程度でまとめる。</p>
+                            </div>
+                        </li>
+                        <li class="task-item" onclick="toggleTask('m2-4', this, 2)">
+                            <div class="custom-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <div class="task-content">
+                                <h4>Padletに投稿する</h4>
+                                <p>選定した事例と導入イメージを、個人Padletにアウトプットする。</p>
+                                <a href="https://padlet.com/southern_sun/2026-3-j97kpsg78tdgs6jw" target="_blank" class="btn" style="background:#059669; padding:6px 12px; font-size:0.85rem; margin-top:8px;" onclick="event.stopPropagation();"><i class="fa-solid fa-up-right-from-square"></i> Padletへ移動</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align:center; padding: 2rem 0;">
+                <button class="btn" style="padding: 1rem 3rem; font-size:1.2rem; background:linear-gradient(135deg, #10b981, #0d9488); border-radius:30px; box-shadow: 0 5px 15px rgba(16,185,129,0.3);" onclick="switchTab('tab-summary2'); window.scrollTo(0,0);">
+                    全行程の修了報告へ <i class="fa-solid fa-flag-checkered"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- TAB 3: SUMMARY -->
+        <div id="tab-summary2" class="tab-content">
+            <div class="glass-card" style="border: 2px solid #10b981; background: linear-gradient(to bottom, #ffffff, #ecfdf5); overflow: hidden; padding: 0;">
+                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -50px; right: -50px; font-size: 15rem; color: rgba(255,255,255,0.1); transform: rotate(15deg);"><i class="fa-solid fa-rocket"></i></div>
+                    <div style="position: absolute; bottom: -30px; left: -20px; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-10deg);"><i class="fa-solid fa-briefcase"></i></div>
+                    <div class="wax-seal" style="background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b, #d97706); border-color:#fff; width: 100px; height: 100px; margin: 0 auto 1.5rem; position: relative; float: none; opacity:1; transform:none;"><i class="fa-solid fa-medal" style="font-size: 3rem;"></i></div>
+                    <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2);">DAY 10 ALL COMPLETE!</h2>
+                    <p style="font-size: 1.2rem; opacity: 0.9;">AIビジネス活用の理論と実践の全工程を修了しました</p>
+                </div>
+                
+                <div style="padding: 3rem 2rem;">
+                    <h3 style="text-align: center; color: #064e3b; font-size: 1.8rem; margin-bottom: 2.5rem;"><i class="fa-solid fa-star" style="color:#10b981;"></i> あなたはAIマネージャーの第一歩を踏み出しました</h3>
+                    <div class="info-box" style="border-left-color: #10b981; background: #ecfdf5; margin-top: 2rem;">
+                        <h4 style="color:#059669;"><i class="fa-solid fa-check-double"></i> 習得したスキル</h4>
+                        <p style="color:#064e3b;">
+                            ・5階層ロードマップによる自己分析と次の一手<br>
+                            ・機密情報保護とファクトチェックの「鉄の掟」<br>
+                            ・自ら考えて実行する「AIエージェント」の概念と事例<br>
+                            ・Notion AIによるデータベースの自動化と情報活用
+                        </p>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 3rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn" style="padding: 1.2rem 3rem; font-size: 1.2rem; background: #fff; color: var(--accent); border: 2px solid var(--accent); border-radius: 50px; font-weight: 800;" onclick="window.location.href='vol10-1_ai_business.html'">
+                            <i class="fa-solid fa-arrow-left"></i> 前半へ戻る
+                        </button>
+                        <button class="btn" style="padding: 1.2rem 3rem; font-size: 1.2rem; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50px; box-shadow: 0 10px 30px rgba(16,185,129,0.4); font-weight: 900;" onclick="window.location.href='index.html'">
+                            <i class="fa-solid fa-house"></i> Homeへ戻る
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="home-btn" title="Back to Home"><i class="fa-solid fa-house"></i></a>
+
+    <script>
+        function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active')); document.getElementById(tabId).classList.add('active'); const tabMap = {'tab-goal2': 0, 'tab-second': 1, 'tab-summary2': 2}; document.querySelectorAll('.tab-btn')[tabMap[tabId]].classList.add('active'); updateProgress(); }
+        function checkQuiz(quizId, el, isCorrect) { const container = document.getElementById(quizId); if (container.dataset.answered) return; container.dataset.answered = 'true'; if (isCorrect) { el.classList.add('correct'); el.querySelector('i').style.display = 'inline'; } else { el.classList.add('wrong'); el.querySelector('i').style.display = 'inline'; container.querySelectorAll('.quiz-opt').forEach(opt => { if (opt.onclick.toString().includes('true')) { opt.classList.add('correct'); opt.querySelector('i').style.display = 'inline'; } }); } document.getElementById(quizId + '-explain').style.display = 'block'; }
+        const taskState = {};
+        function toggleTask(id, el, group) { taskState[id] = !taskState[id]; el.classList.toggle('completed'); updateProgress(); const groupId = 'mission-group-' + group; const groupEl = document.getElementById(groupId); const items = groupEl.querySelectorAll('.task-item'); const done = groupEl.querySelectorAll('.task-item.completed').length; if (done === items.length) { groupEl.classList.add('completed'); launchConfetti(); } else { groupEl.classList.remove('completed'); } }
+        function updateProgress() { const total = document.querySelectorAll('.task-item').length; const done = document.querySelectorAll('.task-item.completed').length; const pct = total === 0 ? 0 : Math.round((done / total) * 100); document.getElementById('progress-percent').innerText = pct + '%'; document.getElementById('progress-bar').style.width = pct + '%'; }
+        window.addEventListener('scroll', () => { const winScroll = document.body.scrollTop || document.documentElement.scrollTop; const height = document.documentElement.scrollHeight - document.documentElement.clientHeight; const scrolled = (winScroll / height) * 100; document.getElementById('scroll-progress-bar').style.width = scrolled + '%'; });
+        function launchConfetti() { const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); canvas.width = window.innerWidth; canvas.height = window.innerHeight; const particles = []; for(let i=0; i<100; i++) { particles.push({ x: canvas.width/2, y: canvas.height/2, r: Math.random()*6+2, dx: Math.random()*10-5, dy: Math.random()*-10-5, color: ['#10b981','#0d9488','#059669','#f43f5e','#fbbf24'][Math.floor(Math.random()*5)] }); } function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); let active = false; particles.forEach(p => { if(p.y < canvas.height) { active = true; p.x += p.dx; p.y += p.dy; p.dy += 0.2; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fillStyle = p.color; ctx.fill(); } }); if(active) requestAnimationFrame(animate); else ctx.clearRect(0,0,canvas.width,canvas.height); } animate(); }
+    </script>
+</body>
+</html>
