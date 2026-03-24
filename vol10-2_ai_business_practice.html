@@ -64,16 +64,6 @@
         .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
         .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 0 0; }
         .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
-        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--accent-bg); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05); }
-        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid var(--accent-bg); }
-        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative;}
-        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block;}
-        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(16, 185, 129, 0.3); }
-        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
-        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
-        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
-        @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
         .quiz-box { background: #fff; border: 2px solid var(--accent-light); border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);}
         .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
         .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
@@ -203,37 +193,30 @@
             <div class="glass-card" style="border-top: 5px solid #0d9488;">
                 <div class="card-header"><i class="fa-solid fa-bolt" style="color:#0d9488; background:#f0fdfa;"></i><h2>後半：AIエージェント事例と実践ツール</h2></div>
 
-                <!-- 動画セクション -->
-                <div class="video-section">
-                    <div class="video-section-header">
-                        <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=R3V_K77mZ84" target="_blank">
-                                <img src="https://img.youtube.com/vi/R3V_K77mZ84/hqdefault.jpg" alt="AIエージェント事例">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </a>
-                        </div>
-                        <div class="meta">
-                            <span class="tag">動画③</span>
-                            <h3>AIエージェント最前線！優秀すぎる実践事例8選</h3>
-                            <p>AIが自分で考え、行動する。リサーチから営業リスト作成、CS、SNS自動化まで、自律的にタスクを遂行するエージェントの衝撃的な活用事例を紹介します。</p>
-                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODQEsnzqJ2y_dMGZtY1XL-" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
-                        </div>
+                <!-- ===== 動画③ AIエージェント事例 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f0fdfa,#ccfbf1); border-radius:16px; border:2px solid #5eead4;">
+                    <a href="https://youtu.be/fru2vDxy7gs" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/fru2vDxy7gs/hqdefault.jpg" alt="動画③" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#0f766e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画③ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#115e59; line-height:1.4;">AIエージェント最前線！優秀すぎる実践事例8選</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#0f766e;">自律的にタスクを遂行するAIの衝撃的な活用事例を紹介</p>
+                        <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODQEsnzqJ2y_dMGZtY1XL-" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
                     </div>
                 </div>
 
-                <div class="video-section">
-                    <div class="video-section-header">
-                        <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=Tef0vJPK-Jw" target="_blank">
-                                <img src="https://img.youtube.com/vi/Tef0vJPK-Jw/hqdefault.jpg" alt="Notion AI解説">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </a>
-                        </div>
-                        <div class="meta">
-                            <span class="tag">動画④</span>
-                            <h3>Notion AI初心者向け徹底解説</h3>
-                            <p>誰でも今日から使えるAIエージェント「Notion AI」。基礎的なライティング支援から、データベースとの強力な連携による自動要約まで、実務フローを効率化する全貌を解説。</p>
-                        </div>
+                <!-- ===== 動画④ Notion AI解説 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#eff6ff,#dbeafe); border-radius:16px; border:2px solid #bfdbfe;">
+                    <a href="https://youtu.be/mIUDzP0h-jg" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/mIUDzP0h-jg/hqdefault.jpg" alt="動画④" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#1d4ed8; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画④ の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#1e3a8a; line-height:1.4;">Notion AI初心者向け徹底解説</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#1d4ed8;">ライティング支援やデータベース連携による自動要約まで、実務に即使える全貌を解説</p>
                     </div>
                 </div>
 

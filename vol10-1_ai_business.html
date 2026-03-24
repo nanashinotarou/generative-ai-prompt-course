@@ -64,16 +64,6 @@
         .bento-item h4 { margin: 0 0 1rem; font-size: 1.2rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-weight:800;}
         .bento-item p { font-size: 1.05rem; color: #64748b; line-height: 1.6; margin: 0 0 1rem 0; }
         .tag { background: var(--clickable-bg); color: var(--clickable); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 800; margin-right: 5px;}
-        .video-section { margin: 2.5rem 0; padding: 2rem; background: #fff; border-radius: 20px; border: 1px solid var(--accent-bg); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05); }
-        .video-section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 2px solid var(--accent-bg); }
-        .video-section-header .thumb-wrap { width: 280px; flex-shrink: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position:relative;}
-        .video-section-header .thumb-wrap img { width: 100%; height: 157px; object-fit: cover; display: block;}
-        .video-section-header .thumb-wrap .play-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
-        .video-section-header .thumb-wrap:hover .play-overlay { background: rgba(16, 185, 129, 0.3); }
-        .video-section-header .thumb-wrap .play-overlay i { color: #fff; font-size: 2.5rem; text-shadow: 0 3px 10px rgba(0,0,0,0.4); }
-        .video-section-header .meta h3 { margin: 0 0 0.5rem; font-size: 1.3rem; font-weight: 800; color: var(--text-main); line-height:1.4;}
-        .video-section-header .meta p { margin: 0; color: var(--text-sub); font-size: 1rem; line-height: 1.6; }
-        @media (max-width: 768px) { .video-section-header { flex-direction: column; } .video-section-header .thumb-wrap { width: 100%; } }
         .quiz-box { background: #fff; border: 2px solid var(--accent-light); border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);}
         .quiz-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
         .q-badge { background: linear-gradient(135deg, var(--accent), var(--accent-light)); color: #fff; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; }
@@ -199,37 +189,30 @@
             <div class="glass-card" style="border-top: 5px solid #0d9488;">
                 <div class="card-header"><i class="fa-solid fa-rocket" style="color:#0d9488; background:#f0fdfa;"></i><h2>前半：AIビジネス活用ロードマップ</h2></div>
 
-                <!-- 動画セクション -->
-                <div class="video-section">
-                    <div class="video-section-header">
-                        <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=Tb6Ni8kPafs" target="_blank">
-                                <img src="https://img.youtube.com/vi/Tb6Ni8kPafs/hqdefault.jpg" alt="ロードマップ解説">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </a>
-                        </div>
-                        <div class="meta">
-                            <span class="tag">動画①</span>
-                            <h3>AI活用で成果を出す5階層ロードマップ</h3>
-                            <p>ビジネスにおけるAI活用の「正しい順番」を解説。いきなりレベル5を目指すのではなく、レベル1から着実に積み上げることが成果への最短ルートです。</p>
-                            <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODrprhQDPOk8pJFMXhSIuz" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
-                        </div>
+                <!-- ===== 動画① 5階層ロードマップ ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#f0fdfa,#ccfbf1); border-radius:16px; border:2px solid #5eead4;">
+                    <a href="https://youtu.be/Tb6Ni8kPafs" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/Tb6Ni8kPafs/hqdefault.jpg" alt="動画①" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#0f766e; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画① の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#115e59; line-height:1.4;">AI活用で成果を出す5階層ロードマップ</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#0f766e;">レベル1から着実に積み上げることが成果への最短ルートです。</p>
+                        <a href="https://www.youtube.com/playlist?list=PLoQApr14fceODrprhQDPOk8pJFMXhSIuz" target="_blank" class="btn" style="padding:4px 10px; font-size:0.85rem; margin-top:10px;"><i class="fa-brands fa-youtube"></i> 再生リストを開く</a>
                     </div>
                 </div>
 
-                <div class="video-section">
-                    <div class="video-section-header">
-                        <div class="thumb-wrap">
-                            <a href="https://www.youtube.com/watch?v=8lnO2fLs47c" target="_blank">
-                                <img src="https://img.youtube.com/vi/8lnO2fLs47c/hqdefault.jpg" alt="業務活用術">
-                                <div class="play-overlay"><i class="fa-solid fa-play"></i></div>
-                            </a>
-                        </div>
-                        <div class="meta">
-                            <span class="tag">動画②</span>
-                            <h3>Gemini等の生成AIで生産性を劇的に高める業務活用術</h3>
-                            <p>Geminiを軸に、プレゼン作成・ダッシュボード開発・反復改善といった実務でそのまま使えるプロンプトテンプレートを紹介します。</p>
-                        </div>
+                <!-- ===== 動画② 業務活用術 ===== -->
+                <div style="display:flex; gap:1.2rem; align-items:center; margin-top:2.5rem; margin-bottom:1rem; padding:1rem 1.2rem; background:linear-gradient(135deg,#eff6ff,#dbeafe); border-radius:16px; border:2px solid #bfdbfe;">
+                    <a href="https://youtu.be/8lnO2fLs47c" target="_blank" style="flex-shrink:0; width:180px; border-radius:12px; overflow:hidden; position:relative; display:block; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+                        <img src="https://img.youtube.com/vi/8lnO2fLs47c/hqdefault.jpg" alt="動画②" style="width:100%; display:block;">
+                        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);"><i class="fa-solid fa-play" style="color:#fff; font-size:1.5rem;"></i></div>
+                    </a>
+                    <div>
+                        <div style="font-size:0.75rem; color:#1d4ed8; font-weight:800; letter-spacing:0.1em; margin-bottom:0.3rem;">📺 動画② の解説ダイジェスト</div>
+                        <h3 style="margin:0; font-size:1.15rem; color:#1e3a8a; line-height:1.4;">Gemini等の生成AIで生産性を劇的に高める業務活用術</h3>
+                        <p style="margin:0.3rem 0 0; font-size:0.85rem; color:#1d4ed8;">プレゼン作成や反復改善といった実務でそのまま使える活用術</p>
                     </div>
                 </div>
 
